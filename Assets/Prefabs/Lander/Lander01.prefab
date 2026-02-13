@@ -25,8 +25,8 @@ Transform:
   m_GameObject: {fileID: 517723835141512776}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 1, w: 0}
-  m_LocalPosition: {x: 0, y: -0.205, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: -0.695, z: 0}
+  m_LocalScale: {x: 2.45, y: 1.68, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5892739726928624714}
@@ -129,12 +129,12 @@ GameObject:
   m_Component:
   - component: {fileID: 379761788692062743}
   - component: {fileID: 7005068484072720240}
-  - component: {fileID: 5828748826307977597}
   - component: {fileID: 3775307519645256724}
+  - component: {fileID: 5828748826307977597}
   - component: {fileID: 431351545979365945}
   m_Layer: 0
   m_Name: Lander01
-  m_TagString: Untagged
+  m_TagString: Lander
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -210,6 +210,56 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &3775307519645256724
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3813696924777046524}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81af460155090c249943aaa8952100ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  landerIndex: 0
+  unlockCost: 0
+  isSecretLander: 0
+  isActive: 1
+  controlsEnabled: 0
+  landerState: 0
+  maxDistanceXToPad: 20
+  minDistanceYToPad: 10
+  maxDistanceYToPad: 20
+  minWorldY: 10
+  clearance: 10
+  tries: 30
+  thrustForce: 5
+  rotationSpeed: 40
+  rotationSmooth: 0.03
+  maxFallSpeed: -4
+  currentSpeed: 0
+  steeringDeadzone: 0.15
+  steeringRange: 2
+  maxSteer: 1
+  steerResponse: 8
+  fuelMax: 20
+  fuelBurnPerSec: 1
+  currentFuel: 0
+  fuelPerUnit: 1.1
+  fuelBufferPercent: 1
+  fuelEmptyDelay: 5
+  safeSpeed: 2
+  safeAngleDeg: 20
+  safeVerticalSpeed: 1.5
+  deadZoneExplodeDelay: 5
+  deadZoneTriggered: 0
+  deadZoneTimer: 0
+  crashEffect: {fileID: 1010378208399883370, guid: 45ad22481331e9347bf14f3679b66ad8, type: 3}
+  thrustEffects: []
+  thrustGrowSpeed: 6
+  thrustMaxY: 1
+  rb: {fileID: 0}
 --- !u!50 &5828748826307977597
 Rigidbody2D:
   serializedVersion: 5
@@ -237,48 +287,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &3775307519645256724
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3813696924777046524}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 81af460155090c249943aaa8952100ea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  unlockCost: 0
-  controlsEnabled: 0
-  landerState: 0
-  maxDistanceXToPad: 20
-  minDistanceYToPad: 10
-  maxDistanceYToPad: 20
-  minWorldY: 10
-  clearance: 10
-  tries: 30
-  thrustForce: 5
-  rotationSpeed: 40
-  rotationSmooth: 0.03
-  maxFallSpeed: -4
-  currentSpeed: 0
-  fuelMax: 20
-  fuelBurnPerSec: 1
-  currentFuel: 0
-  fuelPerUnit: 1.1
-  fuelBufferPercent: 1
-  fuelEmptyDelay: 5
-  safeSpeed: 2
-  safeAngleDeg: 20
-  safeVerticalSpeed: 1.5
-  deadZoneExplodeDelay: 5
-  deadZoneTriggered: 0
-  deadZoneTimer: 0
-  crashEffect: {fileID: 1010378208399883370, guid: 45ad22481331e9347bf14f3679b66ad8, type: 3}
-  thrustEffects: []
-  thrustGrowSpeed: 6
-  thrustMaxY: 1
 --- !u!60 &431351545979365945
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -325,40 +333,22 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 0.44, y: -0.22}
-      - {x: 0.58, y: -0.32999998}
-      - {x: 0.71999997, y: -0.59}
-      - {x: 0.81, y: -0.59}
-      - {x: 0.88, y: -0.56}
-      - {x: 0.85999995, y: -0.51}
-      - {x: 0.74, y: -0.29999998}
-      - {x: 0.75, y: -0.19}
-      - {x: 1.11, y: -0.14}
-      - {x: 1.13, y: -0.099999994}
-      - {x: 1.13, y: -0.04}
-      - {x: 0.96999997, y: 0.06}
-      - {x: 0.78, y: 0.14999999}
-      - {x: 0.55, y: 0.21}
-      - {x: 0.39999998, y: 0.42}
-      - {x: 0.26, y: 0.52}
-      - {x: 0.07, y: 0.58}
-      - {x: -0.04, y: 0.58}
-      - {x: -0.16, y: 0.55}
-      - {x: -0.31, y: 0.48999998}
-      - {x: -0.38, y: 0.42999998}
-      - {x: -0.53, y: 0.21}
-      - {x: -0.64, y: 0.17999999}
-      - {x: -0.78999996, y: 0.14}
-      - {x: -1.1, y: -0.03}
-      - {x: -1.13, y: -0.08}
-      - {x: -1.12, y: -0.11}
-      - {x: -1.05, y: -0.13}
-      - {x: -0.87, y: -0.17}
-      - {x: -0.68, y: -0.21}
-      - {x: -0.88, y: -0.5}
-      - {x: -0.82, y: -0.59}
-      - {x: -0.74, y: -0.59}
-      - {x: -0.66999996, y: -0.5}
-      - {x: -0.52, y: -0.21}
-      - {x: -0.42, y: -0.22}
+    - - {x: 0.58, y: -0.04}
+      - {x: 0.56, y: 0.17}
+      - {x: 0.39999998, y: 0.51}
+      - {x: 0.049999997, y: 0.88}
+      - {x: -0.01, y: 0.88}
+      - {x: -0.38, y: 0.52}
+      - {x: -0.51, y: 0.28}
+      - {x: -0.57, y: 0.14999999}
+      - {x: -0.58, y: -0.049999997}
+      - {x: -0.81, y: -0.25}
+      - {x: -0.96999997, y: -0.39999998}
+      - {x: -1.12, y: -0.65}
+      - {x: -1.12, y: -0.69}
+      - {x: -1.11, y: -0.71}
+      - {x: 1.12, y: -0.71}
+      - {x: 1.13, y: -0.7}
+      - {x: 1.13, y: -0.62}
+      - {x: 0.91999996, y: -0.32}
   m_UseDelaunayMesh: 0

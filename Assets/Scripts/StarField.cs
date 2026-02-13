@@ -20,7 +20,6 @@ public class StarField : MonoBehaviour
 
     public void Init()
     {
-        target = LanderController.Instance.transform;
         ps = GetComponent<ParticleSystem>();
 
         var main = ps.main;
@@ -51,6 +50,11 @@ public class StarField : MonoBehaviour
             parallax);
 
         RecycleStars();
+    }
+
+    public void SetTarget(Transform newTarget)
+    {
+        target = newTarget;
     }
 
     void RecycleStars()

@@ -5,20 +5,20 @@ public class GravityManager2D : MonoBehaviour
     public static GravityManager2D Instance;
 
     [Header("Refs")]
-    Transform lander;
-    Rigidbody2D landerRb;
+    Transform lander => LanderController.Instance.transform;
+    Rigidbody2D landerRb => LanderController.Instance.GetComponent<Rigidbody2D>();
 
-    [Header("Base Gravity (Earth-like)")]
+    [Header("Base Gravity (always down)")]
     public Vector2 baseGravity = new Vector2(0f, -9.81f);
 
     [Header("Moon Gravity Gradient")]
-    public float moonEnterRadius = 18f; // 0% Mondgrav
-    public float moonFullRadius = 10f; // 100% Mondgrav
+    public float moonEnterRadius = 18f;   // ab hier beginnt Mondgrav (0)
+    public float moonFullRadius = 10f;   // ab hier volle Mondgrav (1)
     public float moonGravityStrength = 9f;
 
     [Header("Altitude Zero-G Gradient (World Y)")]
-    public float zeroGStartY = 40f; // ab hier beginnt Gravity->0
-    public float zeroGFullY = 60f; // ab hier Gravity=0
+    public float zeroGStartY = 40f;
+    public float zeroGFullY = 60f;
 
     [Header("Smoothing")]
     public float gravitySmooth = 6f;
@@ -32,54 +32,56 @@ public class GravityManager2D : MonoBehaviour
 
     Vector2 currentG;
 
-    void Awake()
-    {
-        Instance = this;
-    }
+    void Awake() => Instance = this;
 
     public void Init()
     {
         currentG = baseGravity;
         Physics2D.gravity = currentG;
-
-        lander = LanderController.Instance.transform;
-        landerRb = lander.GetComponent<Rigidbody2D>();
     }
 
     void FixedUpdate()
     {
         if (!lander || !landerRb) return;
 
-        float moonT;
-        Vector2 gAfterMoon = CalcGravityAfterMoon(out moonT);
-                
-        Vector2 targetG = ApplyZeroG(gAfterMoon, moonT, out zeroBlend);
+        float moonT = CalcMoonT();
+        float zeroT = CalcZeroT();
 
+        // Base bleibt immer "nach unten", Zero-G reduziert nur die Base (nicht den Mond)
+        Vector2 baseG = Vector2.Lerp(baseGravity, Vector2.zero, zeroT);
+
+        // Mond zieht radial zur Mitte
+        Vector2 moonG = CalcMoonGravity(moonT);
+
+        Vector2 targetG = baseG + moonG;
+
+        zeroBlend = zeroT; // fürs Space-Tuning: wie "leer" die Weltgrav ist
         LanderController.Instance.ApplySpaceTuning(zeroBlend);
 
         ApplyWorldGravitySmooth(targetG);
 
+        // Assist nur wenn Mond spürbar ist
         ApplyRotationAssist(moonT);
     }
 
-    Vector2 CalcGravityAfterMoon(out float moonT)
+    float CalcMoonT()
     {
-        float distToMoon = Vector2.Distance(lander.position, transform.position);
-        moonT = Mathf.Clamp01(Mathf.InverseLerp(moonEnterRadius, moonFullRadius, distToMoon));
-
-        Vector2 moonDir = ((Vector2)transform.position - (Vector2)lander.position).normalized;
-        Vector2 moonG = moonDir * moonGravityStrength;
-
-        return Vector2.Lerp(baseGravity, moonG, moonT);
+        float dist = Vector2.Distance(lander.position, transform.position);
+        return Mathf.Clamp01(Mathf.InverseLerp(moonEnterRadius, moonFullRadius, dist));
     }
 
-    Vector2 ApplyZeroG(Vector2 gAfterMoon, float moonT, out float zeroBlend)
+    float CalcZeroT()
     {
         float y = lander.position.y;
-        float zeroT = Mathf.Clamp01(Mathf.InverseLerp(zeroGStartY, zeroGFullY, y));
+        return Mathf.Clamp01(Mathf.InverseLerp(zeroGStartY, zeroGFullY, y));
+    }
 
-        zeroBlend = zeroT * (1f - moonT); // Mond schlägt ZeroG
-        return Vector2.Lerp(gAfterMoon, Vector2.zero, zeroBlend);
+    Vector2 CalcMoonGravity(float moonT)
+    {
+        if (moonT <= 0f) return Vector2.zero;
+
+        Vector2 moonDir = ((Vector2)transform.position - (Vector2)lander.position).normalized;
+        return moonDir * (moonGravityStrength * moonT);
     }
 
     void ApplyWorldGravitySmooth(Vector2 targetG)
@@ -104,14 +106,11 @@ public class GravityManager2D : MonoBehaviour
         landerRb.AddTorque(torque, ForceMode2D.Force);
     }
 
-
     void OnDrawGizmosSelected()
     {
-        // Mondradien
         Gizmos.color = Color.yellow; Gizmos.DrawWireSphere(transform.position, moonEnterRadius);
         Gizmos.color = Color.red; Gizmos.DrawWireSphere(transform.position, moonFullRadius);
 
-        // Höhenlinien
         Gizmos.color = Color.yellow;
         Gizmos.DrawLine(new Vector3(-9999, zeroGStartY, 0), new Vector3(9999, zeroGStartY, 0));
         Gizmos.color = Color.red;

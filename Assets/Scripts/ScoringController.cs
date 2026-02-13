@@ -68,7 +68,7 @@ public class ScoringController : MonoBehaviour
         float timeSec = Mathf.Max(0f, Time.time - runStartTime);
         float fuelPct = lander.fuelMax <= 0f ? 0f : Mathf.Clamp01(lander.currentFuel / lander.fuelMax);
 
-        bool landedMoon = LanderController.Instance.landerState == LanderController.eLanderState.LandedMoon;
+        bool landedMoon = lander.landerState == LanderController.eLanderState.LandedMoon;
 
         // Center / Speed / Angle only for Pad/Landscape landings
         float centerAcc = 0f;

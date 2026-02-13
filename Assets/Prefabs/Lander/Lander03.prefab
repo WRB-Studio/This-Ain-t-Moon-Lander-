@@ -26,7 +26,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0, z: -0.9961947, w: -0.08715578}
   m_LocalPosition: {x: -0.882, y: -0.275, z: 0}
-  m_LocalScale: {x: 1.2, y: 0.8, z: 1.2}
+  m_LocalScale: {x: 1.5400001, y: 0.8, z: 1.5400001}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4757323925546351185}
@@ -129,12 +129,12 @@ GameObject:
   m_Component:
   - component: {fileID: 4136345051133963461}
   - component: {fileID: 7073551765360585802}
-  - component: {fileID: 8232375101068648911}
   - component: {fileID: 2631063253979580208}
+  - component: {fileID: 8232375101068648911}
   - component: {fileID: 7174872839219210417}
   m_Layer: 0
   m_Name: Lander03
-  m_TagString: Untagged
+  m_TagString: Lander
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -211,6 +211,55 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &2631063253979580208
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4863892145164540069}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81af460155090c249943aaa8952100ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  landerIndex: 2
+  unlockCost: 3500
+  isSecretLander: 0
+  isActive: 1
+  controlsEnabled: 0
+  landerState: 0
+  maxDistanceXToPad: 20
+  minDistanceYToPad: 10
+  maxDistanceYToPad: 20
+  minWorldY: 10
+  clearance: 10
+  tries: 30
+  thrustForce: 5
+  rotationSpeed: 40
+  rotationSmooth: 0.03
+  maxFallSpeed: -4
+  currentSpeed: 0
+  steeringDeadzone: 0.15
+  steeringRange: 2
+  maxSteer: 1
+  steerResponse: 8
+  fuelMax: 20
+  fuelBurnPerSec: 1
+  currentFuel: 0
+  fuelPerUnit: 1.1
+  fuelBufferPercent: 1
+  fuelEmptyDelay: 5
+  safeSpeed: 2
+  safeAngleDeg: 20
+  safeVerticalSpeed: 1.5
+  deadZoneExplodeDelay: 5
+  deadZoneTriggered: 0
+  deadZoneTimer: 0
+  crashEffect: {fileID: 1010378208399883370, guid: 45ad22481331e9347bf14f3679b66ad8, type: 3}
+  thrustEffects: []
+  thrustGrowSpeed: 6
+  thrustMaxY: 1
 --- !u!50 &8232375101068648911
 Rigidbody2D:
   serializedVersion: 5
@@ -238,48 +287,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &2631063253979580208
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4863892145164540069}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 81af460155090c249943aaa8952100ea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  unlockCost: 1800
-  controlsEnabled: 0
-  landerState: 0
-  maxDistanceXToPad: 20
-  minDistanceYToPad: 10
-  maxDistanceYToPad: 20
-  minWorldY: 10
-  clearance: 10
-  tries: 30
-  thrustForce: 5
-  rotationSpeed: 40
-  rotationSmooth: 0.03
-  maxFallSpeed: -4
-  currentSpeed: 0
-  fuelMax: 20
-  fuelBurnPerSec: 1
-  currentFuel: 0
-  fuelPerUnit: 1.1
-  fuelBufferPercent: 1
-  fuelEmptyDelay: 5
-  safeSpeed: 2
-  safeAngleDeg: 20
-  safeVerticalSpeed: 1.5
-  deadZoneExplodeDelay: 5
-  deadZoneTriggered: 0
-  deadZoneTimer: 0
-  crashEffect: {fileID: 1010378208399883370, guid: 45ad22481331e9347bf14f3679b66ad8, type: 3}
-  thrustEffects: []
-  thrustGrowSpeed: 6
-  thrustMaxY: 1
 --- !u!60 &7174872839219210417
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -388,7 +395,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: 0.9961947, w: -0.08715578}
   m_LocalPosition: {x: 0.882, y: -0.275, z: 0}
-  m_LocalScale: {x: 1.2, y: 0.8, z: 1.2}
+  m_LocalScale: {x: 1.5400001, y: 0.8, z: 1.5400001}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2397735558877994718}

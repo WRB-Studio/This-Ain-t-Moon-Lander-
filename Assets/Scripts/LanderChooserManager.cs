@@ -25,6 +25,8 @@ public class LanderChooserManager : MonoBehaviour
     private readonly List<Button> allBtnOptions = new();
     private int selectedIndex = 0;
 
+    const string KEY_SECRET_FOUND = "LANDER_SECRET_FOUND_";
+
 
     private void Awake()
     {
@@ -53,19 +55,25 @@ public class LanderChooserManager : MonoBehaviour
         for (int i = 0; i < landerPrefabs.Length; i++)
         {
             int index = i;
-            GameObject prefab = landerPrefabs[index];
+            var prefab = landerPrefabs[index];
 
             var sr = prefab.GetComponent<SpriteRenderer>();
             Sprite sprite = sr ? sr.sprite : null;
 
             Button btn = Instantiate(btnOptionPrefab, optionsParent);
-            btn.transform.GetChild(0).GetComponent<Image>().sprite = sprite;
-
             allBtnOptions.Add(btn);
+
+            var imgShip = btn.transform.Find("ImgLander").GetComponent<Image>();
+            imgShip.sprite = sprite;
+            
+            var imgSecret = btn.transform.Find("imgSecret").gameObject;
+            bool secretHidden = IsSecret(index) && !IsSecretFound(index);
+            imgSecret.SetActive(secretHidden);
 
             btn.onClick.AddListener(() => TryChoose(index));
         }
     }
+
 
     void TryChoose(int index)
     {
@@ -93,12 +101,29 @@ public class LanderChooserManager : MonoBehaviour
     }
 
 
+    bool IsSecret(int index)
+        => landerPrefabs[index].GetComponent<LanderController>().isSecretLander;
+
+    public bool IsSecretFound(int index)
+        => SaveLoadManager.Instance.Data.GetFlag(KEY_SECRET_FOUND + index, false);
+
+    public void UnlockSecret(int index)
+    {
+        SaveLoadManager.Instance.Data.SetFlag(KEY_SECRET_FOUND + index, true);
+        SaveLoadManager.Instance.Save();
+        RefreshChooser();
+    }
+
+
     bool IsUnlocked(int index)
     {
+        var lc = landerPrefabs[index].GetComponent<LanderController>();
+        if (lc.isSecretLander) return IsSecretFound(index);
+
         int xp = ScoringController.Instance.CollectedScore;
-        int req = landerPrefabs[index].GetComponent<LanderController>().unlockCost;
-        return xp >= req;
+        return xp >= lc.unlockCost;
     }
+
 
     public void RefreshChooser()
     {
@@ -106,32 +131,44 @@ public class LanderChooserManager : MonoBehaviour
 
         for (int i = 0; i < landerPrefabs.Length; i++)
         {
-            int req = landerPrefabs[i].GetComponent<LanderController>().unlockCost;
-
+            var lc = landerPrefabs[i].GetComponent<LanderController>();
             var btn = allBtnOptions[i];
             var img = btn.GetComponent<Image>();
 
-            TMP_Text txtUnlockCondition = txtUnlockCondition = btn.transform.GetChild(1).GetComponent<TMP_Text>();
+            var imgShip = btn.transform.GetChild(0).GetComponent<Image>();
+            var imgSecret = btn.transform.Find("imgSecret")?.gameObject;
 
-            bool unlocked = xp >= req;
+            bool secretHidden = lc.isSecretLander && !IsSecretFound(i);
+
+            imgShip.enabled = !secretHidden;
+            if (imgSecret) imgSecret.SetActive(secretHidden);
+
+            bool unlocked = IsUnlocked(i);
             btn.interactable = unlocked;
 
-            if (!unlocked)
+            TMP_Text txtUnlock = btn.transform.GetChild(1).GetComponent<TMP_Text>();
+
+            if (secretHidden)
             {
                 img.color = lockedColor;
-                txtUnlockCondition.gameObject.SetActive(true);
-                txtUnlockCondition.text = req.ToString();
+                txtUnlock.gameObject.SetActive(false); // kein Preis bei Secret
+            }
+            else if (!unlocked)
+            {
+                img.color = lockedColor;
+                txtUnlock.gameObject.SetActive(true);
+                txtUnlock.text = lc.unlockCost.ToString();
             }
             else
             {
                 img.color = HasSeen(i) ? originBtnColor : newUnlockedColor;
-                txtUnlockCondition.gameObject.SetActive(false);
+                txtUnlock.gameObject.SetActive(false);
             }
 
             if (i == selectedIndex)
             {
                 img.color = selectedBtnColor;
-                txtUnlockCondition.gameObject.SetActive(false);
+                txtUnlock.gameObject.SetActive(false);
             }
         }
     }
@@ -201,6 +238,8 @@ public class LanderChooserManager : MonoBehaviour
         panelChooser.gameObject.SetActive(open);
 
         if (open) RefreshChooser();
+
+        LanderUI.Instance.RefreshPanel();
     }
 
 }

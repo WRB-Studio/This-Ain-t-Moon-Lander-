@@ -39,6 +39,8 @@ public class GameController : MonoBehaviour
         LandingPadPlacer.Instance.Init();
 
         StoryTextController.Instance.Init();
+
+        MoonEVAController.Instance.Init();
     }
 
     public void StartGame()
@@ -51,6 +53,20 @@ public class GameController : MonoBehaviour
         CameraController.Instance.SetInstantFocus();
         LanderUI.Instance.StartCountdown();
         StoryTextController.Instance.Restart();
+        MoonEVAController.Instance.isOnMoonLanded = false;
+
+        LanderController[] allLanderInScene = FindObjectsByType<LanderController>(FindObjectsSortMode.None);
+
+        foreach (LanderController lc in allLanderInScene)
+        {
+            if (lc.isActive) continue;
+            if(lc.isSecretLander && !LanderChooserManager.Instance.IsSecretFound(lc.landerIndex)) continue;
+
+            Destroy(lc.gameObject);
+        }
+
+        StarField.Instance.SetTarget(LanderController.Instance.transform);
+        CameraController.Instance.SetTarget(LanderController.Instance.transform, true);
     }
 
     public void NextLevel()

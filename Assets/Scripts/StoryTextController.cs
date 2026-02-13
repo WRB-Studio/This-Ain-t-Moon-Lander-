@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -10,7 +11,7 @@ public class StoryTextController : MonoBehaviour
     {
         AtmosphereExit,
         BackToPlanet,
-        NearToMoon
+        NearToMoon,
     }
 
     [Header("UI")]
@@ -21,6 +22,9 @@ public class StoryTextController : MonoBehaviour
 
     [Tooltip("How many seconds must pass after run start before triggers can fire (avoid countdown spam).")]
     [SerializeField] float triggerDelayFromRunStart = 0.5f;
+
+    [Tooltip("Cooldown per story type to avoid spamming the queue.")]
+    [SerializeField] float typeCooldown = 2.0f;
 
     readonly Dictionary<eStoryTextType, string[]> stateMessages =
         new Dictionary<eStoryTextType, string[]>
@@ -76,63 +80,73 @@ public class StoryTextController : MonoBehaviour
 
     float runStartTime;
 
-    private LanderController lander;
-    private GravityManager2D gravityManager;
+    LanderController lander => LanderController.Instance;
+    GravityManager2D gravityManager;
+
+    // --- queue ---
+    readonly Queue<string> queue = new Queue<string>();
+    Coroutine runner;
+    string lastQueued;
+
+    // --- anti spam per type ---
+    readonly Dictionary<eStoryTextType, float> nextAllowed = new Dictionary<eStoryTextType, float>();
 
     void Awake()
     {
         Instance = this;
-        txtInfo.gameObject.SetActive(false);
+        if (txtInfo) txtInfo.gameObject.SetActive(false);
     }
 
     public void Init()
     {
-        lander = LanderController.Instance;
         gravityManager = GravityManager2D.Instance;
     }
 
     /// <summary>Call this on "GO" / run start / next level.</summary>
     public void Restart()
     {
-        txtInfo.gameObject.SetActive(false);
+        if (txtInfo) txtInfo.gameObject.SetActive(false);
 
         shownAtmosphereExit = false;
         shownBackToPlanet = false;
         shownNearMoon = false;
 
         runStartTime = Time.time;
+
+        queue.Clear();
+        lastQueued = null;
+        nextAllowed.Clear();
+
+        if (runner != null) StopCoroutine(runner);
+        runner = null;
     }
 
     void Update()
     {
-        // wait a bit after run start
         if (Time.time - runStartTime < triggerDelayFromRunStart) return;
-
-
-
+        if (!lander || !gravityManager) return;
 
         // --- 1) AtmosphereExit / BackToPlanet ---
         if (!shownAtmosphereExit && lander.transform.position.y > gravityManager.zeroGFullY)
         {
             shownBackToPlanet = false;
             shownAtmosphereExit = true;
-            Show(eStoryTextType.AtmosphereExit);
+            Enqueue(eStoryTextType.AtmosphereExit);
         }
 
         if (shownAtmosphereExit && !shownBackToPlanet && lander.transform.position.y < gravityManager.zeroGFullY)
         {
             shownAtmosphereExit = false;
             shownBackToPlanet = true;
-            Show(eStoryTextType.BackToPlanet);
+            Enqueue(eStoryTextType.BackToPlanet);
         }
 
-        // --- 2) NearToMoon via distance to Moon transform (if available) ---
-        // Assumption: GravityManager2D has a public Transform moon (or similar). Adjust line below if your field name differs.
+        // --- 2) NearToMoon ---
         float distanceToMoon = Vector2.Distance(lander.transform.position, gravityManager.transform.position);
         if (!shownNearMoon && distanceToMoon <= gravityManager.moonFullRadius)
         {
             shownNearMoon = true;
-            Show(eStoryTextType.NearToMoon);
+            Enqueue(eStoryTextType.NearToMoon);
         }
         else if (distanceToMoon > gravityManager.moonFullRadius)
         {
@@ -140,17 +154,58 @@ public class StoryTextController : MonoBehaviour
         }
     }
 
-    public void Show(eStoryTextType type)
-    {
-        if (!txtInfo) return;
+    // --- Public API ---
+    public void Show(string msg) => Enqueue(msg);
+    public void Show(eStoryTextType type) => Enqueue(type);
 
-        string msg = GetRandomMessage(type);
+    // --- Queue entrypoints ---
+    void Enqueue(eStoryTextType type)
+    {
+        // cooldown per type
+        float allowedAt = 0f;
+        nextAllowed.TryGetValue(type, out allowedAt);
+        if (Time.time < allowedAt) return;
+
+        nextAllowed[type] = Time.time + typeCooldown;
+
+        Enqueue(GetRandomMessage(type));
+    }
+
+    void Enqueue(string msg)
+    {
         if (string.IsNullOrEmpty(msg)) return;
 
-        StopAllCoroutines();
-        txtInfo.text = msg;
-        txtInfo.gameObject.SetActive(true);
-        StartCoroutine(HideAfterDelay());
+        // optional: same message not twice in a row
+        if (msg == lastQueued) return;
+
+        queue.Enqueue(msg);
+        lastQueued = msg;
+
+        if (runner == null)
+            runner = StartCoroutine(RunQueue());
+    }
+
+    IEnumerator RunQueue()
+    {
+        while (queue.Count > 0)
+        {
+            string msg = queue.Dequeue();
+
+            if (!txtInfo) yield break;
+
+            txtInfo.text = msg;
+            txtInfo.gameObject.SetActive(true);
+
+            yield return new WaitForSeconds(visibleTime);
+
+            if (txtInfo) txtInfo.gameObject.SetActive(false);
+
+            // tiny gap (optional)
+            // yield return new WaitForSeconds(0.05f);
+        }
+
+        runner = null;
+        lastQueued = null;
     }
 
     string GetRandomMessage(eStoryTextType type)
@@ -170,11 +225,5 @@ public class StoryTextController : MonoBehaviour
         }
 
         return msg;
-    }
-
-    System.Collections.IEnumerator HideAfterDelay()
-    {
-        yield return new WaitForSeconds(visibleTime);
-        if (txtInfo) txtInfo.gameObject.SetActive(false);
     }
 }
