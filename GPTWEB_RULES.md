@@ -10,16 +10,17 @@ These rules apply to all ChatGPT Web development work in this repository.
 
 2. **Permanent GPT Web integration branch:** `gptweb/main`
    - All GPT Web work integrates here first.
-   - `gptweb/main` is the base for new GPT Web feature/fix branches.
+   - `gptweb/main` is the base for new GPT Web feature/fix/refactor branches.
    - Do not create normal GPT Web work directly from `main` once `gptweb/main` exists.
 
 3. **Every implementation uses its own branch.**
    - Feature: `gptweb/feature-<name>`
    - Fix: `gptweb/fix-<name>`
+   - Refactor: `gptweb/refactor-<name>`
    - Keep one logical change per branch.
 
 4. **Merge direction:**
-   - `gptweb/main` → `gptweb/feature-*` / `gptweb/fix-*`
+   - `gptweb/main` → `gptweb/feature-*` / `gptweb/fix-*` / `gptweb/refactor-*`
    - completed branch → `gptweb/main`
    - **Never automatically merge `gptweb/main` into `main`.**
    - `gptweb/main` → `main` only when the user explicitly decides to do that after local testing/review.
@@ -29,12 +30,12 @@ These rules apply to all ChatGPT Web development work in this repository.
 
 ## Required context before changes
 
-Before implementing a feature or fix:
+Before implementing a feature, fix, or refactor:
 
 1. Read `GPTWEB_RULES.md`.
 2. Read `README.md` and `GAME_CONCEPT.md` when relevant to gameplay/design.
 3. Inspect the existing implementation and its dependencies before changing code.
-4. Prefer the project's existing style and structure over introducing a new architecture.
+4. Prefer the project's existing style and structure unless a deliberate refactor clearly improves the system.
 
 `GAME_CONCEPT.md` is an evolving pool of ideas, **not a fixed specification**. New ideas must be discussed/defined as needed rather than assumed to be mandatory.
 
@@ -43,12 +44,14 @@ Before implementing a feature or fix:
 - Extend existing systems instead of rebuilding them without a clear reason.
 - Keep Unity/C# code simple, readable, and mobile-friendly.
 - Avoid unnecessary managers, interfaces, abstractions, frameworks, and design-pattern overhead.
-- Do not refactor unrelated code while implementing a feature.
-- Do not create side work that is not needed for the requested task.
+- **Refactoring is explicitly allowed**, including larger structural changes, when it improves maintainability, clarity, reliability, controls, or future extensibility.
+- Large or broad refactors should use a dedicated `gptweb/refactor-*` branch instead of being hidden inside an unrelated feature.
+- Related cleanup may be included with a feature when it directly reduces complexity or risk for that feature.
+- Do not create side work that is unrelated to the requested task or current project direction.
 - Preserve Unity serialization where practical; avoid unnecessarily breaking `SerializeField` references, prefabs, scenes, and inspector setup.
-- Avoid modifying packages, `ProjectSettings`, scenes, prefabs, or other broad project configuration unless the feature genuinely requires it.
+- Avoid modifying packages, `ProjectSettings`, scenes, prefabs, or other broad project configuration unless the feature/refactor genuinely requires it.
 - Consider mobile performance and allocations, but do not prematurely optimize simple code.
-- Reuse current project conventions when several technically valid solutions exist.
+- Reuse current project conventions when several technically valid solutions exist, unless a deliberate refactor establishes a clearly better convention.
 
 ## Unity Editor work
 
@@ -63,7 +66,7 @@ If manual Unity Editor work is required:
 
 1. Inspect relevant code and dependencies.
 2. Create a branch from `gptweb/main`.
-3. Implement only the requested feature/fix.
+3. Implement the requested feature and any directly related cleanup/refactor that makes it safer or simpler.
 4. Review the resulting diff for unrelated changes and likely Unity serialization issues.
 5. Merge the completed branch back into `gptweb/main`.
 6. Report briefly:
@@ -78,8 +81,20 @@ When the user reports an error:
 
 - Inspect the repository and find the actual cause before patching symptoms.
 - Use a `gptweb/fix-*` branch from `gptweb/main` unless the bug belongs to a still-open feature branch.
-- Keep the fix focused.
+- Refactor related code when that is the cleaner and safer fix instead of stacking workarounds.
+- Keep unrelated changes out of the fix.
 - Merge the completed fix into `gptweb/main`.
+
+## Refactor workflow
+
+When a larger refactor is worthwhile:
+
+1. Inspect call sites, serialized references, prefabs/scenes, and dependencies first.
+2. Create `gptweb/refactor-<name>` from `gptweb/main`.
+3. Preserve current gameplay behavior unless behavior changes are part of the stated goal.
+4. Prefer a few clear responsibilities over unnecessary architectural layers.
+5. Keep public/serialized compatibility where practical; when breaking it is worthwhile, document the required Unity Editor migration.
+6. Merge the completed refactor back into `gptweb/main` only after reviewing the diff and likely regressions.
 
 ## Project direction
 
