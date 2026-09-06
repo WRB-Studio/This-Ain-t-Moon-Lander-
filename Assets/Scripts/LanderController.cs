@@ -19,32 +19,43 @@ public class LanderController : MonoBehaviour
     public float maxDistanceXToPad = 6f;
     public float minDistanceYToPad = 6f;
     public float maxDistanceYToPad = 12f;
-
-    public float minWorldY = -2f;              // harter Mindest-Y (optional)
-    public float clearance = 0.2f;             // Abstand zum Boden
+    public float minWorldY = -2f;
+    public float clearance = 0.2f;
     public int tries = 30;
 
     [Header("Lander movement settings")]
     public float thrustForce = 9.5f;
-    public float rotationSpeed = 180f;
-    public float rotationSmooth = 0.12f;
     public float maxFallSpeed = -6f;
     public float currentSpeed;
 
-    [Header("Analog Steering")]
-    [Tooltip("Bereich in der Mitte des Schiffs ohne Drehung.\nVerhindert Zittern beim reinen Gasgeben.")]
-    public float steeringDeadzone = 0.15f;
-    [Tooltip("Seitlicher Abstand (in lokalen Einheiten), ab dem volle Drehstärke erreicht wird.")]
-    public float steeringRange = 2.0f;
-    [Tooltip("Maximale Steuerintensität (1 = 100%).\nBegrenzt den Einfluss des Touch-Inputs.")]
-    public float maxSteer = 1f;
-    [Tooltip("Wie schnell sich die Steuerung an neue Touch-Positionen anpasst.\nHöher = direkter, niedriger = smoother.")]
-    public float steerResponse = 8f;
+    [Header("Mobile Steering")]
+    [Tooltip("Maximale Neigung bei vorhandener Gravitation. Touch links/rechts setzt einen absoluten Zielwinkel statt endlos weiterzudrehen.")]
+    [Range(5f, 80f)] public float maxGravityTilt = 45f;
 
-    float baseRotationSpeed, baseRotationSmooth, baseThrustForce;
-    bool baseCached = false;
+    [Tooltip("Seitlicher Totbereich um das Schiff als Anteil der Bildschirmbreite.")]
+    [Range(0f, 0.2f)] public float steeringDeadzoneScreen = 0.04f;
 
-    float steer01; // geglätteter steering wert (-1..+1)
+    [Tooltip("Ab diesem seitlichen Touch-Abstand wird die maximale Neigung erreicht (Anteil der Bildschirmbreite).")]
+    [Range(0.05f, 0.5f)] public float fullSteerScreen = 0.24f;
+
+    [Tooltip("Drehgeschwindigkeit bei vorhandener Gravitation in Grad/Sekunde.")]
+    public float gravityTurnSpeed = 100f;
+
+    [Tooltip("Drehgeschwindigkeit im Zero-G in Grad/Sekunde.")]
+    public float zeroGTurnSpeed = 150f;
+
+    [Tooltip("Wie weich die seitliche Touch-Eingabe reagiert.")]
+    public float steerResponse = 10f;
+
+    [Tooltip("Unterhalb dieser Gravitationsstärke wird direkt in Richtung Touch gezielt (360° Zero-G-Steuerung).")]
+    public float zeroGSteeringThreshold = 0.35f;
+
+    [Tooltip("Wie schnell sich der Lander ohne Touch bei Gravitation wieder aufrichtet.")]
+    public float autoLevelSpeed = 55f;
+
+    float baseThrustForce;
+    bool baseCached;
+    float steer01;
 
     [Header("Fuel")]
     public float fuelMax = 3.5f;
@@ -77,9 +88,8 @@ public class LanderController : MonoBehaviour
 
     [HideInInspector] public Rigidbody2D rb;
 
-    private float targetRotation;
-    private bool isThrusting;
-
+    float targetRotation;
+    bool isThrusting;
 
     void Awake()
     {
@@ -100,26 +110,20 @@ public class LanderController : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         targetRotation = rb.rotation;
+        steer01 = 0f;
 
-        // thrustEffects NICHT stapeln
         thrustEffects ??= new List<Transform>();
         thrustEffects.Clear();
         foreach (Transform t in transform)
             if (t.name.Contains("ThrustEffect"))
                 thrustEffects.Add(t);
 
-        // Base nur EINMAL speichern (nicht nach SpaceTuning!)
         if (!baseCached)
         {
-            baseRotationSpeed = rotationSpeed;
-            baseRotationSmooth = rotationSmooth;
             baseThrustForce = thrustForce;
             baseCached = true;
         }
 
-        // Optional: nach Init direkt auf Base resetten
-        rotationSpeed = baseRotationSpeed;
-        rotationSmooth = baseRotationSmooth;
         thrustForce = baseThrustForce;
     }
 
@@ -128,7 +132,6 @@ public class LanderController : MonoBehaviour
         var old = Instance;
         if (old == null || newLander == null || old == newLander) return;
 
-        // OLD OFF
         old.isActive = false;
         old.controlsEnabled = false;
 
@@ -136,10 +139,8 @@ public class LanderController : MonoBehaviour
         oldRb.bodyType = RigidbodyType2D.Static;
         old.GetComponent<Collider2D>().isTrigger = true;
 
-        // NEW ON
         Instance = newLander;
         newLander.isActive = true;
-
         newLander.Init();
 
         newLander.controlsEnabled = true;
@@ -152,7 +153,6 @@ public class LanderController : MonoBehaviour
 
         CameraController.Instance.SetTarget(newLander.transform, instantFocus: true);
     }
-
 
     void UpdateThrustEffect(bool thrusting)
     {
@@ -167,14 +167,12 @@ public class LanderController : MonoBehaviour
         {
             Vector3 s = t.localScale;
             float targetY = thrusting ? thrustMaxY : 0f;
-
-            s.y = Mathf.Lerp(s.y, targetY, thrustGrowSpeed * Time.deltaTime);
+            s.y = Mathf.Lerp(s.y, targetY, thrustGrowSpeed * Time.fixedDeltaTime);
             t.localScale = s;
         }
-
     }
 
-    private void Update()
+    void Update()
     {
         if (!isActive) return;
 
@@ -188,16 +186,30 @@ public class LanderController : MonoBehaviour
 
         currentSpeed = rb.linearVelocity.magnitude;
 
-        UpdateThrustEffect(isThrusting);
+        if (controlsEnabled)
+        {
+            bool hasTouch = TouchControl(out var screenPos);
+            isThrusting = hasTouch && currentFuel > 0f;
+
+            if (isThrusting)
+                UpdateSteeringTarget(screenPos);
+            else
+                UpdateAutoLevel();
+
+            HandleThrustSound(isThrusting);
+        }
+        else
+        {
+            isThrusting = false;
+            HandleThrustSound(false);
+        }
 
         ApplyPhysics();
-
-        if (!controlsEnabled) return;
-        isThrusting = TouchControll(out var pos) && currentFuel > 0f;
-        HandleThrustSound(isThrusting);
+        UpdateThrustEffect(isThrusting);
 
         if (!isThrusting) return;
-        ApplyThrust(pos);
+
+        rb.AddForce(transform.up * thrustForce, ForceMode2D.Force);
         BurnFuel();
     }
 
@@ -207,11 +219,15 @@ public class LanderController : MonoBehaviour
         if (v.y < maxFallSpeed) v.y = maxFallSpeed;
         if (rb.bodyType == RigidbodyType2D.Dynamic) rb.linearVelocity = v;
 
-        float smoothedRot = Mathf.LerpAngle(rb.rotation, targetRotation, rotationSmooth);
-        rb.MoveRotation(smoothedRot);
+        if (!controlsEnabled || landerState != eLanderState.Flying || rb.bodyType != RigidbodyType2D.Dynamic)
+            return;
+
+        float turnSpeed = HasSteeringGravity() ? gravityTurnSpeed : zeroGTurnSpeed;
+        float nextRotation = Mathf.MoveTowardsAngle(rb.rotation, targetRotation, turnSpeed * Time.fixedDeltaTime);
+        rb.MoveRotation(nextRotation);
     }
 
-    bool TouchControll(out Vector2 screenPos)
+    bool TouchControl(out Vector2 screenPos)
     {
         if (LanderUI.Instance.IsPointerOverUI())
         {
@@ -241,6 +257,66 @@ public class LanderController : MonoBehaviour
         return false;
     }
 
+    void UpdateSteeringTarget(Vector2 screenPos)
+    {
+        Camera cam = Camera.main;
+        if (!cam) return;
+
+        Vector2 gravity = Physics2D.gravity;
+
+        if (HasSteeringGravity())
+        {
+            float shipScreenX = cam.WorldToScreenPoint(transform.position).x;
+            float dx = (screenPos.x - shipScreenX) / Mathf.Max(1f, Screen.width);
+            float abs = Mathf.Abs(dx);
+
+            float input = 0f;
+            if (abs > steeringDeadzoneScreen)
+            {
+                float t = Mathf.InverseLerp(steeringDeadzoneScreen, Mathf.Max(steeringDeadzoneScreen + 0.001f, fullSteerScreen), abs);
+                input = Mathf.Clamp01(t) * Mathf.Sign(dx);
+            }
+
+            float k = 1f - Mathf.Exp(-steerResponse * Time.fixedDeltaTime);
+            steer01 = Mathf.Lerp(steer01, input, k);
+
+            float upright = GravityUpRotation(gravity);
+            targetRotation = upright - steer01 * maxGravityTilt;
+            return;
+        }
+
+        Vector2 shipScreen = cam.WorldToScreenPoint(transform.position);
+        float aimDeadzone = Screen.width * steeringDeadzoneScreen;
+        if ((screenPos - shipScreen).sqrMagnitude <= aimDeadzone * aimDeadzone) return;
+
+        Vector3 world = cam.ScreenToWorldPoint(screenPos);
+        Vector2 dir = (Vector2)world - rb.position;
+        if (dir.sqrMagnitude < 0.0001f) return;
+
+        steer01 = 0f;
+        targetRotation = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg - 90f;
+    }
+
+    void UpdateAutoLevel()
+    {
+        if (!HasSteeringGravity()) return;
+
+        float k = 1f - Mathf.Exp(-steerResponse * Time.fixedDeltaTime);
+        steer01 = Mathf.Lerp(steer01, 0f, k);
+
+        float upright = GravityUpRotation(Physics2D.gravity);
+        targetRotation = Mathf.MoveTowardsAngle(targetRotation, upright, autoLevelSpeed * Time.fixedDeltaTime);
+    }
+
+    bool HasSteeringGravity()
+        => Physics2D.gravity.sqrMagnitude >= zeroGSteeringThreshold * zeroGSteeringThreshold;
+
+    float GravityUpRotation(Vector2 gravity)
+    {
+        Vector2 up = -gravity.normalized;
+        return Mathf.Atan2(up.y, up.x) * Mathf.Rad2Deg - 90f;
+    }
+
     public void HandleThrustSound(bool thrusting)
     {
         if (sfxThrustSound == null) return;
@@ -259,41 +335,6 @@ public class LanderController : MonoBehaviour
         {
             sfxThrustSound.Stop();
         }
-    }
-
-
-    void ApplyThrust(Vector2 screenPos)
-    {
-        Vector3 w3 = Camera.main.ScreenToWorldPoint(screenPos);
-        Vector2 worldTouch = new Vector2(w3.x, w3.y);
-
-        // Touch relativ zum Schiff (dreht mit)
-        Vector2 local = transform.InverseTransformPoint(worldTouch);
-
-        // Analog: local.x -> [-1..+1]
-        float raw = local.x;
-
-        // Deadzone rausrechnen
-        float sign = Mathf.Sign(raw);
-        float abs = Mathf.Abs(raw);
-
-        float x = 0f;
-        if (abs > steeringDeadzone)
-        {
-            float a = abs - steeringDeadzone;
-            x = Mathf.Clamp01(a / Mathf.Max(0.0001f, steeringRange));
-            x *= sign; // zurück auf -/+ Seite
-        }
-
-        // optional smoothing (fühlt sich weniger zappelig an)
-        float k = 1f - Mathf.Exp(-steerResponse * Time.fixedDeltaTime);
-        steer01 = Mathf.Lerp(steer01, x, k);
-
-        // Drehgeschwindigkeit proportional
-        targetRotation += (-steer01) * rotationSpeed * Time.fixedDeltaTime;
-
-        // Schub wie gehabt
-        rb.AddForce(transform.up * thrustForce, ForceMode2D.Force);
     }
 
     void BurnFuel()
@@ -326,7 +367,6 @@ public class LanderController : MonoBehaviour
         }
     }
 
-
     void OnCollisionEnter2D(Collision2D col)
     {
         if (landerState != eLanderState.Flying || landerState == eLanderState.LandedMoon) return;
@@ -335,23 +375,17 @@ public class LanderController : MonoBehaviour
         bool isLandscape = col.collider.CompareTag("Landscape");
         bool isMoon = col.collider.CompareTag("Moon");
 
-        // Impact speed (verlässlich im Collision-Frame)
         Vector2 relVel = col.relativeVelocity;
         float impactSpeed = relVel.magnitude;
 
-        // "Down" entlang aktueller Gravitation (nicht world-y)
         Vector2 g = Physics2D.gravity;
         Vector2 downDir = (g.sqrMagnitude > 0.0001f) ? g.normalized : Vector2.down;
-
-        // Vertikal-Impact relativ zur Gravity
         float vImpact = Mathf.Abs(Vector2.Dot(relVel, downDir));
 
-        // Angle: auf Pad/Landscape world-up, auf Moon besser gravity-up
         float angle;
         if (isMoon && g.sqrMagnitude > 0.0001f)
         {
-            // desired up = gegen gravity
-            float desiredUpAngle = Mathf.Atan2((-downDir).y, (-downDir).x) * Mathf.Rad2Deg - 90f; // ggf. Offset anpassen
+            float desiredUpAngle = Mathf.Atan2((-downDir).y, (-downDir).x) * Mathf.Rad2Deg - 90f;
             angle = Mathf.Abs(Mathf.DeltaAngle(desiredUpAngle, rb.rotation));
         }
         else
@@ -364,7 +398,7 @@ public class LanderController : MonoBehaviour
         bool okVert = vImpact <= safeVerticalSpeed;
 
         bool nicePadLanding = okSpeed && okAngle && okVert;
-        bool niceMoonLanding = okSpeed; // wie vorher: Moon nur Speed
+        bool niceMoonLanding = okSpeed;
 
         if (isLandingPad && nicePadLanding)
         {
@@ -391,28 +425,24 @@ public class LanderController : MonoBehaviour
         }
         else
         {
-            // Fallback für alles andere
             PlayCrashImpact(col);
             Crash(eLanderState.CrashedLandscape);
         }
     }
 
-    private void OnCollisionExit2D(Collision2D col)
+    void OnCollisionExit2D(Collision2D col)
     {
-        if (landerState == eLanderState.LandedMoon &&
-            col.collider.CompareTag("Moon"))
+        if (landerState == eLanderState.LandedMoon && col.collider.CompareTag("Moon"))
         {
             landerState = eLanderState.Flying;
             MoonEVAController.Instance.btnExit.gameObject.SetActive(false);
         }
-
     }
-
 
     void OnTriggerEnter2D(Collider2D other)
     {
         if (deadZoneTriggered) return;
-        if (!other.CompareTag("DeadZone")) return; // Tag auf deine Trigger setzen
+        if (!other.CompareTag("DeadZone")) return;
 
         LanderUI.Instance.ShowHideDeadZoneWarning(true);
         deadZoneTriggered = true;
@@ -423,7 +453,6 @@ public class LanderController : MonoBehaviour
     {
         if (!other.CompareTag("DeadZone")) return;
 
-        // optional: wenn rausfliegt, Countdown abbrechen
         LanderUI.Instance.ShowHideDeadZoneWarning(false);
         deadZoneTriggered = false;
         deadZoneTimer = deadZoneExplodeDelay;
@@ -438,9 +467,7 @@ public class LanderController : MonoBehaviour
 
         ScoringController.Instance.CalculateScore(col);
         LanderUI.Instance.ShowGameOver(landerState);
-
         AudioManager.Instance.PlayMusic(AudioManager.Instance.mainMusic, pitch: 1.2f);
-
         ImpactFX.Instance.PlayImpactEffect(landerState);
     }
 
@@ -470,7 +497,6 @@ public class LanderController : MonoBehaviour
         controlsEnabled = false;
 
         ImpactFX.Instance.PlayImpactEffect(landerState);
-
         HandleThrustSound(false);
 
         GetComponent<SpriteRenderer>().enabled = false;
@@ -480,19 +506,13 @@ public class LanderController : MonoBehaviour
         Destroy(Instantiate(crashEffect, transform.position, Quaternion.identity), 10f);
 
         LanderUI.Instance.ShowGameOver(landerState);
-
         AudioManager.Instance.PlayMusic(AudioManager.Instance.mainMusic, pitch: -0.8f);
     }
 
     void PlayCrashImpact(Collision2D col)
     {
         float impact = col.relativeVelocity.magnitude;
-
-        // Tuning
-        float minImpact = 1.5f;
-        float maxImpact = 10f;
-
-        float t = Mathf.InverseLerp(minImpact, maxImpact, impact); // 0..1
+        float t = Mathf.InverseLerp(1.5f, 10f, impact);
         float vol = Mathf.Lerp(0.6f, 1.0f, t);
         float pitch = Mathf.Lerp(0.9f, 1.15f, t);
 
@@ -501,13 +521,7 @@ public class LanderController : MonoBehaviour
 
     public void ApplySpaceTuning(float zeroT)
     {
-        // Faktoren aus deinem alten Switch:
-        float rotMul = Mathf.Lerp(1f, 2f, zeroT);
-        float smoothMul = Mathf.Lerp(1f, 2f, zeroT);
         float thrustMul = Mathf.Lerp(1f, 0.7f, zeroT);
-
-        rotationSpeed = baseRotationSpeed * rotMul;
-        rotationSmooth = baseRotationSmooth * smoothMul;
         thrustForce = baseThrustForce * thrustMul;
     }
 
@@ -516,15 +530,12 @@ public class LanderController : MonoBehaviour
         if (!sfxThrustSound) sfxThrustSound = AudioManager.Instance.CreateThrusterSound();
 
         HandleThrustSound(false);
-
         controlsEnabled = false;
 
         rb.bodyType = RigidbodyType2D.Static;
-        //rb.linearVelocity = Vector2.zero;
-        //rb.angularVelocity = 0f;
-
         transform.rotation = Quaternion.Euler(0f, 0f, 0f);
         targetRotation = 0f;
+        steer01 = 0f;
         deadZoneTimer = deadZoneExplodeDelay;
 
         foreach (Transform t in thrustEffects)
@@ -534,9 +545,7 @@ public class LanderController : MonoBehaviour
         GetComponent<Collider2D>().enabled = true;
 
         SetRandomPosition();
-
         CalculateStartFuel(LandingPadPlacer.Instance.transform.position);
-
         AudioManager.Instance.PlayMusic(AudioManager.Instance.mainMusic, pitch: 1f);
     }
 
@@ -546,6 +555,7 @@ public class LanderController : MonoBehaviour
             sfxThrustSound = AudioManager.Instance.CreateThrusterSound();
 
         targetRotation = 0f;
+        steer01 = 0f;
         transform.rotation = Quaternion.Euler(0f, 0f, 0f);
         controlsEnabled = true;
         rb.bodyType = RigidbodyType2D.Dynamic;
@@ -560,7 +570,6 @@ public class LanderController : MonoBehaviour
         if (!pad) pad = FindFirstObjectByType<LandingPadPlacer>();
 
         Vector2 padPos = pad.transform.position;
-
         float levelFactor = GameController.Instance.level / 2f;
 
         float xRange = maxDistanceXToPad + levelFactor;
@@ -569,13 +578,10 @@ public class LanderController : MonoBehaviour
 
         float x = padPos.x + Random.Range(-xRange, xRange);
         float y = padPos.y + Random.Range(yMin, yMax);
-
-
         y = Mathf.Max(y, minWorldY);
 
         Vector2 newRandomPosition = new Vector2(x, y);
 
-        // Falls Kollision: so lange nach oben schieben, bis frei
         int safety = 0;
         while (IsColliding(newRandomPosition) && safety < 200)
         {
@@ -584,10 +590,7 @@ public class LanderController : MonoBehaviour
         }
 
         if (IsColliding(newRandomPosition))
-        {
-            // Fallback: ganz sicher oberhalb des Pads
             newRandomPosition = new Vector2(padPos.x, padPos.y + yMax + 20f);
-        }
 
         transform.position = newRandomPosition;
     }
@@ -595,7 +598,6 @@ public class LanderController : MonoBehaviour
     public void CalculateStartFuel(Vector2 padPos)
     {
         float dist = Vector2.Distance(transform.position, padPos);
-
         float levelFactor = GameController.Instance.level / 30f;
         float buffer = Mathf.Max(0f, fuelBufferPercent - levelFactor);
 
@@ -603,16 +605,13 @@ public class LanderController : MonoBehaviour
         currentFuel = fuelMax;
     }
 
-
     bool IsColliding(Vector2 worldPos)
     {
         Collider2D col = GetComponent<Collider2D>();
         if (!col) return false;
 
-        // Kreis um Collider-Center (relativ zum gewünschten worldPos)
         Vector2 centerOffset = (Vector2)(col.bounds.center - transform.position);
         Vector2 center = worldPos + centerOffset;
-
         Vector2 ext = col.bounds.extents;
         float radius = Mathf.Max(ext.x, ext.y) + clearance;
 
@@ -623,20 +622,18 @@ public class LanderController : MonoBehaviour
             if (h.transform == transform) continue;
             if (h.isTrigger) continue;
 
-            return true; // irgendein Collider blockt
+            return true;
         }
         return false;
     }
-
 
 #if UNITY_EDITOR
     void OnDrawGizmos()
     {
         if (!isActive) return;
-        // Shows the area that must be free on spawn
+
         Collider2D col = GetComponent<Collider2D>();
         Vector2 offset = col ? (Vector2)(col.bounds.center - transform.position) : Vector2.zero;
-
         Vector2 ext = col.bounds.extents;
         float radius = Mathf.Max(ext.x, ext.y) + clearance;
 
@@ -644,6 +641,4 @@ public class LanderController : MonoBehaviour
         Gizmos.DrawWireSphere((Vector2)transform.position + offset, radius);
     }
 #endif
-
-
 }
