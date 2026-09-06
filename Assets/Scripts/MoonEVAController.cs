@@ -84,6 +84,8 @@ public class MoonEVAController : MonoBehaviour
         StarField.Instance.SetTarget(lander.transform);
 
         btnExit.GetComponentInChildren<TMP_Text>().text = "Exit Lander";
+        btnExit.onClick.RemoveAllListeners();
+        btnExit.onClick.AddListener(ExitLander);
         btnExit.gameObject.SetActive(true);
 
         if (newLander.isSecretLander && !LanderChooserManager.Instance.IsSecretFound(newLander.landerIndex))

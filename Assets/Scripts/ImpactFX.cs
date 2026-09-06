@@ -17,7 +17,7 @@ public class ImpactFX : MonoBehaviour
 
     public void PlayImpactEffect(LanderController.eLanderState state)
     {
-        if (state != LanderController.eLanderState.LandedPad || state != LanderController.eLanderState.LandedMoon)
+        if (state != LanderController.eLanderState.LandedPad && state != LanderController.eLanderState.LandedMoon)
         {
             StartCoroutine(FreezeShake(0f, 0.4f, 0.5f));
         }

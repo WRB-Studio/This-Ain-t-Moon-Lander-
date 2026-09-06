@@ -1,5 +1,7 @@
 using System.IO;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 using UnityEngine;
 
 public class SaveLoadManager : MonoBehaviour
@@ -75,8 +77,8 @@ public class SaveLoadManagerEditor : Editor
         {
             if (EditorUtility.DisplayDialog(
                 "Delete Savegame",
-                "Savegame wirklich löschen?",
-                "Ja, löschen",
+                "Savegame wirklich lÃ¶schen?",
+                "Ja, lÃ¶schen",
                 "Abbrechen"))
             {
                 mgr.Delete();
