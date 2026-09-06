@@ -30,11 +30,32 @@ jobs:
             Library-Android-
             Library-
 
+      - name: Extract Unity Personal serial
+        shell: bash
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+        run: |
+          set -euo pipefail
+
+          developer_data="$(printf '%s' "$UNITY_LICENSE" | sed -n 's/.*<DeveloperData Value="\([^"]*\)".*/\1/p' | head -n 1)"
+          if [ -z "$developer_data" ]; then
+            echo "::error::UNITY_LICENSE does not contain DeveloperData."
+            exit 1
+          fi
+
+          unity_serial="$(printf '%s' "$developer_data" | base64 --decode | tr -d '\r\n')"
+          if [ -z "$unity_serial" ]; then
+            echo "::error::Could not extract Unity serial from UNITY_LICENSE."
+            exit 1
+          fi
+
+          echo "::add-mask::$unity_serial"
+          echo "UNITY_SERIAL=$unity_serial" >> "$GITHUB_ENV"
+
       - name: Build Android APK
         id: unityBuild
         uses: game-ci/unity-builder@v4
         env:
-          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
           UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
         with:
