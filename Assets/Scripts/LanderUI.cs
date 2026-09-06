@@ -405,7 +405,8 @@ public class LanderUI : MonoBehaviour
             $"SPD   {speedI}\n" +
             angleStr +
             $"ALT   {altText}\n" +
-            gravStr;
+            (string.IsNullOrEmpty(gravStr) ? "" : gravStr + "\n") +
+            $"STAT  {status}";
     }
 
 
@@ -653,17 +654,12 @@ public class LanderUI : MonoBehaviour
 
         yield return new WaitForSeconds(1.5f);
 
-        AudioManager.Instance.PlaySound(AudioManager.Instance.sfxCountdown, 1f, 1f, false);
-        txtGameOverMessage.text = "3";
-        yield return new WaitForSeconds(1f);
-
-        AudioManager.Instance.PlaySound(AudioManager.Instance.sfxCountdown, 1f, 1f, false);
-        txtGameOverMessage.text = "2";
-        yield return new WaitForSeconds(1f);
-
-        AudioManager.Instance.PlaySound(AudioManager.Instance.sfxCountdown, 1f, 1f, false);
-        txtGameOverMessage.text = "1";
-        yield return new WaitForSeconds(1f);
+        for (int i = Mathf.Max(0, startCountdown); i > 0; i--)
+        {
+            AudioManager.Instance.PlaySound(AudioManager.Instance.sfxCountdown, 1f, 1f, false);
+            txtGameOverMessage.text = i.ToString();
+            yield return new WaitForSeconds(1f);
+        }
 
         txtGameOverMessage.gameObject.SetActive(false);
 
