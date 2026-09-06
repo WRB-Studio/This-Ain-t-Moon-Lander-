@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class LanderController : MonoBehaviour
 {
@@ -90,6 +92,9 @@ public class LanderController : MonoBehaviour
 
     float targetRotation;
     bool isThrusting;
+
+    readonly List<RaycastResult> uiRaycastResults = new();
+    PointerEventData pointerEventData;
 
     void Awake()
     {
@@ -229,17 +234,11 @@ public class LanderController : MonoBehaviour
 
     bool TouchControl(out Vector2 screenPos)
     {
-        if (LanderUI.Instance.IsPointerOverUI())
-        {
-            screenPos = default;
-            return false;
-        }
-
 #if UNITY_EDITOR || UNITY_STANDALONE
         if (Input.GetMouseButton(0))
         {
             screenPos = Input.mousePosition;
-            return true;
+            return !IsPointerOverInteractiveUI(screenPos);
         }
 #endif
 
@@ -249,11 +248,29 @@ public class LanderController : MonoBehaviour
             if (t.phase == TouchPhase.Began || t.phase == TouchPhase.Moved || t.phase == TouchPhase.Stationary)
             {
                 screenPos = t.position;
-                return true;
+                return !IsPointerOverInteractiveUI(screenPos);
             }
         }
 
         screenPos = default;
+        return false;
+    }
+
+    bool IsPointerOverInteractiveUI(Vector2 screenPos)
+    {
+        var eventSystem = EventSystem.current;
+        if (!eventSystem) return false;
+
+        pointerEventData ??= new PointerEventData(eventSystem);
+        pointerEventData.position = screenPos;
+
+        uiRaycastResults.Clear();
+        eventSystem.RaycastAll(pointerEventData, uiRaycastResults);
+
+        foreach (var result in uiRaycastResults)
+            if (result.gameObject && result.gameObject.GetComponentInParent<Selectable>())
+                return true;
+
         return false;
     }
 
