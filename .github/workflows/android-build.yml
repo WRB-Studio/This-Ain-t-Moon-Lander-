@@ -43,7 +43,7 @@ jobs:
             exit 1
           fi
 
-          unity_serial="$(printf '%s' "$developer_data" | base64 --decode | tr -d '\r\n')"
+          unity_serial="$(printf '%s' "$developer_data" | base64 --decode | tail -c +5 | tr -d '\r\n')"
           if [ -z "$unity_serial" ]; then
             echo "::error::Could not extract Unity serial from UNITY_LICENSE."
             exit 1
