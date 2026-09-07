@@ -5,9 +5,6 @@ public class LandingPadPlacer : MonoBehaviour
     public static LandingPadPlacer Instance;
 
     [Header("Refs")]
-    private GameObject landscape;
-    private Transform pad;
-
     public Transform leftLeg;
     public Transform rightLeg;
 
@@ -28,123 +25,124 @@ public class LandingPadPlacer : MonoBehaviour
     public float legBottomPadding = 0.02f;
     public bool scaleLegs = true;
 
+    GameObject landscape;
+    Transform pad;
     EdgeCollider2D groundEdge;
     Collider2D padCollider;
 
-    void Awake()
-    {        
-        Instance = this;
-    }
+    void Awake() => Instance = this;
 
     public void Init()
     {
-
+        pad = transform;
+        padCollider = GetComponentInChildren<Collider2D>();
+        CacheLandscape();
     }
 
     public void SetRandomPlaceForPad()
     {
-        pad = transform;
-        padCollider = pad.GetComponentInChildren<Collider2D>();
-        landscape = FindFirstObjectByType<RandomLandscape>() ? FindFirstObjectByType<RandomLandscape>().gameObject : GameObject.Find("RandomLandscape");
+        if (!pad) pad = transform;
+        if (!padCollider) padCollider = GetComponentInChildren<Collider2D>();
+        if (!landscape) CacheLandscape();
 
         PlacePad();
     }
 
+    void CacheLandscape()
+    {
+        RandomLandscape randomLandscape = RandomLandscape.Instance;
+        if (!randomLandscape)
+            randomLandscape = FindFirstObjectByType<RandomLandscape>();
+
+        landscape = randomLandscape ? randomLandscape.gameObject : GameObject.Find("RandomLandscape");
+        groundEdge = landscape ? landscape.GetComponent<EdgeCollider2D>() : null;
+    }
+
     public void PlacePad()
     {
-        if (!landscape) return;
+        if (!landscape)
+        {
+            CacheLandscape();
+            if (!landscape) return;
+        }
 
-        var lr = landscape.GetComponent<LineRenderer>();
+        LineRenderer line = landscape.GetComponent<LineRenderer>();
         groundEdge = landscape.GetComponent<EdgeCollider2D>();
 
-        if (!lr || lr.positionCount < 2)
+        if (!line || line.positionCount < 2)
         {
             Debug.LogWarning("LandingPadPlacer: LineRenderer missing or too few points.");
             return;
         }
 
         if (!groundEdge)
-            Debug.LogWarning("LandingPadPlacer: EdgeCollider2D missing on landscape (needed for collision check).");
+            Debug.LogWarning("LandingPadPlacer: EdgeCollider2D missing on landscape.");
 
-        for (int t = 0; t < tries; t++)
+        int count = line.positionCount;
+        float halfUnused = (1f - padSpawnRange) * 0.5f;
+        int minIndex = Mathf.Clamp(Mathf.FloorToInt(count * halfUnused), 0, count - 1);
+        int maxIndexExclusive = Mathf.Clamp(Mathf.CeilToInt(count * (1f - halfUnused)), minIndex + 1, count);
+
+        for (int attempt = 0; attempt < Mathf.Max(1, tries); attempt++)
         {
-            int n = lr.positionCount;
+            int index = Random.Range(minIndex, maxIndexExclusive);
+            Vector3 groundPoint = line.GetPosition(index);
+            Vector3 candidate = new(groundPoint.x, groundPoint.y + yStep, pad.position.z);
 
-            float halfUnused = (1f - padSpawnRange) * 0.5f;
-            int minIdx = Mathf.FloorToInt(n * halfUnused);
-            int maxIdx = Mathf.CeilToInt(n * (1f - halfUnused));
+            if (!LiftUntilClear(ref candidate)) continue;
 
-            int idx = Random.Range(minIdx, maxIdx);
-
-
-            Vector3 groundPoint = lr.GetPosition(idx);
-
-            Vector3 pos = new Vector3(groundPoint.x, groundPoint.y + yStep, pad.position.z);
-
-            if (!LiftUntilClear(ref pos)) continue;
-
-            pad.position = pos;
-
-            if (scaleLegs) UpdateLeg(leftLeg);
-            if (scaleLegs) UpdateLeg(rightLeg);
-
+            pad.position = candidate;
+            UpdateLegs();
             return;
         }
 
         Debug.LogWarning("LandingPadPlacer: Could not find valid pad position.");
     }
 
-    bool LiftUntilClear(ref Vector3 pos)
+    bool LiftUntilClear(ref Vector3 position)
     {
-        // fallback: ohne collider oder ground -> einfach leicht hoch
         if (!padCollider || !groundEdge)
         {
-            pos.y += clearance;
+            position.y += clearance;
             return true;
         }
 
-        float lifted = 0f;
-
-        // wir berechnen padCollider Center/Size relativ zum pad
-        Bounds b = padCollider.bounds;
-        Vector2 size = b.size;
+        Bounds bounds = padCollider.bounds;
+        Vector2 size = bounds.size;
         Vector2 localOffset = (Vector2)(padCollider.transform.position - pad.position);
 
-        while (lifted <= maxLift)
+        for (float lifted = 0f; lifted <= maxLift; lifted += yStep)
         {
-            Vector2 center = (Vector2)pos + localOffset;
+            Vector2 center = (Vector2)position + localOffset;
+            Collider2D[] hits = Physics2D.OverlapBoxAll(center, size, 0f);
 
-            // OverlapBoxAll und dann Tag-Filter
-            var hits = Physics2D.OverlapBoxAll(center, size, 0f);
             bool overlapsLandscape = false;
-
-            for (int i = 0; i < hits.Length; i++)
+            foreach (Collider2D hit in hits)
             {
-                var c = hits[i];
-                if (!c) continue;
+                if (!hit || hit.transform.IsChildOf(pad)) continue;
+                if (!hit.CompareTag("Landscape")) continue;
 
-                // ignorier eigenes Pad
-                if (c.transform.IsChildOf(pad)) continue;
-
-                // nur Landscape zählt
-                if (c.CompareTag("Landscape"))
-                {
-                    overlapsLandscape = true;
-                    break;
-                }
+                overlapsLandscape = true;
+                break;
             }
 
             if (!overlapsLandscape)
             {
-                pos.y += clearance;
+                position.y += clearance;
                 return true;
             }
 
-            pos.y += yStep;
-            lifted += yStep;
+            position.y += yStep;
         }
 
         return false;
+    }
+
+    void UpdateLegs()
+    {
+        if (!scaleLegs) return;
+        UpdateLeg(leftLeg);
+        UpdateLeg(rightLeg);
     }
 
     void UpdateLeg(Transform leg)
@@ -153,51 +151,55 @@ public class LandingPadPlacer : MonoBehaviour
 
         Vector3 origin = leg.position + Vector3.up * raycastUp;
         RaycastHit2D hit = Physics2D.Raycast(origin, Vector2.down, raycastUp + raycastDown);
-
-        if (!hit) return;
         if (!hit.collider || !hit.collider.CompareTag("Landscape")) return;
 
         float topY = leg.position.y;
         float bottomY = hit.point.y + legBottomPadding;
-        float worldLen = Mathf.Max(0.01f, topY - bottomY);
-
-        // Wie viel Welt-Y entspricht 1 localScale.y Einheit?
+        float worldLength = Mathf.Max(0.01f, topY - bottomY);
         float worldPerLocalY = leg.lossyScale.y / Mathf.Max(0.0001f, leg.localScale.y);
 
-        // localScale.y so setzen, dass World-Höhe = worldLen wird
-        Vector3 s = leg.localScale;
-        s.y = worldLen / Mathf.Max(0.0001f, worldPerLocalY);
-        leg.localScale = s;
-
-        // Position NICHT ändern (dein Setup wächst nach unten)
+        Vector3 scale = leg.localScale;
+        scale.y = worldLength / Mathf.Max(0.0001f, worldPerLocalY);
+        leg.localScale = scale;
     }
 
 #if UNITY_EDITOR
     void OnDrawGizmos()
     {
-        if (!padCollider) return;
+        if (!padCollider) padCollider = GetComponentInChildren<Collider2D>();
+        if (padCollider)
+        {
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawWireCube(padCollider.bounds.center, padCollider.bounds.size);
+        }
 
-        Bounds b = padCollider.bounds;
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireCube(b.center, b.size);
+        if (!landscape)
+        {
+            RandomLandscape randomLandscape = FindFirstObjectByType<RandomLandscape>();
+            landscape = randomLandscape ? randomLandscape.gameObject : null;
+        }
 
-
-        //Pad spawn range on landscape
         if (!landscape) return;
-        var lr = landscape.GetComponent<LineRenderer>();
-        if (!lr || lr.positionCount < 2) return;
 
-        int n = lr.positionCount;
-        float h = (1f - padSpawnRange) * .5f, y = -5f, t = 20f;
+        LineRenderer line = landscape.GetComponent<LineRenderer>();
+        if (!line || line.positionCount < 2) return;
 
-        Vector3 l = lr.GetPosition((int)(n * h));
-        Vector3 r = lr.GetPosition((int)(n * (1f - h)) - 1);
-        l.y = r.y = y;
+        int count = line.positionCount;
+        float halfUnused = (1f - padSpawnRange) * 0.5f;
+        float y = -5f;
+        float height = 20f;
 
-        Gizmos.color = new(.2f, .6f, 1f, .9f);
-        Gizmos.DrawLine(l, r);
-        Gizmos.DrawLine(l + Vector3.down * t, l + Vector3.up * t);
-        Gizmos.DrawLine(r + Vector3.down * t, r + Vector3.up * t);
+        int leftIndex = Mathf.Clamp((int)(count * halfUnused), 0, count - 1);
+        int rightIndex = Mathf.Clamp((int)(count * (1f - halfUnused)) - 1, 0, count - 1);
+
+        Vector3 left = line.GetPosition(leftIndex);
+        Vector3 right = line.GetPosition(rightIndex);
+        left.y = right.y = y;
+
+        Gizmos.color = new Color(0.2f, 0.6f, 1f, 0.9f);
+        Gizmos.DrawLine(left, right);
+        Gizmos.DrawLine(left + Vector3.down * height, left + Vector3.up * height);
+        Gizmos.DrawLine(right + Vector3.down * height, right + Vector3.up * height);
     }
 #endif
 }
