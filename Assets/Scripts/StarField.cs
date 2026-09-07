@@ -31,11 +31,7 @@ public class StarField : MonoBehaviour
 
         stars = new ParticleSystem.Particle[starCount];
         particleSystemRef.GetParticles(stars);
-
-        for (int i = 0; i < stars.Length; i++)
-            RespawnStar(i);
-
-        particleSystemRef.SetParticles(stars, stars.Length);
+        RespawnAllStars();
     }
 
     void LateUpdate()
@@ -49,8 +45,21 @@ public class StarField : MonoBehaviour
     public void SetTarget(Transform newTarget, bool instant = false)
     {
         target = newTarget;
-        if (instant && target)
-            transform.position = target.position;
+        if (!instant || !target) return;
+
+        transform.position = target.position;
+        if (stars != null)
+            RespawnAllStars();
+    }
+
+    void RespawnAllStars()
+    {
+        if (stars == null || !particleSystemRef) return;
+
+        for (int i = 0; i < stars.Length; i++)
+            RespawnStar(i);
+
+        particleSystemRef.SetParticles(stars, stars.Length);
     }
 
     void RecycleStars()
