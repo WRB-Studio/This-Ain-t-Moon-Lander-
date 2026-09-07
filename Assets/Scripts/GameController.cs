@@ -1,72 +1,115 @@
+using System;
 using UnityEngine;
 
 public class GameController : MonoBehaviour
 {
     public static GameController Instance;
-    public int level = 1;
 
-    void Awake()
+    public enum GamePhase
     {
-        Instance = this;
+        LandingRun,
+        SpaceFlight,
+        EVA
     }
 
-    private void Start()
+    public int level = 1;
+    public GamePhase Phase { get; private set; } = GamePhase.LandingRun;
+    public event Action<GamePhase> PhaseChanged;
+
+    void Awake() => Instance = this;
+
+    void Start()
     {
+        LanderController.ActiveChanged += OnActiveLanderChanged;
+
         InitScripts();
         level = SaveLoadManager.Instance.Data.level;
-        StartGame();
+        StartLandingRun();
     }
 
-    private void InitScripts()
+    void OnDestroy()
     {
-        StarField.Instance.Init();
-        
+        LanderController.ActiveChanged -= OnActiveLanderChanged;
+    }
+
+    void InitScripts()
+    {
         SaveLoadManager.Instance.Init();
-
         AudioManager.Instance.Init();
-
         ImpactFX.Instance.Init();
         ScoringController.Instance.Init();
 
-        LanderController.Instance.Init();
+        GravityManager2D.Instance.Init();
+        LanderController.Active.Init();
         LanderChooserManager.Instance.Init();
-        LanderUI.Instance.Init();
 
         CameraController.Instance.Init();
-        GravityManager2D.Instance.Init();
+        StarField.Instance.Init();
+        LanderUI.Instance.Init();
 
-        RandomLandscape.Instance.Init();
         LandingPadPlacer.Instance.Init();
-
+        RandomLandscape.Instance.Init();
         StoryTextController.Instance.Init();
-
         MoonEVAController.Instance.Init();
     }
 
-    public void StartGame()
+    public void StartGame() => StartLandingRun();
+
+    public void StartLandingRun()
     {
+        SetPhase(GamePhase.LandingRun);
+        MoonEVAController.Instance.ResetRunState();
+
         AudioManager.Instance.PlayMusic(AudioManager.Instance.mainMusic, pitch: 1f);
 
         RandomLandscape.Instance.GenerateNewLevel();
         LandingPadPlacer.Instance.SetRandomPlaceForPad();
-        LanderController.Instance.ResetLander();
-        CameraController.Instance.SetInstantFocus();
+        LanderController.Active.ResetLander();
+
+        SetControlledTarget(LanderController.Active.transform, GamePhase.LandingRun, true);
+
         LanderUI.Instance.StartCountdown();
         StoryTextController.Instance.Restart();
-        MoonEVAController.Instance.isOnMoonLanded = false;
+        CleanupInactiveSceneLanders();
+    }
 
-        LanderController[] allLanderInScene = FindObjectsByType<LanderController>(FindObjectsSortMode.None);
+    public void SetControlledTarget(Transform target, GamePhase phase, bool instantFocus = false)
+    {
+        if (!target) return;
 
-        foreach (LanderController lc in allLanderInScene)
+        SetPhase(phase);
+
+        if (CameraController.Instance)
+            CameraController.Instance.SetTarget(target, phase, instantFocus);
+
+        if (StarField.Instance)
+            StarField.Instance.SetTarget(target, instantFocus);
+    }
+
+    public void SetPhase(GamePhase phase)
+    {
+        if (Phase == phase) return;
+        Phase = phase;
+        PhaseChanged?.Invoke(phase);
+    }
+
+    void OnActiveLanderChanged(LanderController lander)
+    {
+        if (!lander || Phase == GamePhase.EVA) return;
+        SetControlledTarget(lander.transform, Phase, true);
+    }
+
+    void CleanupInactiveSceneLanders()
+    {
+        LanderController[] landers = FindObjectsByType<LanderController>(FindObjectsSortMode.None);
+
+        foreach (LanderController lander in landers)
         {
-            if (lc.isActive) continue;
-            if(lc.isSecretLander && !LanderChooserManager.Instance.IsSecretFound(lc.landerIndex)) continue;
+            if (!lander || lander == LanderController.Active) continue;
+            if (lander.isSecretLander && !LanderChooserManager.Instance.IsSecretFound(lander.landerIndex)) continue;
 
-            Destroy(lc.gameObject);
+            Destroy(lander.gameObject);
         }
-
-        StarField.Instance.SetTarget(LanderController.Instance.transform);
-        CameraController.Instance.SetTarget(LanderController.Instance.transform, true);
     }
 
     public void NextLevel()
