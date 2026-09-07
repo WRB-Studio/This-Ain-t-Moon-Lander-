@@ -106,7 +106,7 @@ public class GameController : MonoBehaviour
         foreach (LanderController lander in landers)
         {
             if (!lander || lander == LanderController.Active) continue;
-            if (lander.isSecretLander && !LanderChooserManager.Instance.IsSecretFound(lander.landerIndex)) continue;
+            if (lander.isSecretLander && !LanderChooserManager.Instance.IsSecretFound(lander)) continue;
 
             Destroy(lander.gameObject);
         }
