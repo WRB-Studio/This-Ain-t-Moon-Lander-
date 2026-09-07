@@ -27,6 +27,11 @@ public class GameController : MonoBehaviour
         StartLandingRun();
     }
 
+    void Update()
+    {
+        UpdateWorldPhase();
+    }
+
     void OnDestroy()
     {
         LanderController.ActiveChanged -= OnActiveLanderChanged;
@@ -91,6 +96,21 @@ public class GameController : MonoBehaviour
         if (Phase == phase) return;
         Phase = phase;
         PhaseChanged?.Invoke(phase);
+    }
+
+    void UpdateWorldPhase()
+    {
+        if (Phase == GamePhase.EVA) return;
+
+        LanderController lander = LanderController.Active;
+        GravityManager2D gravity = GravityManager2D.Instance;
+        if (!lander || !gravity) return;
+
+        bool inMoonGravity = gravity.IsMoonGravityActiveAt(lander.transform.position);
+        bool inZeroG = gravity.GetZeroGravityBlendAt(lander.transform.position) >= 0.99f;
+        GamePhase targetPhase = inMoonGravity || inZeroG ? GamePhase.SpaceFlight : GamePhase.LandingRun;
+
+        SetPhase(targetPhase);
     }
 
     void OnActiveLanderChanged(LanderController lander)
