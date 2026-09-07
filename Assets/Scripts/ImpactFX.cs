@@ -5,55 +5,60 @@ public class ImpactFX : MonoBehaviour
 {
     public static ImpactFX Instance;
 
-    void Awake()
-    {
-        Instance = this;
-    }
+    Coroutine impactRoutine;
+
+    void Awake() => Instance = this;
 
     public void Init()
     {
-
+        if (CameraController.Instance)
+            CameraController.Instance.shakeOffset = Vector3.zero;
     }
 
     public void PlayImpactEffect(LanderController.eLanderState state)
     {
-        if (state != LanderController.eLanderState.LandedPad && state != LanderController.eLanderState.LandedMoon)
-        {
-            StartCoroutine(FreezeShake(0f, 0.4f, 0.5f));
-        }
+        if (state == LanderController.eLanderState.LandedPad ||
+            state == LanderController.eLanderState.LandedMoon)
+            return;
+
+        if (impactRoutine != null)
+            StopCoroutine(impactRoutine);
+
+        impactRoutine = StartCoroutine(ImpactRoutine(0f, 0.4f, 0.5f));
     }
 
-    private IEnumerator FreezeShake(
-        float freezeTime = 0.08f,
-        float shakeTime = 0.25f,
-        float shakeStrength = 0.25f,
-        float shakeHz = 35f
-    )
+    IEnumerator ImpactRoutine(float freezeTime, float shakeTime, float shakeStrength, float shakeHz = 35f)
     {
-        float prevScale = Time.timeScale;
-        Time.timeScale = 0f;
+        float previousTimeScale = Time.timeScale;
 
-        for (float t = 0f; t < freezeTime; t += Time.unscaledDeltaTime)
-            yield return null;
-
-        Time.timeScale = prevScale;
-
-        var cam = CameraController.Instance;
-        if (!cam) yield break;
-
-        for (float st = 0f; st < shakeTime; st += Time.unscaledDeltaTime)
+        if (freezeTime > 0f)
         {
-            float k = 1f - Mathf.Clamp01(st / shakeTime);
-            float s = shakeStrength * k;
+            Time.timeScale = 0f;
+            for (float time = 0f; time < freezeTime; time += Time.unscaledDeltaTime)
+                yield return null;
+            Time.timeScale = previousTimeScale;
+        }
 
-            float x = (Mathf.PerlinNoise(Time.unscaledTime * shakeHz, 0f) - 0.5f) * 2f * s;
-            float y = (Mathf.PerlinNoise(0f, Time.unscaledTime * shakeHz) - 0.5f) * 2f * s;
+        CameraController cameraController = CameraController.Instance;
+        if (!cameraController)
+        {
+            impactRoutine = null;
+            yield break;
+        }
 
-            cam.shakeOffset = new Vector3(x, y, 0f);
+        for (float time = 0f; time < shakeTime; time += Time.unscaledDeltaTime)
+        {
+            float fade = 1f - Mathf.Clamp01(time / Mathf.Max(0.0001f, shakeTime));
+            float strength = shakeStrength * fade;
+
+            float x = (Mathf.PerlinNoise(Time.unscaledTime * shakeHz, 0f) - 0.5f) * 2f * strength;
+            float y = (Mathf.PerlinNoise(0f, Time.unscaledTime * shakeHz) - 0.5f) * 2f * strength;
+
+            cameraController.shakeOffset = new Vector3(x, y, 0f);
             yield return null;
         }
 
-        cam.shakeOffset = Vector3.zero;
+        cameraController.shakeOffset = Vector3.zero;
+        impactRoutine = null;
     }
-
 }
