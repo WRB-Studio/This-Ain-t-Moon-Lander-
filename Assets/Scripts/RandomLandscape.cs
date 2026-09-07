@@ -36,7 +36,6 @@ public class RandomLandscape : MonoBehaviour
     public void Init()
     {
         CacheReferences();
-        Generate(firstTime: true, forceNewSeed: false);
     }
 
     void OnValidate()
