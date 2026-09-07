@@ -31,7 +31,8 @@ jobs:
             Library-
 
       - name: Disable custom Android keystore for CI
-        run: sed -i 's/androidUseCustomKeystore: 1/androidUseCustomKeystore: 0/' ProjectSettings/ProjectSettings.asset
+        run: |
+          sed -i 's/androidUseCustomKeystore: 1/androidUseCustomKeystore: 0/' ProjectSettings/ProjectSettings.asset
 
       - name: Build Android APK
         id: unityBuild
