@@ -20,226 +20,287 @@ public class LanderChooserManager : MonoBehaviour
     public Color selectedBtnColor;
     public Color lockedColor;
     public Color newUnlockedColor;
-    private Color originBtnColor;
 
-    private readonly List<Button> allBtnOptions = new();
-    private int selectedIndex = 0;
+    readonly List<Button> allBtnOptions = new();
+    Color originBtnColor;
+    int selectedIndex;
 
-    const string KEY_SECRET_FOUND = "LANDER_SECRET_FOUND_";
+    const string LEGACY_SECRET_KEY = "LANDER_SECRET_FOUND_";
+    const string LEGACY_SEEN_KEY = "LANDER_SEEN_";
+    const string SECRET_KEY = "LANDER_SECRET_FOUND_ID_";
+    const string SEEN_KEY = "LANDER_SEEN_ID_";
 
-
-    private void Awake()
-    {
-        Instance = this;
-    }
+    void Awake() => Instance = this;
 
     public void Init()
     {
         originBtnColor = btnOptionPrefab.GetComponent<Image>().color;
 
-        btnLanderChooser.onClick.AddListener(() => OpenCloseChooser());
+        btnLanderChooser.onClick.RemoveAllListeners();
+        btnLanderChooser.onClick.AddListener(OpenCloseChooser);
 
         panelChooser.gameObject.SetActive(false);
         btnLanderChooser.gameObject.SetActive(false);
 
-        InitChooser();
-        MarkSeen(0);
-        RefreshChooser();     // Lock/Colors setzen
-        ApplySelected();      // ausgewähltes Schiff anwenden (wenn erlaubt)
+        selectedIndex = ResolveSelectedIndex();
+        BuildChooser();
+
+        MarkSeen(selectedIndex, save: false);
+        SaveSelection();
+        RefreshChooser();
+        ApplySelected();
     }
 
-    private void InitChooser()
+    int ResolveSelectedIndex()
     {
-        selectedIndex = Mathf.Clamp(SaveLoadManager.Instance.Data.selectedLanderIndex, 0, landerPrefabs.Length - 1);
+        if (landerPrefabs == null || landerPrefabs.Length == 0) return 0;
+
+        SaveGame data = SaveLoadManager.Instance.Data;
+        if (!string.IsNullOrWhiteSpace(data.selectedLanderId))
+        {
+            int idIndex = FindIndexById(data.selectedLanderId);
+            if (idIndex >= 0) return idIndex;
+        }
+
+        return Mathf.Clamp(data.selectedLanderIndex, 0, landerPrefabs.Length - 1);
+    }
+
+    void BuildChooser()
+    {
+        allBtnOptions.Clear();
 
         for (int i = 0; i < landerPrefabs.Length; i++)
         {
             int index = i;
-            var prefab = landerPrefabs[index];
+            LanderController preset = GetPreset(index);
+            if (!preset) continue;
 
-            var sr = prefab.GetComponent<SpriteRenderer>();
-            Sprite sprite = sr ? sr.sprite : null;
+            Button button = Instantiate(btnOptionPrefab, optionsParent);
+            allBtnOptions.Add(button);
 
-            Button btn = Instantiate(btnOptionPrefab, optionsParent);
-            allBtnOptions.Add(btn);
+            Image shipImage = button.transform.Find("ImgLander")?.GetComponent<Image>();
+            SpriteRenderer spriteRenderer = preset.GetComponent<SpriteRenderer>();
+            if (shipImage) shipImage.sprite = spriteRenderer ? spriteRenderer.sprite : null;
 
-            var imgShip = btn.transform.Find("ImgLander").GetComponent<Image>();
-            imgShip.sprite = sprite;
-            
-            var imgSecret = btn.transform.Find("imgSecret").gameObject;
-            bool secretHidden = IsSecret(index) && !IsSecretFound(index);
-            imgSecret.SetActive(secretHidden);
+            GameObject secretImage = button.transform.Find("imgSecret")?.gameObject;
+            if (secretImage)
+                secretImage.SetActive(preset.isSecretLander && !IsSecretFound(index));
 
-            btn.onClick.AddListener(() => TryChoose(index));
+            button.onClick.AddListener(() => TryChoose(index));
         }
     }
 
-
     void TryChoose(int index)
     {
-        if (!IsUnlocked(index)) return;
-
-        MarkSeen(index); // <-- neu
+        if (!IsValidIndex(index) || !IsUnlocked(index)) return;
 
         selectedIndex = index;
-        SaveLoadManager.Instance.Data.selectedLanderIndex = selectedIndex;
-        SaveLoadManager.Instance.Save();
+        MarkSeen(index, save: false);
+        SaveSelection();
 
         RefreshChooser();
         ApplySelected();
     }
 
-    void MarkSeen(int index)
+    void SaveSelection()
     {
-        SaveLoadManager.Instance.Data.SetFlag("LANDER_SEEN_" + index, true);
+        if (!IsValidIndex(selectedIndex)) return;
+
+        SaveGame data = SaveLoadManager.Instance.Data;
+        data.selectedLanderIndex = selectedIndex;
+        data.selectedLanderId = GetPreset(selectedIndex).LanderId;
         SaveLoadManager.Instance.Save();
+    }
+
+    void MarkSeen(int index, bool save = true)
+    {
+        if (!IsValidIndex(index)) return;
+
+        SaveGame data = SaveLoadManager.Instance.Data;
+        data.SetFlag(SEEN_KEY + GetPreset(index).LanderId, true);
+        data.SetFlag(LEGACY_SEEN_KEY + index, true);
+
+        if (save) SaveLoadManager.Instance.Save();
     }
 
     bool HasSeen(int index)
     {
-        return SaveLoadManager.Instance.Data.GetFlag("LANDER_SEEN_" + index, false);
+        if (!IsValidIndex(index)) return false;
+
+        SaveGame data = SaveLoadManager.Instance.Data;
+        return data.GetFlag(SEEN_KEY + GetPreset(index).LanderId) ||
+               data.GetFlag(LEGACY_SEEN_KEY + index);
     }
 
-
-    bool IsSecret(int index)
-        => landerPrefabs[index].GetComponent<LanderController>().isSecretLander;
-
     public bool IsSecretFound(int index)
-        => SaveLoadManager.Instance.Data.GetFlag(KEY_SECRET_FOUND + index, false);
+    {
+        if (!IsValidIndex(index)) return false;
+
+        SaveGame data = SaveLoadManager.Instance.Data;
+        return data.GetFlag(SECRET_KEY + GetPreset(index).LanderId) ||
+               data.GetFlag(LEGACY_SECRET_KEY + index);
+    }
 
     public void UnlockSecret(int index)
     {
-        SaveLoadManager.Instance.Data.SetFlag(KEY_SECRET_FOUND + index, true);
+        if (!IsValidIndex(index)) return;
+
+        SaveGame data = SaveLoadManager.Instance.Data;
+        data.SetFlag(SECRET_KEY + GetPreset(index).LanderId, true);
+        data.SetFlag(LEGACY_SECRET_KEY + index, true);
         SaveLoadManager.Instance.Save();
         RefreshChooser();
     }
 
+    public bool HasAnyUnlockedSecret()
+    {
+        for (int i = 0; i < landerPrefabs.Length; i++)
+        {
+            LanderController preset = GetPreset(i);
+            if (preset && preset.isSecretLander && IsSecretFound(i))
+                return true;
+        }
+
+        return false;
+    }
 
     bool IsUnlocked(int index)
     {
-        var lc = landerPrefabs[index].GetComponent<LanderController>();
-        if (lc.isSecretLander) return IsSecretFound(index);
+        LanderController preset = GetPreset(index);
+        if (!preset) return false;
+        if (preset.isSecretLander) return IsSecretFound(index);
 
-        int xp = ScoringController.Instance.CollectedScore;
-        return xp >= lc.unlockCost;
+        return ScoringController.Instance.CollectedScore >= preset.unlockCost;
     }
-
 
     public void RefreshChooser()
     {
-        int xp = ScoringController.Instance.CollectedScore;
+        int optionCount = Mathf.Min(landerPrefabs.Length, allBtnOptions.Count);
 
-        for (int i = 0; i < landerPrefabs.Length; i++)
+        for (int i = 0; i < optionCount; i++)
         {
-            var lc = landerPrefabs[i].GetComponent<LanderController>();
-            var btn = allBtnOptions[i];
-            var img = btn.GetComponent<Image>();
+            LanderController preset = GetPreset(i);
+            Button button = allBtnOptions[i];
+            if (!preset || !button) continue;
 
-            var imgShip = btn.transform.GetChild(0).GetComponent<Image>();
-            var imgSecret = btn.transform.Find("imgSecret")?.gameObject;
+            Image background = button.GetComponent<Image>();
+            Image shipImage = button.transform.Find("ImgLander")?.GetComponent<Image>();
+            GameObject secretImage = button.transform.Find("imgSecret")?.gameObject;
+            TMP_Text unlockText = button.transform.GetChild(1).GetComponent<TMP_Text>();
 
-            bool secretHidden = lc.isSecretLander && !IsSecretFound(i);
-
-            imgShip.enabled = !secretHidden;
-            if (imgSecret) imgSecret.SetActive(secretHidden);
-
+            bool secretHidden = preset.isSecretLander && !IsSecretFound(i);
             bool unlocked = IsUnlocked(i);
-            btn.interactable = unlocked;
 
-            TMP_Text txtUnlock = btn.transform.GetChild(1).GetComponent<TMP_Text>();
+            if (shipImage) shipImage.enabled = !secretHidden;
+            if (secretImage) secretImage.SetActive(secretHidden);
+            button.interactable = unlocked;
+
+            unlockText.gameObject.SetActive(false);
 
             if (secretHidden)
             {
-                img.color = lockedColor;
-                txtUnlock.gameObject.SetActive(false); // kein Preis bei Secret
+                background.color = lockedColor;
             }
             else if (!unlocked)
             {
-                img.color = lockedColor;
-                txtUnlock.gameObject.SetActive(true);
-                txtUnlock.text = lc.unlockCost.ToString();
+                background.color = lockedColor;
+                unlockText.gameObject.SetActive(true);
+                unlockText.text = preset.unlockCost.ToString();
             }
             else
             {
-                img.color = HasSeen(i) ? originBtnColor : newUnlockedColor;
-                txtUnlock.gameObject.SetActive(false);
+                background.color = HasSeen(i) ? originBtnColor : newUnlockedColor;
             }
 
             if (i == selectedIndex)
             {
-                img.color = selectedBtnColor;
-                txtUnlock.gameObject.SetActive(false);
+                background.color = selectedBtnColor;
+                unlockText.gameObject.SetActive(false);
             }
         }
     }
-
 
     void ApplySelected()
     {
-        ApplyVisualsAndColliderFromPrefab(LanderController.Instance.gameObject, landerPrefabs[selectedIndex]);
-    }
+        if (!IsValidIndex(selectedIndex) || !LanderController.Active) return;
 
-    void ApplyVisualsAndColliderFromPrefab(GameObject current, GameObject prefab)
-    {
-        var curSR = current.GetComponent<SpriteRenderer>();
-        var preSR = prefab.GetComponent<SpriteRenderer>();
-        if (curSR && preSR) curSR.sprite = preSR.sprite;
+        GameObject current = LanderController.Active.gameObject;
+        GameObject prefab = landerPrefabs[selectedIndex];
+        LanderController preset = prefab.GetComponent<LanderController>();
 
-        var curPoly = current.GetComponent<PolygonCollider2D>();
-        var prePoly = prefab.GetComponent<PolygonCollider2D>();
-
-        if (curPoly && prePoly)
-        {
-            curPoly.offset = prePoly.offset;
-            curPoly.isTrigger = prePoly.isTrigger;
-            curPoly.compositeOperation = prePoly.compositeOperation;
-
-            curPoly.pathCount = prePoly.pathCount;
-            for (int p = 0; p < prePoly.pathCount; p++)
-                curPoly.SetPath(p, prePoly.GetPath(p));
-        }
-
-        var lc = current.GetComponent<LanderController>();
-        if (lc != null)
-        {
-            for (int i = current.transform.childCount - 1; i >= 0; i--)
-            {
-                var c = current.transform.GetChild(i);
-                if (c.name.Contains("ThrustEffect"))
-                    Destroy(c.gameObject);
-            }
-
-            lc.thrustEffects.Clear();
-            for (int i = 0; i < prefab.transform.childCount; i++)
-            {
-                var pc = prefab.transform.GetChild(i);
-                if (!pc.name.Contains("ThrustEffect")) continue;
-
-                var copy = Instantiate(pc.gameObject, current.transform);
-                copy.name = pc.name;
-                copy.transform.localPosition = pc.localPosition;
-                copy.transform.localRotation = pc.localRotation;
-                copy.transform.localScale = pc.localScale;
-
-                lc.thrustEffects.Add(copy.transform);
-            }
-        }
+        LanderController.Active.ApplyConfigurationFrom(preset);
+        ApplyVisualsAndCollider(current, prefab);
+        ApplyThrustEffects(current, prefab);
 
         Physics2D.SyncTransforms();
     }
 
-    private void OpenCloseChooser()
+    void ApplyVisualsAndCollider(GameObject current, GameObject prefab)
     {
-        OpenCloseChooser(!panelChooser.gameObject.activeSelf);
+        SpriteRenderer currentSprite = current.GetComponent<SpriteRenderer>();
+        SpriteRenderer presetSprite = prefab.GetComponent<SpriteRenderer>();
+        if (currentSprite && presetSprite) currentSprite.sprite = presetSprite.sprite;
+
+        PolygonCollider2D currentCollider = current.GetComponent<PolygonCollider2D>();
+        PolygonCollider2D presetCollider = prefab.GetComponent<PolygonCollider2D>();
+        if (!currentCollider || !presetCollider) return;
+
+        currentCollider.offset = presetCollider.offset;
+        currentCollider.isTrigger = presetCollider.isTrigger;
+        currentCollider.compositeOperation = presetCollider.compositeOperation;
+        currentCollider.pathCount = presetCollider.pathCount;
+
+        for (int p = 0; p < presetCollider.pathCount; p++)
+            currentCollider.SetPath(p, presetCollider.GetPath(p));
     }
 
-    private void OpenCloseChooser(bool open)
+    void ApplyThrustEffects(GameObject current, GameObject prefab)
+    {
+        for (int i = current.transform.childCount - 1; i >= 0; i--)
+        {
+            Transform child = current.transform.GetChild(i);
+            if (child.name.Contains("ThrustEffect"))
+                Destroy(child.gameObject);
+        }
+
+        for (int i = 0; i < prefab.transform.childCount; i++)
+        {
+            Transform source = prefab.transform.GetChild(i);
+            if (!source.name.Contains("ThrustEffect")) continue;
+
+            GameObject copy = Instantiate(source.gameObject, current.transform);
+            copy.name = source.name;
+            copy.transform.localPosition = source.localPosition;
+            copy.transform.localRotation = source.localRotation;
+            copy.transform.localScale = source.localScale;
+        }
+
+        LanderController.Active.RefreshThrustEffects();
+    }
+
+    LanderController GetPreset(int index)
+        => IsValidIndex(index) ? landerPrefabs[index]?.GetComponent<LanderController>() : null;
+
+    bool IsValidIndex(int index)
+        => landerPrefabs != null && index >= 0 && index < landerPrefabs.Length && landerPrefabs[index];
+
+    int FindIndexById(string id)
+    {
+        for (int i = 0; i < landerPrefabs.Length; i++)
+        {
+            LanderController preset = GetPreset(i);
+            if (preset && preset.LanderId == id) return i;
+        }
+
+        return -1;
+    }
+
+    void OpenCloseChooser() => OpenCloseChooser(!panelChooser.gameObject.activeSelf);
+
+    void OpenCloseChooser(bool open)
     {
         panelChooser.gameObject.SetActive(open);
-
         if (open) RefreshChooser();
-
         LanderUI.Instance.RefreshPanel();
     }
-
 }
