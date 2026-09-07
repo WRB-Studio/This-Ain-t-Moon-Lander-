@@ -1,31 +1,29 @@
 using System;
-using UnityEngine;
 
 [Serializable]
 public class SaveGame
 {
-    // Versioning (falls du später Felder änderst)
-    public int version = 1;
+    public int version = 2;
 
-    // --- Settings ---
     public float volMusic = 0.8f;
     public float volSfx = 1f;
 
     public int level = 1;
+    public int BestScore;
+    public int CollectedScore;
 
-    public int BestScore = 0;
-    public int CollectedScore = 0;
+    // Keep the old index for backwards compatibility. New code prefers the stable id.
+    public int selectedLanderIndex;
+    public string selectedLanderId = "";
 
-    // --- Meta / Progress ---
-    public int selectedLanderIndex = 0;
-
-    // Flexible Flags (Seen/Unlocked/etc.)
-    // Key: "LANDER_SEEN_3" -> true
     public SerializableDictionary<string, bool> flags = new();
 
     public bool GetFlag(string key, bool def = false)
-        => flags.TryGetValue(key, out var v) ? v : def;
+        => flags != null && flags.TryGetValue(key, out bool value) ? value : def;
 
     public void SetFlag(string key, bool value)
-        => flags[key] = value;
+    {
+        flags ??= new SerializableDictionary<string, bool>();
+        flags[key] = value;
+    }
 }
