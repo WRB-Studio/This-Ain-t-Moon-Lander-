@@ -32,7 +32,7 @@ public class LanderController : MonoBehaviour
 
     [Header("Mobile Steering")]
     [Tooltip("Maximale Neigung bei vorhandener Gravitation. Touch links/rechts setzt einen absoluten Zielwinkel statt endlos weiterzudrehen.")]
-    [Range(5f, 80f)] public float maxGravityTilt = 45f;
+    [Range(5f, 80f)] public float maxGravityTilt = 60f;
 
     [Tooltip("Seitlicher Totbereich um das Schiff als Anteil der Bildschirmbreite.")]
     [Range(0f, 0.2f)] public float steeringDeadzoneScreen = 0.04f;
@@ -283,15 +283,23 @@ public class LanderController : MonoBehaviour
 
         if (HasSteeringGravity())
         {
-            float shipScreenX = cam.WorldToScreenPoint(transform.position).x;
-            float dx = (screenPos.x - shipScreenX) / Mathf.Max(1f, Screen.width);
-            float abs = Mathf.Abs(dx);
+            Vector2 gravityUp = -gravity.normalized;
+            Vector2 gravityRight = new Vector2(gravityUp.y, -gravityUp.x);
+
+            Vector2 shipScreen = cam.WorldToScreenPoint(transform.position);
+            Vector2 rightScreen = cam.WorldToScreenPoint(transform.position + (Vector3)gravityRight);
+            Vector2 rightScreenDir = rightScreen - shipScreen;
+            if (rightScreenDir.sqrMagnitude < 0.0001f) return;
+            rightScreenDir.Normalize();
+
+            float lateral = Vector2.Dot(screenPos - shipScreen, rightScreenDir) / Mathf.Max(1f, Screen.width);
+            float abs = Mathf.Abs(lateral);
 
             float input = 0f;
             if (abs > steeringDeadzoneScreen)
             {
                 float t = Mathf.InverseLerp(steeringDeadzoneScreen, Mathf.Max(steeringDeadzoneScreen + 0.001f, fullSteerScreen), abs);
-                input = Mathf.Clamp01(t) * Mathf.Sign(dx);
+                input = Mathf.Clamp01(t) * Mathf.Sign(lateral);
             }
 
             float k = 1f - Mathf.Exp(-steerResponse * Time.fixedDeltaTime);
