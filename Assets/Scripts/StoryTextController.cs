@@ -11,7 +11,7 @@ public class StoryTextController : MonoBehaviour
     {
         AtmosphereExit,
         BackToPlanet,
-        NearToMoon,
+        NearToMoon
     }
 
     [Header("UI")]
@@ -19,77 +19,67 @@ public class StoryTextController : MonoBehaviour
 
     [Header("Timing")]
     [SerializeField] float visibleTime = 1.5f;
-
-    [Tooltip("How many seconds must pass after run start before triggers can fire (avoid countdown spam).")]
     [SerializeField] float triggerDelayFromRunStart = 0.5f;
+    [SerializeField] float typeCooldown = 2f;
 
-    [Tooltip("Cooldown per story type to avoid spamming the queue.")]
-    [SerializeField] float typeCooldown = 2.0f;
-
-    readonly Dictionary<eStoryTextType, string[]> stateMessages =
-        new Dictionary<eStoryTextType, string[]>
+    readonly Dictionary<eStoryTextType, string[]> stateMessages = new()
+    {
         {
+            eStoryTextType.AtmosphereExit, new[]
             {
-                eStoryTextType.AtmosphereExit, new[]
-                {
-                    "This is not a space game.",
-                    "Your target is below, not above.",
-                    "Where do you think you're going?",
-                    "Wrong direction.",
-                    "Gravity exists for a reason in this game.",
-                    "That's not the objective.",
-                    "Up there is not the goal.",
-                    "This wasn't the plan.",
-                    "You’re leaving the mission area.",
-                    "The landing pad is not in space."
-                }
-            },
-            {
-                eStoryTextType.BackToPlanet, new[]
-                {
-                    "I knew you'd come back.",
-                    "Good. Focus restored.",
-                    "Back to the actual mission.",
-                    "That makes more sense.",
-                    "Gravity feels familiar, right?",
-                    "Course correction accepted.",
-                    "Much better.",
-                    "The pad missed you.",
-                    "Mission back on track.",
-                    "Let’s do this properly."
-                }
-            },
-            {
-                eStoryTextType.NearToMoon, new[]
-                {
-                    "This is not a lunar lander game.",
-                    "The moon was not the objective.",
-                    "The moon was never part of the plan.",
-                    "The moon is the wrong celestial body.",
-                    "The landing pad is {TargetDistance} units away.",
-                    "The moon wasn't briefed.",
-                    "The mission does not include the moon."
-                }
+                "This is not a space game.",
+                "Your target is below, not above.",
+                "Where do you think you're going?",
+                "Wrong direction.",
+                "Gravity exists for a reason in this game.",
+                "That's not the objective.",
+                "Up there is not the goal.",
+                "This wasn't the plan.",
+                "Youâ€™re leaving the mission area.",
+                "The landing pad is not in space."
             }
-        };
+        },
+        {
+            eStoryTextType.BackToPlanet, new[]
+            {
+                "I knew you'd come back.",
+                "Good. Focus restored.",
+                "Back to the actual mission.",
+                "That makes more sense.",
+                "Gravity feels familiar, right?",
+                "Course correction accepted.",
+                "Much better.",
+                "The pad missed you.",
+                "Mission back on track.",
+                "Letâ€™s do this properly."
+            }
+        },
+        {
+            eStoryTextType.NearToMoon, new[]
+            {
+                "This is not a lunar lander game.",
+                "The moon was not the objective.",
+                "The moon was never part of the plan.",
+                "The moon is the wrong celestial body.",
+                "The landing pad is {TargetDistance} units away.",
+                "The moon wasn't briefed.",
+                "The mission does not include the moon."
+            }
+        }
+    };
 
-    // --- run flags ---
+    readonly Queue<string> queue = new();
+    readonly Dictionary<eStoryTextType, float> nextAllowed = new();
+
+    GravityManager2D gravityManager;
+    Coroutine runner;
+    string lastQueued;
+    float runStartTime;
     bool shownAtmosphereExit;
     bool shownBackToPlanet;
     bool shownNearMoon;
 
-    float runStartTime;
-
-    LanderController lander => LanderController.Instance;
-    GravityManager2D gravityManager;
-
-    // --- queue ---
-    readonly Queue<string> queue = new Queue<string>();
-    Coroutine runner;
-    string lastQueued;
-
-    // --- anti spam per type ---
-    readonly Dictionary<eStoryTextType, float> nextAllowed = new Dictionary<eStoryTextType, float>();
+    LanderController lander => LanderController.Active;
 
     void Awake()
     {
@@ -97,28 +87,23 @@ public class StoryTextController : MonoBehaviour
         if (txtInfo) txtInfo.gameObject.SetActive(false);
     }
 
-    public void Init()
-    {
-        gravityManager = GravityManager2D.Instance;
-    }
+    public void Init() => gravityManager = GravityManager2D.Instance;
 
-    /// <summary>Call this on "GO" / run start / next level.</summary>
     public void Restart()
     {
-        if (txtInfo) txtInfo.gameObject.SetActive(false);
-
         shownAtmosphereExit = false;
         shownBackToPlanet = false;
         shownNearMoon = false;
-
         runStartTime = Time.time;
 
         queue.Clear();
-        lastQueued = null;
         nextAllowed.Clear();
+        lastQueued = null;
 
         if (runner != null) StopCoroutine(runner);
         runner = null;
+
+        if (txtInfo) txtInfo.gameObject.SetActive(false);
     }
 
     void Update()
@@ -126,60 +111,50 @@ public class StoryTextController : MonoBehaviour
         if (Time.time - runStartTime < triggerDelayFromRunStart) return;
         if (!lander || !gravityManager) return;
 
-        // --- 1) AtmosphereExit / BackToPlanet ---
-        if (!shownAtmosphereExit && lander.transform.position.y > gravityManager.zeroGFullY)
+        float zeroT = gravityManager.GetZeroGravityBlendAt(lander.transform.position);
+        if (!shownAtmosphereExit && zeroT >= 0.999f)
         {
-            shownBackToPlanet = false;
             shownAtmosphereExit = true;
+            shownBackToPlanet = false;
             Enqueue(eStoryTextType.AtmosphereExit);
         }
-
-        if (shownAtmosphereExit && !shownBackToPlanet && lander.transform.position.y < gravityManager.zeroGFullY)
+        else if (shownAtmosphereExit && !shownBackToPlanet && zeroT < 0.999f)
         {
             shownAtmosphereExit = false;
             shownBackToPlanet = true;
             Enqueue(eStoryTextType.BackToPlanet);
         }
 
-        // --- 2) NearToMoon ---
-        float distanceToMoon = Vector2.Distance(lander.transform.position, gravityManager.transform.position);
-        if (!shownNearMoon && distanceToMoon <= gravityManager.moonFullRadius)
+        float moonT = gravityManager.GetMoonBlendAt(lander.transform.position);
+        if (!shownNearMoon && moonT >= 0.999f)
         {
             shownNearMoon = true;
             Enqueue(eStoryTextType.NearToMoon);
         }
-        else if (distanceToMoon > gravityManager.moonFullRadius)
+        else if (moonT < 0.999f)
         {
             shownNearMoon = false;
         }
     }
 
-    // --- Public API ---
-    public void Show(string msg) => Enqueue(msg);
+    public void Show(string message) => Enqueue(message);
     public void Show(eStoryTextType type) => Enqueue(type);
 
-    // --- Queue entrypoints ---
     void Enqueue(eStoryTextType type)
     {
-        // cooldown per type
-        float allowedAt = 0f;
-        nextAllowed.TryGetValue(type, out allowedAt);
+        nextAllowed.TryGetValue(type, out float allowedAt);
         if (Time.time < allowedAt) return;
 
         nextAllowed[type] = Time.time + typeCooldown;
-
         Enqueue(GetRandomMessage(type));
     }
 
-    void Enqueue(string msg)
+    void Enqueue(string message)
     {
-        if (string.IsNullOrEmpty(msg)) return;
+        if (string.IsNullOrEmpty(message) || message == lastQueued) return;
 
-        // optional: same message not twice in a row
-        if (msg == lastQueued) return;
-
-        queue.Enqueue(msg);
-        lastQueued = msg;
+        queue.Enqueue(message);
+        lastQueued = message;
 
         if (runner == null)
             runner = StartCoroutine(RunQueue());
@@ -189,19 +164,12 @@ public class StoryTextController : MonoBehaviour
     {
         while (queue.Count > 0)
         {
-            string msg = queue.Dequeue();
-
             if (!txtInfo) yield break;
 
-            txtInfo.text = msg;
+            txtInfo.text = queue.Dequeue();
             txtInfo.gameObject.SetActive(true);
-
             yield return new WaitForSeconds(visibleTime);
-
-            if (txtInfo) txtInfo.gameObject.SetActive(false);
-
-            // tiny gap (optional)
-            // yield return new WaitForSeconds(0.05f);
+            txtInfo.gameObject.SetActive(false);
         }
 
         runner = null;
@@ -210,20 +178,19 @@ public class StoryTextController : MonoBehaviour
 
     string GetRandomMessage(eStoryTextType type)
     {
-        if (!stateMessages.TryGetValue(type, out var arr) || arr == null || arr.Length == 0)
+        if (!stateMessages.TryGetValue(type, out string[] messages) || messages == null || messages.Length == 0)
             return "";
 
-        var msg = arr[Random.Range(0, arr.Length)];
-
-        if (msg.Contains("{TargetDistance}"))
+        string message = messages[Random.Range(0, messages.Length)];
+        if (message.Contains("{TargetDistance}") && LandingPadPlacer.Instance)
         {
-            int distI = Mathf.RoundToInt(Vector2.Distance(
+            int distance = Mathf.RoundToInt(Vector2.Distance(
                 lander.transform.position,
                 LandingPadPlacer.Instance.transform.position));
 
-            msg = msg.Replace("{TargetDistance}", distI.ToString());
+            message = message.Replace("{TargetDistance}", distance.ToString());
         }
 
-        return msg;
+        return message;
     }
 }
