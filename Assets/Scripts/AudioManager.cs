@@ -1,11 +1,9 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class AudioManager : MonoBehaviour
 {
     public static AudioManager Instance;
-
 
     [Header("Music")]
     public AudioClip mainMusic;
@@ -24,11 +22,12 @@ public class AudioManager : MonoBehaviour
     [Range(0f, 1f)] public float defaultSfxVolume = 0.8f;
     [Range(0f, 1f)] public float defaultMusicVolume = 0.6f;
 
-    float sfxVolume;
-    float musicVolume;
+    readonly List<AudioSource> sfxPool = new();
+    readonly List<AudioSource> persistentSfxSources = new();
 
     AudioSource musicSource;
-    readonly List<AudioSource> sfxPool = new List<AudioSource>();
+    float sfxVolume;
+    float musicVolume;
 
     void Awake()
     {
@@ -38,87 +37,95 @@ public class AudioManager : MonoBehaviour
 
     public void Init()
     {
-        sfxVolume = SaveLoadManager.Instance.Data.volSfx;
-        musicVolume = SaveLoadManager.Instance.Data.volMusic;
+        SaveGame data = SaveLoadManager.Instance.Data;
+        sfxVolume = Mathf.Clamp01(data?.volSfx ?? defaultSfxVolume);
+        musicVolume = Mathf.Clamp01(data?.volMusic ?? defaultMusicVolume);
 
-        // Music source
-        musicSource = gameObject.AddComponent<AudioSource>();
+        if (!musicSource)
+        {
+            musicSource = gameObject.AddComponent<AudioSource>();
+            musicSource.playOnAwake = false;
+        }
+
         musicSource.loop = true;
         musicSource.volume = musicVolume;
     }
 
-    // -------------------- Public API --------------------
-
     public AudioSource CreateThrusterSound()
     {
-        var go = new GameObject("ThrusterSound");
+        GameObject go = new("ThrusterSound");
         go.transform.SetParent(transform, false);
 
-        var src = go.AddComponent<AudioSource>();
-        src.playOnAwake = false;
+        AudioSource source = go.AddComponent<AudioSource>();
+        source.playOnAwake = false;
+        source.clip = sfxThruster;
+        source.loop = true;
+        source.volume = sfxVolume;
 
-        src.Stop();
-        src.clip = sfxThruster;
-        src.loop = true;
-        src.volume = sfxVolume;
-
-        return src;
+        persistentSfxSources.Add(source);
+        return source;
     }
 
-    public AudioSource PlaySound(AudioClip audioClip)
-    {
-        return PlaySound(audioClip, sfxVolume, 1f, false);
-    }
+    public AudioSource PlaySound(AudioClip clip)
+        => PlaySound(clip, 1f, 1f, false);
 
     public AudioSource PlaySound(AudioClip clip, float volumeScale = 1f, float pitch = 1f, bool loop = false)
     {
         if (!clip) return null;
 
-        AudioSource src = GetOrCreateSfxSource();
-        if (!src) return null;
+        AudioSource source = GetOrCreateSfxSource();
+        if (!source) return null;
 
-        src.Stop();
-        src.clip = clip;
-        src.loop = loop;
-        src.pitch = pitch;
-        src.volume = Mathf.Clamp01(volumeScale) * sfxVolume;
-        src.Play();
+        source.Stop();
+        source.clip = clip;
+        source.loop = loop;
+        source.pitch = pitch;
+        source.volume = Mathf.Clamp01(volumeScale) * sfxVolume;
+        source.Play();
 
-        return src;
+        return source;
     }
 
     public void PlayMusic(AudioClip clip, float pitch = 1f, bool loop = true)
     {
+        if (!musicSource) Init();
+        if (!musicSource || !clip) return;
+
         musicSource.pitch = pitch;
         musicSource.volume = musicVolume;
-
-        if (musicSource.clip == clip) return;
-
-        musicSource.clip = clip;
         musicSource.loop = loop;
-        musicSource.Play();
+
+        if (musicSource.clip != clip)
+            musicSource.clip = clip;
+
+        if (!musicSource.isPlaying)
+            musicSource.Play();
     }
 
     public void StopMusic()
     {
-        if (musicSource.isPlaying) musicSource.Stop();
+        if (musicSource && musicSource.isPlaying)
+            musicSource.Stop();
     }
 
-    public void SetSfxVolume(float v, bool save = true)
+    public void SetSfxVolume(float value, bool save = true)
     {
         float old = sfxVolume;
-        sfxVolume = Mathf.Clamp01(v);
+        sfxVolume = Mathf.Clamp01(value);
+        float ratio = old <= 0.0001f ? 0f : sfxVolume / old;
 
-        float ratio = (old <= 0.0001f) ? 0f : (sfxVolume / old);
+        UpdateActivePoolVolumes(ratio);
 
-        // laufende SFX nachziehen (best-effort)
-        for (int i = 0; i < sfxPool.Count; i++)
+        for (int i = persistentSfxSources.Count - 1; i >= 0; i--)
         {
-            var src = sfxPool[i];
-            if (!src) continue;
-            if (!src.isPlaying) continue;
+            AudioSource source = persistentSfxSources[i];
+            if (!source)
+            {
+                persistentSfxSources.RemoveAt(i);
+                continue;
+            }
 
-            src.volume = Mathf.Clamp01(src.volume * ratio);
+            source.volume = sfxVolume;
         }
 
         if (save)
@@ -128,10 +135,10 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    public void SetMusicVolume(float v, bool save = true)
+    public void SetMusicVolume(float value, bool save = true)
     {
-        musicVolume = Mathf.Clamp01(v);
-        musicSource.volume = musicVolume;
+        musicVolume = Mathf.Clamp01(value);
+        if (musicSource) musicSource.volume = musicVolume;
 
         if (save)
         {
@@ -143,33 +150,33 @@ public class AudioManager : MonoBehaviour
     public float GetSfxVolume() => sfxVolume;
     public float GetMusicVolume() => musicVolume;
 
-    // -------------------- Internals --------------------
+    void UpdateActivePoolVolumes(float ratio)
+    {
+        foreach (AudioSource source in sfxPool)
+        {
+            if (!source || !source.isPlaying) continue;
+            source.volume = ratio <= 0f ? 0f : Mathf.Clamp01(source.volume * ratio);
+        }
+    }
 
     AudioSource GetOrCreateSfxSource()
     {
-        // 1) freie Quelle suchen
-        for (int i = 0; i < sfxPool.Count; i++)
-        {
-            var src = sfxPool[i];
-            if (src && !src.isPlaying) return src;
-        }
+        foreach (AudioSource source in sfxPool)
+            if (source && !source.isPlaying)
+                return source;
 
-        // 2) wenn noch Platz: neue erstellen
         if (sfxPool.Count < maxSfxSources)
         {
-            var go = new GameObject($"SFX_{sfxPool.Count:00}");
+            GameObject go = new($"SFX_{sfxPool.Count:00}");
             go.transform.SetParent(transform, false);
 
-            var src = go.AddComponent<AudioSource>();
-            src.playOnAwake = false;
-            src.loop = false;
-
-            sfxPool.Add(src);
-            return src;
+            AudioSource source = go.AddComponent<AudioSource>();
+            source.playOnAwake = false;
+            source.loop = false;
+            sfxPool.Add(source);
+            return source;
         }
 
-        // 3) sonst: fallback (überschreibt ggf. laufenden Sound)
         return sfxPool.Count > 0 ? sfxPool[0] : null;
     }
 }
-
