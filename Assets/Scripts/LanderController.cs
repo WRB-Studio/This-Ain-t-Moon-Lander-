@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -5,16 +6,22 @@ using UnityEngine.UI;
 
 public class LanderController : MonoBehaviour
 {
-    public static LanderController Instance;
+    public static LanderController Active { get; private set; }
+    public static LanderController Instance => Active; // compatibility for existing project code
+    public static event Action<LanderController> ActiveChanged;
 
+    [Header("Identity / Unlock")]
+    [SerializeField] string landerId;
     public int landerIndex = -1;
     public int unlockCost = 1000;
-    public bool isSecretLander = false;
-    public bool isActive = false;
+    public bool isSecretLander;
+    public bool isActive;
+
+    public string LanderId => string.IsNullOrWhiteSpace(landerId) ? $"lander-{landerIndex}" : landerId;
 
     [Header("States")]
     public bool controlsEnabled;
-    public enum eLanderState { None, Flying, LandedPad, LandedMoon, CrashedLandscape, CrashedMoon, CrashedPad, OutOfFuel, DeadZone };
+    public enum eLanderState { None, Flying, LandedPad, LandedMoon, CrashedLandscape, CrashedMoon, CrashedPad, OutOfFuel, DeadZone }
     public eLanderState landerState = eLanderState.None;
 
     [Header("Respawn (relative to LandingPad)")]
@@ -30,8 +37,11 @@ public class LanderController : MonoBehaviour
     public float maxFallSpeed = -6f;
     public float currentSpeed;
 
+    [Header("Ship capabilities")]
+    [Min(0.1f)] public float fuelCapacityMultiplier = 1f;
+
     [Header("Mobile Steering")]
-    [Tooltip("Maximale Neigung bei vorhandener Gravitation. Touch links/rechts setzt einen absoluten Zielwinkel statt endlos weiterzudrehen.")]
+    [Tooltip("Maximale Neigung bei vorhandener Gravitation.")]
     [Range(5f, 80f)] public float maxGravityTilt = 60f;
 
     [Tooltip("Seitlicher Totbereich um das Schiff als Anteil der Bildschirmbreite.")]
@@ -40,42 +50,27 @@ public class LanderController : MonoBehaviour
     [Tooltip("Ab diesem seitlichen Touch-Abstand wird die maximale Neigung erreicht (Anteil der Bildschirmbreite).")]
     [Range(0.05f, 0.5f)] public float fullSteerScreen = 0.24f;
 
-    [Tooltip("Drehgeschwindigkeit bei vorhandener Gravitation in Grad/Sekunde.")]
     public float gravityTurnSpeed = 100f;
-
-    [Tooltip("Drehgeschwindigkeit im Zero-G in Grad/Sekunde.")]
     public float zeroGTurnSpeed = 150f;
-
-    [Tooltip("Wie weich die seitliche Touch-Eingabe reagiert.")]
     public float steerResponse = 10f;
-
-    [Tooltip("Unterhalb dieser Gravitationsstärke wird direkt in Richtung Touch gezielt (360° Zero-G-Steuerung).")]
     public float zeroGSteeringThreshold = 0.35f;
-
-    [Tooltip("Wie schnell sich der Lander ohne Touch bei Gravitation wieder aufrichtet.")]
     public float autoLevelSpeed = 55f;
-
-    float baseThrustForce;
-    bool baseCached;
-    float steer01;
 
     [Header("Fuel")]
     public float fuelMax = 3.5f;
-    public float fuelBurnPerSec = 1.0f;
+    public float fuelBurnPerSec = 1f;
     public float currentFuel;
     public float fuelPerUnit = 0.25f;
     [Range(0f, 1f)] public float fuelBufferPercent = 0.4f;
     public float fuelEmptyDelay = 5f;
-    private float fuelEmptyDelayCounter = 0;
-    private bool fuelEmptyTriggered;
 
     [Header("Landing Rules")]
-    public float safeSpeed = 2.0f;
+    public float safeSpeed = 2f;
     public float safeAngleDeg = 10f;
     public float safeVerticalSpeed = 1.5f;
 
     [Header("Dead Zone rules")]
-    public float deadZoneExplodeDelay = 5;
+    public float deadZoneExplodeDelay = 5f;
     [HideInInspector] public bool deadZoneTriggered;
     [HideInInspector] public float deadZoneTimer;
 
@@ -86,14 +81,22 @@ public class LanderController : MonoBehaviour
     [HideInInspector] public List<Transform> thrustEffects;
     [SerializeField] float thrustGrowSpeed = 6f;
     [SerializeField] float thrustMaxY = 1f;
-    private static AudioSource sfxThrustSound;
 
     [HideInInspector] public Rigidbody2D rb;
 
+    public Vector2 CurrentGravity { get; private set; }
+    public bool IsThrusting => isThrusting;
+    public bool IsMoonContact => moonContact;
+    public float Fuel01 => fuelMax <= 0f ? 0f : Mathf.Clamp01(currentFuel / fuelMax);
+
+    static AudioSource sfxThrustSound;
+
+    float baseThrustForce;
     float targetRotation;
+    float steer01;
+    float fuelEmptyDelayCounter;
+    bool fuelEmptyTriggered;
     bool isThrusting;
-    const float moonExitStableDelay = 0.4f;
-    float moonExitStableTimer;
     bool moonContact;
 
     readonly List<RaycastResult> uiRaycastResults = new();
@@ -101,85 +104,141 @@ public class LanderController : MonoBehaviour
 
     void Awake()
     {
-        if (!isActive)
+        rb = GetComponent<Rigidbody2D>();
+        rb.gravityScale = 0f;
+
+        if (isActive)
         {
-            rb = GetComponent<Rigidbody2D>();
-            rb.bodyType = RigidbodyType2D.Static;
-            Collider2D col = GetComponent<Collider2D>();
-            col.isTrigger = true;
+            SetActiveLander(this);
         }
         else
         {
-            Instance = this;
+            rb.bodyType = RigidbodyType2D.Static;
+            Collider2D col = GetComponent<Collider2D>();
+            if (col) col.isTrigger = true;
         }
+    }
+
+    void OnDestroy()
+    {
+        if (Active != this) return;
+        Active = null;
+        ActiveChanged?.Invoke(null);
     }
 
     public void Init()
     {
-        rb = GetComponent<Rigidbody2D>();
+        if (!rb) rb = GetComponent<Rigidbody2D>();
+        rb.gravityScale = 0f;
+
         targetRotation = rb.rotation;
         steer01 = 0f;
         moonContact = false;
-        moonExitStableTimer = 0f;
+        CurrentGravity = GravityManager2D.Instance
+            ? GravityManager2D.Instance.GetGravityAt(rb.position)
+            : Vector2.zero;
 
-        thrustEffects ??= new List<Transform>();
-        thrustEffects.Clear();
-        foreach (Transform t in transform)
-            if (t.name.Contains("ThrustEffect"))
-                thrustEffects.Add(t);
+        RefreshThrustEffects();
+        RefreshBaseStats();
+    }
 
-        if (!baseCached)
-        {
-            baseThrustForce = thrustForce;
-            baseCached = true;
-        }
-
-        thrustForce = baseThrustForce;
+    static void SetActiveLander(LanderController lander)
+    {
+        if (Active == lander) return;
+        Active = lander;
+        ActiveChanged?.Invoke(lander);
     }
 
     public static void ChangeLander(LanderController newLander)
     {
-        var old = Instance;
-        if (old == null || newLander == null || old == newLander) return;
+        LanderController old = Active;
+        if (!old || !newLander || old == newLander) return;
 
         old.isActive = false;
         old.controlsEnabled = false;
+        old.isThrusting = false;
+        old.HandleThrustSound(false);
 
-        var oldRb = old.GetComponent<Rigidbody2D>();
+        Rigidbody2D oldRb = old.rb ? old.rb : old.GetComponent<Rigidbody2D>();
         oldRb.bodyType = RigidbodyType2D.Static;
-        old.GetComponent<Collider2D>().isTrigger = true;
+        Collider2D oldCol = old.GetComponent<Collider2D>();
+        if (oldCol) oldCol.isTrigger = true;
 
-        Instance = newLander;
         newLander.isActive = true;
+        SetActiveLander(newLander);
         newLander.Init();
 
         newLander.controlsEnabled = true;
         newLander.rb.bodyType = RigidbodyType2D.Dynamic;
         newLander.landerState = eLanderState.LandedMoon;
-        newLander.GetComponent<Collider2D>().isTrigger = false;
+        Collider2D newCol = newLander.GetComponent<Collider2D>();
+        if (newCol) newCol.isTrigger = false;
 
-        newLander.fuelMax = old.fuelMax;
-        newLander.currentFuel = newLander.fuelMax * 0.75f;
-
-        CameraController.Instance.SetTarget(newLander.transform, instantFocus: true);
+        if (newLander.currentFuel <= 0f)
+            newLander.currentFuel = newLander.fuelMax * 0.75f;
+        else
+            newLander.currentFuel = Mathf.Min(newLander.currentFuel, newLander.fuelMax);
     }
 
-    void UpdateThrustEffect(bool thrusting)
+    public void ApplyConfigurationFrom(LanderController preset)
     {
-        if (landerState != eLanderState.Flying)
-        {
-            foreach (Transform t in thrustEffects)
-                t.localScale = new Vector3(t.localScale.x, 0f, t.localScale.z);
-            return;
-        }
+        if (!preset || preset == this) return;
 
-        foreach (Transform t in thrustEffects)
-        {
-            Vector3 s = t.localScale;
-            float targetY = thrusting ? thrustMaxY : 0f;
-            s.y = Mathf.Lerp(s.y, targetY, thrustGrowSpeed * Time.fixedDeltaTime);
-            t.localScale = s;
-        }
+        landerId = preset.landerId;
+        landerIndex = preset.landerIndex;
+        unlockCost = preset.unlockCost;
+        isSecretLander = preset.isSecretLander;
+
+        maxDistanceXToPad = preset.maxDistanceXToPad;
+        minDistanceYToPad = preset.minDistanceYToPad;
+        maxDistanceYToPad = preset.maxDistanceYToPad;
+        minWorldY = preset.minWorldY;
+        clearance = preset.clearance;
+        tries = preset.tries;
+
+        thrustForce = preset.thrustForce;
+        maxFallSpeed = preset.maxFallSpeed;
+        fuelCapacityMultiplier = preset.fuelCapacityMultiplier;
+
+        maxGravityTilt = preset.maxGravityTilt;
+        steeringDeadzoneScreen = preset.steeringDeadzoneScreen;
+        fullSteerScreen = preset.fullSteerScreen;
+        gravityTurnSpeed = preset.gravityTurnSpeed;
+        zeroGTurnSpeed = preset.zeroGTurnSpeed;
+        steerResponse = preset.steerResponse;
+        zeroGSteeringThreshold = preset.zeroGSteeringThreshold;
+        autoLevelSpeed = preset.autoLevelSpeed;
+
+        fuelBurnPerSec = preset.fuelBurnPerSec;
+        fuelPerUnit = preset.fuelPerUnit;
+        fuelBufferPercent = preset.fuelBufferPercent;
+        fuelEmptyDelay = preset.fuelEmptyDelay;
+
+        safeSpeed = preset.safeSpeed;
+        safeAngleDeg = preset.safeAngleDeg;
+        safeVerticalSpeed = preset.safeVerticalSpeed;
+        deadZoneExplodeDelay = preset.deadZoneExplodeDelay;
+
+        crashEffect = preset.crashEffect;
+        thrustGrowSpeed = preset.thrustGrowSpeed;
+        thrustMaxY = preset.thrustMaxY;
+
+        RefreshBaseStats();
+    }
+
+    public void RefreshThrustEffects()
+    {
+        thrustEffects ??= new List<Transform>();
+        thrustEffects.Clear();
+
+        foreach (Transform child in transform)
+            if (child.name.Contains("ThrustEffect"))
+                thrustEffects.Add(child);
+    }
+
+    void RefreshBaseStats()
+    {
+        baseThrustForce = thrustForce;
     }
 
     void Update()
@@ -192,60 +251,64 @@ public class LanderController : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (!isActive) return;
+        if (!isActive || !rb) return;
 
+        UpdateGravity();
         currentSpeed = rb.linearVelocity.magnitude;
-
-        if (controlsEnabled)
-        {
-            bool hasTouch = TouchControl(out var screenPos);
-            isThrusting = hasTouch && currentFuel > 0f;
-
-            if (isThrusting)
-                UpdateSteeringTarget(screenPos);
-            else
-                UpdateAutoLevel();
-
-            HandleThrustSound(isThrusting);
-        }
-        else
-        {
-            isThrusting = false;
-            HandleThrustSound(false);
-        }
-
-        UpdateMoonExitUI();
+        UpdateControls();
         ApplyPhysics();
         UpdateThrustEffect(isThrusting);
 
-        if (!isThrusting) return;
+        if (rb.bodyType == RigidbodyType2D.Dynamic && CurrentGravity.sqrMagnitude > 0.0001f)
+            rb.AddForce(CurrentGravity * rb.mass, ForceMode2D.Force);
+
+        if (!isThrusting || rb.bodyType != RigidbodyType2D.Dynamic) return;
 
         rb.AddForce(transform.up * thrustForce, ForceMode2D.Force);
         BurnFuel();
     }
 
-    void UpdateMoonExitUI()
+    void UpdateGravity()
     {
-        var eva = MoonEVAController.Instance;
-        if (!eva || !eva.btnExit) return;
-
-        if (!moonContact || landerState != eLanderState.LandedMoon || isThrusting)
+        GravityManager2D gm = GravityManager2D.Instance;
+        if (!gm)
         {
-            moonExitStableTimer = 0f;
-            eva.btnExit.gameObject.SetActive(false);
+            CurrentGravity = Vector2.zero;
             return;
         }
 
-        moonExitStableTimer += Time.fixedDeltaTime;
-        if (moonExitStableTimer >= moonExitStableDelay)
-            eva.btnExit.gameObject.SetActive(true);
+        Vector2 targetGravity = gm.GetGravityAt(rb.position);
+        float k = 1f - Mathf.Exp(-gm.gravitySmooth * Time.fixedDeltaTime);
+        CurrentGravity = Vector2.Lerp(CurrentGravity, targetGravity, k);
+
+        gm.zeroBlend = gm.GetSpaceBlendAt(rb.position);
+        ApplySpaceTuning(gm.zeroBlend);
+    }
+
+    void UpdateControls()
+    {
+        if (!controlsEnabled)
+        {
+            isThrusting = false;
+            HandleThrustSound(false);
+            return;
+        }
+
+        bool hasTouch = TouchControl(out Vector2 screenPos);
+        isThrusting = hasTouch && currentFuel > 0f;
+
+        if (isThrusting)
+            UpdateSteeringTarget(screenPos);
+        else
+            UpdateAutoLevel();
+
+        HandleThrustSound(isThrusting);
     }
 
     void ApplyPhysics()
     {
-        Vector2 v = rb.linearVelocity;
-        if (v.y < maxFallSpeed) v.y = maxFallSpeed;
-        if (rb.bodyType == RigidbodyType2D.Dynamic) rb.linearVelocity = v;
+        if (rb.bodyType == RigidbodyType2D.Dynamic)
+            ClampFallSpeed();
 
         if (!controlsEnabled || landerState != eLanderState.Flying || rb.bodyType != RigidbodyType2D.Dynamic)
             return;
@@ -253,6 +316,21 @@ public class LanderController : MonoBehaviour
         float turnSpeed = HasSteeringGravity() ? gravityTurnSpeed : zeroGTurnSpeed;
         float nextRotation = Mathf.MoveTowardsAngle(rb.rotation, targetRotation, turnSpeed * Time.fixedDeltaTime);
         rb.MoveRotation(nextRotation);
+    }
+
+    void ClampFallSpeed()
+    {
+        if (CurrentGravity.sqrMagnitude < 0.0001f) return;
+
+        Vector2 velocity = rb.linearVelocity;
+        Vector2 down = CurrentGravity.normalized;
+        float downSpeed = Vector2.Dot(velocity, down);
+        float maxDownSpeed = Mathf.Abs(maxFallSpeed);
+
+        if (downSpeed > maxDownSpeed)
+            velocity -= down * (downSpeed - maxDownSpeed);
+
+        rb.linearVelocity = velocity;
     }
 
     bool TouchControl(out Vector2 screenPos)
@@ -267,10 +345,10 @@ public class LanderController : MonoBehaviour
 
         if (Input.touchCount > 0)
         {
-            var t = Input.GetTouch(0);
-            if (t.phase == TouchPhase.Began || t.phase == TouchPhase.Moved || t.phase == TouchPhase.Stationary)
+            Touch touch = Input.GetTouch(0);
+            if (touch.phase == TouchPhase.Began || touch.phase == TouchPhase.Moved || touch.phase == TouchPhase.Stationary)
             {
-                screenPos = t.position;
+                screenPos = touch.position;
                 return !IsPointerOverInteractiveUI(screenPos);
             }
         }
@@ -281,7 +359,7 @@ public class LanderController : MonoBehaviour
 
     bool IsPointerOverInteractiveUI(Vector2 screenPos)
     {
-        var eventSystem = EventSystem.current;
+        EventSystem eventSystem = EventSystem.current;
         if (!eventSystem) return false;
 
         pointerEventData ??= new PointerEventData(eventSystem);
@@ -290,7 +368,7 @@ public class LanderController : MonoBehaviour
         uiRaycastResults.Clear();
         eventSystem.RaycastAll(pointerEventData, uiRaycastResults);
 
-        foreach (var result in uiRaycastResults)
+        foreach (RaycastResult result in uiRaycastResults)
             if (result.gameObject && result.gameObject.GetComponentInParent<Selectable>())
                 return true;
 
@@ -302,11 +380,9 @@ public class LanderController : MonoBehaviour
         Camera cam = Camera.main;
         if (!cam) return;
 
-        Vector2 gravity = Physics2D.gravity;
-
         if (HasSteeringGravity())
         {
-            Vector2 gravityUp = -gravity.normalized;
+            Vector2 gravityUp = -CurrentGravity.normalized;
             Vector2 gravityRight = new Vector2(gravityUp.y, -gravityUp.x);
 
             Vector2 shipScreen = cam.WorldToScreenPoint(transform.position);
@@ -321,21 +397,25 @@ public class LanderController : MonoBehaviour
             float input = 0f;
             if (abs > steeringDeadzoneScreen)
             {
-                float t = Mathf.InverseLerp(steeringDeadzoneScreen, Mathf.Max(steeringDeadzoneScreen + 0.001f, fullSteerScreen), abs);
+                float t = Mathf.InverseLerp(
+                    steeringDeadzoneScreen,
+                    Mathf.Max(steeringDeadzoneScreen + 0.001f, fullSteerScreen),
+                    abs);
+
                 input = Mathf.Clamp01(t) * Mathf.Sign(lateral);
             }
 
             float k = 1f - Mathf.Exp(-steerResponse * Time.fixedDeltaTime);
             steer01 = Mathf.Lerp(steer01, input, k);
 
-            float upright = GravityUpRotation(gravity);
+            float upright = GravityUpRotation(CurrentGravity);
             targetRotation = upright - steer01 * maxGravityTilt;
             return;
         }
 
-        Vector2 shipScreen = cam.WorldToScreenPoint(transform.position);
+        Vector2 shipScreenPos = cam.WorldToScreenPoint(transform.position);
         float aimDeadzone = Screen.width * steeringDeadzoneScreen;
-        if ((screenPos - shipScreen).sqrMagnitude <= aimDeadzone * aimDeadzone) return;
+        if ((screenPos - shipScreenPos).sqrMagnitude <= aimDeadzone * aimDeadzone) return;
 
         Vector3 world = cam.ScreenToWorldPoint(screenPos);
         Vector2 dir = (Vector2)world - rb.position;
@@ -352,22 +432,37 @@ public class LanderController : MonoBehaviour
         float k = 1f - Mathf.Exp(-steerResponse * Time.fixedDeltaTime);
         steer01 = Mathf.Lerp(steer01, 0f, k);
 
-        float upright = GravityUpRotation(Physics2D.gravity);
+        float upright = GravityUpRotation(CurrentGravity);
         targetRotation = Mathf.MoveTowardsAngle(targetRotation, upright, autoLevelSpeed * Time.fixedDeltaTime);
     }
 
     bool HasSteeringGravity()
-        => Physics2D.gravity.sqrMagnitude >= zeroGSteeringThreshold * zeroGSteeringThreshold;
+        => CurrentGravity.sqrMagnitude >= zeroGSteeringThreshold * zeroGSteeringThreshold;
 
-    float GravityUpRotation(Vector2 gravity)
+    static float GravityUpRotation(Vector2 gravity)
     {
         Vector2 up = -gravity.normalized;
         return Mathf.Atan2(up.y, up.x) * Mathf.Rad2Deg - 90f;
     }
 
+    void UpdateThrustEffect(bool thrusting)
+    {
+        if (thrustEffects == null) return;
+
+        bool show = landerState == eLanderState.Flying && thrusting;
+        foreach (Transform effect in thrustEffects)
+        {
+            if (!effect) continue;
+
+            Vector3 scale = effect.localScale;
+            scale.y = Mathf.Lerp(scale.y, show ? thrustMaxY : 0f, thrustGrowSpeed * Time.fixedDeltaTime);
+            effect.localScale = scale;
+        }
+    }
+
     public void HandleThrustSound(bool thrusting)
     {
-        if (sfxThrustSound == null) return;
+        if (!sfxThrustSound) return;
 
         if (landerState == eLanderState.LandedMoon)
         {
@@ -376,13 +471,9 @@ public class LanderController : MonoBehaviour
         }
 
         if (thrusting && !sfxThrustSound.isPlaying)
-        {
             sfxThrustSound.Play();
-        }
         else if (!thrusting && sfxThrustSound.isPlaying)
-        {
             sfxThrustSound.Stop();
-        }
     }
 
     void BurnFuel()
@@ -396,35 +487,33 @@ public class LanderController : MonoBehaviour
         {
             fuelEmptyDelayCounter = 0f;
             fuelEmptyTriggered = false;
+            return;
         }
-        else if (!fuelEmptyTriggered && (fuelEmptyDelayCounter += Time.deltaTime) >= fuelEmptyDelay)
-        {
-            fuelEmptyTriggered = true;
-            Crash(eLanderState.OutOfFuel);
-        }
+
+        if (fuelEmptyTriggered) return;
+
+        fuelEmptyDelayCounter += Time.deltaTime;
+        if (fuelEmptyDelayCounter < fuelEmptyDelay) return;
+
+        fuelEmptyTriggered = true;
+        Crash(eLanderState.OutOfFuel);
     }
 
     void UpdateDeadZone()
     {
         if (!deadZoneTriggered) return;
 
-        if ((deadZoneTimer -= Time.deltaTime) <= 0f)
-        {
-            deadZoneTriggered = false;
-            Crash(eLanderState.DeadZone);
-        }
+        deadZoneTimer -= Time.deltaTime;
+        if (deadZoneTimer > 0f) return;
+
+        deadZoneTriggered = false;
+        Crash(eLanderState.DeadZone);
     }
 
     void OnCollisionEnter2D(Collision2D col)
     {
         bool isMoon = col.collider.CompareTag("Moon");
-        if (isMoon)
-        {
-            moonContact = true;
-            moonExitStableTimer = 0f;
-            if (MoonEVAController.Instance && MoonEVAController.Instance.btnExit)
-                MoonEVAController.Instance.btnExit.gameObject.SetActive(false);
-        }
+        if (isMoon) moonContact = true;
 
         if (landerState != eLanderState.Flying) return;
 
@@ -434,35 +523,24 @@ public class LanderController : MonoBehaviour
         Vector2 relVel = col.relativeVelocity;
         float impactSpeed = relVel.magnitude;
 
-        Vector2 g = Physics2D.gravity;
-        Vector2 downDir = (g.sqrMagnitude > 0.0001f) ? g.normalized : Vector2.down;
-        float vImpact = Mathf.Abs(Vector2.Dot(relVel, downDir));
+        Vector2 downDir = CurrentGravity.sqrMagnitude > 0.0001f ? CurrentGravity.normalized : Vector2.down;
+        float verticalImpact = Mathf.Abs(Vector2.Dot(relVel, downDir));
 
-        float angle;
-        if (isMoon && g.sqrMagnitude > 0.0001f)
-        {
-            float desiredUpAngle = Mathf.Atan2((-downDir).y, (-downDir).x) * Mathf.Rad2Deg - 90f;
-            angle = Mathf.Abs(Mathf.DeltaAngle(desiredUpAngle, rb.rotation));
-        }
-        else
-        {
-            angle = Mathf.Abs(Mathf.DeltaAngle(0f, rb.rotation));
-        }
+        float angle = isMoon && CurrentGravity.sqrMagnitude > 0.0001f
+            ? Mathf.Abs(Mathf.DeltaAngle(GravityUpRotation(CurrentGravity), rb.rotation))
+            : Mathf.Abs(Mathf.DeltaAngle(0f, rb.rotation));
 
         bool okSpeed = impactSpeed <= safeSpeed;
         bool okAngle = angle <= safeAngleDeg;
-        bool okVert = vImpact <= safeVerticalSpeed;
+        bool okVertical = verticalImpact <= safeVerticalSpeed;
 
-        bool nicePadLanding = okSpeed && okAngle && okVert;
-        bool niceMoonLanding = okSpeed;
-
-        if (isLandingPad && nicePadLanding)
+        if (isLandingPad && okSpeed && okAngle && okVertical)
         {
             Land(col, eLanderState.LandedPad);
         }
-        else if (isMoon && niceMoonLanding)
+        else if (isMoon && okSpeed)
         {
-            LandOnMoon(col, eLanderState.LandedMoon);
+            LandOnMoon(col);
         }
         else if (isLandingPad)
         {
@@ -474,15 +552,10 @@ public class LanderController : MonoBehaviour
             PlayCrashImpact(col);
             Crash(eLanderState.CrashedMoon);
         }
-        else if (isLandscape)
-        {
-            PlayCrashImpact(col);
-            Crash(eLanderState.CrashedLandscape);
-        }
         else
         {
             PlayCrashImpact(col);
-            Crash(eLanderState.CrashedLandscape);
+            Crash(isLandscape ? eLanderState.CrashedLandscape : eLanderState.CrashedLandscape);
         }
     }
 
@@ -497,38 +570,33 @@ public class LanderController : MonoBehaviour
         if (!col.collider.CompareTag("Moon")) return;
 
         moonContact = false;
-        moonExitStableTimer = 0f;
-        if (MoonEVAController.Instance && MoonEVAController.Instance.btnExit)
-            MoonEVAController.Instance.btnExit.gameObject.SetActive(false);
-
         if (landerState == eLanderState.LandedMoon)
             landerState = eLanderState.Flying;
     }
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (deadZoneTriggered) return;
-        if (!other.CompareTag("DeadZone")) return;
+        if (deadZoneTriggered || !other.CompareTag("DeadZone")) return;
 
-        LanderUI.Instance.ShowHideDeadZoneWarning(true);
         deadZoneTriggered = true;
         deadZoneTimer = deadZoneExplodeDelay;
+        LanderUI.Instance.ShowHideDeadZoneWarning(true);
     }
 
     void OnTriggerExit2D(Collider2D other)
     {
         if (!other.CompareTag("DeadZone")) return;
 
-        LanderUI.Instance.ShowHideDeadZoneWarning(false);
         deadZoneTriggered = false;
         deadZoneTimer = deadZoneExplodeDelay;
+        LanderUI.Instance.ShowHideDeadZoneWarning(false);
     }
 
     void Land(Collision2D col, eLanderState state)
     {
         landerState = state;
         controlsEnabled = false;
-
+        isThrusting = false;
         HandleThrustSound(false);
 
         ScoringController.Instance.CalculateScore(col);
@@ -537,15 +605,15 @@ public class LanderController : MonoBehaviour
         ImpactFX.Instance.PlayImpactEffect(landerState);
     }
 
-    void LandOnMoon(Collision2D col, eLanderState state)
+    void LandOnMoon(Collision2D col)
     {
-        landerState = state;
+        landerState = eLanderState.LandedMoon;
         moonContact = true;
-        moonExitStableTimer = 0f;
 
-        if (!MoonEVAController.Instance.isOnMoonLanded)
+        MoonEVAController eva = MoonEVAController.Instance;
+        if (!eva.isOnMoonLanded)
         {
-            MoonEVAController.Instance.isOnMoonLanded = true;
+            eva.isOnMoonLanded = true;
             controlsEnabled = false;
             ScoringController.Instance.CalculateScore(col);
             LanderUI.Instance.ShowGameOver(landerState, true);
@@ -555,7 +623,6 @@ public class LanderController : MonoBehaviour
             LanderUI.Instance.SetPanelBottomCenter();
         }
 
-        MoonEVAController.Instance.btnExit.gameObject.SetActive(false);
         ImpactFX.Instance.PlayImpactEffect(landerState);
     }
 
@@ -563,15 +630,21 @@ public class LanderController : MonoBehaviour
     {
         landerState = state;
         controlsEnabled = false;
+        isThrusting = false;
 
         ImpactFX.Instance.PlayImpactEffect(landerState);
         HandleThrustSound(false);
 
-        GetComponent<SpriteRenderer>().enabled = false;
-        GetComponent<Collider2D>().enabled = false;
+        SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
+        if (spriteRenderer) spriteRenderer.enabled = false;
+
+        Collider2D col = GetComponent<Collider2D>();
+        if (col) col.enabled = false;
+
         rb.bodyType = RigidbodyType2D.Static;
 
-        Destroy(Instantiate(crashEffect, transform.position, Quaternion.identity), 10f);
+        if (crashEffect)
+            Destroy(Instantiate(crashEffect, transform.position, Quaternion.identity), 10f);
 
         LanderUI.Instance.ShowGameOver(landerState);
         AudioManager.Instance.PlayMusic(AudioManager.Instance.mainMusic, pitch: -0.8f);
@@ -579,40 +652,53 @@ public class LanderController : MonoBehaviour
 
     void PlayCrashImpact(Collision2D col)
     {
-        float impact = col.relativeVelocity.magnitude;
-        float t = Mathf.InverseLerp(1.5f, 10f, impact);
-        float vol = Mathf.Lerp(0.6f, 1.0f, t);
+        float t = Mathf.InverseLerp(1.5f, 10f, col.relativeVelocity.magnitude);
+        float volume = Mathf.Lerp(0.6f, 1f, t);
         float pitch = Mathf.Lerp(0.9f, 1.15f, t);
-
-        AudioManager.Instance.PlaySound(AudioManager.Instance.sfxCrash, vol, pitch, false);
+        AudioManager.Instance.PlaySound(AudioManager.Instance.sfxCrash, volume, pitch, false);
     }
 
     public void ApplySpaceTuning(float zeroT)
     {
-        float thrustMul = Mathf.Lerp(1f, 0.7f, zeroT);
-        thrustForce = baseThrustForce * thrustMul;
+        float thrustMultiplier = Mathf.Lerp(1f, 0.7f, Mathf.Clamp01(zeroT));
+        thrustForce = baseThrustForce * thrustMultiplier;
     }
 
     public void ResetLander()
     {
-        if (!sfxThrustSound) sfxThrustSound = AudioManager.Instance.CreateThrusterSound();
+        if (!rb) Init();
+        if (!sfxThrustSound && AudioManager.Instance)
+            sfxThrustSound = AudioManager.Instance.CreateThrusterSound();
 
         HandleThrustSound(false);
         controlsEnabled = false;
+        isThrusting = false;
 
         rb.bodyType = RigidbodyType2D.Static;
-        transform.rotation = Quaternion.Euler(0f, 0f, 0f);
+        rb.linearVelocity = Vector2.zero;
+        rb.angularVelocity = 0f;
+
+        transform.rotation = Quaternion.identity;
         targetRotation = 0f;
         steer01 = 0f;
         moonContact = false;
-        moonExitStableTimer = 0f;
+        fuelEmptyDelayCounter = 0f;
+        fuelEmptyTriggered = false;
+        deadZoneTriggered = false;
         deadZoneTimer = deadZoneExplodeDelay;
 
-        foreach (Transform t in thrustEffects)
-            t.localScale = new Vector3(t.localScale.x, 0f, t.localScale.z);
+        foreach (Transform effect in thrustEffects)
+            if (effect) effect.localScale = new Vector3(effect.localScale.x, 0f, effect.localScale.z);
 
-        GetComponent<SpriteRenderer>().enabled = true;
-        GetComponent<Collider2D>().enabled = true;
+        SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
+        if (spriteRenderer) spriteRenderer.enabled = true;
+
+        Collider2D col = GetComponent<Collider2D>();
+        if (col)
+        {
+            col.enabled = true;
+            col.isTrigger = false;
+        }
 
         SetRandomPosition();
         CalculateStartFuel(LandingPadPlacer.Instance.transform.position);
@@ -626,7 +712,7 @@ public class LanderController : MonoBehaviour
 
         targetRotation = 0f;
         steer01 = 0f;
-        transform.rotation = Quaternion.Euler(0f, 0f, 0f);
+        transform.rotation = Quaternion.identity;
         controlsEnabled = true;
         rb.bodyType = RigidbodyType2D.Dynamic;
         landerState = eLanderState.Flying;
@@ -636,42 +722,38 @@ public class LanderController : MonoBehaviour
 
     public void SetRandomPosition()
     {
-        var pad = LandingPadPlacer.Instance;
+        LandingPadPlacer pad = LandingPadPlacer.Instance;
         if (!pad) pad = FindFirstObjectByType<LandingPadPlacer>();
+        if (!pad) return;
 
         Vector2 padPos = pad.transform.position;
-        float levelFactor = GameController.Instance.level / 2f;
+        float levelFactor = GameController.Instance ? GameController.Instance.level / 2f : 0f;
 
         float xRange = maxDistanceXToPad + levelFactor;
         float yMin = minDistanceYToPad + levelFactor;
         float yMax = maxDistanceYToPad + levelFactor;
 
-        float x = padPos.x + Random.Range(-xRange, xRange);
-        float y = padPos.y + Random.Range(yMin, yMax);
-        y = Mathf.Max(y, minWorldY);
-
-        Vector2 newRandomPosition = new Vector2(x, y);
+        Vector2 candidate = new Vector2(
+            padPos.x + UnityEngine.Random.Range(-xRange, xRange),
+            Mathf.Max(padPos.y + UnityEngine.Random.Range(yMin, yMax), minWorldY));
 
         int safety = 0;
-        while (IsColliding(newRandomPosition) && safety < 200)
-        {
-            newRandomPosition.y += 2f;
-            safety++;
-        }
+        while (IsColliding(candidate) && safety++ < 200)
+            candidate.y += 2f;
 
-        if (IsColliding(newRandomPosition))
-            newRandomPosition = new Vector2(padPos.x, padPos.y + yMax + 20f);
+        if (IsColliding(candidate))
+            candidate = new Vector2(padPos.x, padPos.y + yMax + 20f);
 
-        transform.position = newRandomPosition;
+        transform.position = candidate;
     }
 
     public void CalculateStartFuel(Vector2 padPos)
     {
         float dist = Vector2.Distance(transform.position, padPos);
-        float levelFactor = GameController.Instance.level / 30f;
+        float levelFactor = GameController.Instance ? GameController.Instance.level / 30f : 0f;
         float buffer = Mathf.Max(0f, fuelBufferPercent - levelFactor);
 
-        fuelMax = dist * fuelPerUnit * (1f + buffer);
+        fuelMax = dist * fuelPerUnit * (1f + buffer) * Mathf.Max(0.1f, fuelCapacityMultiplier);
         currentFuel = fuelMax;
     }
 
@@ -682,18 +764,16 @@ public class LanderController : MonoBehaviour
 
         Vector2 centerOffset = (Vector2)(col.bounds.center - transform.position);
         Vector2 center = worldPos + centerOffset;
-        Vector2 ext = col.bounds.extents;
-        float radius = Mathf.Max(ext.x, ext.y) + clearance;
+        Vector2 extents = col.bounds.extents;
+        float radius = Mathf.Max(extents.x, extents.y) + clearance;
 
-        var hits = Physics2D.OverlapCircleAll(center, radius);
-        foreach (var h in hits)
+        Collider2D[] hits = Physics2D.OverlapCircleAll(center, radius);
+        foreach (Collider2D hit in hits)
         {
-            if (!h) continue;
-            if (h.transform == transform) continue;
-            if (h.isTrigger) continue;
-
+            if (!hit || hit.transform == transform || hit.isTrigger) continue;
             return true;
         }
+
         return false;
     }
 
@@ -703,9 +783,11 @@ public class LanderController : MonoBehaviour
         if (!isActive) return;
 
         Collider2D col = GetComponent<Collider2D>();
-        Vector2 offset = col ? (Vector2)(col.bounds.center - transform.position) : Vector2.zero;
-        Vector2 ext = col.bounds.extents;
-        float radius = Mathf.Max(ext.x, ext.y) + clearance;
+        if (!col) return;
+
+        Vector2 offset = (Vector2)(col.bounds.center - transform.position);
+        Vector2 extents = col.bounds.extents;
+        float radius = Mathf.Max(extents.x, extents.y) + clearance;
 
         Gizmos.color = Color.cyan;
         Gizmos.DrawWireSphere((Vector2)transform.position + offset, radius);
