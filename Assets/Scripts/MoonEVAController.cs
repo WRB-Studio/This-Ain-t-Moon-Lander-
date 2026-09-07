@@ -1,4 +1,4 @@
-﻿using TMPro;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,86 +12,108 @@ public class MoonEVAController : MonoBehaviour
 
     [Header("UI")]
     public Button btnExit;
+    [SerializeField] float exitStableDelay = 0.4f;
 
-    [HideInInspector] public bool isOnMoonLanded = false;
-    LanderController lander;
+    [HideInInspector] public bool isOnMoonLanded;
     [HideInInspector] public GameObject astronaut;
+
+    LanderController enterTarget;
+    float exitStableTimer;
 
     void Awake() => Instance = this;
 
     public void Init()
     {
-        lander = LanderController.Instance;
+        HideAction();
+        exitStableTimer = 0f;
+    }
 
-        btnExit.onClick.RemoveAllListeners();
-        btnExit.onClick.AddListener(ExitLander);
-        btnExit.gameObject.SetActive(false);
+    void Update()
+    {
+        if (astronaut) return;
+
+        LanderController lander = LanderController.Active;
+        if (!lander || lander.landerState != LanderController.eLanderState.LandedMoon ||
+            !lander.IsMoonContact || lander.IsThrusting)
+        {
+            exitStableTimer = 0f;
+            HideAction();
+            return;
+        }
+
+        exitStableTimer += Time.deltaTime;
+        if (exitStableTimer >= exitStableDelay)
+            ShowExitAction();
+    }
+
+    public void ResetRunState()
+    {
+        if (astronaut)
+            Destroy(astronaut);
+
+        astronaut = null;
+        enterTarget = null;
+        isOnMoonLanded = false;
+        exitStableTimer = 0f;
+        HideAction();
     }
 
     public void ExitLander()
     {
-        if (lander.landerState != LanderController.eLanderState.LandedMoon) return;
+        LanderController lander = LanderController.Active;
+        if (!lander || lander.landerState != LanderController.eLanderState.LandedMoon) return;
 
-        // Renderer Breite vom Lander holen
-        var rend = lander.GetComponentInChildren<Renderer>();
-        float halfWidth = rend.bounds.extents.x;
-
-        // Zufällig links oder rechts
+        Renderer renderer = lander.GetComponentInChildren<Renderer>();
+        float halfWidth = renderer ? renderer.bounds.extents.x : 0.5f;
         float side = Random.value < 0.5f ? -1f : 1f;
-
-        // Kleine Extra-Luft
         float extra = 0.5f;
 
-        // Spawnposition relativ zum Lander
         Vector3 spawnPos = lander.transform.position +
-                           lander.transform.right * side * (halfWidth + halfWidth * 0.5f + extra);
+                           lander.transform.right * side * (halfWidth * 1.5f + extra);
 
         astronaut = Instantiate(astronautPrefab, spawnPos, Quaternion.identity, astronautParent);
 
-        // Lander "parken"
         lander.controlsEnabled = false;
-        lander.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static;
-        lander.GetComponent<Collider2D>().isTrigger = true;
+        lander.rb.bodyType = RigidbodyType2D.Static;
 
-        CameraController.Instance.SetTarget(astronaut.transform);
-        StarField.Instance.SetTarget(astronaut.transform);
+        Collider2D collider = lander.GetComponent<Collider2D>();
+        if (collider) collider.isTrigger = true;
 
-        btnExit.gameObject.SetActive(false);
+        HideAction();
         LanderUI.Instance.HideGameOver();
+        GameController.Instance.SetControlledTarget(astronaut.transform, GameController.GamePhase.EVA, true);
     }
 
     public void EnterLander(LanderController newLander)
     {
-        if (astronaut == null) return;
+        if (!astronaut || !newLander) return;
 
         Destroy(astronaut);
         astronaut = null;
+        enterTarget = null;
 
-        if (newLander != lander)
+        if (newLander != LanderController.Active)
         {
             LanderController.ChangeLander(newLander);
-            lander = newLander;
         }
         else
         {
-            lander.controlsEnabled = true;
-            lander.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
-            lander.GetComponent<Collider2D>().isTrigger = false;
+            newLander.controlsEnabled = true;
+            newLander.rb.bodyType = RigidbodyType2D.Dynamic;
 
-            CameraController.Instance.SetTarget(lander.transform);
+            Collider2D collider = newLander.GetComponent<Collider2D>();
+            if (collider) collider.isTrigger = false;
         }
 
-        StarField.Instance.SetTarget(lander.transform);
-
-        btnExit.GetComponentInChildren<TMP_Text>().text = "Exit Lander";
-        btnExit.onClick.RemoveAllListeners();
-        btnExit.onClick.AddListener(ExitLander);
-        btnExit.gameObject.SetActive(true);
+        HideAction();
+        exitStableTimer = 0f;
+        GameController.Instance.SetControlledTarget(LanderController.Active.transform, GameController.GamePhase.SpaceFlight, true);
 
         if (newLander.isSecretLander && !LanderChooserManager.Instance.IsSecretFound(newLander.landerIndex))
         {
             LanderChooserManager.Instance.UnlockSecret(newLander.landerIndex);
-            if (LanderController.Instance.landerState == LanderController.eLanderState.LandedMoon)
+
+            if (LanderController.Active.landerState == LanderController.eLanderState.LandedMoon)
             {
                 StoryTextController.Instance.Show("Guess the moon landing was real after all.");
                 StoryTextController.Instance.Show("Okay… maybe this is a Moon Lander game. 😄");
@@ -99,5 +121,46 @@ public class MoonEVAController : MonoBehaviour
         }
     }
 
+    public void ShowEnterLander(LanderController target)
+    {
+        if (!astronaut || !target || !btnExit) return;
 
+        enterTarget = target;
+        TMP_Text text = btnExit.GetComponentInChildren<TMP_Text>();
+        if (text) text.text = "Enter Lander";
+
+        btnExit.onClick.RemoveAllListeners();
+        btnExit.onClick.AddListener(() => EnterLander(target));
+        btnExit.gameObject.SetActive(true);
+        LanderUI.Instance.SetPanelBottomCenter();
+    }
+
+    public void HideEnterLander(LanderController target)
+    {
+        if (enterTarget != target) return;
+
+        enterTarget = null;
+        HideAction();
+    }
+
+    void ShowExitAction()
+    {
+        if (!btnExit || btnExit.gameObject.activeSelf && enterTarget == null) return;
+
+        enterTarget = null;
+        TMP_Text text = btnExit.GetComponentInChildren<TMP_Text>();
+        if (text) text.text = "Exit Lander";
+
+        btnExit.onClick.RemoveAllListeners();
+        btnExit.onClick.AddListener(ExitLander);
+        btnExit.gameObject.SetActive(true);
+    }
+
+    public void HideAction()
+    {
+        if (!btnExit) return;
+
+        btnExit.onClick.RemoveAllListeners();
+        btnExit.gameObject.SetActive(false);
+    }
 }
