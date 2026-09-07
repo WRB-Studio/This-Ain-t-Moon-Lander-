@@ -141,6 +141,16 @@ public class LanderChooserManager : MonoBehaviour
                data.GetFlag(LEGACY_SECRET_KEY + index);
     }
 
+    public bool IsSecretFound(LanderController lander)
+    {
+        if (!lander) return false;
+
+        int index = FindIndexById(lander.LanderId);
+        if (index >= 0) return IsSecretFound(index);
+
+        return SaveLoadManager.Instance.Data.GetFlag(LEGACY_SECRET_KEY + lander.landerIndex);
+    }
+
     public void UnlockSecret(int index)
     {
         if (!IsValidIndex(index)) return;
@@ -148,6 +158,22 @@ public class LanderChooserManager : MonoBehaviour
         SaveGame data = SaveLoadManager.Instance.Data;
         data.SetFlag(SECRET_KEY + GetPreset(index).LanderId, true);
         data.SetFlag(LEGACY_SECRET_KEY + index, true);
+        SaveLoadManager.Instance.Save();
+        RefreshChooser();
+    }
+
+    public void UnlockSecret(LanderController lander)
+    {
+        if (!lander) return;
+
+        int index = FindIndexById(lander.LanderId);
+        if (index >= 0)
+        {
+            UnlockSecret(index);
+            return;
+        }
+
+        SaveLoadManager.Instance.Data.SetFlag(LEGACY_SECRET_KEY + lander.landerIndex, true);
         SaveLoadManager.Instance.Save();
         RefreshChooser();
     }
@@ -256,6 +282,10 @@ public class LanderChooserManager : MonoBehaviour
 
     void ApplyThrustEffects(GameObject current, GameObject prefab)
     {
+        LanderController active = LanderController.Active;
+        active.thrustEffects ??= new List<Transform>();
+        active.thrustEffects.Clear();
+
         for (int i = current.transform.childCount - 1; i >= 0; i--)
         {
             Transform child = current.transform.GetChild(i);
@@ -273,9 +303,8 @@ public class LanderChooserManager : MonoBehaviour
             copy.transform.localPosition = source.localPosition;
             copy.transform.localRotation = source.localRotation;
             copy.transform.localScale = source.localScale;
+            active.thrustEffects.Add(copy.transform);
         }
-
-        LanderController.Active.RefreshThrustEffects();
     }
 
     LanderController GetPreset(int index)
@@ -286,6 +315,8 @@ public class LanderChooserManager : MonoBehaviour
 
     int FindIndexById(string id)
     {
+        if (string.IsNullOrWhiteSpace(id) || landerPrefabs == null) return -1;
+
         for (int i = 0; i < landerPrefabs.Length; i++)
         {
             LanderController preset = GetPreset(i);
