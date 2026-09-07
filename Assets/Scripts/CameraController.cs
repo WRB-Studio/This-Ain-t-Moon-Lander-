@@ -17,7 +17,7 @@ public class CameraController : MonoBehaviour
     [SerializeField] float zoomOutDistance = 12f;
 
     [Header("ZeroG Zoom")]
-    [SerializeField] float zeroGMaxZoom = 10f;   // wie weit raus im All
+    [SerializeField] float zeroGMaxZoom = 10f;
     [SerializeField] float zeroGSmooth = 3f;
 
     [Header("Landing Moon Zoom")]
@@ -29,11 +29,12 @@ public class CameraController : MonoBehaviour
     [Header("Astronaut Zoom")]
     [SerializeField] float astronautZoom = 5.5f;
     [SerializeField] Vector3 astronautOffset = new Vector3(0f, 1.2f, -10f);
-    bool isAstronaut;
 
     Transform landingPad;
     Transform target;
     Camera cam;
+    Vector3 activeFollowOffset;
+    GameController.GamePhase targetPhase = GameController.GamePhase.LandingRun;
 
     void Awake() => Instance = this;
 
@@ -41,26 +42,47 @@ public class CameraController : MonoBehaviour
     {
         cam = GetComponent<Camera>();
         landingPad = LandingPadPlacer.Instance ? LandingPadPlacer.Instance.transform : null;
+        activeFollowOffset = followOffset;
     }
 
     void LateUpdate()
     {
         if (!target) return;
+
         FollowTarget();
         DistanceBasedZoom();
+    }
+
+    public void SetTarget(Transform newTarget, bool instantFocus = false)
+    {
+        GameController.GamePhase phase = GameController.Instance
+            ? GameController.Instance.Phase
+            : GameController.GamePhase.LandingRun;
+
+        SetTarget(newTarget, phase, instantFocus);
+    }
+
+    public void SetTarget(Transform newTarget, GameController.GamePhase phase, bool instantFocus = false)
+    {
+        target = newTarget;
+        targetPhase = phase;
+        activeFollowOffset = phase == GameController.GamePhase.EVA ? astronautOffset : followOffset;
+
+        if (instantFocus) SetInstantFocus();
     }
 
     public void SetInstantFocus()
     {
         if (!target) return;
+        if (!cam) cam = GetComponent<Camera>();
 
-        transform.position = target.position + followOffset + shakeOffset;
+        transform.position = target.position + activeFollowOffset + shakeOffset;
         cam.orthographicSize = CalcTargetZoom();
     }
 
     void FollowTarget()
     {
-        Vector3 desired = target.position + followOffset;
+        Vector3 desired = target.position + activeFollowOffset;
         Vector3 basePos = Vector3.Lerp(transform.position, desired, followSmooth * Time.deltaTime);
         transform.position = basePos + shakeOffset;
     }
@@ -68,83 +90,75 @@ public class CameraController : MonoBehaviour
     void DistanceBasedZoom()
     {
         float targetZoom = CalcTargetZoom();
-        cam.orthographicSize = Mathf.Lerp(cam.orthographicSize, targetZoom, zoomSmooth * Time.deltaTime);
+        float smooth = zoomSmooth;
+
+        GravityManager2D gm = GravityManager2D.Instance;
+        if (gm && target && !gm.IsMoonGravityActiveAt(target.position) && gm.GetZeroGravityBlendAt(target.position) > 0.001f)
+            smooth = zeroGSmooth;
+
+        cam.orthographicSize = Mathf.Lerp(cam.orthographicSize, targetZoom, smooth * Time.deltaTime);
     }
 
     float CalcTargetZoom()
     {
-        if (isAstronaut) return astronautZoom;
+        if (targetPhase == GameController.GamePhase.EVA)
+            return astronautZoom;
 
-        var gm = GravityManager2D.Instance;
+        if (!target) return maxZoom;
 
-        // 1) PAD: wenn in Reichweite -> ran zoomen
-        if (landingPad && target)
+        if (landingPad)
         {
-            float d = Vector2.Distance(target.position, landingPad.position);
-            if (d <= zoomOutDistance)
+            float distanceToPad = Vector2.Distance(target.position, landingPad.position);
+            if (distanceToPad <= zoomOutDistance)
             {
-                float t = Mathf.Clamp01(Mathf.InverseLerp(zoomInDistance, zoomOutDistance, d));
+                float t = Mathf.Clamp01(Mathf.InverseLerp(zoomInDistance, zoomOutDistance, distanceToPad));
                 return Mathf.Lerp(minZoom, maxZoom, t);
             }
         }
 
-        // 2) MOON SURFACE: nur wenn im Mondbereich + Oberfläche in Range -> ran zoomen
-        if (gm && target)
+        GravityManager2D gm = GravityManager2D.Instance;
+        if (gm)
         {
-            float distToCenter = Vector2.Distance(target.position, gm.transform.position);
-            float moonEnterT = Mathf.Clamp01(Mathf.InverseLerp(gm.moonEnterRadius, gm.moonFullRadius, distToCenter));
-
-            if (moonEnterT > 0.001f)
+            float moonT = gm.GetMoonBlendAt(target.position);
+            if (moonT > 0.001f)
             {
-                float surfaceDist = GetSurfaceDistance(gm.transform.position);
-                if (surfaceDist <= surfaceFarDist)
+                float surfaceDistance = GetSurfaceDistance(gm.transform.position);
+                if (surfaceDistance <= surfaceFarDist)
                 {
-                    float enterZoom = Mathf.Lerp(maxZoom, moonEnterMaxZoom, moonEnterT);
-
+                    float enterZoom = Mathf.Lerp(maxZoom, moonEnterMaxZoom, moonT);
                     float nearT = 1f - Mathf.Clamp01(
-                        Mathf.InverseLerp(surfaceNearDist, surfaceFarDist, surfaceDist)
-                    );
+                        Mathf.InverseLerp(surfaceNearDist, surfaceFarDist, surfaceDistance));
 
                     return Mathf.Lerp(enterZoom, moonSurfaceZoom, nearT);
                 }
             }
+
+            if (!gm.IsMoonGravityActiveAt(target.position))
+            {
+                float zeroT = gm.GetZeroGravityBlendAt(target.position);
+                if (zeroT > 0.001f)
+                    return Mathf.Lerp(maxZoom, zeroGMaxZoom, zeroT);
+            }
         }
 
-        // 3) ZERO-G: wenn zeroG -> raus zoomen auf zeroGMaxZoom
-        if (gm && target)
-        {
-            float zeroT = Mathf.Clamp01(Mathf.InverseLerp(gm.zeroGStartY, gm.zeroGFullY, target.position.y));
-            if (zeroT > 0.001f)
-                return Mathf.Lerp(maxZoom, zeroGMaxZoom, zeroT);
-        }
-
-        // 4) DEFAULT
         return maxZoom;
     }
 
-
     float GetSurfaceDistance(Vector3 moonCenter)
     {
+        if (!target) return surfaceFarDist;
+
         Vector2 origin = target.position;
-        Vector2 dir = ((Vector2)moonCenter - origin).normalized;
+        Vector2 direction = (Vector2)moonCenter - origin;
+        if (direction.sqrMagnitude < 0.0001f) return 0f;
 
-        RaycastHit2D[] hits = Physics2D.RaycastAll(origin, dir, 1000f);
-
-        foreach (var hit in hits)
+        RaycastHit2D[] hits = Physics2D.RaycastAll(origin, direction.normalized, 1000f);
+        foreach (RaycastHit2D hit in hits)
         {
-            if (hit.collider.CompareTag("Moon"))
+            if (hit.collider && hit.collider.CompareTag("Moon"))
                 return hit.distance;
         }
 
-        return surfaceFarDist; // fallback
-    }
-
-    public void SetTarget(Transform newTarget, bool instantFocus = false)
-    {
-        target = newTarget;
-        isAstronaut = MoonEVAController.Instance.astronaut != null;
-        followOffset = isAstronaut ? astronautOffset : new Vector3(0f, 2f, -10f);
-
-        if (instantFocus) SetInstantFocus();
+        return surfaceFarDist;
     }
 }
