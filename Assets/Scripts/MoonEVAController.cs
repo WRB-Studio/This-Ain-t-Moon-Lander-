@@ -80,8 +80,8 @@ public class MoonEVAController : MonoBehaviour
         if (collider) collider.isTrigger = true;
 
         HideAction();
-        LanderUI.Instance.HideGameOver();
         GameController.Instance.SetControlledTarget(astronaut.transform, GameController.GamePhase.EVA, true);
+        LanderUI.Instance.HideGameOver();
     }
 
     public void EnterLander(LanderController newLander)
@@ -108,10 +108,11 @@ public class MoonEVAController : MonoBehaviour
         HideAction();
         exitStableTimer = 0f;
         GameController.Instance.SetControlledTarget(LanderController.Active.transform, GameController.GamePhase.SpaceFlight, true);
+        LanderUI.Instance.HideGameOver();
 
-        if (newLander.isSecretLander && !LanderChooserManager.Instance.IsSecretFound(newLander.landerIndex))
+        if (newLander.isSecretLander && !LanderChooserManager.Instance.IsSecretFound(newLander))
         {
-            LanderChooserManager.Instance.UnlockSecret(newLander.landerIndex);
+            LanderChooserManager.Instance.UnlockSecret(newLander);
 
             if (LanderController.Active.landerState == LanderController.eLanderState.LandedMoon)
             {
@@ -145,7 +146,8 @@ public class MoonEVAController : MonoBehaviour
 
     void ShowExitAction()
     {
-        if (!btnExit || btnExit.gameObject.activeSelf && enterTarget == null) return;
+        if (!btnExit) return;
+        if (btnExit.gameObject.activeSelf && enterTarget == null) return;
 
         enterTarget = null;
         TMP_Text text = btnExit.GetComponentInChildren<TMP_Text>();
