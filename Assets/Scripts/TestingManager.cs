@@ -4,12 +4,11 @@ using UnityEditor.SceneManagement;
 #endif
 using UnityEngine;
 
-
 public class TestingManager : MonoBehaviour
 {
     [Header("Editor Behavior")]
     public bool autoFocus = true;
-    public bool autoSelect = false;
+    public bool autoSelect;
 
     [Header("Highlight Gizmo")]
     public float highlightSeconds = 2f;
@@ -23,92 +22,73 @@ public class TestingManager : MonoBehaviour
     [HideInInspector] public GameObject highlightObject;
     [HideInInspector] public float highlightUntil;
 
-    private void OnValidate()
+    void OnValidate()
     {
         if (!landingPadPlacer)
             landingPadPlacer = FindFirstObjectByType<LandingPadPlacer>();
 
         if (!lander)
-            lander = FindFirstObjectByType<LanderController>();
+            lander = LanderController.Active ? LanderController.Active : FindFirstObjectByType<LanderController>();
     }
 
     void OnDrawGizmos()
     {
-        if (!highlightObject) return;
-        if (Time.realtimeSinceStartup > highlightUntil) return;
+        if (!highlightObject || Time.realtimeSinceStartup > highlightUntil) return;
 
-        // Puls (optional, aber mega sichtbar)
         float pulse = 1f + Mathf.Sin(Time.realtimeSinceStartup * 10f) * 0.15f;
-        float r = highlightRadius * pulse;
+        float radius = highlightRadius * pulse;
 
         Gizmos.color = new Color(1f, 0.6f, 0f, 1f);
-        Gizmos.DrawWireSphere(highlightObject.transform.position, r);
-        Gizmos.DrawWireSphere(highlightObject.transform.position, r * 0.6f);
+        Gizmos.DrawWireSphere(highlightObject.transform.position, radius);
+        Gizmos.DrawWireSphere(highlightObject.transform.position, radius * 0.6f);
     }
 #endif
 }
 
 #if UNITY_EDITOR
-
 [CustomEditor(typeof(TestingManager))]
 public class TestingManagerEditor : Editor
 {
     public override void OnInspectorGUI()
     {
         DrawDefaultInspector();
-        var tm = (TestingManager)target;
+        TestingManager manager = (TestingManager)target;
 
-        GUILayout.Space(10);
+        GUILayout.Space(10f);
 
-        GUI.enabled = tm.landingPadPlacer;
+        GUI.enabled = manager.landingPadPlacer;
         if (GUILayout.Button("New Random LandingPad Position"))
         {
-            tm.landingPadPlacer.SetRandomPlaceForPad();
-            tm.landingPadPlacer.PlacePad();
-
-            MarkDirty(tm.landingPadPlacer.gameObject, tm);
-            Highlight(tm, tm.landingPadPlacer.gameObject);
-            FocusAndSelect(tm, tm.landingPadPlacer.gameObject);
+            manager.landingPadPlacer.SetRandomPlaceForPad();
+            MarkAndFocus(manager, manager.landingPadPlacer.gameObject);
         }
 
-        GUI.enabled = tm.lander;
+        GUI.enabled = manager.lander;
         if (GUILayout.Button("Set Random Lander Position"))
         {
-            tm.lander.SetRandomPosition();
-
-            MarkDirty(tm.lander.gameObject, tm);
-            Highlight(tm, tm.lander.gameObject);
-            FocusAndSelect(tm, tm.lander.gameObject);
+            manager.lander.SetRandomPosition();
+            MarkAndFocus(manager, manager.lander.gameObject);
         }
 
         GUI.enabled = true;
     }
 
-    static void Highlight(TestingManager tm, GameObject go)
+    static void MarkAndFocus(TestingManager manager, GameObject go)
     {
-        tm.highlightObject = go;
-        tm.highlightUntil = Time.realtimeSinceStartup + tm.highlightSeconds;
+        manager.highlightObject = go;
+        manager.highlightUntil = Time.realtimeSinceStartup + manager.highlightSeconds;
 
-        // SceneView neu zeichnen, damit man den Highlight sofort sieht
+        EditorUtility.SetDirty(go);
+        EditorSceneManager.MarkSceneDirty(manager.gameObject.scene);
         SceneView.RepaintAll();
-    }
 
-    static void FocusAndSelect(TestingManager tm, GameObject go)
-    {
-        if (tm.autoFocus)
+        if (manager.autoFocus)
             SceneView.lastActiveSceneView?.LookAt(go.transform.position);
 
-        if (tm.autoSelect)
-        {
-            Selection.activeGameObject = go;
-            EditorGUIUtility.PingObject(go);
-        }
-    }
+        if (!manager.autoSelect) return;
 
-    static void MarkDirty(GameObject go, TestingManager tm)
-    {
-        EditorUtility.SetDirty(go);
-        EditorSceneManager.MarkSceneDirty(tm.gameObject.scene);
+        Selection.activeGameObject = go;
+        EditorGUIUtility.PingObject(go);
     }
 }
 #endif
