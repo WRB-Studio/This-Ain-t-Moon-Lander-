@@ -10,70 +10,72 @@ public class StarField : MonoBehaviour
     public float parallax = 0.05f;
 
     Transform target;
-    ParticleSystem ps;
+    ParticleSystem particleSystemRef;
     ParticleSystem.Particle[] stars;
 
-    void Awake()
-    {
-        Instance = this;
-    }
+    void Awake() => Instance = this;
 
     public void Init()
     {
-        ps = GetComponent<ParticleSystem>();
+        particleSystemRef = GetComponent<ParticleSystem>();
 
-        var main = ps.main;
+        ParticleSystem.MainModule main = particleSystemRef.main;
         main.loop = false;
-        main.startSpeed = 0;
+        main.startSpeed = 0f;
         main.startLifetime = Mathf.Infinity;
         main.maxParticles = starCount;
         main.simulationSpace = ParticleSystemSimulationSpace.World;
 
-        ps.Emit(starCount);
+        particleSystemRef.Clear();
+        particleSystemRef.Emit(starCount);
+
         stars = new ParticleSystem.Particle[starCount];
-        ps.GetParticles(stars);
+        particleSystemRef.GetParticles(stars);
 
         for (int i = 0; i < stars.Length; i++)
             RespawnStar(i);
 
-        ps.SetParticles(stars, stars.Length);
+        particleSystemRef.SetParticles(stars, stars.Length);
     }
 
     void LateUpdate()
     {
-        if (!target) return;
+        if (!target || stars == null) return;
 
-        // Starfeld folgt dem Lander (parallax)
-        transform.position = Vector3.Lerp(
-            transform.position,
-            target.position,
-            parallax);
-
+        transform.position = Vector3.Lerp(transform.position, target.position, parallax);
         RecycleStars();
     }
 
-    public void SetTarget(Transform newTarget)
+    public void SetTarget(Transform newTarget, bool instant = false)
     {
         target = newTarget;
+        if (instant && target)
+            transform.position = target.position;
     }
 
     void RecycleStars()
     {
-        Vector3 center = transform.position;
+        Vector2 center = transform.position;
+        float maxDistanceSqr = radius * radius;
+        bool changed = false;
 
         for (int i = 0; i < stars.Length; i++)
         {
-            if (Vector2.Distance(stars[i].position, center) > radius)
-                RespawnStar(i);
+            Vector2 delta = (Vector2)stars[i].position - center;
+            if (delta.sqrMagnitude <= maxDistanceSqr) continue;
+
+            RespawnStar(i);
+            changed = true;
         }
 
-        ps.SetParticles(stars, stars.Length);
+        if (changed)
+            particleSystemRef.SetParticles(stars, stars.Length);
     }
 
-    void RespawnStar(int i)
+    void RespawnStar(int index)
     {
-        Vector2 p = Random.insideUnitCircle * radius;
-        stars[i].position = (Vector3)p + transform.position;
-        stars[i].startSize = Random.Range(0.02f, 0.06f);
+        Vector2 position = Random.insideUnitCircle * radius;
+        stars[index].position = (Vector3)position + transform.position;
+        stars[index].startSize = Random.Range(0.02f, 0.06f);
     }
 }
