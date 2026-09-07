@@ -1,7 +1,6 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -27,12 +26,9 @@ public class LanderUI : MonoBehaviour
     public Transform navigationGrp;
     public RectTransform indicatorPad;
     public RectTransform indicatorMoon;
-
-    public float maxXRange = 10f;         // ab wann ganz links/rechts
-    public float fadeDistance = 1.5f;     // unterhalb wird ausgeblendet
-    public float maxOffset = 120f;        // UI-Pixel nach links/rechts
-    Image imgIndicatorPad;
-    Image imgIndicatorMoon;
+    public float maxXRange = 10f;
+    public float fadeDistance = 1.5f;
+    public float maxOffset = 120f;
 
     [Header("Indicator Scale")]
     public Vector3 indicatorNormalScale = Vector3.one;
@@ -49,24 +45,28 @@ public class LanderUI : MonoBehaviour
     public float maxCheckDistance = 50f;
 
     [Header("Live Landing Status")]
-    public float statusCheckAltitude = 3.0f;
+    public float statusCheckAltitude = 3f;
     public float warnMultiplier = 1.6f;
 
     [Header("Debug")]
     public bool showRay = true;
     public float gizmoRadius = 0.06f;
 
-    private ScoringController scoring;
-    private LandingPadPlacer landingPad;
-    private LanderController lander => LanderController.Instance;
-    private bool hasHit;
-    private RaycastHit2D hit;
-    private bool showDeadZoneWarning;
+    ScoringController scoring;
+    LandingPadPlacer landingPad;
+    Image imgIndicatorPad;
+    Image imgIndicatorMoon;
+    bool hasHit;
+    RaycastHit2D hit;
+    bool showDeadZoneWarning;
+    bool isGameOver;
+    string currentDeadZoneWarningMessage;
+    Coroutine endRoutine;
+    Coroutine countdownRoutine;
 
-    private bool isGameOver;
+    LanderController lander => LanderController.Active;
 
-    Dictionary<LanderController.eLanderState, string[]> stateMessages =
-    new Dictionary<LanderController.eLanderState, string[]>
+    readonly Dictionary<LanderController.eLanderState, string[]> stateMessages = new()
     {
         {
             LanderController.eLanderState.LandedPad, new[]
@@ -187,265 +187,229 @@ public class LanderUI : MonoBehaviour
         "DANGER: NAV LIMIT"
     };
 
-    private string currentDeadZoneWarningMessage;
-
-
-    void Awake()
-    {
-        Instance = this;
-    }
+    void Awake() => Instance = this;
 
     public void Init()
     {
         scoring = ScoringController.Instance;
         landingPad = LandingPadPlacer.Instance;
-        imgIndicatorPad = indicatorPad.GetComponent<Image>();
-        imgIndicatorMoon = indicatorMoon.GetComponent<Image>();
+        imgIndicatorPad = indicatorPad ? indicatorPad.GetComponent<Image>() : null;
+        imgIndicatorMoon = indicatorMoon ? indicatorMoon.GetComponent<Image>() : null;
 
         ShowHideDeadZoneWarning(false);
-        txtGameOverTitle.gameObject.SetActive(false);
-        txtScore.gameObject.SetActive(false);
-        txtXPScore.gameObject.SetActive(false);
+        SetEndTextsVisible(false);
 
         btnRestart.gameObject.SetActive(false);
+        btnRestart.onClick.RemoveAllListeners();
         btnRestart.onClick.AddListener(OnRestartClicked);
     }
 
 #if UNITY_EDITOR
     void OnValidate()
     {
-        if (!txtLanderInfos) return;
-
-        //show case in editor mode
+        if (!txtLanderInfos || !txtLanderFuel) return;
 
         int half = blocks / 2;
         string bar = "";
-
         for (int i = 0; i < blocks; i++)
             bar += i < half ? fullBlock : emptyBlock;
 
         txtLanderFuel.text = $"FUEL  {bar}\n";
+        txtLanderInfos.text = "SPD   3\nANG   8°\nALT   ---\nSTAT  OK";
 
-        txtLanderInfos.text =
-                    $"SPD   3\n" +
-                    $"ANG   8°\n" +
-                    $"ALT   ---\n" +
-                    $"STAT  OK";
+        if (!txtGameOverTitle || !txtGameOverMessage || !txtScore) return;
 
-        if (txtGameOverTitle && txtGameOverMessage && txtScore)
-        {
-            txtGameOverTitle.text =
-                "LANDED\n\n";
+        txtGameOverTitle.text = "LANDED\n\n";
+        txtGameOverMessage.text = "Here is a little message for you!";
+        txtScore.text =
+            "SUCCESS +999\n" +
+            "SPEED   +999\n" +
+            "ANGLE   +999\n" +
+            "CENTER  +999\n" +
+            "FUEL    +999\n" +
+            "TIME    +999\n" +
+            "────────────\n" +
+            "SCORE   999\n\nBEST    999\n";
 
-            txtGameOverMessage.text =
-                "Here is a little message for you!";
-
-            txtScore.text =
-                $"SUCCESS +999\n" +
-                $"SPEED   +999\n" +
-                $"ANGLE   +999\n" +
-                $"CENTER  +999\n" +
-                $"FUEL    +999\n" +
-                $"TIME    +999\n" +
-                "────────────\n" +
-                $"SCORE   999\n" +
-                $"\nBEST    999\n";
-
-            txtGameOverTitle.gameObject.SetActive(true);
-        }
+        txtGameOverTitle.gameObject.SetActive(true);
     }
 #endif
 
     void Update()
     {
-        RefreshLanderFuel();
-        RefreshLanderInfos();
-        ShowRayEditorVisuals();
-        UpdateNav(landingPad.transform, indicatorPad, imgIndicatorPad);
-        UpdateNav(GravityManager2D.Instance.transform, indicatorMoon, imgIndicatorMoon);
-        UpdateIndicatorScales();
+        if (!lander) return;
 
-        if (showDeadZoneWarning)
+        if (!isGameOver && GameController.Instance && GameController.Instance.Phase != GameController.GamePhase.EVA)
         {
-            txtGameOverTitle.text = currentDeadZoneWarningMessage;
-            txtGameOverMessage.text = Mathf.CeilToInt(lander.deadZoneTimer).ToString();
-            if (lander.deadZoneTimer <= 0)
-                ShowHideDeadZoneWarning(false);
+            RefreshLanderFuel();
+            RefreshLanderInfos();
+            ShowRayEditorVisuals();
+
+            if (landingPad) UpdateNav(landingPad.transform, indicatorPad, imgIndicatorPad);
+            if (GravityManager2D.Instance) UpdateNav(GravityManager2D.Instance.transform, indicatorMoon, imgIndicatorMoon);
+            UpdateIndicatorScales();
         }
+
+        if (!showDeadZoneWarning) return;
+
+        txtGameOverTitle.text = currentDeadZoneWarningMessage;
+        txtGameOverMessage.text = Mathf.CeilToInt(lander.deadZoneTimer).ToString();
+        if (lander.deadZoneTimer <= 0f)
+            ShowHideDeadZoneWarning(false);
     }
 
     public void ShowHideDeadZoneWarning(bool show)
     {
+        showDeadZoneWarning = show;
+
         if (show)
         {
-            showDeadZoneWarning = true;
             currentDeadZoneWarningMessage = GetRandomDeadZoneWarning() + "\n\n";
             txtGameOverTitle.color = Color.red;
-            txtGameOverTitle.gameObject.SetActive(true);
             txtGameOverMessage.color = Color.red;
+            txtGameOverTitle.gameObject.SetActive(true);
             txtGameOverMessage.gameObject.SetActive(true);
         }
         else
         {
-            showDeadZoneWarning = false;
             txtGameOverTitle.color = Color.white;
-            txtGameOverTitle.gameObject.SetActive(false);
             txtGameOverMessage.color = Color.white;
+            txtGameOverTitle.gameObject.SetActive(false);
             txtGameOverMessage.gameObject.SetActive(false);
         }
     }
 
-    bool TryGetAltitude(out float altitude, out RaycastHit2D hit)
+    bool TryGetAltitude(out float altitude, out RaycastHit2D result)
     {
-        Vector2 g = Physics2D.gravity;
-        if (g.sqrMagnitude < 0.0001f)
+        Vector2 gravity = lander.CurrentGravity;
+        if (gravity.sqrMagnitude < 0.0001f)
         {
             altitude = 0f;
-            hit = default;
+            result = default;
             return false;
         }
 
-        Vector2 downDir = g.normalized;
-        Vector2 origin = lander.rb.position; // exakt Schiffsmitte
-
+        Vector2 downDir = gravity.normalized;
+        Vector2 origin = lander.rb.position;
         RaycastHit2D[] hits = Physics2D.RaycastAll(origin, downDir, maxCheckDistance);
 
-        foreach (var h in hits)
+        foreach (RaycastHit2D candidate in hits)
         {
-            if (!h.collider) continue;
+            if (!candidate.collider) continue;
+            if (candidate.collider.attachedRigidbody == lander.rb) continue;
+            if (candidate.collider.isTrigger) continue;
 
-            // Eigenes Schiff ignorieren
-            if (h.collider.attachedRigidbody == lander.rb) continue;
-            if (h.collider.isTrigger) continue;
-
-            hit = h;
-            altitude = h.distance;
+            result = candidate;
+            altitude = candidate.distance;
             return true;
         }
 
         altitude = 0f;
-        hit = default;
+        result = default;
         return false;
     }
 
-    private void RefreshLanderFuel()
+    void RefreshLanderFuel()
     {
-        if (isGameOver) return;
-
-        float fuelT = lander.currentFuel / lander.fuelMax;
+        float fuelT = lander.Fuel01;
         int filled = Mathf.RoundToInt(fuelT * blocks);
 
         string bar = "";
         for (int i = 0; i < blocks; i++)
             bar += i < filled ? fullBlock : emptyBlock;
 
-        // Farbe bestimmen
         Color fuelColor = Color.white;
-
         if (fuelT < 0.25f)
         {
-            // sanfter Puls Richtung Rot
             float pulse = 0.5f + Mathf.Sin(Time.time * 4f) * 0.5f;
             fuelColor = Color.Lerp(Color.yellow, Color.red, pulse);
         }
-        else if (fuelT < 0.5f)
-        {
-            fuelColor = Color.white;
-        }
 
-        // Text setzen
         txtLanderFuel.text = $"FUEL  {bar}\n";
         txtLanderFuel.color = fuelColor;
     }
 
-    private void RefreshLanderInfos()
+    void RefreshLanderInfos()
     {
-        if (isGameOver) return;
+        Vector2 gravity = lander.CurrentGravity;
+        bool hasGravity = gravity.sqrMagnitude > 0.001f;
+        int speed = Mathf.RoundToInt(lander.currentSpeed);
 
-        // Speed
-        int speedI = Mathf.RoundToInt(lander.currentSpeed);
-
-        // Gravity state
-        Vector2 g = Physics2D.gravity;
-        bool hasGravity = g.sqrMagnitude > 0.001f;
-
-        // Angle (nur sinnvoll mit Gravity)
-        string angleStr = hasGravity
-            ? $"ANG   {Mathf.RoundToInt(Mathf.Abs(Mathf.DeltaAngle(0f, lander.rb.rotation)))}°\n"
-            : "";
-
-        // Altitude
-        hasHit = TryGetAltitude(out float altitude, out hit);
-        string altText = hasHit ? Mathf.RoundToInt(altitude).ToString() : "---";
-
-        // Grav display (optional nur wenn nicht baseGravity / oder nur wenn !hasGravity etc.)
-        string gravStr = "";
-        if (lander.transform.position.y > GravityManager2D.Instance.zeroGStartY)
+        string angleStr = "";
+        float angle = 0f;
+        if (hasGravity)
         {
-            // optional: magnitude statt nur y, weil Mondgravity nicht "y" ist
-            gravStr = $"GRAV  {g.magnitude:F2}";
+            angle = GetGravityRelativeAngle(gravity);
+            angleStr = $"ANG   {Mathf.RoundToInt(angle)}°\n";
         }
 
-        // Status (nur wenn wir wirklich Boden "unten" haben)
+        hasHit = TryGetAltitude(out float altitude, out hit);
+        string altitudeText = hasHit ? Mathf.RoundToInt(altitude).ToString() : "---";
+
+        string gravityText = "";
+        GravityManager2D gm = GravityManager2D.Instance;
+        if (gm && (gm.GetZeroGravityBlendAt(lander.transform.position) > 0.001f || gm.IsMoonGravityActiveAt(lander.transform.position)))
+            gravityText = $"GRAV  {gravity.magnitude:F2}";
+
         string status = "---";
         if (hasGravity && hasHit && altitude <= statusCheckAltitude)
         {
-            float speed = lander.rb.linearVelocity.magnitude;
-            float angle = Mathf.Abs(Mathf.DeltaAngle(0f, lander.rb.rotation));
-
-            bool ok = speed <= lander.safeSpeed && angle <= lander.safeAngleDeg;
-            bool warn = speed <= lander.safeSpeed * warnMultiplier &&
+            float currentSpeed = lander.rb.linearVelocity.magnitude;
+            bool ok = currentSpeed <= lander.safeSpeed && angle <= lander.safeAngleDeg;
+            bool warn = currentSpeed <= lander.safeSpeed * warnMultiplier &&
                         angle <= lander.safeAngleDeg * warnMultiplier;
 
-            status = ok ? "OK" : (warn ? "WARN" : "DANGER");
+            status = ok ? "OK" : warn ? "WARN" : "DANGER";
         }
 
-        // Final text
         txtLanderInfos.text =
-            $"SPD   {speedI}\n" +
+            $"SPD   {speed}\n" +
             angleStr +
-            $"ALT   {altText}\n" +
-            (string.IsNullOrEmpty(gravStr) ? "" : gravStr + "\n") +
+            $"ALT   {altitudeText}\n" +
+            (string.IsNullOrEmpty(gravityText) ? "" : gravityText + "\n") +
             $"STAT  {status}";
     }
 
-
-    private void ShowRayEditorVisuals()
+    float GetGravityRelativeAngle(Vector2 gravity)
     {
-        if (showRay)
-        {
-            Vector2 origin = lander.rb.position + Vector2.down * rayOffset;
-            Vector2 end = hasHit ? hit.point : (origin + Vector2.down * maxCheckDistance);
-            Debug.DrawLine(origin, end, Color.green);
-        }
+        Vector2 up = -gravity.normalized;
+        float desired = Mathf.Atan2(up.y, up.x) * Mathf.Rad2Deg - 90f;
+        return Mathf.Abs(Mathf.DeltaAngle(desired, lander.rb.rotation));
     }
 
-    void UpdateNav(Transform target, RectTransform indicator, Image imgIndicator)
+    void ShowRayEditorVisuals()
     {
-        if (!target || !lander) return;
+        if (!showRay || lander.CurrentGravity.sqrMagnitude < 0.0001f) return;
 
-        float dx = target.position.x - lander.transform.position.x;
+        Vector2 downDir = lander.CurrentGravity.normalized;
+        Vector2 origin = lander.rb.position + downDir * rayOffset;
+        Vector2 end = hasHit ? hit.point : origin + downDir * maxCheckDistance;
+        Debug.DrawLine(origin, end, Color.green);
+    }
 
-        // Position
+    void UpdateNav(Transform navTarget, RectTransform indicator, Image image)
+    {
+        if (!navTarget || !indicator || !image || !lander) return;
+
+        float dx = navTarget.position.x - lander.transform.position.x;
         float t = Mathf.Clamp(dx / maxXRange, -1f, 1f);
-        indicator.anchoredPosition =
-            new Vector2(t * maxOffset, indicator.anchoredPosition.y);
+        indicator.anchoredPosition = new Vector2(t * maxOffset, indicator.anchoredPosition.y);
 
-        // Fade (nah = unsichtbar)
-        float a = Mathf.InverseLerp(0f, fadeDistance, Mathf.Abs(dx));
-        var c = imgIndicator.color;
-        c.a = a;
-        imgIndicator.color = c;
+        float alpha = Mathf.InverseLerp(0f, fadeDistance, Mathf.Abs(dx));
+        Color color = image.color;
+        color.a = alpha;
+        image.color = color;
     }
 
     void UpdateIndicatorScales()
     {
-        float y = lander.transform.position.y;
-        bool inSpace = y >= GravityManager2D.Instance.zeroGFullY;
+        if (!indicatorPad || !indicatorMoon || !GravityManager2D.Instance) return;
+
+        bool inSpace = GravityManager2D.Instance.GetZeroGravityBlendAt(lander.transform.position) >= 0.99f &&
+                       !GravityManager2D.Instance.IsMoonGravityActiveAt(lander.transform.position);
 
         Vector3 padTarget = inSpace ? indicatorSmallScale : indicatorNormalScale;
         Vector3 moonTarget = inSpace ? indicatorNormalScale : indicatorSmallScale;
-
         float k = 1f - Mathf.Exp(-indicatorScaleSmooth * Time.deltaTime);
 
         indicatorPad.localScale = Vector3.Lerp(indicatorPad.localScale, padTarget, k);
@@ -455,26 +419,24 @@ public class LanderUI : MonoBehaviour
     public void ShowGameOver(LanderController.eLanderState state, bool isMoonLanded = false)
     {
         isGameOver = true;
-        StartCoroutine(ShowEndRoutine(state, isMoonLanded));
+
+        if (endRoutine != null) StopCoroutine(endRoutine);
+        endRoutine = StartCoroutine(ShowEndRoutine(state, isMoonLanded));
     }
 
-    private IEnumerator ShowEndRoutine(LanderController.eLanderState state, bool isMoon)
+    IEnumerator ShowEndRoutine(LanderController.eLanderState state, bool isMoon)
     {
         yield return new WaitForSeconds(1.5f);
+        endRoutine = null;
+
+        if (!isGameOver) yield break;
 
         ShowHideDeadZoneWarning(false);
-
-        txtLanderFuel.gameObject.SetActive(false);
-        txtLanderInfos.gameObject.SetActive(false);
-        navigationGrp.gameObject.SetActive(false);
-
-        txtGameOverTitle.gameObject.SetActive(false);
-        txtGameOverMessage.gameObject.SetActive(false);
-        txtScore.gameObject.SetActive(false);
+        SetGameplayHudVisible(false);
+        SetEndTextsVisible(false);
 
         txtXPScore.gameObject.SetActive(true);
-        txtXPScore.text = "XP-SCORE " + ScoringController.Instance.CollectedScore;
-
+        txtXPScore.text = "XP-SCORE " + scoring.CollectedScore;
         txtGameOverMessage.text = GetRandomGameOverMessage(state);
 
         btnRestart.onClick.RemoveAllListeners();
@@ -500,14 +462,11 @@ public class LanderUI : MonoBehaviour
                     $"TIME    +{scoring.LastTimeScore}\n" +
                     $"★MOON★  +{scoring.LastMoonScore}\n" +
                     "────────────\n" +
-                    $"SCORE   {scoring.LastScore}\n" +
-                    $"\nBEST    {scoring.BestScore}\n";
+                    $"SCORE   {scoring.LastScore}\n\nBEST    {scoring.BestScore}\n";
 
-                bool canShowChooserOnMoon = LanderChooserManager.Instance.IsSecretFound(5);
-                LanderChooserManager.Instance.btnLanderChooser.gameObject.SetActive(canShowChooserOnMoon);
-                LanderChooserManager.Instance.panelChooser.gameObject.SetActive(canShowChooserOnMoon);
-
-                MoonEVAController.Instance.btnExit.gameObject.SetActive(true);
+                bool canShowChooser = LanderChooserManager.Instance.HasAnyUnlockedSecret();
+                LanderChooserManager.Instance.btnLanderChooser.gameObject.SetActive(canShowChooser);
+                LanderChooserManager.Instance.panelChooser.gameObject.SetActive(false);
             }
             else
             {
@@ -519,96 +478,102 @@ public class LanderUI : MonoBehaviour
                     $"FUEL    +{scoring.LastFuelScore}\n" +
                     $"TIME    +{scoring.LastTimeScore}\n" +
                     "────────────\n" +
-                    $"SCORE   {scoring.LastScore}\n" +
-                    $"\nBEST    {scoring.BestScore}\n";
+                    $"SCORE   {scoring.LastScore}\n\nBEST    {scoring.BestScore}\n";
             }
 
-            btnRestart.transform.GetChild(0).GetComponent<TMP_Text>().text = "Next Level";
+            SetRestartLabel("Next Level");
             btnRestart.onClick.AddListener(OnNextClicked);
         }
         else
         {
             SetPanelCenter();
-
             txtGameOverTitle.gameObject.SetActive(true);
             txtGameOverMessage.gameObject.SetActive(true);
 
-            btnRestart.transform.GetChild(0).GetComponent<TMP_Text>().text = "Try Again";
+            SetRestartLabel("Try Again");
             btnRestart.onClick.AddListener(OnRestartClicked);
         }
 
         RefreshPanel();
     }
 
+    void SetRestartLabel(string label)
+    {
+        TMP_Text text = btnRestart.GetComponentInChildren<TMP_Text>();
+        if (text) text.text = label;
+    }
+
+    void SetEndTextsVisible(bool visible)
+    {
+        txtGameOverTitle.gameObject.SetActive(visible);
+        txtGameOverMessage.gameObject.SetActive(visible);
+        txtScore.gameObject.SetActive(visible);
+        txtXPScore.gameObject.SetActive(visible);
+    }
+
+    void SetGameplayHudVisible(bool visible)
+    {
+        txtLanderFuel.gameObject.SetActive(visible);
+        txtLanderInfos.gameObject.SetActive(visible);
+        navigationGrp.gameObject.SetActive(visible);
+    }
+
     public void SetPanelTopCenter()
     {
-        RectTransform rt = panelGrp.GetComponent<RectTransform>();
-        if (!rt) return;
-
-        rt.anchorMin = new Vector2(0.5f, 1f);
-        rt.anchorMax = new Vector2(0.5f, 1f);
-        rt.pivot = new Vector2(0.5f, 1f);
-
-        rt.anchoredPosition = new Vector2(0f, -300f);
+        SetPanelAnchor(new Vector2(0.5f, 1f), new Vector2(0f, -300f));
     }
 
     public void SetPanelCenter()
     {
-        RectTransform rt = panelGrp.GetComponent<RectTransform>();
-        if (!rt) return;
-
-        rt.anchorMin = new Vector2(0.5f, 0.5f);
-        rt.anchorMax = new Vector2(0.5f, 0.5f);
-        rt.pivot = new Vector2(0.5f, 0.5f);
-
-        rt.anchoredPosition = Vector2.zero;
+        SetPanelAnchor(new Vector2(0.5f, 0.5f), Vector2.zero);
     }
 
     public void SetPanelBottomCenter()
     {
-        RectTransform rt = panelGrp.GetComponent<RectTransform>();
-        if (!rt) return;
-
-        rt.anchorMin = new Vector2(0.5f, 0f);
-        rt.anchorMax = new Vector2(0.5f, 0f);
-        rt.pivot = new Vector2(0.5f, 0f);
-
-        rt.anchoredPosition = new Vector2(0f, 300f);
+        SetPanelAnchor(new Vector2(0.5f, 0f), new Vector2(0f, 300f));
     }
 
+    void SetPanelAnchor(Vector2 anchor, Vector2 position)
+    {
+        RectTransform rect = panelGrp ? panelGrp.GetComponent<RectTransform>() : null;
+        if (!rect) return;
 
+        rect.anchorMin = anchor;
+        rect.anchorMax = anchor;
+        rect.pivot = anchor;
+        rect.anchoredPosition = position;
+    }
 
     string GetRandomGameOverMessage(LanderController.eLanderState state)
     {
-        if (!stateMessages.ContainsKey(state)) return "";
-        var arr = stateMessages[state];
-        var msg = arr[Random.Range(0, arr.Length)];
-        if (msg.Contains("{TargetDistance}"))
+        if (!stateMessages.TryGetValue(state, out string[] messages) || messages.Length == 0) return "";
+
+        string message = messages[Random.Range(0, messages.Length)];
+        if (message.Contains("{TargetDistance}") && landingPad && lander)
         {
-            int distI = Mathf.RoundToInt(Vector2.Distance(lander.transform.position, landingPad.transform.position));
-            msg = msg.Replace("{TargetDistance}", distI.ToString());
+            int distance = Mathf.RoundToInt(Vector2.Distance(lander.transform.position, landingPad.transform.position));
+            message = message.Replace("{TargetDistance}", distance.ToString());
         }
-        return msg;
+
+        return message;
     }
 
     string GetRandomDeadZoneWarning()
-    {
-        return deadZoneWarnings[Random.Range(0, deadZoneWarnings.Length)];
-    }
-
+        => deadZoneWarnings[Random.Range(0, deadZoneWarnings.Length)];
 
     public void HideGameOver()
     {
         isGameOver = false;
 
-        txtLanderFuel.gameObject.SetActive(true);
-        txtLanderInfos.gameObject.SetActive(true);
-        navigationGrp.gameObject.SetActive(true);
+        if (endRoutine != null)
+        {
+            StopCoroutine(endRoutine);
+            endRoutine = null;
+        }
 
-        txtGameOverTitle.gameObject.SetActive(false);
-        txtGameOverMessage.gameObject.SetActive(false);
-        txtScore.gameObject.SetActive(false);
-        txtXPScore.gameObject.SetActive(false);
+        bool showHud = !GameController.Instance || GameController.Instance.Phase != GameController.GamePhase.EVA;
+        SetGameplayHudVisible(showHud);
+        SetEndTextsVisible(false);
 
         LanderChooserManager.Instance.btnLanderChooser.gameObject.SetActive(false);
         LanderChooserManager.Instance.panelChooser.gameObject.SetActive(false);
@@ -619,28 +584,26 @@ public class LanderUI : MonoBehaviour
     {
         HideGameOver();
         lander.ResetLander();
-        lander.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static;
-        StartCoroutine(StartCountdownRoutine());
+        lander.rb.bodyType = RigidbodyType2D.Static;
+        StartCountdown();
     }
 
     void OnNextClicked()
     {
         HideGameOver();
         GameController.Instance.NextLevel();
-        GameController.Instance.StartGame();
+        GameController.Instance.StartLandingRun();
     }
-
 
     public void StartCountdown()
     {
-        StartCoroutine(StartCountdownRoutine());
+        if (countdownRoutine != null) StopCoroutine(countdownRoutine);
+        countdownRoutine = StartCoroutine(StartCountdownRoutine());
     }
 
-    private IEnumerator StartCountdownRoutine()
+    IEnumerator StartCountdownRoutine()
     {
-        txtLanderFuel.gameObject.SetActive(false);
-        txtLanderInfos.gameObject.SetActive(false);
-        navigationGrp.gameObject.SetActive(false);
+        SetGameplayHudVisible(false);
 
         yield return new WaitForSeconds(2f);
         txtGameTitle.gameObject.SetActive(false);
@@ -662,69 +625,50 @@ public class LanderUI : MonoBehaviour
         }
 
         txtGameOverMessage.gameObject.SetActive(false);
-
-        txtLanderFuel.gameObject.SetActive(true);
-        txtLanderInfos.gameObject.SetActive(true);
-        navigationGrp.gameObject.SetActive(true);
+        SetGameplayHudVisible(true);
 
         AudioManager.Instance.PlaySound(AudioManager.Instance.sfxCountdownStart, 1f, 1f, false);
         txtGameOverTitle.text = "Land!";
         lander.StartLander();
+
         yield return new WaitForSeconds(1f);
-
         txtGameOverTitle.gameObject.SetActive(false);
-
+        countdownRoutine = null;
     }
-
 
     public void RefreshPanel()
     {
         StartCoroutine(DelayedLayoutRebuild());
     }
 
-    private IEnumerator DelayedLayoutRebuild()
+    IEnumerator DelayedLayoutRebuild()
     {
         yield return null;
 
-        var layoutRoot = panelGrp.GetComponentInChildren<VerticalLayoutGroup>()?.transform as RectTransform;
-        if (layoutRoot != null)
+        RectTransform layoutRoot = panelGrp?.GetComponentInChildren<VerticalLayoutGroup>()?.transform as RectTransform;
+        if (layoutRoot)
             LayoutRebuilder.ForceRebuildLayoutImmediate(layoutRoot);
     }
 
-
     public bool IsPointerOverUI()
     {
-        if (EventSystem.current == null) return false;
+        if (!EventSystem.current) return false;
 
-        Vector2 screenPos;
-
-        if (Input.touchCount > 0)
-            screenPos = Input.GetTouch(0).position;
-        else
-            screenPos = Input.mousePosition;
-
-        var ped = new PointerEventData(EventSystem.current)
-        {
-            position = screenPos
-        };
-
-        var results = new List<RaycastResult>();
-        EventSystem.current.RaycastAll(ped, results);
-
+        Vector2 screenPos = Input.touchCount > 0 ? Input.GetTouch(0).position : (Vector2)Input.mousePosition;
+        PointerEventData pointer = new(EventSystem.current) { position = screenPos };
+        List<RaycastResult> results = new();
+        EventSystem.current.RaycastAll(pointer, results);
         return results.Count > 0;
     }
 
     void OnDrawGizmos()
     {
-        if (!showRay || !lander?.rb) return;
+        if (!showRay || !lander || !lander.rb) return;
 
-        //Draw ray in direction of gravity to visualize altitude check
+        Vector2 gravity = lander.CurrentGravity;
+        if (gravity.sqrMagnitude < 0.0001f) return;
 
-        Vector2 g = Physics2D.gravity;
-        if (g.sqrMagnitude < 0.0001f) return; // ZeroG → kein "unten"
-
-        Vector2 downDir = g.normalized;
-
+        Vector2 downDir = gravity.normalized;
         Vector2 origin = lander.rb.position + downDir * rayOffset;
 
         Gizmos.color = Color.yellow;
@@ -733,5 +677,4 @@ public class LanderUI : MonoBehaviour
         Gizmos.color = Color.green;
         Gizmos.DrawLine(origin, origin + downDir * maxCheckDistance);
     }
-
 }
