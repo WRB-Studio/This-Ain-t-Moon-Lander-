@@ -92,6 +92,9 @@ public class LanderController : MonoBehaviour
 
     float targetRotation;
     bool isThrusting;
+    const float moonExitStableDelay = 0.4f;
+    float moonExitStableTimer;
+    bool moonContact;
 
     readonly List<RaycastResult> uiRaycastResults = new();
     PointerEventData pointerEventData;
@@ -116,6 +119,8 @@ public class LanderController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         targetRotation = rb.rotation;
         steer01 = 0f;
+        moonContact = false;
+        moonExitStableTimer = 0f;
 
         thrustEffects ??= new List<Transform>();
         thrustEffects.Clear();
@@ -209,6 +214,7 @@ public class LanderController : MonoBehaviour
             HandleThrustSound(false);
         }
 
+        UpdateMoonExitUI();
         ApplyPhysics();
         UpdateThrustEffect(isThrusting);
 
@@ -216,6 +222,23 @@ public class LanderController : MonoBehaviour
 
         rb.AddForce(transform.up * thrustForce, ForceMode2D.Force);
         BurnFuel();
+    }
+
+    void UpdateMoonExitUI()
+    {
+        var eva = MoonEVAController.Instance;
+        if (!eva || !eva.btnExit) return;
+
+        if (!moonContact || landerState != eLanderState.LandedMoon || isThrusting)
+        {
+            moonExitStableTimer = 0f;
+            eva.btnExit.gameObject.SetActive(false);
+            return;
+        }
+
+        moonExitStableTimer += Time.fixedDeltaTime;
+        if (moonExitStableTimer >= moonExitStableDelay)
+            eva.btnExit.gameObject.SetActive(true);
     }
 
     void ApplyPhysics()
@@ -394,11 +417,19 @@ public class LanderController : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D col)
     {
-        if (landerState != eLanderState.Flying || landerState == eLanderState.LandedMoon) return;
+        bool isMoon = col.collider.CompareTag("Moon");
+        if (isMoon)
+        {
+            moonContact = true;
+            moonExitStableTimer = 0f;
+            if (MoonEVAController.Instance && MoonEVAController.Instance.btnExit)
+                MoonEVAController.Instance.btnExit.gameObject.SetActive(false);
+        }
+
+        if (landerState != eLanderState.Flying) return;
 
         bool isLandingPad = col.collider.CompareTag("LandingPad");
         bool isLandscape = col.collider.CompareTag("Landscape");
-        bool isMoon = col.collider.CompareTag("Moon");
 
         Vector2 relVel = col.relativeVelocity;
         float impactSpeed = relVel.magnitude;
@@ -455,13 +486,23 @@ public class LanderController : MonoBehaviour
         }
     }
 
+    void OnCollisionStay2D(Collision2D col)
+    {
+        if (col.collider.CompareTag("Moon"))
+            moonContact = true;
+    }
+
     void OnCollisionExit2D(Collision2D col)
     {
-        if (landerState == eLanderState.LandedMoon && col.collider.CompareTag("Moon"))
-        {
-            landerState = eLanderState.Flying;
+        if (!col.collider.CompareTag("Moon")) return;
+
+        moonContact = false;
+        moonExitStableTimer = 0f;
+        if (MoonEVAController.Instance && MoonEVAController.Instance.btnExit)
             MoonEVAController.Instance.btnExit.gameObject.SetActive(false);
-        }
+
+        if (landerState == eLanderState.LandedMoon)
+            landerState = eLanderState.Flying;
     }
 
     void OnTriggerEnter2D(Collider2D other)
@@ -499,6 +540,8 @@ public class LanderController : MonoBehaviour
     void LandOnMoon(Collision2D col, eLanderState state)
     {
         landerState = state;
+        moonContact = true;
+        moonExitStableTimer = 0f;
 
         if (!MoonEVAController.Instance.isOnMoonLanded)
         {
@@ -510,9 +553,9 @@ public class LanderController : MonoBehaviour
         else
         {
             LanderUI.Instance.SetPanelBottomCenter();
-            MoonEVAController.Instance.btnExit.gameObject.SetActive(true);
         }
 
+        MoonEVAController.Instance.btnExit.gameObject.SetActive(false);
         ImpactFX.Instance.PlayImpactEffect(landerState);
     }
 
@@ -561,6 +604,8 @@ public class LanderController : MonoBehaviour
         transform.rotation = Quaternion.Euler(0f, 0f, 0f);
         targetRotation = 0f;
         steer01 = 0f;
+        moonContact = false;
+        moonExitStableTimer = 0f;
         deadZoneTimer = deadZoneExplodeDelay;
 
         foreach (Transform t in thrustEffects)
