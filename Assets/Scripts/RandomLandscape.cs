@@ -11,162 +11,152 @@ public class RandomLandscape : MonoBehaviour
     public float baseY = -6f;
     public float amplitude = 3f;
     public float noiseScale = 0.12f;
-    public int seed = 0; // 0 = einmal zufällig (beim ersten Generate)
-    private EdgeCollider2D edge;
+    public int seed;
 
     [Header("Landing Pad Freihalten (optional)")]
-    private Transform landingPad;
     public float padClearRadius = 3f;
     [Range(0f, 1f)] public float padFlatStrength = 1f;
 
     [Header("Outlier Mountains (breite Berge)")]
-    [Range(0f, 1f)] public float mountainChance = 0.10f;  // Chance pro Segment einen Berg zu starten
-    public float mountainHeight = 2.5f;                   // Zusatz-Amplitude (additiv)
-    public float mountainWidth = 8f;                      // Breite in Welt-Einheiten
-    public AnimationCurve mountainShape = AnimationCurve.EaseInOut(0, 0, 1, 1);
+    [Range(0f, 1f)] public float mountainChance = 0.10f;
+    public float mountainHeight = 2.5f;
+    public float mountainWidth = 8f;
+    public AnimationCurve mountainShape = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);
 
     [Header("Editor Preview")]
     public bool livePreviewInEditor = true;
 
-    LineRenderer lr;
+    LineRenderer lineRenderer;
+    EdgeCollider2D edgeCollider;
+    Transform landingPad;
     float noiseOffset;
 
-    void Awake()
-    {
-        Instance = this;
-    }
+    void Awake() => Instance = this;
 
     public void Init()
     {
-        lr = GetComponent<LineRenderer>();
-        lr.useWorldSpace = true;
-        edge = GetComponent<EdgeCollider2D>();
-
-        landingPad = LandingPadPlacer.Instance.transform;
+        CacheReferences();
         Generate(firstTime: true, forceNewSeed: false);
     }
 
     void OnValidate()
     {
-        if (!livePreviewInEditor) return;
-        if (Application.isPlaying) return;
+        if (!livePreviewInEditor || Application.isPlaying) return;
 
-        if (!lr) lr = GetComponent<LineRenderer>();
-        if (!lr) return;
+        CacheReferences();
+        if (!lineRenderer || !edgeCollider) return;
 
-        if (!edge) edge = GetComponent<EdgeCollider2D>();
-        if (!edge) return;
-
-        // Im Editor NICHT dauernd neuen Seed ziehen, sonst flackert’s bei jedem Slider
         Generate(firstTime: true, forceNewSeed: false);
     }
 
-    // Von außen nutzbar (Button/UI), erzeugt bewusst neues Level
     public void GenerateNewLevel()
-    {
-        Generate(firstTime: false, forceNewSeed: true);
-    }
+        => Generate(firstTime: false, forceNewSeed: true);
 
-#if UNITY_EDITOR
-#endif
+    void CacheReferences()
+    {
+        if (!lineRenderer) lineRenderer = GetComponent<LineRenderer>();
+        if (!edgeCollider) edgeCollider = GetComponent<EdgeCollider2D>();
+
+        if (lineRenderer) lineRenderer.useWorldSpace = true;
+        landingPad = LandingPadPlacer.Instance ? LandingPadPlacer.Instance.transform : landingPad;
+    }
 
     void Generate(bool firstTime, bool forceNewSeed)
     {
-        if (!lr) lr = GetComponent<LineRenderer>();
-        if (!lr) return;
+        CacheReferences();
+        if (!lineRenderer) return;
 
-        // Seed-Logik
-        if (forceNewSeed) seed = Random.Range(1, 999999);
-        else if (firstTime && seed == 0) seed = Random.Range(1, 999999);
+        if (forceNewSeed)
+            seed = Random.Range(1, 999999);
+        else if (firstTime && seed == 0)
+            seed = Random.Range(1, 999999);
 
         noiseOffset = seed * 0.001f;
+        lineRenderer.positionCount = Mathf.Max(4, points);
 
-        lr.positionCount = points;
-
+        int pointCount = lineRenderer.positionCount;
         float xStart = -width * 0.5f;
-        float step = width / (points - 1);
+        float step = width / (pointCount - 1);
+        float levelFactor = GameController.Instance ? GameController.Instance.level / 50f : 0f;
+
+        float amp = amplitude * (1f + levelFactor);
+        float mountainChanceCurrent = mountainChance * (1f + levelFactor);
+        float mountainHeightCurrent = mountainHeight * (1f + levelFactor);
+        float mountainWidthCurrent = mountainWidth * (1f + levelFactor);
+
+        float[] mountainAdd = BuildMountainOffsets(
+            pointCount,
+            step,
+            mountainChanceCurrent,
+            mountainHeightCurrent,
+            mountainWidthCurrent);
 
         float padX = landingPad ? landingPad.position.x : float.NaN;
         float padY = landingPad ? landingPad.position.y : 0f;
 
-        // ===== Level Einfluss (level/100) =====
-        float lvlFactor = FindFirstObjectByType<GameController>().level / 50f;
-
-        float amp = amplitude * (1f + lvlFactor);
-        float mChance = mountainChance * (1f + lvlFactor);
-        float mHeight = mountainHeight * (1f + lvlFactor);
-        float mWidth = mountainWidth * (1f + lvlFactor);
-
-        // ===== 1) Berge "streuen" in add[] =====
-        float[] add = new float[points];
-
-        int half = Mathf.Max(1, Mathf.RoundToInt((mWidth / step) * 0.5f));
-        half = Mathf.Clamp(half, 1, points / 2);
-
-        var prevState = Random.state;
-        Random.InitState(seed);
-
-        for (int i = 0; i < points; i++)
-        {
-            if (Random.value > mChance) continue;
-
-            for (int k = -half; k <= half; k++)
-            {
-                int idx = i + k;
-                if (idx < 0 || idx >= points) continue;
-
-                float t = Mathf.InverseLerp(-half, half, k);
-                float center01 = 1f - Mathf.Abs(2f * t - 1f);
-                float bell = mountainShape.Evaluate(center01);
-
-                add[idx] += mHeight * bell;
-            }
-
-            i += half;
-        }
-
-        Random.state = prevState;
-
-        // ===== 2) Hauptlinie setzen =====
-        for (int i = 0; i < points; i++)
+        for (int i = 0; i < pointCount; i++)
         {
             float x = xStart + step * i;
-
-            float n = Mathf.PerlinNoise(noiseOffset + x * noiseScale, noiseOffset);
-
-            float baseUp = n * amp;
-            float mountainUp = n * add[i];
-            float y = baseY + baseUp + mountainUp;
+            float noise = Mathf.PerlinNoise(noiseOffset + x * noiseScale, noiseOffset);
+            float y = baseY + noise * amp + noise * mountainAdd[i];
 
             if (landingPad)
             {
-                float d = Mathf.Abs(x - padX);
-                if (d < padClearRadius)
+                float distance = Mathf.Abs(x - padX);
+                if (distance < padClearRadius)
                 {
-                    float t = 1f - Mathf.Clamp01(d / padClearRadius);
-                    y = Mathf.Lerp(y, padY, t * padFlatStrength);
+                    float blend = 1f - Mathf.Clamp01(distance / Mathf.Max(0.0001f, padClearRadius));
+                    y = Mathf.Lerp(y, padY, blend * padFlatStrength);
                 }
             }
 
-            lr.SetPosition(i, new Vector3(x, y, 0f));
+            lineRenderer.SetPosition(i, new Vector3(x, y, 0f));
         }
 
         UpdateCollider();
     }
 
+    float[] BuildMountainOffsets(int pointCount, float step, float chance, float height, float worldWidth)
+    {
+        float[] offsets = new float[pointCount];
+        int halfWidth = Mathf.Max(1, Mathf.RoundToInt((worldWidth / Mathf.Max(0.0001f, step)) * 0.5f));
+        halfWidth = Mathf.Clamp(halfWidth, 1, pointCount / 2);
+
+        Random.State previousState = Random.state;
+        Random.InitState(seed);
+
+        for (int i = 0; i < pointCount; i++)
+        {
+            if (Random.value > chance) continue;
+
+            for (int k = -halfWidth; k <= halfWidth; k++)
+            {
+                int index = i + k;
+                if (index < 0 || index >= pointCount) continue;
+
+                float t = Mathf.InverseLerp(-halfWidth, halfWidth, k);
+                float center = 1f - Mathf.Abs(2f * t - 1f);
+                offsets[index] += height * mountainShape.Evaluate(center);
+            }
+
+            i += halfWidth;
+        }
+
+        Random.state = previousState;
+        return offsets;
+    }
 
     void UpdateCollider()
     {
-        if (!edge) return;
+        if (!edgeCollider || !lineRenderer) return;
 
-        Vector2[] pts = new Vector2[lr.positionCount];
-        for (int i = 0; i < pts.Length; i++)
+        Vector2[] colliderPoints = new Vector2[lineRenderer.positionCount];
+        for (int i = 0; i < colliderPoints.Length; i++)
         {
-            Vector3 p = lr.GetPosition(i);
-            pts[i] = new Vector2(p.x, p.y);
+            Vector3 point = lineRenderer.GetPosition(i);
+            colliderPoints[i] = point;
         }
 
-        edge.points = pts;
+        edgeCollider.points = colliderPoints;
     }
-
 }
