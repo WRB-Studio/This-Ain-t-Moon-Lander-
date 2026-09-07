@@ -4,10 +4,7 @@ public class GravityManager2D : MonoBehaviour
 {
     public static GravityManager2D Instance;
 
-    [Header("Refs")]
-    Transform lander => LanderController.Instance.transform;
-
-    [Header("Base Gravity (always down)")]
+    [Header("Base Gravity")]
     public Vector2 baseGravity = new Vector2(0f, -9.81f);
 
     [Header("Moon Gravity Gradient")]
@@ -24,68 +21,65 @@ public class GravityManager2D : MonoBehaviour
 
     [HideInInspector] public float zeroBlend;
 
-    Vector2 currentG;
-
     void Awake() => Instance = this;
 
     public void Init()
     {
-        currentG = baseGravity;
-        Physics2D.gravity = currentG;
+        // Gravity is now evaluated per controlled body. This keeps future ships,
+        // astronauts and celestial bodies from fighting over one global vector.
+        Physics2D.gravity = Vector2.zero;
     }
 
-    void FixedUpdate()
+    public Vector2 GetGravityAt(Vector2 worldPosition)
     {
-        if (!lander) return;
+        float moonT = GetMoonBlendAt(worldPosition);
+        if (moonT > 0f)
+        {
+            Vector2 toMoon = (Vector2)transform.position - worldPosition;
+            if (toMoon.sqrMagnitude < 0.0001f) return Vector2.zero;
 
-        float moonT = CalcMoonT();
-        float zeroT = CalcZeroT();
+            return toMoon.normalized * (moonGravityStrength * moonT);
+        }
 
-        Vector2 baseG = Vector2.Lerp(baseGravity, Vector2.zero, zeroT);
-        Vector2 moonG = CalcMoonGravity(moonT);
-        Vector2 targetG = baseG + moonG;
-
-        zeroBlend = zeroT;
-        LanderController.Instance.ApplySpaceTuning(zeroBlend);
-
-        ApplyWorldGravitySmooth(targetG);
+        float zeroT = GetZeroGravityBlendAt(worldPosition);
+        return Vector2.Lerp(baseGravity, Vector2.zero, zeroT);
     }
 
-    float CalcMoonT()
+    public float GetMoonBlendAt(Vector2 worldPosition)
     {
-        float dist = Vector2.Distance(lander.position, transform.position);
+        float dist = Vector2.Distance(worldPosition, transform.position);
         return Mathf.Clamp01(Mathf.InverseLerp(moonEnterRadius, moonFullRadius, dist));
     }
 
-    float CalcZeroT()
+    public float GetZeroGravityBlendAt(Vector2 worldPosition)
+        => Mathf.Clamp01(Mathf.InverseLerp(zeroGStartY, zeroGFullY, worldPosition.y));
+
+    public float GetSpaceBlendAt(Vector2 worldPosition)
     {
-        float y = lander.position.y;
-        return Mathf.Clamp01(Mathf.InverseLerp(zeroGStartY, zeroGFullY, y));
+        // Moon gravity owns its area completely. Base/zero-G gravity is only used
+        // outside the Moon's influence, so both gravity fields are never added.
+        if (GetMoonBlendAt(worldPosition) > 0f) return 0f;
+        return GetZeroGravityBlendAt(worldPosition);
     }
 
-    Vector2 CalcMoonGravity(float moonT)
-    {
-        if (moonT <= 0f) return Vector2.zero;
+    public bool IsMoonGravityActiveAt(Vector2 worldPosition)
+        => GetMoonBlendAt(worldPosition) > 0f;
 
-        Vector2 moonDir = ((Vector2)transform.position - (Vector2)lander.position).normalized;
-        return moonDir * (moonGravityStrength * moonT);
-    }
-
-    void ApplyWorldGravitySmooth(Vector2 targetG)
-    {
-        float k = 1f - Mathf.Exp(-gravitySmooth * Time.fixedDeltaTime);
-        currentG = Vector2.Lerp(currentG, targetG, k);
-        Physics2D.gravity = currentG;
-    }
+    public bool IsZeroGravityAt(Vector2 worldPosition, float threshold = 0.99f)
+        => !IsMoonGravityActiveAt(worldPosition) && GetZeroGravityBlendAt(worldPosition) >= threshold;
 
     void OnDrawGizmosSelected()
     {
-        Gizmos.color = Color.yellow; Gizmos.DrawWireSphere(transform.position, moonEnterRadius);
-        Gizmos.color = Color.red; Gizmos.DrawWireSphere(transform.position, moonFullRadius);
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, moonEnterRadius);
+
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, moonFullRadius);
 
         Gizmos.color = Color.yellow;
-        Gizmos.DrawLine(new Vector3(-9999, zeroGStartY, 0), new Vector3(9999, zeroGStartY, 0));
+        Gizmos.DrawLine(new Vector3(-9999f, zeroGStartY, 0f), new Vector3(9999f, zeroGStartY, 0f));
+
         Gizmos.color = Color.red;
-        Gizmos.DrawLine(new Vector3(-9999, zeroGFullY, 0), new Vector3(9999, zeroGFullY, 0));
+        Gizmos.DrawLine(new Vector3(-9999f, zeroGFullY, 0f), new Vector3(9999f, zeroGFullY, 0f));
     }
 }
