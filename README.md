@@ -1,18 +1,32 @@
 # This Ain't Moon Lander
 
-![This Ain't Moon Lander gameplay](Assets/Publishing/Screenshot04.png)
+<p align="center">
+  <img src="Assets/Publishing/Feature-Graphic.png" width="960" alt="This Ain't Moon Lander">
+</p>
+
+<p align="center"><strong>A lunar-landing prototype that combines piloting, EVA exploration and landing challenges.</strong></p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Engine-Unity%206-222c32?logo=unity&logoColor=white" alt="Unity 6">
+  <img src="https://img.shields.io/badge/Genre-Lunar%20Landing-5b8def" alt="Lunar landing">
+  <img src="https://img.shields.io/badge/Status-On%20hold-f0ad4e" alt="On hold">
+</p>
+
+## About
 
 **This Ain't Moon Lander** is a lunar-landing prototype that combines piloting, EVA exploration and landing challenges.
 
 ## Highlights
-- Select and pilot different landers.
-- Moon-surface astronaut exploration.
-- Gravity, landing-pad placement and scoring systems.
-- Story and local save support.
 
-## Development
-- **Engine:** Unity 6000.0.59f2
-- **Status:** Waiting
+- **Choose a lander:** Select and pilot different lander types.
+- **Explore on foot:** Leave the craft and move across the lunar surface.
+- **Master the landing:** Gravity, landing-pad placement and scoring reward control and planning.
+- **Persistent story prototype:** Story and local save support are included.
+
+## Technical details
+
+- **Engine:** Unity `6000.0.59f2`
+- **Status:** On hold
 
 ## Game concept
 
