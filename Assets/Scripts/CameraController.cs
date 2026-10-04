@@ -34,12 +34,17 @@ public class CameraController : MonoBehaviour
     Transform landingPad;
     Transform target;
     Camera cam;
+    Vector3 landerOffset;
+    Vector3 followPosition;
+    readonly System.Collections.Generic.List<RaycastHit2D> surfaceHits = new();
 
     void Awake() => Instance = this;
 
     public void Init()
     {
         cam = GetComponent<Camera>();
+        landerOffset = followOffset;
+        followPosition = transform.position;
         landingPad = LandingPadPlacer.Instance ? LandingPadPlacer.Instance.transform : null;
     }
 
@@ -54,21 +59,25 @@ public class CameraController : MonoBehaviour
     {
         if (!target) return;
 
-        transform.position = target.position + followOffset + shakeOffset;
+        followPosition = target.position + followOffset;
+        transform.position = followPosition + shakeOffset;
         cam.orthographicSize = CalcTargetZoom();
     }
 
     void FollowTarget()
     {
         Vector3 desired = target.position + followOffset;
-        Vector3 basePos = Vector3.Lerp(transform.position, desired, followSmooth * Time.deltaTime);
-        transform.position = basePos + shakeOffset;
+        followPosition = Vector3.Lerp(followPosition, desired, 1f - Mathf.Exp(-followSmooth * Time.deltaTime));
+        transform.position = followPosition + shakeOffset;
     }
 
     void DistanceBasedZoom()
     {
         float targetZoom = CalcTargetZoom();
-        cam.orthographicSize = Mathf.Lerp(cam.orthographicSize, targetZoom, zoomSmooth * Time.deltaTime);
+        var gravity = GravityManager2D.Instance;
+        bool inSpace = gravity && gravity.GetZeroBlend(target.position) > 0f && gravity.GetMoonBlend(target.position) == 0f;
+        float smooth = inSpace ? zeroGSmooth : zoomSmooth;
+        cam.orthographicSize = Mathf.Lerp(cam.orthographicSize, targetZoom, 1f - Mathf.Exp(-smooth * Time.deltaTime));
     }
 
     float CalcTargetZoom()
@@ -88,11 +97,10 @@ public class CameraController : MonoBehaviour
             }
         }
 
-        // 2) MOON SURFACE: nur wenn im Mondbereich + Oberfläche in Range -> ran zoomen
+        // 2) MOON SURFACE: nur wenn im Mondbereich + Oberflï¿½che in Range -> ran zoomen
         if (gm && target)
         {
-            float distToCenter = Vector2.Distance(target.position, gm.transform.position);
-            float moonEnterT = Mathf.Clamp01(Mathf.InverseLerp(gm.moonEnterRadius, gm.moonFullRadius, distToCenter));
+            float moonEnterT = gm.GetMoonBlend(target.position);
 
             if (moonEnterT > 0.001f)
             {
@@ -122,15 +130,14 @@ public class CameraController : MonoBehaviour
         return maxZoom;
     }
 
-
     float GetSurfaceDistance(Vector3 moonCenter)
     {
         Vector2 origin = target.position;
         Vector2 dir = ((Vector2)moonCenter - origin).normalized;
 
-        RaycastHit2D[] hits = Physics2D.RaycastAll(origin, dir, 1000f);
+        Physics2D.Raycast(origin, dir, new ContactFilter2D { useTriggers = false }, surfaceHits, 1000f);
 
-        foreach (var hit in hits)
+        foreach (var hit in surfaceHits)
         {
             if (hit.collider.CompareTag("Moon"))
                 return hit.distance;
@@ -142,9 +149,11 @@ public class CameraController : MonoBehaviour
     public void SetTarget(Transform newTarget, bool instantFocus = false)
     {
         target = newTarget;
-        isAstronaut = MoonEVAController.Instance.astronaut != null;
-        followOffset = isAstronaut ? astronautOffset : new Vector3(0f, 2f, -10f);
+        isAstronaut = target && target.GetComponent<AstronautMoonController>();
+        followOffset = isAstronaut ? astronautOffset : landerOffset;
 
         if (instantFocus) SetInstantFocus();
     }
+
+    void OnDestroy() { if (Instance == this) Instance = null; }
 }

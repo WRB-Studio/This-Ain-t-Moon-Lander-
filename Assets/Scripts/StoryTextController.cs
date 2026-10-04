@@ -40,7 +40,7 @@ public class StoryTextController : MonoBehaviour
                     "That's not the objective.",
                     "Up there is not the goal.",
                     "This wasn't the plan.",
-                    "You’re leaving the mission area.",
+                    "Youï¿½re leaving the mission area.",
                     "The landing pad is not in space."
                 }
             },
@@ -56,7 +56,7 @@ public class StoryTextController : MonoBehaviour
                     "Much better.",
                     "The pad missed you.",
                     "Mission back on track.",
-                    "Let’s do this properly."
+                    "Letï¿½s do this properly."
                 }
             },
             {
@@ -123,18 +123,21 @@ public class StoryTextController : MonoBehaviour
 
     void Update()
     {
+        if (!GameController.Instance || !GameController.Instance.IsPlaying) return;
         if (Time.time - runStartTime < triggerDelayFromRunStart) return;
         if (!lander || !gravityManager) return;
+        var target = GameController.Instance.ControlledTarget;
+        if (!target) return;
 
         // --- 1) AtmosphereExit / BackToPlanet ---
-        if (!shownAtmosphereExit && lander.transform.position.y > gravityManager.zeroGFullY)
+        if (!shownAtmosphereExit && target.position.y > gravityManager.zeroGFullY)
         {
             shownBackToPlanet = false;
             shownAtmosphereExit = true;
             Enqueue(eStoryTextType.AtmosphereExit);
         }
 
-        if (shownAtmosphereExit && !shownBackToPlanet && lander.transform.position.y < gravityManager.zeroGFullY)
+        if (shownAtmosphereExit && !shownBackToPlanet && target.position.y < gravityManager.zeroGStartY)
         {
             shownAtmosphereExit = false;
             shownBackToPlanet = true;
@@ -142,7 +145,7 @@ public class StoryTextController : MonoBehaviour
         }
 
         // --- 2) NearToMoon ---
-        float distanceToMoon = Vector2.Distance(lander.transform.position, gravityManager.transform.position);
+        float distanceToMoon = Vector2.Distance(target.position, gravityManager.transform.position);
         if (!shownNearMoon && distanceToMoon <= gravityManager.moonFullRadius)
         {
             shownNearMoon = true;
@@ -173,9 +176,7 @@ public class StoryTextController : MonoBehaviour
 
     void Enqueue(string msg)
     {
-        if (string.IsNullOrEmpty(msg)) return;
-
-        // optional: same message not twice in a row
+        if (string.IsNullOrEmpty(msg) || !txtInfo) return;
         if (msg == lastQueued) return;
 
         queue.Enqueue(msg);
@@ -200,8 +201,6 @@ public class StoryTextController : MonoBehaviour
 
             if (txtInfo) txtInfo.gameObject.SetActive(false);
 
-            // tiny gap (optional)
-            // yield return new WaitForSeconds(0.05f);
         }
 
         runner = null;
@@ -218,7 +217,7 @@ public class StoryTextController : MonoBehaviour
         if (msg.Contains("{TargetDistance}"))
         {
             int distI = Mathf.RoundToInt(Vector2.Distance(
-                lander.transform.position,
+                GameController.Instance.ControlledTarget.position,
                 LandingPadPlacer.Instance.transform.position));
 
             msg = msg.Replace("{TargetDistance}", distI.ToString());
@@ -226,4 +225,6 @@ public class StoryTextController : MonoBehaviour
 
         return msg;
     }
+    void OnDisable() => Restart();
+    void OnDestroy() { if (Instance == this) Instance = null; }
 }

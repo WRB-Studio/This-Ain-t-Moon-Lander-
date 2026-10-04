@@ -1,4 +1,3 @@
-using TMPro;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
@@ -26,6 +25,7 @@ public class AstronautMoonController : MonoBehaviour
 
     Vector2 desiredDirWorld;
     bool lastFlip;
+    Camera gameCamera;
 
     static readonly int AnimIsWalking = Animator.StringToHash("IsWalking");
 
@@ -38,8 +38,9 @@ public class AstronautMoonController : MonoBehaviour
         sr = GetComponentInChildren<SpriteRenderer>();
         anim = GetComponentInChildren<Animator>();
 
-        visualRoot = transform.GetChild(0);
-        visualBaseLocalPos = visualRoot.localPosition;
+        gameCamera = Camera.main;
+        visualRoot = transform.childCount > 0 ? transform.GetChild(0) : null;
+        if (visualRoot) visualBaseLocalPos = visualRoot.localPosition;
     }
 
     void Start() => CacheMoonCenter();
@@ -48,7 +49,7 @@ public class AstronautMoonController : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (!moonCenter) return;
+        if (!moonCenter || !GameController.Instance || GameController.Instance.Phase != GameController.GamePhase.EVA) return;
 
         Vector2 toCenter = GetToMoonCenter();
         if (toCenter.sqrMagnitude < 0.0001f) return;
@@ -74,27 +75,14 @@ public class AstronautMoonController : MonoBehaviour
     void ReadInputDir()
     {
         desiredDirWorld = Vector2.zero;
-        if (!Camera.main) return;
-
-#if UNITY_EDITOR || UNITY_STANDALONE
-        if (Input.GetMouseButton(0))
-        {
-            desiredDirWorld = ScreenToWorldDir(Input.mousePosition);
-            return;
-        }
-#endif
-
-        if (Input.touchCount > 0)
-        {
-            var t = Input.GetTouch(0);
-            if (t.phase == TouchPhase.Began || t.phase == TouchPhase.Moved || t.phase == TouchPhase.Stationary)
-                desiredDirWorld = ScreenToWorldDir(t.position);
-        }
+        if (!gameCamera) gameCamera = Camera.main;
+        if (!gameCamera || !GameController.Instance.IsPlaying) return;
+        if (LanderUI.Instance.TryGetGameplayPointer(out var screenPosition))
+            desiredDirWorld = ScreenToWorldDir(screenPosition);
     }
-
     Vector2 ScreenToWorldDir(Vector2 screenPos)
     {
-        var wp = Camera.main.ScreenToWorldPoint(new Vector3(screenPos.x, screenPos.y, 0f));
+        var wp = gameCamera.ScreenToWorldPoint(new Vector3(screenPos.x, screenPos.y, 0f));
         Vector2 dir = (Vector2)wp - rb.position;
         return dir.sqrMagnitude < 0.0001f ? Vector2.zero : dir.normalized;
     }
@@ -141,15 +129,14 @@ public class AstronautMoonController : MonoBehaviour
 
         if (isWalking && sr)
         {
-            // wenn Flip bei dir immer falsch ist: hier "<" zu ">" ändern ODER invertFlip nutzen
             bool flip = targetTangent > 0f;
             lastFlip = invertFlip ? !flip : flip;
         }
 
         if (sr) sr.flipX = lastFlip;
+        if (!visualRoot) return;
 
-
-        // “hop” nur beim laufen
+        // ï¿½hopï¿½ nur beim laufen
         if (isWalking)
         {
             float y = Mathf.Sin(Time.time * hopFreq) * hopAmp;
@@ -163,26 +150,12 @@ public class AstronautMoonController : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (!other.CompareTag("Lander")) return;
-
-        var button = MoonEVAController.Instance.btnExit;
-        button.GetComponentInChildren<TMP_Text>().text = "Enter Lander";
-        button.onClick.RemoveAllListeners();
-        button.onClick.AddListener(() => MoonEVAController.Instance.EnterLander(other.GetComponent<LanderController>()));
-        button.gameObject.SetActive(true);
-        LanderUI.Instance.SetPanelBottomCenter();
+        if (other.CompareTag("Lander")) MoonEVAController.Instance.RegisterLander(other);
     }
 
-    void OnTriggerExit2D(Collider2D collision)
+    void OnTriggerExit2D(Collider2D other)
     {
-        if (!collision.CompareTag("Lander")) return;
-
-        var button = MoonEVAController.Instance.btnExit;
-        button.GetComponentInChildren<TMP_Text>().text = "Exit Lander";
-        button.onClick.RemoveAllListeners();
-        button.onClick.AddListener(() => MoonEVAController.Instance.ExitLander());
-        button.gameObject.SetActive(false);
-        LanderUI.Instance.SetPanelBottomCenter();
+        if (other.CompareTag("Lander") && MoonEVAController.Instance)
+            MoonEVAController.Instance.UnregisterLander(other);
     }
-
 }

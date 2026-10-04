@@ -20,6 +20,7 @@ public class StarField : MonoBehaviour
 
     public void Init()
     {
+        starCount = Mathf.Max(1, starCount);
         ps = GetComponent<ParticleSystem>();
 
         var main = ps.main;
@@ -29,6 +30,7 @@ public class StarField : MonoBehaviour
         main.maxParticles = starCount;
         main.simulationSpace = ParticleSystemSimulationSpace.World;
 
+        ps.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
         ps.Emit(starCount);
         stars = new ParticleSystem.Particle[starCount];
         ps.GetParticles(stars);
@@ -47,14 +49,18 @@ public class StarField : MonoBehaviour
         transform.position = Vector3.Lerp(
             transform.position,
             target.position,
-            parallax);
+            1f - Mathf.Pow(1f - Mathf.Clamp01(parallax), Time.deltaTime * 60f));
 
         RecycleStars();
     }
 
-    public void SetTarget(Transform newTarget)
+    public void SetTarget(Transform newTarget, bool instant = false)
     {
         target = newTarget;
+        if (!instant || !target || stars == null) return;
+        transform.position = target.position;
+        for (int i = 0; i < stars.Length; i++) RespawnStar(i);
+        ps.SetParticles(stars, stars.Length);
     }
 
     void RecycleStars()
@@ -63,7 +69,7 @@ public class StarField : MonoBehaviour
 
         for (int i = 0; i < stars.Length; i++)
         {
-            if (Vector2.Distance(stars[i].position, center) > radius)
+            if (((Vector2)(stars[i].position - center)).sqrMagnitude > radius * radius)
                 RespawnStar(i);
         }
 
@@ -76,4 +82,6 @@ public class StarField : MonoBehaviour
         stars[i].position = (Vector3)p + transform.position;
         stars[i].startSize = Random.Range(0.02f, 0.06f);
     }
+
+    void OnDestroy() { if (Instance == this) Instance = null; }
 }

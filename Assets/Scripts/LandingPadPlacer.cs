@@ -30,6 +30,8 @@ public class LandingPadPlacer : MonoBehaviour
 
     EdgeCollider2D groundEdge;
     Collider2D padCollider;
+    readonly System.Collections.Generic.List<Collider2D> overlapHits = new();
+    readonly System.Collections.Generic.List<RaycastHit2D> legHits = new();
 
     void Awake()
     {        
@@ -38,20 +40,20 @@ public class LandingPadPlacer : MonoBehaviour
 
     public void Init()
     {
-
+        pad = transform;
+        padCollider = GetComponentInChildren<Collider2D>();
+        var terrain = RandomLandscape.Instance ? RandomLandscape.Instance : FindFirstObjectByType<RandomLandscape>();
+        if (terrain) landscape = terrain.gameObject;
     }
 
     public void SetRandomPlaceForPad()
     {
-        pad = transform;
-        padCollider = pad.GetComponentInChildren<Collider2D>();
-        landscape = FindFirstObjectByType<RandomLandscape>() ? FindFirstObjectByType<RandomLandscape>().gameObject : GameObject.Find("RandomLandscape");
-
+        Init();
         PlacePad();
     }
-
     public void PlacePad()
     {
+        if (!landscape || !pad) Init();
         if (!landscape) return;
 
         var lr = landscape.GetComponent<LineRenderer>();
@@ -66,24 +68,27 @@ public class LandingPadPlacer : MonoBehaviour
         if (!groundEdge)
             Debug.LogWarning("LandingPadPlacer: EdgeCollider2D missing on landscape (needed for collision check).");
 
-        for (int t = 0; t < tries; t++)
+        Physics2D.SyncTransforms();
+        for (int t = 0; t < Mathf.Max(1, tries); t++)
         {
             int n = lr.positionCount;
 
-            float halfUnused = (1f - padSpawnRange) * 0.5f;
+            float halfUnused = (1f - Mathf.Clamp(padSpawnRange, 0.1f, 1f)) * 0.5f;
             int minIdx = Mathf.FloorToInt(n * halfUnused);
             int maxIdx = Mathf.CeilToInt(n * (1f - halfUnused));
 
             int idx = Random.Range(minIdx, maxIdx);
 
-
             Vector3 groundPoint = lr.GetPosition(idx);
 
-            Vector3 pos = new Vector3(groundPoint.x, groundPoint.y + yStep, pad.position.z);
+            Vector3 pos = new Vector3(groundPoint.x, groundPoint.y + Mathf.Max(0.01f, yStep), pad.position.z);
 
             if (!LiftUntilClear(ref pos)) continue;
 
+            var terrain = landscape.GetComponent<RandomLandscape>();
+            if (terrain) terrain.FlattenForPad(new Vector2(pos.x, pos.y - Mathf.Max(0.01f, yStep)));
             pad.position = pos;
+            Physics2D.SyncTransforms();
 
             if (scaleLegs) UpdateLeg(leftLeg);
             if (scaleLegs) UpdateLeg(rightLeg);
@@ -108,19 +113,19 @@ public class LandingPadPlacer : MonoBehaviour
         // wir berechnen padCollider Center/Size relativ zum pad
         Bounds b = padCollider.bounds;
         Vector2 size = b.size;
-        Vector2 localOffset = (Vector2)(padCollider.transform.position - pad.position);
+        Vector2 localOffset = (Vector2)(b.center - pad.position);
 
         while (lifted <= maxLift)
         {
             Vector2 center = (Vector2)pos + localOffset;
 
             // OverlapBoxAll und dann Tag-Filter
-            var hits = Physics2D.OverlapBoxAll(center, size, 0f);
+            Physics2D.OverlapBox(center, size, 0f, new ContactFilter2D { useTriggers = false }, overlapHits);
             bool overlapsLandscape = false;
 
-            for (int i = 0; i < hits.Length; i++)
+            for (int i = 0; i < overlapHits.Count; i++)
             {
-                var c = hits[i];
+                var c = overlapHits[i];
                 if (!c) continue;
 
                 // ignorier eigenes Pad
@@ -140,8 +145,9 @@ public class LandingPadPlacer : MonoBehaviour
                 return true;
             }
 
-            pos.y += yStep;
-            lifted += yStep;
+            float step = Mathf.Max(0.01f, yStep);
+            pos.y += step;
+            lifted += step;
         }
 
         return false;
@@ -149,13 +155,18 @@ public class LandingPadPlacer : MonoBehaviour
 
     void UpdateLeg(Transform leg)
     {
-        if (!leg) return;
+        if (!leg || !groundEdge) return;
 
         Vector3 origin = leg.position + Vector3.up * raycastUp;
-        RaycastHit2D hit = Physics2D.Raycast(origin, Vector2.down, raycastUp + raycastDown);
-
+        Physics2D.Raycast(origin, Vector2.down, new ContactFilter2D { useTriggers = false }, legHits, raycastUp + raycastDown);
+        RaycastHit2D hit = default;
+        foreach (var candidate in legHits)
+        {
+            if (candidate.collider != groundEdge) continue;
+            hit = candidate;
+            break;
+        }
         if (!hit) return;
-        if (!hit.collider || !hit.collider.CompareTag("Landscape")) return;
 
         float topY = leg.position.y;
         float bottomY = hit.point.y + legBottomPadding;
@@ -172,6 +183,8 @@ public class LandingPadPlacer : MonoBehaviour
         // Position NICHT ändern (dein Setup wächst nach unten)
     }
 
+    void OnDestroy() { if (Instance == this) Instance = null; }
+
 #if UNITY_EDITOR
     void OnDrawGizmos()
     {
@@ -181,8 +194,8 @@ public class LandingPadPlacer : MonoBehaviour
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireCube(b.center, b.size);
 
-
         //Pad spawn range on landscape
+        if (!landscape || !pad) Init();
         if (!landscape) return;
         var lr = landscape.GetComponent<LineRenderer>();
         if (!lr || lr.positionCount < 2) return;

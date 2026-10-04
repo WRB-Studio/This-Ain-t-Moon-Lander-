@@ -10,20 +10,22 @@ public class SerializableDictionary<TKey, TValue> : Dictionary<TKey, TValue>, IS
 
     public void OnBeforeSerialize()
     {
+        keys ??= new();
+        values ??= new();
         keys.Clear();
         values.Clear();
-        foreach (var kv in this)
+        foreach (var entry in this)
         {
-            keys.Add(kv.Key);
-            values.Add(kv.Value);
+            keys.Add(entry.Key);
+            values.Add(entry.Value);
         }
     }
 
     public void OnAfterDeserialize()
     {
         Clear();
-        int c = Mathf.Min(keys.Count, values.Count);
-        for (int i = 0; i < c; i++)
-            this[keys[i]] = values[i];
+        if (keys == null || values == null) return;
+        for (int i = 0; i < Math.Min(keys.Count, values.Count); i++)
+            if (keys[i] != null) this[keys[i]] = values[i];
     }
 }

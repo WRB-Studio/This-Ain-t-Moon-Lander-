@@ -4,7 +4,6 @@ using UnityEditor.SceneManagement;
 #endif
 using UnityEngine;
 
-
 public class TestingManager : MonoBehaviour
 {
     [Header("Editor Behavior")]
@@ -36,8 +35,6 @@ public class TestingManager : MonoBehaviour
     {
         if (!highlightObject) return;
         if (Time.realtimeSinceStartup > highlightUntil) return;
-
-        // Puls (optional, aber mega sichtbar)
         float pulse = 1f + Mathf.Sin(Time.realtimeSinceStartup * 10f) * 0.15f;
         float r = highlightRadius * pulse;
 
@@ -63,8 +60,8 @@ public class TestingManagerEditor : Editor
         GUI.enabled = tm.landingPadPlacer;
         if (GUILayout.Button("New Random LandingPad Position"))
         {
+            Undo.RegisterFullObjectHierarchyUndo(tm.landingPadPlacer.gameObject, "Move landing pad");
             tm.landingPadPlacer.SetRandomPlaceForPad();
-            tm.landingPadPlacer.PlacePad();
 
             MarkDirty(tm.landingPadPlacer.gameObject, tm);
             Highlight(tm, tm.landingPadPlacer.gameObject);
@@ -74,6 +71,7 @@ public class TestingManagerEditor : Editor
         GUI.enabled = tm.lander;
         if (GUILayout.Button("Set Random Lander Position"))
         {
+            Undo.RecordObject(tm.lander.transform, "Move lander");
             tm.lander.SetRandomPosition();
 
             MarkDirty(tm.lander.gameObject, tm);

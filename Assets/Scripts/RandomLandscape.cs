@@ -15,7 +15,6 @@ public class RandomLandscape : MonoBehaviour
     private EdgeCollider2D edge;
 
     [Header("Landing Pad Freihalten (optional)")]
-    private Transform landingPad;
     public float padClearRadius = 3f;
     [Range(0f, 1f)] public float padFlatStrength = 1f;
 
@@ -42,13 +41,11 @@ public class RandomLandscape : MonoBehaviour
         lr.useWorldSpace = true;
         edge = GetComponent<EdgeCollider2D>();
 
-        landingPad = LandingPadPlacer.Instance.transform;
-        Generate(firstTime: true, forceNewSeed: false);
     }
 
     void OnValidate()
     {
-        if (!livePreviewInEditor) return;
+        if (!livePreviewInEditor || !FindFirstObjectByType<GameController>()) return;
         if (Application.isPlaying) return;
 
         if (!lr) lr = GetComponent<LineRenderer>();
@@ -57,7 +54,6 @@ public class RandomLandscape : MonoBehaviour
         if (!edge) edge = GetComponent<EdgeCollider2D>();
         if (!edge) return;
 
-        // Im Editor NICHT dauernd neuen Seed ziehen, sonst flackert’s bei jedem Slider
         Generate(firstTime: true, forceNewSeed: false);
     }
 
@@ -66,9 +62,6 @@ public class RandomLandscape : MonoBehaviour
     {
         Generate(firstTime: false, forceNewSeed: true);
     }
-
-#if UNITY_EDITOR
-#endif
 
     void Generate(bool firstTime, bool forceNewSeed)
     {
@@ -81,19 +74,19 @@ public class RandomLandscape : MonoBehaviour
 
         noiseOffset = seed * 0.001f;
 
+        points = Mathf.Max(4, points);
+        width = Mathf.Max(0.01f, width);
         lr.positionCount = points;
 
         float xStart = -width * 0.5f;
         float step = width / (points - 1);
 
-        float padX = landingPad ? landingPad.position.x : float.NaN;
-        float padY = landingPad ? landingPad.position.y : 0f;
-
         // ===== Level Einfluss (level/100) =====
-        float lvlFactor = FindFirstObjectByType<GameController>().level / 50f;
+        var game = GameController.Instance ? GameController.Instance : FindFirstObjectByType<GameController>();
+        float lvlFactor = game ? game.level / 50f : 0f;
 
         float amp = amplitude * (1f + lvlFactor);
-        float mChance = mountainChance * (1f + lvlFactor);
+        float mChance = Mathf.Clamp01(mountainChance * (1f + lvlFactor));
         float mHeight = mountainHeight * (1f + lvlFactor);
         float mWidth = mountainWidth * (1f + lvlFactor);
 
@@ -138,23 +131,25 @@ public class RandomLandscape : MonoBehaviour
             float mountainUp = n * add[i];
             float y = baseY + baseUp + mountainUp;
 
-            if (landingPad)
-            {
-                float d = Mathf.Abs(x - padX);
-                if (d < padClearRadius)
-                {
-                    float t = 1f - Mathf.Clamp01(d / padClearRadius);
-                    y = Mathf.Lerp(y, padY, t * padFlatStrength);
-                }
-            }
-
             lr.SetPosition(i, new Vector3(x, y, 0f));
         }
 
         UpdateCollider();
     }
 
-
+    public void FlattenForPad(Vector2 padPosition)
+    {
+        if (!lr || padClearRadius <= 0f) return;
+        for (int i = 0; i < lr.positionCount; i++)
+        {
+            Vector3 point = lr.GetPosition(i);
+            float weight = 1f - Mathf.Clamp01(Mathf.Abs(point.x - padPosition.x) / padClearRadius);
+            point.y = Mathf.Lerp(point.y, padPosition.y, weight * padFlatStrength);
+            lr.SetPosition(i, point);
+        }
+        UpdateCollider();
+        Physics2D.SyncTransforms();
+    }
     void UpdateCollider()
     {
         if (!edge) return;
@@ -163,10 +158,12 @@ public class RandomLandscape : MonoBehaviour
         for (int i = 0; i < pts.Length; i++)
         {
             Vector3 p = lr.GetPosition(i);
-            pts[i] = new Vector2(p.x, p.y);
+            pts[i] = transform.InverseTransformPoint(p);
         }
 
         edge.points = pts;
     }
+
+    void OnDestroy() { if (Instance == this) Instance = null; }
 
 }
