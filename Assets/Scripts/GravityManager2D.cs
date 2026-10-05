@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class GravityManager2D : MonoBehaviour
 {
@@ -16,9 +17,10 @@ public class GravityManager2D : MonoBehaviour
     public float gravitySmooth = 6f;
     [Header("Auto Rotation Assist")]
     [Range(0f, 1f)] public float rotationAssist = 0.25f;
-    public float maxAssistTorque = 4f;
+    [FormerlySerializedAs("maxAssistTorque")]
+    [Tooltip("Maximum automatic rotation correction in degrees per second; this is not physical torque.")]
+    [Min(0f)] public float maxAssistSpeed = 4f;
     public float deadZoneDeg = 1.5f;
-    [HideInInspector] public float zeroBlend;
 
     void Awake() => Instance = this;
     public void Init() => Physics2D.gravity = baseGravity;
@@ -41,7 +43,7 @@ public class GravityManager2D : MonoBehaviour
         if (gravity.sqrMagnitude < 0.0001f) return 0f;
         float error = Vector2.SignedAngle(body.up, -gravity.normalized);
         if (Mathf.Abs(error) < deadZoneDeg) return 0f;
-        return Mathf.Clamp(error * rotationAssist * GetMoonBlend(body.position), -maxAssistTorque, maxAssistTorque);
+        return Mathf.Clamp(error * rotationAssist * GetMoonBlend(body.position), -maxAssistSpeed, maxAssistSpeed);
     }
 
     void OnDrawGizmosSelected()

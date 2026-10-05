@@ -7,7 +7,7 @@ public class CameraController : MonoBehaviour
     [Header("Follow")]
     [SerializeField] float followSmooth = 5f;
     [SerializeField] Vector3 followOffset = new Vector3(0f, 2f, -10f);
-    public Vector3 shakeOffset;
+    [HideInInspector] public Vector3 shakeOffset;
 
     [Header("Landing Zoom")]
     [SerializeField] float minZoom = 4f;

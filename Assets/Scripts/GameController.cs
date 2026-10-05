@@ -3,7 +3,8 @@ using UnityEngine;
 public class GameController : MonoBehaviour
 {
     public static GameController Instance;
-    public int level = 1;
+    [Tooltip("Used for terrain previews in Edit Mode. In Play Mode the saved level replaces this value.")]
+    [Min(1)] public int level = 1;
 
     public enum GamePhase { Countdown, Flight, Results, EVA }
     public GamePhase Phase { get; private set; }

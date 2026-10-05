@@ -58,9 +58,15 @@ public class TestingManagerEditor : Editor
         GUILayout.Space(10);
 
         GUI.enabled = tm.landingPadPlacer;
-        if (GUILayout.Button("New Random LandingPad Position"))
+        if (GUILayout.Button("Generate New Terrain and Landing Zone"))
         {
             Undo.RegisterFullObjectHierarchyUndo(tm.landingPadPlacer.gameObject, "Move landing pad");
+            var terrain = RandomLandscape.Instance ? RandomLandscape.Instance : FindFirstObjectByType<RandomLandscape>();
+            if (terrain)
+            {
+                Undo.RegisterFullObjectHierarchyUndo(terrain.gameObject, "Generate terrain");
+                terrain.GenerateNewLevel();
+            }
             tm.landingPadPlacer.SetRandomPlaceForPad();
 
             MarkDirty(tm.landingPadPlacer.gameObject, tm);

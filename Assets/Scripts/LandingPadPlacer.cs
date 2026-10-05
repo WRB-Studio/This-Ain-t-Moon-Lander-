@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class LandingPadPlacer : MonoBehaviour
 {
@@ -12,10 +13,13 @@ public class LandingPadPlacer : MonoBehaviour
     public Transform rightLeg;
 
     [Header("Placement")]
-    public int tries = 30;
-    public float yStep = 0.5f;
-    public float maxLift = 20f;
-    public float clearance = 0.05f;
+    [FormerlySerializedAs("yStep")]
+    [Tooltip("Distance between the pad collider's bottom and the planned terrain surface.")]
+    [Min(0.05f)] public float groundOffset = 0.5f;
+    [Tooltip("Maximum extra lift if the planned pad placement overlaps terrain.")]
+    [Min(0f)] public float maxLift = 20f;
+    [Tooltip("Additional clearance after finding a collision-free placement.")]
+    [Min(0f)] public float clearance = 0.05f;
 
     [Tooltip("Defines which portion of the landscape is used for landing pad placement. 1 = full length, 0.5 = middle 50%.")]
     [Range(0.1f, 1f)] public float padSpawnRange = 0.5f;
@@ -51,52 +55,45 @@ public class LandingPadPlacer : MonoBehaviour
         Init();
         PlacePad();
     }
+
+    public float GetRequiredGroundHalfWidth()
+    {
+        if (!padCollider) padCollider = GetComponentInChildren<Collider2D>();
+        return padCollider ? padCollider.bounds.extents.x
+            + Mathf.Abs(padCollider.bounds.center.x - transform.position.x) + 0.5f : 1f;
+    }
+
     public void PlacePad()
     {
         if (!landscape || !pad) Init();
         if (!landscape) return;
 
-        var lr = landscape.GetComponent<LineRenderer>();
         groundEdge = landscape.GetComponent<EdgeCollider2D>();
-
-        if (!lr || lr.positionCount < 2)
-        {
-            Debug.LogWarning("LandingPadPlacer: LineRenderer missing or too few points.");
-            return;
-        }
 
         if (!groundEdge)
             Debug.LogWarning("LandingPadPlacer: EdgeCollider2D missing on landscape (needed for collision check).");
 
-        Physics2D.SyncTransforms();
-        for (int t = 0; t < Mathf.Max(1, tries); t++)
+        var plannedTerrain = landscape.GetComponent<RandomLandscape>();
+        if (!plannedTerrain)
         {
-            int n = lr.positionCount;
-
-            float halfUnused = (1f - Mathf.Clamp(padSpawnRange, 0.1f, 1f)) * 0.5f;
-            int minIdx = Mathf.FloorToInt(n * halfUnused);
-            int maxIdx = Mathf.CeilToInt(n * (1f - halfUnused));
-
-            int idx = Random.Range(minIdx, maxIdx);
-
-            Vector3 groundPoint = lr.GetPosition(idx);
-
-            Vector3 pos = new Vector3(groundPoint.x, groundPoint.y + Mathf.Max(0.01f, yStep), pad.position.z);
-
-            if (!LiftUntilClear(ref pos)) continue;
-
-            var terrain = landscape.GetComponent<RandomLandscape>();
-            if (terrain) terrain.FlattenForPad(new Vector2(pos.x, pos.y - Mathf.Max(0.01f, yStep)));
-            pad.position = pos;
-            Physics2D.SyncTransforms();
-
-            if (scaleLegs) UpdateLeg(leftLeg);
-            if (scaleLegs) UpdateLeg(rightLeg);
-
+            Debug.LogWarning("LandingPadPlacer: RandomLandscape is required to plan the landing zone.");
             return;
         }
-
-        Debug.LogWarning("LandingPadPlacer: Could not find valid pad position.");
+        if (!plannedTerrain.HasLayout) plannedTerrain.GenerateNewLevel();
+        if (!plannedTerrain.HasLayout) return;
+        Vector2 zone = plannedTerrain.LandingZone;
+        float bottomOffset = padCollider ? padCollider.bounds.min.y - pad.position.y : 0f;
+        Vector3 position = new Vector3(zone.x, zone.y + Mathf.Max(0.05f, groundOffset) - bottomOffset, pad.position.z);
+        Physics2D.SyncTransforms();
+        if (!LiftUntilClear(ref position))
+        {
+            Debug.LogWarning("LandingPadPlacer: Planned landing zone could not fit the pad.");
+            return;
+        }
+        pad.position = position;
+        Physics2D.SyncTransforms();
+        if (scaleLegs) UpdateLeg(leftLeg);
+        if (scaleLegs) UpdateLeg(rightLeg);
     }
 
     bool LiftUntilClear(ref Vector3 pos)
@@ -145,7 +142,7 @@ public class LandingPadPlacer : MonoBehaviour
                 return true;
             }
 
-            float step = Mathf.Max(0.01f, yStep);
+            const float step = 0.25f;
             pos.y += step;
             lifted += step;
         }
@@ -201,10 +198,12 @@ public class LandingPadPlacer : MonoBehaviour
         if (!lr || lr.positionCount < 2) return;
 
         int n = lr.positionCount;
-        float h = (1f - padSpawnRange) * .5f, y = -5f, t = 20f;
+        float h = (1f - Mathf.Clamp(padSpawnRange, 0.1f, 1f)) * .5f, y = -5f, t = 20f;
+        int leftIndex = Mathf.Clamp((int)(n * h), 0, n - 1);
+        int rightIndex = Mathf.Clamp((int)(n * (1f - h)) - 1, 0, n - 1);
 
-        Vector3 l = lr.GetPosition((int)(n * h));
-        Vector3 r = lr.GetPosition((int)(n * (1f - h)) - 1);
+        Vector3 l = lr.GetPosition(leftIndex);
+        Vector3 r = lr.GetPosition(rightIndex);
         l.y = r.y = y;
 
         Gizmos.color = new(.2f, .6f, 1f, .9f);

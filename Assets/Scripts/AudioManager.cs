@@ -6,18 +6,13 @@ public class AudioManager : MonoBehaviour
     public static AudioManager Instance;
     [Header("Music")]
     public AudioClip mainMusic;
-    public AudioClip crashedMusic;
-    public AudioClip landedMusic;
     [Header("SFX")]
     public AudioClip sfxThruster;
     public AudioClip sfxPerfectLanding;
     public AudioClip sfxCrash;
     public AudioClip sfxCountdown;
     public AudioClip sfxCountdownStart;
-    public int maxSfxSources = 8;
-    [Header("Defaults")]
-    [Range(0f, 1f)] public float defaultSfxVolume = 0.8f;
-    [Range(0f, 1f)] public float defaultMusicVolume = 0.6f;
+    [Min(1)] public int maxSfxSources = 8;
 
     float sfxVolume;
     float musicVolume;
@@ -39,9 +34,9 @@ public class AudioManager : MonoBehaviour
 
     public void Init()
     {
-        var data = SaveLoadManager.Instance.Data;
-        sfxVolume = data != null ? data.volSfx : defaultSfxVolume;
-        musicVolume = data != null ? data.volMusic : defaultMusicVolume;
+        var data = SaveLoadManager.Instance.Data ?? new SaveGame();
+        sfxVolume = data.volSfx;
+        musicVolume = data.volMusic;
         if (!musicSource) musicSource = gameObject.AddComponent<AudioSource>();
         musicSource.playOnAwake = false;
         musicSource.loop = true;

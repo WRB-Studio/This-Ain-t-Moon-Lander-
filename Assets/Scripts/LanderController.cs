@@ -11,10 +11,9 @@ public class LanderController : MonoBehaviour
     public bool isSecretLander = false;
     public bool isActive = false;
 
-    [Header("States")]
-    public bool controlsEnabled;
+    [HideInInspector] public bool controlsEnabled;
     public enum eLanderState { None, Flying, LandedPad, LandedMoon, CrashedLandscape, CrashedMoon, CrashedPad, OutOfFuel, DeadZone };
-    public eLanderState landerState = eLanderState.None;
+    [HideInInspector] public eLanderState landerState = eLanderState.None;
 
     [Header("Respawn (relative to LandingPad)")]
     public float maxDistanceXToPad = 6f;
@@ -30,7 +29,6 @@ public class LanderController : MonoBehaviour
     public float rotationSpeed = 180f;
     public float rotationSmooth = 0.12f;
     public float maxFallSpeed = -6f;
-    public float currentSpeed;
 
     [Header("Analog Steering")]
     [Tooltip("Bereich in der Mitte des Schiffs ohne Drehung.\nVerhindert Zittern beim reinen Gasgeben.")]
@@ -47,10 +45,10 @@ public class LanderController : MonoBehaviour
 
     float steer01; // geglätteter steering wert (-1..+1)
 
+    [HideInInspector] public float fuelMax = 3.5f;
     [Header("Fuel")]
-    public float fuelMax = 3.5f;
     public float fuelBurnPerSec = 1.0f;
-    public float currentFuel;
+    [HideInInspector] public float currentFuel;
     public float fuelPerUnit = 0.25f;
     [Range(0f, 1f)] public float fuelBufferPercent = 0.4f;
     public float fuelEmptyDelay = 5f;
@@ -248,10 +246,8 @@ public class LanderController : MonoBehaviour
         var gravity = GravityManager2D.Instance;
         float blend = 1f - Mathf.Exp(-gravity.gravitySmooth * Time.fixedDeltaTime);
         currentGravity = Vector2.Lerp(currentGravity, gravity.GetGravity(rb.position), blend);
-        gravity.zeroBlend = gravity.GetZeroBlend(rb.position);
-        ApplySpaceTuning(gravity.zeroBlend);
+        ApplySpaceTuning(gravity.GetZeroBlend(rb.position));
         rb.AddForce(currentGravity * (rb.mass * gravityScale), ForceMode2D.Force);
-        currentSpeed = rb.linearVelocity.magnitude;
         if (!controlsEnabled)
         {
             StopThrust();
@@ -448,7 +444,7 @@ public class LanderController : MonoBehaviour
         }
         rb.bodyType = RigidbodyType2D.Static;
         rb.rotation = 0f;
-        targetRotation = steer01 = currentSpeed = fuelEmptyDelayCounter = 0f;
+        targetRotation = steer01 = fuelEmptyDelayCounter = 0f;
         landerState = eLanderState.None;
         fuelEmptyTriggered = deadZoneTriggered = false;
         deadZones.Clear();
@@ -477,21 +473,32 @@ public class LanderController : MonoBehaviour
         var pad = LandingPadPlacer.Instance ? LandingPadPlacer.Instance : FindFirstObjectByType<LandingPadPlacer>();
         if (!pad) return;
         Vector2 padPosition = pad.transform.position;
-        float levelFactor = GameController.Instance ? GameController.Instance.level / 2f : 0.5f;
+        float levelFactor = GameController.Instance ? Mathf.Clamp(GameController.Instance.level, 1, 30) / 2f : 0.5f;
         float xRange = maxDistanceXToPad + levelFactor;
         float yMin = minDistanceYToPad + levelFactor;
         float yMax = Mathf.Max(yMin, maxDistanceYToPad + levelFactor);
-        Vector2 position = padPosition + new Vector2(Random.Range(-xRange, xRange), Random.Range(yMin, yMax));
-        position.y = Mathf.Max(position.y, minWorldY);
+        var terrain = RandomLandscape.Instance;
+        var random = new System.Random(terrain ? unchecked(terrain.seed ^ 0x51A7C3) : 1);
+        Vector2 position = padPosition;
+        float hullRadius = Mathf.Max(hull.bounds.extents.x, hull.bounds.extents.y);
         Physics2D.SyncTransforms();
         for (int attempt = 0; attempt < Mathf.Max(1, tries); attempt++)
         {
+            position = padPosition + new Vector2(Mathf.Lerp(-xRange, xRange, (float)random.NextDouble()),
+                Mathf.Lerp(yMin, yMax, (float)random.NextDouble()));
+            if (terrain && terrain.HasLayout)
+            {
+                position.x = terrain.ClampSpawnX(position.x, hullRadius + clearance);
+                float routeHeight = terrain.GetHighestGround(Mathf.Min(position.x, padPosition.x) - hullRadius,
+                    Mathf.Max(position.x, padPosition.x) + hullRadius);
+                position.y = Mathf.Max(position.y, routeHeight + hullRadius + Mathf.Max(0f, clearance));
+            }
+            position.y = Mathf.Max(position.y, minWorldY);
             if (!IsColliding(position))
             {
                 transform.position = position;
                 return;
             }
-            position.y += 2f;
         }
         position.x = padPosition.x;
         position.y = Mathf.Max(position.y, padPosition.y + yMax + 20f);
