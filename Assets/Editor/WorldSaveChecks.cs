@@ -47,6 +47,8 @@ public static class WorldSaveChecks
         Require(actual.phase == expected.phase && actual.hasResults == expected.hasResults && actual.refilling == expected.refilling
             && actual.refillStartFuel == expected.refillStartFuel,
             "Load must restore the current phase, result visibility and refill state.");
+        Require((actual.resultStoryMessage ?? "") == (expected.resultStoryMessage ?? ""),
+            "Load must preserve the landing story shown in the result panel.");
         Require(actual.scoring.padAwarded == expected.scoring.padAwarded && actual.scoring.moonAwarded == expected.scoring.moonAwarded,
             "Loading must not grant another landing score.");
         foreach (var ship in UnityEngine.Object.FindObjectsByType<LanderController>(FindObjectsSortMode.None))
@@ -107,7 +109,10 @@ public static class WorldSaveChecks
         manager.Save();
         snapshot = JsonUtility.FromJson<SaveGame>(JsonUtility.ToJson(manager.Data)).world;
         Require(snapshot.phase == GameController.GamePhase.Landed, "Test setup must produce a landed save.");
+        snapshot.resultStoryMessage = "Persisted landing story.";
         Require(game.RestoreWorld(snapshot), "A pad landing must restore.");
+        Require(LanderUI.Instance.txtGameOverMessage.text == snapshot.resultStoryMessage,
+            "The saved landing story must be restored inside the score panel.");
         CheckWorld(snapshot);
         Tick(5);
         Require(game.CanRefill && game.CanStartNextLevel, "Loaded pad contact must allow refill and Next Level.");
@@ -163,6 +168,8 @@ public static class WorldSaveChecks
         };
         MoonEVAController.Instance.RestoreAstronaut(actor);
         game.BeginEVA(MoonEVAController.Instance.astronaut.transform);
+        Require(StoryTextController.Instance.HasDiscovered(StoryTextController.Discovery.EVA),
+            "Starting EVA must record the discovery without requiring a story trigger.");
         snapshot = JsonUtility.FromJson<SaveGame>(JsonUtility.ToJson(manager.Data)).world;
         Require(game.RestoreWorld(snapshot), "An EVA save must restore.");
         Require(game.Phase == GameController.GamePhase.EVA && MoonEVAController.Instance.astronaut
@@ -174,6 +181,8 @@ public static class WorldSaveChecks
         manager.Load();
         Require(manager.Data.world.phase == GameController.GamePhase.EVA && manager.Data.world.astronaut != null,
             "Application pause must capture EVA into the on-disk save.");
+        Require(StoryTextController.Instance.HasDiscovered(StoryTextController.Discovery.EVA),
+            "Loading the world must retain its discovery progress.");
         SceneManager.LoadScene("MainScene");
         yield return null;
         game = GameController.Instance;

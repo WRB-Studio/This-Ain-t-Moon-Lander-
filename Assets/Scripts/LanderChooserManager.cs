@@ -264,8 +264,7 @@ public class LanderChooserManager : MonoBehaviour
         if (newlyFound)
         {
             SaveLoadManager.Instance.Data.SetFlag(KEY_SECRET_FOUND + lander.landerIndex, true);
-            StoryTextController.Instance.Show("Guess the moon landing was real after all.");
-            StoryTextController.Instance.Show("Okay… maybe this is a Moon Lander game. 😄");
+            StoryTextController.Instance.Discover(StoryTextController.Discovery.AbandonedShip);
         }
         selectedIndex = index;
         MarkSeen(index);

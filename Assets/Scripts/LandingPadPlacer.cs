@@ -25,7 +25,7 @@ public class LandingPadPlacer : MonoBehaviour
     [Range(0.1f, 1f)] public float padSpawnRange = 0.5f;
     [Tooltip("Minimum horizontal distance between pads added to the existing landscape.")]
     [Min(1f)] public float minimumPadSpacing = 20f;
-    [Tooltip("Maximum distance from the last landing to a newly added pad.")]
+    [Tooltip("Preferred distance from the last landing to a newly added pad. The search expands when this area is full.")]
     [Min(1f)] public float maxNextPadDistance = 45f;
 
     [Header("Raycast (legs)")]
@@ -115,7 +115,15 @@ public class LandingPadPlacer : MonoBehaviour
         next.scaleLegs = scaleLegs;
         next.name = "LandingPad " + (GameController.Instance.level + 1);
         next.Init();
-        if (!next.TryPlaceOnExistingTerrain(lastLanding))
+        bool placed = next.TryPlaceOnExistingTerrain(lastLanding);
+        if (!placed) placed = next.TryPlaceOnExistingTerrain(lastLanding, true);
+        if (!placed && RandomLandscape.Instance && RandomLandscape.Instance.HasLayout)
+        {
+            float extension = Mathf.Max(minimumPadSpacing * 2f, next.GetRequiredGroundHalfWidth() * 4f + 2f);
+            RandomLandscape.Instance.ExtendForLandingPad(lastLanding.x, extension);
+            placed = next.TryPlaceOnExistingTerrain(lastLanding, true);
+        }
+        if (!placed)
         {
             next.gameObject.SetActive(false);
             Destroy(next.gameObject);
@@ -149,7 +157,7 @@ public class LandingPadPlacer : MonoBehaviour
         return false;
     }
 
-    bool TryPlaceOnExistingTerrain(Vector2 lastLanding)
+    bool TryPlaceOnExistingTerrain(Vector2 lastLanding, bool expandedSearch = false)
     {
         var terrain = RandomLandscape.Instance;
         if (!terrain || !terrain.HasLayout) return false;
@@ -159,18 +167,22 @@ public class LandingPadPlacer : MonoBehaviour
         float halfWidth = GetRequiredGroundHalfWidth();
         float span = points.GetPosition(points.positionCount - 1).x - points.GetPosition(0).x;
         float middle = points.GetPosition(0).x + span * 0.5f;
-        float range = span * Mathf.Clamp(padSpawnRange, 0.1f, 1f) * 0.5f;
+        float range = span * (expandedSearch ? 1f : Mathf.Clamp(padSpawnRange, 0.1f, 1f)) * 0.5f;
         var candidates = new System.Collections.Generic.List<int>();
         for (int i = 0; i < points.positionCount; i++)
         {
             float x = points.GetPosition(i).x;
-            if (Mathf.Abs(x - middle) + halfWidth <= range && Mathf.Abs(x - lastLanding.x) <= maxNextPadDistance)
+            if (Mathf.Abs(x - middle) + halfWidth <= range
+                && (expandedSearch || Mathf.Abs(x - lastLanding.x) <= maxNextPadDistance))
                 candidates.Add(i);
         }
+        if (expandedSearch)
+            candidates.Sort((a, b) => Mathf.Abs(points.GetPosition(b).x - lastLanding.x)
+                .CompareTo(Mathf.Abs(points.GetPosition(a).x - lastLanding.x)));
         float bottomOffset = padCollider ? padCollider.bounds.min.y - pad.position.y : 0f;
         while (candidates.Count > 0)
         {
-            int index = Random.Range(0, candidates.Count);
+            int index = expandedSearch ? candidates.Count - 1 : Random.Range(0, candidates.Count);
             float x = points.GetPosition(candidates[index]).x;
             candidates[index] = candidates[candidates.Count - 1];
             candidates.RemoveAt(candidates.Count - 1);
@@ -185,7 +197,7 @@ public class LandingPadPlacer : MonoBehaviour
             float groundY = terrain.GetHighestGround(x - halfWidth, x + halfWidth);
             Vector3 position = new Vector3(x, groundY + Mathf.Max(0.05f, groundOffset) - bottomOffset, pad.position.z);
             if (!LiftUntilClear(ref position)) continue;
-            if (Vector2.Distance(position, lastLanding) > maxNextPadDistance) continue;
+            if (!expandedSearch && Vector2.Distance(position, lastLanding) > maxNextPadDistance) continue;
             pad.position = position;
             Physics2D.SyncTransforms();
             if (scaleLegs) { UpdateLeg(leftLeg); UpdateLeg(rightLeg); }

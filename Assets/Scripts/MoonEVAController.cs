@@ -11,6 +11,7 @@ public class MoonEVAController : MonoBehaviour
     public Transform astronautParent;
     [Header("UI")]
     public Button btnExit;
+    public Button scoreExitButton;
     [HideInInspector] public GameObject astronaut;
 
     readonly HashSet<Collider2D> nearbyLanders = new();
@@ -24,6 +25,11 @@ public class MoonEVAController : MonoBehaviour
         buttonText = btnExit.GetComponentInChildren<TMP_Text>();
         btnExit.onClick.RemoveAllListeners();
         btnExit.onClick.AddListener(OnActionClicked);
+        if (scoreExitButton)
+        {
+            scoreExitButton.onClick.RemoveAllListeners();
+            scoreExitButton.onClick.AddListener(ExitLander);
+        }
         RefreshAction();
     }
 
@@ -79,12 +85,15 @@ public class MoonEVAController : MonoBehaviour
         if (buttonText) buttonText.text = entering ? "Enter Lander" : "Exit Lander";
         bool canExit = lander && lander.landerState == LanderController.eLanderState.LandedMoon
             && lander.IsTouchingMoon && GameController.Instance.Phase == GameController.GamePhase.Landed;
-        btnExit.gameObject.SetActive(entering ? GetNearbyLander() != null : canExit);
+        btnExit.gameObject.SetActive(!GameController.Instance.HasResults
+            && (entering ? GetNearbyLander() != null : canExit));
+        if (scoreExitButton) scoreExitButton.gameObject.SetActive(GameController.Instance.HasResults && canExit && !entering);
     }
 
     public void ExitLander()
     {
-        if (astronaut || !lander || lander.landerState != LanderController.eLanderState.LandedMoon
+        if ((GameController.Instance.HasResults && (!scoreExitButton || !scoreExitButton.gameObject.activeInHierarchy))
+            || astronaut || !lander || lander.landerState != LanderController.eLanderState.LandedMoon
             || !lander.IsTouchingMoon || GameController.Instance.Phase != GameController.GamePhase.Landed) return;
         var renderer = lander.GetComponent<SpriteRenderer>();
         float halfWidth = renderer.sprite.bounds.extents.x * Mathf.Abs(lander.transform.lossyScale.x);

@@ -200,7 +200,7 @@ public class LanderController : MonoBehaviour
         if (!newLander.fuelInitialized)
         {
             newLander.fuelMax = old.fuelMax;
-            newLander.currentFuel = newLander.fuelMax * 0.75f;
+            newLander.currentFuel = newLander.fuelMax * (newLander.isSecretLander ? 1f : 0.75f);
             newLander.fuelInitialized = true;
         }
     }
@@ -253,6 +253,12 @@ public class LanderController : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (isActive && GameController.Instance.Phase == GameController.GamePhase.Countdown)
+        {
+            Park();
+            hull.isTrigger = false;
+            return;
+        }
         if (!isActive || rb.bodyType != RigidbodyType2D.Dynamic) return;
         var gravity = GravityManager2D.Instance;
         float blend = 1f - Mathf.Exp(-gravity.gravitySmooth * Time.fixedDeltaTime);
@@ -523,6 +529,7 @@ public class LanderController : MonoBehaviour
     {
         if (!sfxThrustSound) sfxThrustSound = AudioManager.Instance.CreateThrusterSound();
         controlsEnabled = true;
+        hull.isTrigger = false;
         rb.bodyType = RigidbodyType2D.Dynamic;
         landerState = eLanderState.Flying;
         targetRotation = rb.rotation;

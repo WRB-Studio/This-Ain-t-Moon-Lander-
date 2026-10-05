@@ -472,7 +472,8 @@ public class LanderUI : MonoBehaviour
         txtXPScore.gameObject.SetActive(true);
         txtXPScore.text = "XP-SCORE " + ScoringController.Instance.CollectedScore;
 
-        txtGameOverMessage.text = GetRandomGameOverMessage(state);
+        txtGameOverMessage.text = string.IsNullOrEmpty(GameController.Instance.ResultStoryMessage)
+            ? GetRandomGameOverMessage(state) : GameController.Instance.ResultStoryMessage;
         txtGameOverTitle.text = state switch
         {
             LanderController.eLanderState.LandedPad => "LANDED\n\n",
@@ -689,7 +690,7 @@ public class LanderUI : MonoBehaviour
         AudioManager.Instance.PlaySound(AudioManager.Instance.sfxCountdownStart, 1f, 1f, false);
         txtGameOverTitle.text = "Land!";
         GameController.Instance.BeginRun();
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSecondsRealtime(1f);
 
         txtGameOverTitle.gameObject.SetActive(false);
 
@@ -713,6 +714,9 @@ public class LanderUI : MonoBehaviour
 
     public bool TryGetGameplayPointer(out Vector2 screenPosition)
     {
+        screenPosition = default;
+        if (!GameController.Instance || !GameController.Instance.IsPlaying) return false;
+        if (StoryTextController.Instance && StoryTextController.Instance.BlocksGameplayInput) return false;
         for (int i = 0; i < Input.touchCount; i++)
         {
             var touch = Input.GetTouch(i);

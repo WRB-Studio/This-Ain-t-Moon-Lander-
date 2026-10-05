@@ -11,6 +11,24 @@ public static class UIAuthoringChecks
         if (!Application.isBatchMode) throw new InvalidOperationException("Run authoring checks in a separate Unity batch process.");
         EditorSceneManager.OpenScene("Assets/Scenes/MainScene.unity");
         var ui = UnityEngine.Object.FindFirstObjectByType<LanderUI>(FindObjectsInactive.Include);
+        var story = new SerializedObject(UnityEngine.Object.FindFirstObjectByType<StoryTextController>(FindObjectsInactive.Include));
+        Require(story.FindProperty("discoveryPanel").objectReferenceValue
+            && story.FindProperty("discoveryText").objectReferenceValue
+            && story.FindProperty("continueButton").objectReferenceValue, "Discovery dialogue must be authored in the scene.");
+        Require(story.FindProperty("gameplayPanelVisibility").objectReferenceValue,
+            "The HUD visibility group must be authored in the scene.");
+        var portraits = story.FindProperty("transmissionPortraits");
+        Require(portraits.arraySize == 3, "Earth transmissions must have three authored operator expressions.");
+        for (int i = 0; i < portraits.arraySize; i++)
+            Require(portraits.GetArrayElementAtIndex(i).objectReferenceValue
+                && PrefabUtility.IsPartOfPrefabInstance(portraits.GetArrayElementAtIndex(i).objectReferenceValue),
+                "Operator portraits must use the shared prefab.");
+        var dialogueText = (TMPro.TMP_Text)story.FindProperty("discoveryText").objectReferenceValue;
+        var transmissions = story.FindProperty("earthTransmissions");
+        for (int i = 0; i < transmissions.arraySize; i++)
+            Require(dialogueText.GetPreferredValues(transmissions.GetArrayElementAtIndex(i).FindPropertyRelative("text").stringValue,
+                dialogueText.rectTransform.rect.width, 0f).y <= dialogueText.rectTransform.rect.height,
+                "The full transmission must fit above the Continue button.");
         Require(ui.btnContinue && ui.btnRefill && ui.flightActions, "Flight actions must be authored in the scene.");
         Require(ui.refillProgressFill && ui.refillProgressFill.transform.IsChildOf(ui.btnRefill.transform)
             && ui.refillProgressFill.type == Image.Type.Simple && !ui.refillProgressFill.sprite,

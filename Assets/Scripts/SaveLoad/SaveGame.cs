@@ -13,6 +13,8 @@ public class SaveGame
     public int CollectedScore;
     public int selectedLanderIndex;
     public int selectedLanderId = -1;
+    public int earthAsideLevel;
+    public string lastEarthAside;
     public SerializableDictionary<string, bool> flags = new();
     public WorldSave world;
 

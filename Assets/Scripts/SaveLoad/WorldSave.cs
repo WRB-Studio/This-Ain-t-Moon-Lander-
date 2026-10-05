@@ -19,6 +19,7 @@ public class WorldSave
     public float refillStartFuel;
     public bool atmosphereExit, backToPlanet, nearMoon;
     public float storyElapsed;
+    public string resultStoryMessage;
     public ActorSave astronaut;
     public ScoreSave scoring;
 

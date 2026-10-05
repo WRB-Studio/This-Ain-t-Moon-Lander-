@@ -14,6 +14,7 @@ public class GameController : MonoBehaviour
     bool worldReady;
     float nextAutoSave;
     bool resultsHaveScore;
+    public string ResultStoryMessage { get; private set; }
 
     public enum GamePhase { Countdown, Flight, Landed, EVA, Crashed }
     public GamePhase Phase { get; private set; }
@@ -89,6 +90,7 @@ public class GameController : MonoBehaviour
         Phase = GamePhase.Countdown;
         HasResults = false;
         resultsHaveScore = false;
+        ResultStoryMessage = null;
         MoonEVAController.Instance.ResetRun();
         LanderUI.Instance.HideGameOver();
         ImpactFX.Instance.ResetEffect();
@@ -108,6 +110,7 @@ public class GameController : MonoBehaviour
         LanderController.Instance.StartLander();
         ScoringController.Instance.BeginRun();
         StoryTextController.Instance.Restart();
+        StoryTextController.Instance.ShowEarthBriefing();
         SaveLoadManager.Instance.Save();
     }
 
@@ -116,7 +119,7 @@ public class GameController : MonoBehaviour
         if (!CanStartNextLevel) return;
         if (!LandingPadPlacer.Instance.CreateNextPad(LanderController.Instance.transform.position))
         {
-            LanderUI.Instance.ShowResultMessage("No room for another nearby landing pad.\nTry flying instead.");
+            Debug.LogError("Next level could not create a landing pad. Check the terrain and landing pad configuration.");
             return;
         }
         LanderChooserManager.Instance.SpawnSelectedLander();
@@ -131,10 +134,16 @@ public class GameController : MonoBehaviour
     public void HandleLanding(Collision2D collision, bool moon)
     {
         Phase = GamePhase.Landed;
-        if (moon) IsExploring = true;
+        if (moon)
+        {
+            IsExploring = true;
+            StoryTextController.Instance.Discover(StoryTextController.Discovery.Moon);
+            StoryTextController.Instance.Discover(StoryTextController.Discovery.MoonLanding);
+        }
         bool awarded = ScoringController.Instance.CalculateScore(collision);
+        ResultStoryMessage = moon ? StoryTextController.Instance.TakeMoonLandingMessage() : null;
         resultsHaveScore = awarded;
-        HasResults = awarded || !moon;
+        HasResults = awarded || !moon || !string.IsNullOrEmpty(ResultStoryMessage);
         LanderController.Instance.controlsEnabled = !HasResults;
         if (HasResults) LanderUI.Instance.ShowResults(LanderController.Instance.landerState, awarded);
         MoonEVAController.Instance.RefreshAction();
@@ -149,6 +158,7 @@ public class GameController : MonoBehaviour
         IsExploring = true;
         HasResults = false;
         LanderUI.Instance.HideGameOver();
+        ResultStoryMessage = null;
         LanderController.Instance.ResumeFlight();
         SetControlledTarget(LanderController.Instance.transform);
         MoonEVAController.Instance.RefreshAction();
@@ -179,6 +189,7 @@ public class GameController : MonoBehaviour
         Phase = GamePhase.EVA;
         LanderUI.Instance.HideGameOver();
         SetControlledTarget(astronaut);
+        StoryTextController.Instance.Discover(StoryTextController.Discovery.EVA);
         SaveLoadManager.Instance.Save();
     }
 
@@ -196,6 +207,7 @@ public class GameController : MonoBehaviour
 
     public void HandleCrash(LanderController.eLanderState state)
     {
+        ResultStoryMessage = null;
         IsRefilling = false;
         Phase = GamePhase.Crashed;
         HasResults = true;
@@ -246,6 +258,7 @@ public class GameController : MonoBehaviour
             activeShip = System.Array.IndexOf(ships, LanderController.Instance),
             phase = Phase, exploring = IsExploring, hasResults = HasResults, showScore = resultsHaveScore, refilling = IsRefilling,
             refillStartFuel = IsRefilling ? refillStartFuel : 0f,
+            resultStoryMessage = HasResults ? ResultStoryMessage : null,
             scoring = ScoringController.Instance.CaptureState(pads)
         };
         RandomLandscape.Instance.CaptureWorld(world);
@@ -306,6 +319,7 @@ public class GameController : MonoBehaviour
         ScoringController.Instance.RestoreState(world.scoring, pads);
         StoryTextController.Instance.RestoreState(world);
         Phase = world.phase; IsExploring = world.exploring; HasResults = world.hasResults; resultsHaveScore = world.showScore;
+        ResultStoryMessage = string.IsNullOrEmpty(world.resultStoryMessage) ? null : world.resultStoryMessage;
         IsRefilling = world.refilling && Phase == GamePhase.Landed
             && LanderController.Instance.landerState == LanderController.eLanderState.LandedPad;
         refillStartFuel = IsRefilling ? Mathf.Clamp(world.refillStartFuel, 0f, LanderController.Instance.currentFuel) : 0f;
@@ -320,7 +334,11 @@ public class GameController : MonoBehaviour
         else
         {
             SetControlledTarget(LanderController.Instance.transform, true);
-            if (Phase == GamePhase.Countdown) LanderUI.Instance.StartCountdown();
+            if (Phase == GamePhase.Countdown)
+            {
+                LanderController.Instance.Park();
+                LanderUI.Instance.StartCountdown();
+            }
             else if (HasResults) LanderUI.Instance.ShowResults(LanderController.Instance.landerState, resultsHaveScore, true);
         }
         MoonEVAController.Instance.RefreshAction();

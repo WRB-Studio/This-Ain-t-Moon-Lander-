@@ -81,6 +81,8 @@ public static class PadFlowChecks
         var vertices = new Vector3[line.positionCount]; line.GetPositions(vertices);
         int seed = terrain.seed;
         game.BeginRun(); ui.HideGameOver();
+        var storyChecks = StoryChecks.Run();
+        while (storyChecks.MoveNext()) yield return storyChecks.Current;
         Land(oldSurface);
         int points = score.CollectedScore;
         Require(points > 0, "The first landing must award points.");

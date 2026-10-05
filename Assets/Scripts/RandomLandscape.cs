@@ -187,6 +187,26 @@ public class RandomLandscape : MonoBehaviour
         Physics2D.SyncTransforms();
     }
 
+    public void ExtendForLandingPad(float nearX, float distance)
+    {
+        if (!HasLayout) return;
+        CacheReferences();
+        float step = terrainPoints[1].x - terrainPoints[0].x;
+        int extraPoints = Mathf.Max(2, Mathf.CeilToInt(distance / step));
+        bool extendLeft = Mathf.Abs(nearX - terrainPoints[0].x) < Mathf.Abs(nearX - terrainPoints[^1].x);
+        var extended = new Vector3[terrainPoints.Length + extraPoints];
+        System.Array.Copy(terrainPoints, 0, extended, extendLeft ? extraPoints : 0, terrainPoints.Length);
+        Vector3 boundary = extendLeft ? terrainPoints[0] : terrainPoints[^1];
+        // Append a level stretch without changing any existing terrain or landing pads.
+        for (int i = 1; i <= extraPoints; i++)
+        {
+            Vector3 point = boundary + Vector3.right * (extendLeft ? -i * step : i * step);
+            extended[extendLeft ? extraPoints - i : terrainPoints.Length - 1 + i] = point;
+        }
+        terrainPoints = extended;
+        ApplyTerrain();
+    }
+
     public void CaptureWorld(WorldSave world)
     {
         world.seed = seed;
