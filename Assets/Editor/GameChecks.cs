@@ -17,6 +17,7 @@ public static class GameChecks
         CheckSaveMigration();
         CheckDictionary();
         CheckGravityAndLanding();
+        CheckFallSpeedTransition();
         CheckSaveRecovery();
         Debug.Log("Game checks passed: " + passed);
     }
@@ -104,6 +105,29 @@ public static class GameChecks
             UnityEngine.Object.DestroyImmediate(landerObject);
             UnityEngine.Object.DestroyImmediate(moonObject);
         }
+    }
+
+    static void CheckFallSpeedTransition()
+    {
+        var limiter = typeof(LanderController).GetMethod("LimitFallVelocity", BindingFlags.Static | BindingFlags.NonPublic);
+        Vector2 incoming = new Vector2(3f, 12f);
+        Vector2 weakGravity = new Vector2(0f, 0.02f);
+        var result = (Vector2)limiter.Invoke(null, new object[] { incoming, weakGravity, 4f, 0.02f });
+        Assert(Mathf.Abs(result.y - 11.9996f) < 0.00001f && result.x == incoming.x,
+            "Entering weak moon gravity must retain incoming and sideways momentum.");
+        var inSpace = (Vector2)limiter.Invoke(null, new object[] { incoming, Vector2.zero, 4f, 0.02f });
+        Assert(inSpace == incoming, "Zero gravity must not limit drift speed.");
+        var normalFall = new Vector2(3f, -2f);
+        var unchanged = (Vector2)limiter.Invoke(null, new object[] { normalFall, new Vector2(0f, -8.5f), 4f, 0.02f });
+        Assert(unchanged == normalFall, "Falls below the limit must not be braked.");
+        var capped = (Vector2)limiter.Invoke(null, new object[] { new Vector2(3f, -4.1f), new Vector2(0f, -8.5f), 4f, 0.02f });
+        Assert(Mathf.Abs(capped.y + 4f) < 0.00001f && capped.x == 3f,
+            "Normal downward acceleration must still be capped without affecting lateral speed.");
+        var oneStep = (Vector2)limiter.Invoke(null, new object[] { incoming, new Vector2(0f, 5f), 4f, 0.02f });
+        var halfStep = (Vector2)limiter.Invoke(null, new object[] { incoming, new Vector2(0f, 5f), 4f, 0.01f });
+        var twoSteps = (Vector2)limiter.Invoke(null, new object[] { halfStep, new Vector2(0f, 5f), 4f, 0.01f });
+        Assert((oneStep - twoSteps).sqrMagnitude < 0.0000001f,
+            "Fall speed correction must scale with the physics timestep.");
     }
 
     static void CheckSaveRecovery()

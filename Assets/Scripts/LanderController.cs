@@ -262,13 +262,8 @@ public class LanderController : MonoBehaviour
             landerState = eLanderState.Flying;
             MoonEVAController.Instance.RefreshAction();
         }
-        if (currentGravity.sqrMagnitude > 0.0001f)
-        {
-            Vector2 down = currentGravity.normalized;
-            float fallSpeed = Vector2.Dot(rb.linearVelocity, down);
-            float limit = Mathf.Abs(maxFallSpeed);
-            if (fallSpeed > limit) rb.linearVelocity -= down * (fallSpeed - limit);
-        }
+        rb.linearVelocity = LimitFallVelocity(rb.linearVelocity, currentGravity * gravityScale,
+            Mathf.Abs(maxFallSpeed), Time.fixedDeltaTime);
         Vector2 pointer = default;
         isThrusting = currentFuel > 0f && LanderUI.Instance.TryGetGameplayPointer(out pointer);
         if (isThrusting)
@@ -281,6 +276,17 @@ public class LanderController : MonoBehaviour
         float rotationBlend = 1f - Mathf.Pow(1f - Mathf.Clamp01(rotationSmooth), Time.fixedDeltaTime / 0.02f);
         rb.MoveRotation(Mathf.LerpAngle(rb.rotation, targetRotation, rotationBlend));
         HandleThrustSound(isThrusting);
+    }
+
+    static Vector2 LimitFallVelocity(Vector2 velocity, Vector2 acceleration, float limit, float deltaTime)
+    {
+        if (acceleration.sqrMagnitude < 0.0001f) return velocity;
+        Vector2 down = acceleration.normalized;
+        float excess = Vector2.Dot(velocity, down) - limit;
+        // Preserve incoming momentum when gravity starts or changes direction.
+        if (excess > 0f)
+            velocity -= down * Mathf.Min(excess, acceleration.magnitude * deltaTime);
+        return velocity;
     }
 
     void ApplyThrust(Vector2 screenPosition)

@@ -117,13 +117,13 @@ MonoBehaviour:
   tries: 30
   thrustForce: 5
   rotationSpeed: 40
-  rotationSmooth: 0.03
+  rotationSmooth: 0.05
   maxFallSpeed: -4
   currentSpeed: 0
   steeringDeadzone: 0.15
   steeringRange: 2
   maxSteer: 1
-  steerResponse: 8
+  steerResponse: 10
   fuelMax: 20
   fuelBurnPerSec: 1
   currentFuel: 0

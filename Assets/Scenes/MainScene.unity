@@ -7320,7 +7320,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39efd5e705ef73744a8fa121de50160a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseGravity: {x: 0, y: -9.81}
+  baseGravity: {x: 0, y: -8.5}
   moonEnterRadius: 100
   moonFullRadius: 60
   moonGravityStrength: 5
