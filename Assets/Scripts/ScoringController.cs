@@ -16,6 +16,8 @@ public class ScoringController : MonoBehaviour
     public int fuelWeight = 80;
     [Header("Global Multiplier")]
     public float scoreMultiplier = 1f;
+    [Tooltip("Distance from the last scored pad's surface required to earn another pad landing score.")]
+    [Min(1f)] public float scoreResetDistance = 30f;
 
     public int CollectedScore { get; private set; }
     public int LastScore { get; private set; }
@@ -34,6 +36,7 @@ public class ScoringController : MonoBehaviour
     float runStartTime;
     bool moonAwarded;
     bool padAwarded;
+    Collider2D scoredPad;
 
     void Awake() => Instance = this;
 
@@ -47,7 +50,24 @@ public class ScoringController : MonoBehaviour
     public void BeginRun()
     {
         runStartTime = Time.time;
+    }
+
+    public void BeginLevel()
+    {
         moonAwarded = padAwarded = false;
+        scoredPad = null;
+    }
+
+    void Update()
+    {
+        var game = GameController.Instance;
+        var lander = LanderController.Instance;
+        if (!game || game.Phase != GameController.GamePhase.Flight || !lander || !padAwarded || !scoredPad) return;
+        Vector2 closest = scoredPad.ClosestPoint(lander.rb.position);
+        if (Vector2.Distance(lander.rb.position, closest) < Mathf.Max(1f, scoreResetDistance)) return;
+        padAwarded = false;
+        scoredPad = null;
+        runStartTime = Time.time;
     }
 
     int Boost(int points) => Mathf.Max(0, Mathf.RoundToInt(points * scoreMultiplier));
@@ -58,7 +78,7 @@ public class ScoringController : MonoBehaviour
         bool moon = lander.landerState == LanderController.eLanderState.LandedMoon;
         if (moon ? moonAwarded : padAwarded) return false;
         if (moon) moonAwarded = true;
-        else padAwarded = true;
+        else { padAwarded = true; scoredPad = collision.collider; }
 
         LastWasMoon = moon;
         LastTimeSec = Mathf.Max(0f, Time.time - runStartTime);
@@ -87,8 +107,33 @@ public class ScoringController : MonoBehaviour
         var data = SaveLoadManager.Instance.Data;
         data.CollectedScore = CollectedScore;
         data.BestScore = BestScore;
-        SaveLoadManager.Instance.Save();
         return true;
+    }
+
+    public ScoreSave CaptureState(LandingPadPlacer[] pads)
+    {
+        return new ScoreSave
+        {
+            padAwarded = padAwarded, moonAwarded = moonAwarded,
+            scoredPad = scoredPad ? System.Array.IndexOf(pads, scoredPad.GetComponentInParent<LandingPadPlacer>()) : -1,
+            elapsed = Mathf.Max(0f, Time.time - runStartTime), lastTime = LastTimeSec, lastWasMoon = LastWasMoon,
+            lastScore = LastScore, baseScore = LastBaseScore, speedScore = LastSpeedScore,
+            angleScore = LastAngleScore, centerScore = LastCenterScore, fuelScore = LastFuelScore,
+            timeScore = LastTimeScore, moonScore = LastMoonScore, centerPct = LastCenterPct
+        };
+    }
+
+    public void RestoreState(ScoreSave state, LandingPadPlacer[] pads)
+    {
+        padAwarded = state.padAwarded;
+        moonAwarded = state.moonAwarded;
+        scoredPad = state.scoredPad >= 0 && state.scoredPad < pads.Length
+            ? pads[state.scoredPad].GetComponentInChildren<Collider2D>() : null;
+        runStartTime = Time.time - Mathf.Max(0f, state.elapsed);
+        LastTimeSec = state.lastTime; LastWasMoon = state.lastWasMoon;
+        LastScore = state.lastScore; LastBaseScore = state.baseScore; LastSpeedScore = state.speedScore;
+        LastAngleScore = state.angleScore; LastCenterScore = state.centerScore; LastFuelScore = state.fuelScore;
+        LastTimeScore = state.timeScore; LastMoonScore = state.moonScore; LastCenterPct = state.centerPct;
     }
 
     void OnDestroy() { if (Instance == this) Instance = null; }

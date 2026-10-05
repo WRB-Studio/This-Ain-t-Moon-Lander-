@@ -6,6 +6,7 @@ public class AudioManager : MonoBehaviour
     public static AudioManager Instance;
     [Header("Music")]
     public AudioClip mainMusic;
+    [Range(0f, 1f)] public float musicVolumeScale = 0.9f;
     [Header("SFX")]
     public AudioClip sfxThruster;
     public AudioClip sfxPerfectLanding;
@@ -13,10 +14,16 @@ public class AudioManager : MonoBehaviour
     public AudioClip sfxCountdown;
     public AudioClip sfxCountdownStart;
     [Min(1)] public int maxSfxSources = 8;
+    public AudioSource sourcePrefab;
+    public AudioSource musicSource;
+    [Header("Refill")]
+    public AudioSource refillSource;
+    [Range(0f, 1f)] public float refillVolume = 0.28f;
+    [Min(0.01f)] public float refillFadeDuration = 0.15f;
 
     float sfxVolume;
     float musicVolume;
-    AudioSource musicSource;
+    float refillBlend;
     readonly List<AudioSource> sfxPool = new();
     readonly Dictionary<AudioSource, float> volumeScales = new();
 
@@ -37,18 +44,30 @@ public class AudioManager : MonoBehaviour
         var data = SaveLoadManager.Instance.Data ?? new SaveGame();
         sfxVolume = data.volSfx;
         musicVolume = data.volMusic;
-        if (!musicSource) musicSource = gameObject.AddComponent<AudioSource>();
         musicSource.playOnAwake = false;
         musicSource.loop = true;
-        musicSource.volume = musicVolume;
+        musicSource.volume = musicVolume * musicVolumeScale;
+        refillSource.volume = 0f;
+        refillBlend = 0f;
+        refillSource.Stop();
+    }
+
+    void Update()
+    {
+        if (!refillSource) return;
+        bool refilling = GameController.Instance && GameController.Instance.IsRefilling
+            && GameController.Instance.CanRefill && Time.timeScale > 0f;
+        refillBlend = Mathf.MoveTowards(refillBlend, refilling ? 1f : 0f,
+            Time.unscaledDeltaTime / Mathf.Max(0.01f, refillFadeDuration));
+        refillSource.volume = refillBlend * sfxVolume * refillVolume;
+        if (refilling && refillSource.volume > 0f && !refillSource.isPlaying) refillSource.Play();
+        else if (refillSource.volume <= 0.001f) { refillSource.volume = 0f; refillSource.Stop(); }
     }
 
     AudioSource CreateSource(string sourceName)
     {
-        var child = new GameObject(sourceName);
-        child.transform.SetParent(transform, false);
-        var source = child.AddComponent<AudioSource>();
-        source.playOnAwake = false;
+        var source = Instantiate(sourcePrefab, transform);
+        source.name = sourceName;
         volumeScales[source] = 1f;
         return source;
     }
@@ -93,7 +112,7 @@ public class AudioManager : MonoBehaviour
         if (!musicSource || !clip) return;
         musicSource.pitch = pitch;
         musicSource.loop = loop;
-        musicSource.volume = musicVolume;
+        musicSource.volume = musicVolume * musicVolumeScale;
         if (musicSource.clip != clip) musicSource.clip = clip;
         if (!musicSource.isPlaying) musicSource.Play();
     }
@@ -116,7 +135,7 @@ public class AudioManager : MonoBehaviour
     public void SetMusicVolume(float value, bool save = true)
     {
         musicVolume = Mathf.Clamp01(value);
-        if (musicSource) musicSource.volume = musicVolume;
+        if (musicSource) musicSource.volume = musicVolume * musicVolumeScale;
         if (!save) return;
         SaveLoadManager.Instance.Data.volMusic = musicVolume;
         SaveLoadManager.Instance.Save();

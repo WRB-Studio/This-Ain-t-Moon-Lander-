@@ -31,12 +31,12 @@ public class CameraController : MonoBehaviour
     [SerializeField] Vector3 astronautOffset = new Vector3(0f, 1.2f, -10f);
     bool isAstronaut;
 
-    Transform landingPad;
     Transform target;
     Camera cam;
     Vector3 landerOffset;
     Vector3 followPosition;
     readonly System.Collections.Generic.List<RaycastHit2D> surfaceHits = new();
+    readonly System.Collections.Generic.List<Collider2D> padHits = new();
 
     void Awake() => Instance = this;
 
@@ -45,7 +45,6 @@ public class CameraController : MonoBehaviour
         cam = GetComponent<Camera>();
         landerOffset = followOffset;
         followPosition = transform.position;
-        landingPad = LandingPadPlacer.Instance ? LandingPadPlacer.Instance.transform : null;
     }
 
     void LateUpdate()
@@ -87,9 +86,13 @@ public class CameraController : MonoBehaviour
         var gm = GravityManager2D.Instance;
 
         // 1) PAD: wenn in Reichweite -> ran zoomen
-        if (landingPad && target)
+        if (target)
         {
-            float d = Vector2.Distance(target.position, landingPad.position);
+            float d = float.PositiveInfinity;
+            Physics2D.OverlapCircle(target.position, zoomOutDistance, new ContactFilter2D { useTriggers = false }, padHits);
+            foreach (var hit in padHits)
+                if (hit && hit.CompareTag("LandingPad"))
+                    d = Mathf.Min(d, Vector2.Distance(target.position, hit.transform.position));
             if (d <= zoomOutDistance)
             {
                 float t = Mathf.Clamp01(Mathf.InverseLerp(zoomInDistance, zoomOutDistance, d));

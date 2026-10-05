@@ -4,7 +4,7 @@ using UnityEngine;
 [Serializable]
 public class SaveGame
 {
-    public const int CurrentVersion = 2;
+    public const int CurrentVersion = 3;
     public int version = CurrentVersion;
     public float volMusic = 0.8f;
     public float volSfx = 1f;
@@ -14,6 +14,7 @@ public class SaveGame
     public int selectedLanderIndex;
     public int selectedLanderId = -1;
     public SerializableDictionary<string, bool> flags = new();
+    public WorldSave world;
 
     public bool GetFlag(string key, bool def = false)
         => flags != null && flags.TryGetValue(key, out var value) ? value : def;
@@ -36,5 +37,6 @@ public class SaveGame
         volMusic = float.IsNaN(volMusic) || float.IsInfinity(volMusic) ? 0.8f : Mathf.Clamp01(volMusic);
         volSfx = float.IsNaN(volSfx) || float.IsInfinity(volSfx) ? 1f : Mathf.Clamp01(volSfx);
         flags ??= new();
+        if (world != null && !world.IsValid()) world = null;
     }
 }

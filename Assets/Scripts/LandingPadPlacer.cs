@@ -23,6 +23,8 @@ public class LandingPadPlacer : MonoBehaviour
 
     [Tooltip("Defines which portion of the landscape is used for landing pad placement. 1 = full length, 0.5 = middle 50%.")]
     [Range(0.1f, 1f)] public float padSpawnRange = 0.5f;
+    [Tooltip("Minimum horizontal distance between pads added to the existing landscape.")]
+    [Min(1f)] public float minimumPadSpacing = 20f;
 
     [Header("Raycast (legs)")]
     public float raycastUp = 5f;
@@ -39,7 +41,7 @@ public class LandingPadPlacer : MonoBehaviour
 
     void Awake()
     {        
-        Instance = this;
+        if (!Instance) Instance = this;
     }
 
     public void Init()
@@ -94,6 +96,75 @@ public class LandingPadPlacer : MonoBehaviour
         Physics2D.SyncTransforms();
         if (scaleLegs) UpdateLeg(leftLeg);
         if (scaleLegs) UpdateLeg(rightLeg);
+    }
+
+    public LandingPadPlacer CreateNextPad()
+    {
+        var next = Instantiate(GameController.Instance.landingPadPrefab, transform.parent);
+        next.groundOffset = groundOffset;
+        next.maxLift = maxLift;
+        next.clearance = clearance;
+        next.padSpawnRange = padSpawnRange;
+        next.minimumPadSpacing = minimumPadSpacing;
+        next.raycastUp = raycastUp;
+        next.raycastDown = raycastDown;
+        next.legBottomPadding = legBottomPadding;
+        next.scaleLegs = scaleLegs;
+        next.name = "LandingPad " + (GameController.Instance.level + 1);
+        next.Init();
+        if (!next.TryPlaceOnExistingTerrain())
+        {
+            next.gameObject.SetActive(false);
+            Destroy(next.gameObject);
+            return null;
+        }
+        Instance = next;
+        return next;
+    }
+
+    public void RestorePosition(Vector3 position)
+    {
+        Init();
+        groundEdge = landscape.GetComponent<EdgeCollider2D>();
+        transform.position = position;
+        Physics2D.SyncTransforms();
+        if (scaleLegs) { UpdateLeg(leftLeg); UpdateLeg(rightLeg); }
+    }
+
+    bool TryPlaceOnExistingTerrain()
+    {
+        var terrain = RandomLandscape.Instance;
+        if (!terrain || !terrain.HasLayout) return false;
+        groundEdge = terrain.GetComponent<EdgeCollider2D>();
+        var points = terrain.GetComponent<LineRenderer>();
+        var existingPads = FindObjectsByType<LandingPadPlacer>(FindObjectsSortMode.None);
+        float halfWidth = GetRequiredGroundHalfWidth();
+        float span = points.GetPosition(points.positionCount - 1).x - points.GetPosition(0).x;
+        float middle = points.GetPosition(0).x + span * 0.5f;
+        float range = span * Mathf.Clamp(padSpawnRange, 0.1f, 1f) * 0.5f;
+        int start = Random.Range(0, points.positionCount);
+        float bottomOffset = padCollider ? padCollider.bounds.min.y - pad.position.y : 0f;
+        for (int offset = 0; offset < points.positionCount; offset++)
+        {
+            float x = points.GetPosition((start + offset) % points.positionCount).x;
+            if (Mathf.Abs(x - middle) + halfWidth > range) continue;
+            bool occupied = false;
+            foreach (var other in existingPads)
+            {
+                if (other == this) continue;
+                float separation = Mathf.Max(minimumPadSpacing, halfWidth + other.GetRequiredGroundHalfWidth());
+                if (Mathf.Abs(x - other.transform.position.x) < separation) { occupied = true; break; }
+            }
+            if (occupied) continue;
+            float groundY = terrain.GetHighestGround(x - halfWidth, x + halfWidth);
+            Vector3 position = new Vector3(x, groundY + Mathf.Max(0.05f, groundOffset) - bottomOffset, pad.position.z);
+            if (!LiftUntilClear(ref position)) continue;
+            pad.position = position;
+            Physics2D.SyncTransforms();
+            if (scaleLegs) { UpdateLeg(leftLeg); UpdateLeg(rightLeg); }
+            return true;
+        }
+        return false;
     }
 
     bool LiftUntilClear(ref Vector3 pos)

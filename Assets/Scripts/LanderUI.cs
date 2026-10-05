@@ -22,8 +22,19 @@ public class LanderUI : MonoBehaviour
     public TMP_Text txtScore;
     public TMP_Text txtXPScore;
     public Button btnRestart;
-    Button btnContinue;
-    GameObject flightActions;
+    public Button btnContinue;
+    public Button btnRefill;
+    TMP_Text refillLabel;
+    string refillIdleLabel;
+    Selectable.Transition refillTransition;
+    bool showingRefill;
+    public GameObject flightActions;
+    [Header("Refill Progress")]
+    public Image refillProgressFill;
+    [Header("Panel Positions")]
+    public RectTransform panelTopPosition;
+    public RectTransform panelCenterPosition;
+    public RectTransform panelBottomPosition;
 
     [Header("Navigation")]
     public Transform navigationGrp;
@@ -59,7 +70,7 @@ public class LanderUI : MonoBehaviour
     public float gizmoRadius = 0.06f;
 
     private ScoringController scoring;
-    private LandingPadPlacer landingPad;
+    private LandingPadPlacer landingPad => LandingPadPlacer.Instance;
     private LanderController lander => LanderController.Instance;
     Rigidbody2D hudBody => GameController.Instance.ControlledBody;
     Vector2 hudGravity => GameController.Instance.Phase == GameController.GamePhase.EVA
@@ -213,7 +224,6 @@ public class LanderUI : MonoBehaviour
         if (initialized) return;
         initialized = true;
         scoring = ScoringController.Instance;
-        landingPad = LandingPadPlacer.Instance;
         imgIndicatorPad = indicatorPad.GetComponent<Image>();
         imgIndicatorMoon = indicatorMoon.GetComponent<Image>();
 
@@ -224,25 +234,13 @@ public class LanderUI : MonoBehaviour
 
         btnRestart.gameObject.SetActive(false);
         btnRestart.onClick.AddListener(OnRestartClicked);
-        flightActions = new GameObject("FlightActions", typeof(RectTransform), typeof(VerticalLayoutGroup), typeof(ContentSizeFitter));
-        flightActions.layer = btnRestart.gameObject.layer;
-        flightActions.transform.SetParent(btnRestart.transform.parent, false);
-        flightActions.transform.SetSiblingIndex(btnRestart.transform.GetSiblingIndex());
-        var actionsLayout = flightActions.GetComponent<VerticalLayoutGroup>();
-        actionsLayout.spacing = 20f;
-        actionsLayout.childAlignment = TextAnchor.MiddleCenter;
-        actionsLayout.childControlWidth = actionsLayout.childControlHeight = false;
-        actionsLayout.childForceExpandWidth = actionsLayout.childForceExpandHeight = false;
-        var actionsSize = flightActions.GetComponent<ContentSizeFitter>();
-        actionsSize.horizontalFit = actionsSize.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
-        btnRestart.transform.SetParent(flightActions.transform, false);
-        btnContinue = Instantiate(btnRestart, btnRestart.transform.parent);
-        btnContinue.name = "ContinueFlight";
-        btnContinue.onClick = new Button.ButtonClickedEvent();
         btnContinue.onClick.AddListener(() => GameController.Instance.ContinueFlight());
-        btnContinue.GetComponentInChildren<TMP_Text>().text = "Continue Flight";
-        btnContinue.transform.SetSiblingIndex(btnRestart.transform.GetSiblingIndex() + 1);
+        btnRefill.onClick.AddListener(() => GameController.Instance.RefillTank());
+        refillLabel = btnRefill.GetComponentInChildren<TMP_Text>();
+        refillIdleLabel = refillLabel.text;
+        refillTransition = btnRefill.transition;
         flightActions.SetActive(false);
+        refillProgressFill.gameObject.SetActive(false);
     }
 
     void OnValidate()
@@ -263,6 +261,7 @@ public class LanderUI : MonoBehaviour
         UpdateNav(landingPad.transform, indicatorPad, imgIndicatorPad);
         UpdateNav(GravityManager2D.Instance.transform, indicatorMoon, imgIndicatorMoon);
         UpdateIndicatorScales();
+        RefreshRefillButton();
 
         if (showDeadZoneWarning)
         {
@@ -329,8 +328,6 @@ public class LanderUI : MonoBehaviour
 
     private void RefreshLanderFuel()
     {
-        if (isGameOver) return;
-
         float fuelT = lander.FuelFraction;
         int filled = Mathf.RoundToInt(fuelT * blocks);
 
@@ -449,22 +446,22 @@ public class LanderUI : MonoBehaviour
         indicatorMoon.localScale = Vector3.Lerp(indicatorMoon.localScale, moonTarget, k);
     }
 
-    public void ShowResults(LanderController.eLanderState state, bool showScore = false)
+    public void ShowResults(LanderController.eLanderState state, bool showScore = false, bool immediate = false)
     {
         CancelFlow();
         isGameOver = true;
-        flow = StartCoroutine(ShowEndRoutine(state, showScore));
+        flow = StartCoroutine(ShowEndRoutine(state, showScore, immediate));
     }
 
-    private IEnumerator ShowEndRoutine(LanderController.eLanderState state, bool showScore)
+    private IEnumerator ShowEndRoutine(LanderController.eLanderState state, bool showScore, bool immediate)
     {
         bool isMoon = state == LanderController.eLanderState.LandedMoon;
         bool landed = isMoon || state == LanderController.eLanderState.LandedPad;
-        yield return new WaitForSeconds(1.5f);
+        if (!immediate) yield return new WaitForSeconds(1.5f);
 
         ShowHideDeadZoneWarning(false);
 
-        txtLanderFuel.gameObject.SetActive(false);
+        txtLanderFuel.gameObject.SetActive(true);
         txtLanderInfos.gameObject.SetActive(false);
         navigationGrp.gameObject.SetActive(false);
 
@@ -543,20 +540,23 @@ public class LanderUI : MonoBehaviour
         }
 
         btnContinue.gameObject.SetActive(landed);
+        btnRefill.gameObject.SetActive(state == LanderController.eLanderState.LandedPad);
         flightActions.SetActive(true);
         RefreshPanel();
     }
 
-    public void SetPanelTopCenter() => SetPanelPosition(new Vector2(0.5f, 1f), -300f);
-    public void SetPanelCenter() => SetPanelPosition(new Vector2(0.5f, 0.5f), 0f);
-    public void SetPanelBottomCenter() => SetPanelPosition(new Vector2(0.5f, 0f), 300f);
+    public void SetPanelTopCenter() => SetPanelPosition(panelTopPosition);
+    public void SetPanelCenter() => SetPanelPosition(panelCenterPosition);
+    public void SetPanelBottomCenter() => SetPanelPosition(panelBottomPosition);
 
-    void SetPanelPosition(Vector2 anchor, float offsetY)
+    void SetPanelPosition(RectTransform position)
     {
         var rect = panelGrp as RectTransform;
-        if (!rect) return;
-        rect.anchorMin = rect.anchorMax = rect.pivot = anchor;
-        rect.anchoredPosition = new Vector2(0f, offsetY);
+        if (!rect || !position) return;
+        rect.anchorMin = position.anchorMin;
+        rect.anchorMax = position.anchorMax;
+        rect.pivot = position.pivot;
+        rect.anchoredPosition = position.anchoredPosition;
     }
     string GetRandomGameOverMessage(LanderController.eLanderState state)
     {
@@ -596,13 +596,39 @@ public class LanderUI : MonoBehaviour
         LanderChooserManager.Instance.panelChooser.gameObject.SetActive(false);
         btnRestart.gameObject.SetActive(false);
         btnContinue.gameObject.SetActive(false);
+        btnRefill.gameObject.SetActive(false);
         flightActions.SetActive(false);
+        refillProgressFill.gameObject.SetActive(false);
     }
 
     void OnRestartClicked()
     {
         if (GameController.Instance.Phase == GameController.GamePhase.Crashed)
             GameController.Instance.RestartGame();
+    }
+
+    public void RefreshRefillButton()
+    {
+        if (!btnRefill) return;
+        if (GameController.Instance.HasResults && GameController.Instance.Phase == GameController.GamePhase.Landed)
+            btnRestart.gameObject.SetActive(GameController.Instance.CanStartNextLevel);
+        btnRefill.interactable = GameController.Instance.CanRefill && !GameController.Instance.IsRefilling && lander.currentFuel < lander.fuelMax;
+        bool refilling = GameController.Instance.IsRefilling;
+        if (showingRefill != refilling)
+        {
+            showingRefill = refilling;
+            btnRefill.transition = refilling ? Selectable.Transition.None : refillTransition;
+            if (refilling && EventSystem.current && EventSystem.current.currentSelectedGameObject == btnRefill.gameObject)
+                EventSystem.current.SetSelectedGameObject(null);
+            var colors = btnRefill.colors;
+            var tint = btnRefill.interactable ? colors.normalColor : colors.disabledColor;
+            btnRefill.targetGraphic.CrossFadeColor((refilling ? colors.normalColor : tint) * colors.colorMultiplier, 0f, true, true);
+        }
+        if (GameController.Instance.IsRefilling)
+            refillLabel.SetText("Refilling... {0}%", Mathf.RoundToInt(GameController.Instance.RefillProgress * 100f));
+        else refillLabel.text = refillIdleLabel;
+        refillProgressFill.gameObject.SetActive(GameController.Instance.IsRefilling);
+        refillProgressFill.rectTransform.anchorMax = new Vector2(GameController.Instance.RefillProgress, 1f);
     }
 
     void OnNextClicked()

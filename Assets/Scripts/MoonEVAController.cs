@@ -106,8 +106,17 @@ public class MoonEVAController : MonoBehaviour
         nearbyLanders.Clear();
         Destroy(previousAstronaut);
         if (newLander != lander) LanderController.ChangeLander(newLander);
-        LanderChooserManager.Instance.SelectDiscoveredLander(newLander);
         GameController.Instance.BoardLander(newLander);
+        LanderChooserManager.Instance.SelectDiscoveredLander(newLander);
+        RefreshAction();
+    }
+
+    public void RestoreAstronaut(ActorSave state)
+    {
+        ResetRun();
+        astronaut = Instantiate(astronautPrefab, state.position, Quaternion.Euler(0f, 0f, state.rotation), astronautParent);
+        state.Restore(astronaut.transform, astronaut.GetComponent<Rigidbody2D>());
+        LanderUI.Instance.SetPanelBottomCenter();
         RefreshAction();
     }
 

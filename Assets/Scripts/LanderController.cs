@@ -54,6 +54,7 @@ public class LanderController : MonoBehaviour
     public float fuelEmptyDelay = 5f;
     private float fuelEmptyDelayCounter = 0;
     private bool fuelEmptyTriggered;
+    bool fuelInitialized;
 
     [Header("Landing Rules")]
     public float safeSpeed = 2.0f;
@@ -96,6 +97,7 @@ public class LanderController : MonoBehaviour
         || landerState == eLanderState.CrashedMoon || landerState == eLanderState.CrashedPad
         || landerState == eLanderState.OutOfFuel || landerState == eLanderState.DeadZone;
     public bool IsTouchingMoon => !IsCrashed && (moonContacts.Count > 0 || Time.time - lastMoonContact < 0.2f);
+    public bool IsTouchingPad => !IsCrashed && padContacts.Count > 0;
     public float FuelFraction => fuelMax > 0f ? Mathf.Clamp01(currentFuel / fuelMax) : 0f;
     public float GravityAngle => currentGravity.sqrMagnitude > 0.0001f
         ? Vector2.Angle(transform.up, -currentGravity) : 0f;
@@ -191,8 +193,12 @@ public class LanderController : MonoBehaviour
         Instance = newLander;
         newLander.isActive = true;
         newLander.Init();
-        newLander.fuelMax = old.fuelMax;
-        newLander.currentFuel = newLander.fuelMax * 0.75f;
+        if (!newLander.fuelInitialized)
+        {
+            newLander.fuelMax = old.fuelMax;
+            newLander.currentFuel = newLander.fuelMax * 0.75f;
+            newLander.fuelInitialized = true;
+        }
     }
 
     public void Park()
@@ -467,6 +473,44 @@ public class LanderController : MonoBehaviour
         MoonEVAController.Instance.RefreshAction();
     }
 
+    public ShipSave CaptureState()
+    {
+        var state = new ShipSave
+        {
+            definitionId = landerIndex, fuel = currentFuel, fuelMax = fuelMax,
+            fuelInitialized = fuelInitialized,
+            state = landerState, bodyType = rb.bodyType, controlsEnabled = controlsEnabled,
+            targetRotation = targetRotation, gravity = currentGravity,
+            fuelEmptyTimer = fuelEmptyDelayCounter, deadZoneTriggered = deadZoneTriggered, deadZoneTimer = deadZoneTimer
+        };
+        state.Capture(transform, rb);
+        return state;
+    }
+
+    public void RestoreState(ShipSave state, bool active)
+    {
+        Init();
+        isActive = active;
+        landerState = state.state;
+        controlsEnabled = active && state.controlsEnabled && !IsCrashed;
+        fuelMax = Mathf.Max(0.01f, state.fuelMax);
+        currentFuel = Mathf.Clamp(state.fuel, 0f, fuelMax);
+        fuelInitialized = state.fuelInitialized;
+        targetRotation = state.targetRotation;
+        currentGravity = state.gravity;
+        fuelEmptyDelayCounter = Mathf.Max(0f, state.fuelEmptyTimer);
+        fuelEmptyTriggered = false;
+        deadZoneTriggered = state.deadZoneTriggered;
+        deadZoneTimer = state.deadZoneTimer;
+        rb.bodyType = active ? state.bodyType : RigidbodyType2D.Static;
+        spriteRenderer.enabled = hull.enabled = !IsCrashed;
+        hull.isTrigger = !active || (state.bodyType == RigidbodyType2D.Static
+            && (landerState == eLanderState.LandedMoon || landerState == eLanderState.LandedPad));
+        state.Restore(transform, rb);
+        if (landerState == eLanderState.LandedMoon) lastMoonContact = Time.time;
+        StopThrust();
+    }
+
     public void StartLander()
     {
         if (!sfxThrustSound) sfxThrustSound = AudioManager.Instance.CreateThrusterSound();
@@ -521,6 +565,7 @@ public class LanderController : MonoBehaviour
         float buffer = Mathf.Max(0f, fuelBufferPercent - levelFactor);
         fuelMax = Mathf.Max(0.01f, Vector2.Distance(transform.position, padPosition) * fuelPerUnit * (1f + buffer));
         currentFuel = fuelMax;
+        fuelInitialized = true;
     }
 
     bool IsColliding(Vector2 position)
@@ -529,10 +574,10 @@ public class LanderController : MonoBehaviour
         if (!collider) return false;
         Vector2 center = position + (Vector2)(collider.bounds.center - transform.position);
         float radius = Mathf.Max(collider.bounds.extents.x, collider.bounds.extents.y) + clearance;
-        var filter = new ContactFilter2D { useTriggers = false };
+        var filter = new ContactFilter2D { useTriggers = true };
         Physics2D.OverlapCircle(center, radius, filter, spawnHits);
         foreach (var hit in spawnHits)
-            if (hit && !hit.transform.IsChildOf(transform)) return true;
+            if (hit && !hit.transform.IsChildOf(transform) && (!hit.isTrigger || hit.GetComponentInParent<LanderController>())) return true;
         return false;
     }
 

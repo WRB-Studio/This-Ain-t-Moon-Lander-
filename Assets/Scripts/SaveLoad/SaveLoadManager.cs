@@ -35,12 +35,13 @@ public class SaveLoadManager : MonoBehaviour
 
     public void NewGame()
     {
+        if (Application.isPlaying && GameController.Instance) GameController.Instance.InvalidateWorldSave();
         Data = new SaveGame();
         loaded = true;
-        Save();
+        Save(false);
     }
 
-    public void Save()
+    public void Save(bool captureWorld = true)
     {
         if (!loaded || Data == null) return;
         if (Data.version > SaveGame.CurrentVersion)
@@ -52,6 +53,7 @@ public class SaveLoadManager : MonoBehaviour
         string backup = PathFile + ".bak";
         try
         {
+            if (captureWorld && Application.isPlaying && GameController.Instance) GameController.Instance.CaptureWorld(Data);
             Data.Normalize();
             Directory.CreateDirectory(DirectoryPath);
             File.WriteAllText(temporary, JsonUtility.ToJson(Data, true));
@@ -99,7 +101,7 @@ public class SaveLoadManager : MonoBehaviour
         }
         Data.Normalize();
         loaded = true;
-        if (!hasPrimary) Save();
+        if (!hasPrimary) Save(false);
     }
 
     bool TryLoad(string path, out SaveGame data)
@@ -128,6 +130,7 @@ public class SaveLoadManager : MonoBehaviour
             foreach (string suffix in new[] { "", ".bak", ".tmp" })
                 if (File.Exists(PathFile + suffix)) File.Delete(PathFile + suffix);
             Data = new SaveGame();
+            if (Application.isPlaying && GameController.Instance) GameController.Instance.InvalidateWorldSave();
             preserveBackup = false;
             loaded = true;
         }

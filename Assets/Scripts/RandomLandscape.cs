@@ -187,6 +187,28 @@ public class RandomLandscape : MonoBehaviour
         Physics2D.SyncTransforms();
     }
 
+    public void CaptureWorld(WorldSave world)
+    {
+        world.seed = seed;
+        world.terrainLevel = GeneratedLevel;
+        world.terrainType = GeneratedType;
+        world.terrain = (Vector3[])terrainPoints.Clone();
+        world.landingZone = LandingZone;
+        world.landingHalfWidth = LandingHalfWidth;
+    }
+
+    public void RestoreWorld(WorldSave world)
+    {
+        CacheReferences();
+        seed = world.seed;
+        GeneratedLevel = world.terrainLevel;
+        GeneratedType = world.terrainType;
+        LandingZone = world.landingZone;
+        LandingHalfWidth = world.landingHalfWidth;
+        terrainPoints = (Vector3[])world.terrain.Clone();
+        ApplyTerrain();
+    }
+
     public float GetHighestGround(float fromX, float toX)
     {
         if (!HasLayout) return transform.position.y + baseY;

@@ -159,6 +159,23 @@ public class StoryTextController : MonoBehaviour
 
     // --- Public API ---
     public void Show(string msg) => Enqueue(msg);
+
+    public void CaptureState(WorldSave world)
+    {
+        world.atmosphereExit = shownAtmosphereExit;
+        world.backToPlanet = shownBackToPlanet;
+        world.nearMoon = shownNearMoon;
+        world.storyElapsed = Mathf.Max(0f, Time.time - runStartTime);
+    }
+
+    public void RestoreState(WorldSave world)
+    {
+        Restart();
+        shownAtmosphereExit = world.atmosphereExit;
+        shownBackToPlanet = world.backToPlanet;
+        shownNearMoon = world.nearMoon;
+        runStartTime = Time.time - Mathf.Max(0f, world.storyElapsed);
+    }
     public void Show(eStoryTextType type) => Enqueue(type);
 
     // --- Queue entrypoints ---

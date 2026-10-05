@@ -12,6 +12,7 @@ public class LanderChooserManager : MonoBehaviour
     public Transform panelChooser;
     public Transform optionsParent;
     public Button btnOptionPrefab;
+    public Button[] optionButtons;
 
     [Header("Content")]
     public GameObject[] landerPrefabs;
@@ -43,9 +44,10 @@ public class LanderChooserManager : MonoBehaviour
         panelChooser.gameObject.SetActive(false);
         btnLanderChooser.gameObject.SetActive(false);
 
-        if (landerPrefabs == null || landerPrefabs.Length == 0)
+        if (landerPrefabs == null || landerPrefabs.Length == 0 || optionButtons == null
+            || optionButtons.Length != landerPrefabs.Length || System.Array.Exists(optionButtons, button => !button))
         {
-            Debug.LogError("No lander prefabs configured.", this);
+            Debug.LogError("Configure lander prefabs and rebuild the chooser buttons in the Inspector.", this);
             enabled = false;
             return;
         }
@@ -69,21 +71,8 @@ public class LanderChooserManager : MonoBehaviour
         for (int i = 0; i < landerPrefabs.Length; i++)
         {
             int index = i;
-            var prefab = landerPrefabs[index];
-
-            var sr = prefab.GetComponent<SpriteRenderer>();
-            Sprite sprite = sr ? sr.sprite : null;
-
-            Button btn = Instantiate(btnOptionPrefab, optionsParent);
+            Button btn = optionButtons[index];
             allBtnOptions.Add(btn);
-
-            var imgShip = btn.transform.Find("ImgLander").GetComponent<Image>();
-            imgShip.sprite = sprite;
-            
-            var imgSecret = btn.transform.Find("imgSecret").gameObject;
-            bool secretHidden = IsSecret(index) && !IsSecretFound(configurations[index].landerIndex);
-            imgSecret.SetActive(secretHidden);
-
             btn.onClick.AddListener(() => TryChoose(index));
         }
     }
@@ -101,7 +90,27 @@ public class LanderChooserManager : MonoBehaviour
         SaveLoadManager.Instance.Save();
 
         RefreshChooser();
-        ApplySelected();
+        if (GameController.Instance.Phase == GameController.GamePhase.Crashed) ApplySelected();
+    }
+
+    public LanderController SpawnSelectedLander()
+    {
+        var previous = LanderController.Instance;
+        previous.Park();
+        previous.isActive = false;
+        LanderController.Instance = null;
+        var next = Instantiate(landerPrefabs[selectedIndex], previous.transform.position, Quaternion.identity, previous.transform.parent)
+            .GetComponent<LanderController>();
+        next.isActive = true;
+        LanderController.Instance = next;
+        next.Init();
+        return next;
+    }
+
+    public GameObject GetPrefab(int definitionId)
+    {
+        int index = configurations.FindIndex(config => config.landerIndex == definitionId);
+        return index >= 0 ? landerPrefabs[index] : null;
     }
 
     void MarkSeen(int index)
@@ -113,9 +122,6 @@ public class LanderChooserManager : MonoBehaviour
     {
         return SaveLoadManager.Instance.Data.GetFlag("LANDER_SEEN_" + configurations[index].landerIndex, false);
     }
-
-    bool IsSecret(int index)
-        => configurations[index].isSecretLander;
 
     public bool IsSecretFound(int index)
         => SaveLoadManager.Instance.Data.GetFlag(KEY_SECRET_FOUND + index, false);
