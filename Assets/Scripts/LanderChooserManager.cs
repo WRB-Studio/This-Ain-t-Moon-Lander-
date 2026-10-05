@@ -92,7 +92,7 @@ public class LanderChooserManager : MonoBehaviour
     {
         if (!IsUnlocked(index)) return;
 
-        if (GameController.Instance.Phase != GameController.GamePhase.Results) return;
+        if (!GameController.Instance.CanChooseLander) return;
         MarkSeen(index);
 
         selectedIndex = index;

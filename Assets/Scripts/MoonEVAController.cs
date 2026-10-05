@@ -11,7 +11,6 @@ public class MoonEVAController : MonoBehaviour
     public Transform astronautParent;
     [Header("UI")]
     public Button btnExit;
-    [HideInInspector] public bool isOnMoonLanded;
     [HideInInspector] public GameObject astronaut;
 
     readonly HashSet<Collider2D> nearbyLanders = new();
@@ -33,7 +32,6 @@ public class MoonEVAController : MonoBehaviour
         if (astronaut) Destroy(astronaut);
         astronaut = null;
         nearbyLanders.Clear();
-        isOnMoonLanded = false;
         RefreshAction();
     }
 
@@ -80,13 +78,14 @@ public class MoonEVAController : MonoBehaviour
         bool entering = astronaut != null;
         if (buttonText) buttonText.text = entering ? "Enter Lander" : "Exit Lander";
         bool canExit = lander && lander.landerState == LanderController.eLanderState.LandedMoon
-            && lander.IsTouchingMoon && GameController.Instance.Phase != GameController.GamePhase.Countdown;
+            && lander.IsTouchingMoon && GameController.Instance.Phase == GameController.GamePhase.Landed;
         btnExit.gameObject.SetActive(entering ? GetNearbyLander() != null : canExit);
     }
 
     public void ExitLander()
     {
-        if (astronaut || !lander || lander.landerState != LanderController.eLanderState.LandedMoon || !lander.IsTouchingMoon) return;
+        if (astronaut || !lander || lander.landerState != LanderController.eLanderState.LandedMoon
+            || !lander.IsTouchingMoon || GameController.Instance.Phase != GameController.GamePhase.Landed) return;
         var renderer = lander.GetComponent<SpriteRenderer>();
         float halfWidth = renderer.sprite.bounds.extents.x * Mathf.Abs(lander.transform.lossyScale.x);
         float side = Random.value < 0.5f ? -1f : 1f;
@@ -94,9 +93,7 @@ public class MoonEVAController : MonoBehaviour
         nearbyLanders.Clear();
         astronaut = Instantiate(astronautPrefab, spawn, lander.transform.rotation, astronautParent);
         lander.Park();
-        GameController.Instance.SetPhase(GameController.GamePhase.EVA);
-        GameController.Instance.SetControlledTarget(astronaut.transform);
-        LanderUI.Instance.HideGameOver();
+        GameController.Instance.BeginEVA(astronaut.transform);
         LanderUI.Instance.SetPanelBottomCenter();
         RefreshAction();
     }
@@ -109,10 +106,8 @@ public class MoonEVAController : MonoBehaviour
         nearbyLanders.Clear();
         Destroy(previousAstronaut);
         if (newLander != lander) LanderController.ChangeLander(newLander);
-        newLander.ResumeFromMoon();
         LanderChooserManager.Instance.SelectDiscoveredLander(newLander);
-        GameController.Instance.SetPhase(GameController.GamePhase.Flight);
-        GameController.Instance.SetControlledTarget(newLander.transform, true);
+        GameController.Instance.BoardLander(newLander);
         RefreshAction();
     }
 

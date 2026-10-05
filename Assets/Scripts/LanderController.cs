@@ -85,6 +85,8 @@ public class LanderController : MonoBehaviour
     float gravityScale;
     float lastMoonContact = float.NegativeInfinity;
     readonly HashSet<Collider2D> moonContacts = new();
+    readonly HashSet<Collider2D> padContacts = new();
+    float lastPadContact = float.NegativeInfinity;
     readonly HashSet<Collider2D> deadZones = new();
     readonly List<Collider2D> spawnHits = new();
     Vector2 currentGravity;
@@ -206,10 +208,9 @@ public class LanderController : MonoBehaviour
         hull.isTrigger = true;
     }
 
-    public void ResumeFromMoon()
+    public void ResumeFlight()
     {
         if (!sfxThrustSound) sfxThrustSound = AudioManager.Instance.CreateThrusterSound();
-        landerState = eLanderState.LandedMoon;
         fuelEmptyDelayCounter = 0f;
         fuelEmptyTriggered = false;
         targetRotation = rb.rotation;
@@ -217,7 +218,7 @@ public class LanderController : MonoBehaviour
         controlsEnabled = true;
         hull.isTrigger = false;
         rb.bodyType = RigidbodyType2D.Dynamic;
-        lastMoonContact = Time.time;
+        if (landerState == eLanderState.LandedMoon) lastMoonContact = Time.time;
     }
 
     void Update()
@@ -253,9 +254,13 @@ public class LanderController : MonoBehaviour
             StopThrust();
             return;
         }
-        if (landerState == eLanderState.LandedMoon && !IsTouchingMoon)
+        bool leftMoon = landerState == eLanderState.LandedMoon && !IsTouchingMoon;
+        bool leftPad = landerState == eLanderState.LandedPad && padContacts.Count == 0
+            && Time.time - lastPadContact >= 0.2f;
+        if (leftMoon || leftPad)
         {
             landerState = eLanderState.Flying;
+            GameController.Instance.BeginFlight();
             MoonEVAController.Instance.RefreshAction();
         }
         rb.linearVelocity = LimitFallVelocity(rb.linearVelocity, currentGravity * gravityScale,
@@ -307,8 +312,9 @@ public class LanderController : MonoBehaviour
         if (!isActive) return;
         bool moon = collision.collider.CompareTag("Moon");
         if (moon) RecordMoonContact(collision.collider);
-        if (landerState != eLanderState.Flying || !controlsEnabled) return;
         bool pad = collision.collider.CompareTag("LandingPad");
+        if (pad) RecordPadContact(collision.collider);
+        if (landerState != eLanderState.Flying || !controlsEnabled) return;
         Vector2 down = currentGravity.sqrMagnitude > 0.0001f ? currentGravity.normalized : Vector2.down;
         float speed = collision.relativeVelocity.magnitude;
         float vertical = Mathf.Abs(Vector2.Dot(collision.relativeVelocity, down));
@@ -317,18 +323,7 @@ public class LanderController : MonoBehaviour
         {
             landerState = moon ? eLanderState.LandedMoon : eLanderState.LandedPad;
             StopThrust();
-            if (moon && MoonEVAController.Instance.isOnMoonLanded)
-            {
-                LanderUI.Instance.SetPanelBottomCenter();
-                MoonEVAController.Instance.RefreshAction();
-                return;
-            }
-            controlsEnabled = false;
-            if (moon) MoonEVAController.Instance.isOnMoonLanded = true;
-            ScoringController.Instance.CalculateScore(collision);
-            GameController.Instance.SetPhase(GameController.GamePhase.Results);
-            LanderUI.Instance.ShowGameOver(landerState, moon);
-            if (!moon) AudioManager.Instance.PlayMusic(AudioManager.Instance.mainMusic, 1.2f);
+            GameController.Instance.HandleLanding(collision, moon);
             return;
         }
         float impact = Mathf.InverseLerp(1.5f, 10f, speed);
@@ -343,16 +338,30 @@ public class LanderController : MonoBehaviour
         lastMoonContact = Time.time;
     }
 
+    void RecordPadContact(Collider2D collider)
+    {
+        padContacts.Add(collider);
+        lastPadContact = Time.time;
+    }
+
     void OnCollisionStay2D(Collision2D collision)
     {
         if (isActive && collision.collider.CompareTag("Moon")) RecordMoonContact(collision.collider);
+        if (isActive && collision.collider.CompareTag("LandingPad")) RecordPadContact(collision.collider);
     }
 
     void OnCollisionExit2D(Collision2D collision)
     {
-        if (!collision.collider.CompareTag("Moon")) return;
-        moonContacts.Remove(collision.collider);
-        lastMoonContact = Time.time;
+        if (collision.collider.CompareTag("Moon"))
+        {
+            moonContacts.Remove(collision.collider);
+            lastMoonContact = Time.time;
+        }
+        if (collision.collider.CompareTag("LandingPad"))
+        {
+            padContacts.Remove(collision.collider);
+            lastPadContact = Time.time;
+        }
     }
 
     void OnTriggerEnter2D(Collider2D other)
@@ -384,15 +393,12 @@ public class LanderController : MonoBehaviour
         deadZoneTriggered = false;
         deadZones.Clear();
         moonContacts.Clear();
+        padContacts.Clear();
         spriteRenderer.enabled = false;
         hull.enabled = false;
         rb.bodyType = RigidbodyType2D.Static;
         if (crashEffect) Destroy(Instantiate(crashEffect, transform.position, Quaternion.identity), 10f);
-        GameController.Instance.SetPhase(GameController.GamePhase.Results);
-        MoonEVAController.Instance.RefreshAction();
-        ImpactFX.Instance.PlayImpactEffect(state);
-        LanderUI.Instance.ShowGameOver(state);
-        AudioManager.Instance.PlayMusic(AudioManager.Instance.mainMusic, -0.8f);
+        GameController.Instance.HandleCrash(state);
     }
 
     public void ApplySpaceTuning(float zeroT)
@@ -449,7 +455,9 @@ public class LanderController : MonoBehaviour
         fuelEmptyTriggered = deadZoneTriggered = false;
         deadZones.Clear();
         moonContacts.Clear();
+        padContacts.Clear();
         lastMoonContact = float.NegativeInfinity;
+        lastPadContact = float.NegativeInfinity;
         deadZoneTimer = deadZoneExplodeDelay;
         spriteRenderer.enabled = hull.enabled = true;
         hull.isTrigger = false;

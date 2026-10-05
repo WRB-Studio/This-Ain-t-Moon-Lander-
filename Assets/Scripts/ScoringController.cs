@@ -52,11 +52,11 @@ public class ScoringController : MonoBehaviour
 
     int Boost(int points) => Mathf.Max(0, Mathf.RoundToInt(points * scoreMultiplier));
 
-    public void CalculateScore(Collision2D collision)
+    public bool CalculateScore(Collision2D collision)
     {
         var lander = LanderController.Instance;
         bool moon = lander.landerState == LanderController.eLanderState.LandedMoon;
-        if (moon ? moonAwarded : padAwarded) return;
+        if (moon ? moonAwarded : padAwarded) return false;
         if (moon) moonAwarded = true;
         else padAwarded = true;
 
@@ -88,6 +88,7 @@ public class ScoringController : MonoBehaviour
         data.CollectedScore = CollectedScore;
         data.BestScore = BestScore;
         SaveLoadManager.Instance.Save();
+        return true;
     }
 
     void OnDestroy() { if (Instance == this) Instance = null; }

@@ -22,6 +22,8 @@ public class LanderUI : MonoBehaviour
     public TMP_Text txtScore;
     public TMP_Text txtXPScore;
     public Button btnRestart;
+    Button btnContinue;
+    GameObject flightActions;
 
     [Header("Navigation")]
     public Transform navigationGrp;
@@ -222,6 +224,25 @@ public class LanderUI : MonoBehaviour
 
         btnRestart.gameObject.SetActive(false);
         btnRestart.onClick.AddListener(OnRestartClicked);
+        flightActions = new GameObject("FlightActions", typeof(RectTransform), typeof(VerticalLayoutGroup), typeof(ContentSizeFitter));
+        flightActions.layer = btnRestart.gameObject.layer;
+        flightActions.transform.SetParent(btnRestart.transform.parent, false);
+        flightActions.transform.SetSiblingIndex(btnRestart.transform.GetSiblingIndex());
+        var actionsLayout = flightActions.GetComponent<VerticalLayoutGroup>();
+        actionsLayout.spacing = 20f;
+        actionsLayout.childAlignment = TextAnchor.MiddleCenter;
+        actionsLayout.childControlWidth = actionsLayout.childControlHeight = false;
+        actionsLayout.childForceExpandWidth = actionsLayout.childForceExpandHeight = false;
+        var actionsSize = flightActions.GetComponent<ContentSizeFitter>();
+        actionsSize.horizontalFit = actionsSize.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
+        btnRestart.transform.SetParent(flightActions.transform, false);
+        btnContinue = Instantiate(btnRestart, btnRestart.transform.parent);
+        btnContinue.name = "ContinueFlight";
+        btnContinue.onClick = new Button.ButtonClickedEvent();
+        btnContinue.onClick.AddListener(() => GameController.Instance.ContinueFlight());
+        btnContinue.GetComponentInChildren<TMP_Text>().text = "Continue Flight";
+        btnContinue.transform.SetSiblingIndex(btnRestart.transform.GetSiblingIndex() + 1);
+        flightActions.SetActive(false);
     }
 
     void OnValidate()
@@ -428,15 +449,17 @@ public class LanderUI : MonoBehaviour
         indicatorMoon.localScale = Vector3.Lerp(indicatorMoon.localScale, moonTarget, k);
     }
 
-    public void ShowGameOver(LanderController.eLanderState state, bool isMoonLanded = false)
+    public void ShowResults(LanderController.eLanderState state, bool showScore = false)
     {
         CancelFlow();
         isGameOver = true;
-        flow = StartCoroutine(ShowEndRoutine(state, isMoonLanded));
+        flow = StartCoroutine(ShowEndRoutine(state, showScore));
     }
 
-    private IEnumerator ShowEndRoutine(LanderController.eLanderState state, bool isMoon)
+    private IEnumerator ShowEndRoutine(LanderController.eLanderState state, bool showScore)
     {
+        bool isMoon = state == LanderController.eLanderState.LandedMoon;
+        bool landed = isMoon || state == LanderController.eLanderState.LandedPad;
         yield return new WaitForSeconds(1.5f);
 
         ShowHideDeadZoneWarning(false);
@@ -465,16 +488,16 @@ public class LanderUI : MonoBehaviour
         btnRestart.onClick.RemoveAllListeners();
         btnRestart.gameObject.SetActive(true);
 
-        LanderChooserManager.Instance.btnLanderChooser.gameObject.SetActive(true);
+        LanderChooserManager.Instance.btnLanderChooser.gameObject.SetActive(GameController.Instance.CanChooseLander);
         LanderChooserManager.Instance.panelChooser.gameObject.SetActive(false);
 
         SetPanelTopCenter();
 
-        if (isMoon || state == LanderController.eLanderState.LandedPad)
+        if (landed)
         {
             txtGameOverTitle.gameObject.SetActive(true);
             txtGameOverMessage.gameObject.SetActive(true);
-            txtScore.gameObject.SetActive(true);
+            txtScore.gameObject.SetActive(showScore);
 
             if (isMoon)
             {
@@ -487,10 +510,6 @@ public class LanderUI : MonoBehaviour
                     "────────────\n" +
                     $"SCORE   {scoring.LastScore}\n" +
                     $"\nBEST    {scoring.BestScore}\n";
-
-                bool canShowChooserOnMoon = LanderChooserManager.Instance.HasFoundSecret;
-                LanderChooserManager.Instance.btnLanderChooser.gameObject.SetActive(canShowChooserOnMoon);
-                LanderChooserManager.Instance.panelChooser.gameObject.SetActive(canShowChooserOnMoon);
 
                 MoonEVAController.Instance.RefreshAction();
             }
@@ -510,6 +529,7 @@ public class LanderUI : MonoBehaviour
 
             btnRestart.transform.GetChild(0).GetComponent<TMP_Text>().text = "Next Level";
             btnRestart.onClick.AddListener(OnNextClicked);
+            btnRestart.gameObject.SetActive(GameController.Instance.CanStartNextLevel);
         }
         else
         {
@@ -522,6 +542,8 @@ public class LanderUI : MonoBehaviour
             btnRestart.onClick.AddListener(OnRestartClicked);
         }
 
+        btnContinue.gameObject.SetActive(landed);
+        flightActions.SetActive(true);
         RefreshPanel();
     }
 
@@ -573,17 +595,19 @@ public class LanderUI : MonoBehaviour
         LanderChooserManager.Instance.btnLanderChooser.gameObject.SetActive(false);
         LanderChooserManager.Instance.panelChooser.gameObject.SetActive(false);
         btnRestart.gameObject.SetActive(false);
+        btnContinue.gameObject.SetActive(false);
+        flightActions.SetActive(false);
     }
 
     void OnRestartClicked()
     {
-        if (GameController.Instance.Phase == GameController.GamePhase.Results)
+        if (GameController.Instance.Phase == GameController.GamePhase.Crashed)
             GameController.Instance.RestartGame();
     }
 
     void OnNextClicked()
     {
-        if (GameController.Instance.Phase == GameController.GamePhase.Results)
+        if (GameController.Instance.CanStartNextLevel)
             GameController.Instance.NextLevel();
     }
 
