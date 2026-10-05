@@ -545,6 +545,13 @@ public class LanderUI : MonoBehaviour
         RefreshPanel();
     }
 
+    public void ShowResultMessage(string message)
+    {
+        txtGameOverMessage.text = message;
+        txtGameOverMessage.gameObject.SetActive(true);
+        RefreshPanel();
+    }
+
     public void SetPanelTopCenter() => SetPanelPosition(panelTopPosition);
     public void SetPanelCenter() => SetPanelPosition(panelCenterPosition);
     public void SetPanelBottomCenter() => SetPanelPosition(panelBottomPosition);

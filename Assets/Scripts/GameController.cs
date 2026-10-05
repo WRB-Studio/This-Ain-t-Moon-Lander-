@@ -114,9 +114,9 @@ public class GameController : MonoBehaviour
     public void NextLevel()
     {
         if (!CanStartNextLevel) return;
-        if (!LandingPadPlacer.Instance.CreateNextPad())
+        if (!LandingPadPlacer.Instance.CreateNextPad(LanderController.Instance.transform.position))
         {
-            StoryTextController.Instance.Show("No room for another landing pad. Try flying instead.");
+            LanderUI.Instance.ShowResultMessage("No room for another nearby landing pad.\nTry flying instead.");
             return;
         }
         LanderChooserManager.Instance.SpawnSelectedLander();

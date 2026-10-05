@@ -49,6 +49,10 @@ public static class WorldSaveChecks
             "Load must restore the current phase, result visibility and refill state.");
         Require(actual.scoring.padAwarded == expected.scoring.padAwarded && actual.scoring.moonAwarded == expected.scoring.moonAwarded,
             "Loading must not grant another landing score.");
+        foreach (var ship in UnityEngine.Object.FindObjectsByType<LanderController>(FindObjectsSortMode.None))
+            if (ship.IsParkedOnPad)
+                Require(ship.GetComponent<Collider2D>().enabled && !ship.GetComponent<Collider2D>().isTrigger,
+                    "Loading must keep parked pad ships solid.");
     }
 
     public static IEnumerator Run()

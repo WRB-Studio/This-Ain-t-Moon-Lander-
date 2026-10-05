@@ -25,6 +25,8 @@ public class LandingPadPlacer : MonoBehaviour
     [Range(0.1f, 1f)] public float padSpawnRange = 0.5f;
     [Tooltip("Minimum horizontal distance between pads added to the existing landscape.")]
     [Min(1f)] public float minimumPadSpacing = 20f;
+    [Tooltip("Maximum distance from the last landing to a newly added pad.")]
+    [Min(1f)] public float maxNextPadDistance = 45f;
 
     [Header("Raycast (legs)")]
     public float raycastUp = 5f;
@@ -98,7 +100,7 @@ public class LandingPadPlacer : MonoBehaviour
         if (scaleLegs) UpdateLeg(rightLeg);
     }
 
-    public LandingPadPlacer CreateNextPad()
+    public LandingPadPlacer CreateNextPad(Vector2 lastLanding)
     {
         var next = Instantiate(GameController.Instance.landingPadPrefab, transform.parent);
         next.groundOffset = groundOffset;
@@ -106,13 +108,14 @@ public class LandingPadPlacer : MonoBehaviour
         next.clearance = clearance;
         next.padSpawnRange = padSpawnRange;
         next.minimumPadSpacing = minimumPadSpacing;
+        next.maxNextPadDistance = maxNextPadDistance;
         next.raycastUp = raycastUp;
         next.raycastDown = raycastDown;
         next.legBottomPadding = legBottomPadding;
         next.scaleLegs = scaleLegs;
         next.name = "LandingPad " + (GameController.Instance.level + 1);
         next.Init();
-        if (!next.TryPlaceOnExistingTerrain())
+        if (!next.TryPlaceOnExistingTerrain(lastLanding))
         {
             next.gameObject.SetActive(false);
             Destroy(next.gameObject);
@@ -131,7 +134,22 @@ public class LandingPadPlacer : MonoBehaviour
         if (scaleLegs) { UpdateLeg(leftLeg); UpdateLeg(rightLeg); }
     }
 
-    bool TryPlaceOnExistingTerrain()
+    public bool HasParkedShip(LanderController approaching)
+    {
+        if (!padCollider) padCollider = GetComponentInChildren<Collider2D>();
+        if (!padCollider) return false;
+        var surface = padCollider.bounds;
+        foreach (var ship in FindObjectsByType<LanderController>(FindObjectsSortMode.None))
+        {
+            if (ship == approaching || !ship.IsParkedOnPad) continue;
+            var hull = ship.GetComponent<Collider2D>().bounds;
+            if (hull.min.x <= surface.max.x && hull.max.x >= surface.min.x
+                && hull.min.y <= surface.max.y + 0.25f && hull.max.y >= surface.min.y) return true;
+        }
+        return false;
+    }
+
+    bool TryPlaceOnExistingTerrain(Vector2 lastLanding)
     {
         var terrain = RandomLandscape.Instance;
         if (!terrain || !terrain.HasLayout) return false;
@@ -142,12 +160,20 @@ public class LandingPadPlacer : MonoBehaviour
         float span = points.GetPosition(points.positionCount - 1).x - points.GetPosition(0).x;
         float middle = points.GetPosition(0).x + span * 0.5f;
         float range = span * Mathf.Clamp(padSpawnRange, 0.1f, 1f) * 0.5f;
-        int start = Random.Range(0, points.positionCount);
-        float bottomOffset = padCollider ? padCollider.bounds.min.y - pad.position.y : 0f;
-        for (int offset = 0; offset < points.positionCount; offset++)
+        var candidates = new System.Collections.Generic.List<int>();
+        for (int i = 0; i < points.positionCount; i++)
         {
-            float x = points.GetPosition((start + offset) % points.positionCount).x;
-            if (Mathf.Abs(x - middle) + halfWidth > range) continue;
+            float x = points.GetPosition(i).x;
+            if (Mathf.Abs(x - middle) + halfWidth <= range && Mathf.Abs(x - lastLanding.x) <= maxNextPadDistance)
+                candidates.Add(i);
+        }
+        float bottomOffset = padCollider ? padCollider.bounds.min.y - pad.position.y : 0f;
+        while (candidates.Count > 0)
+        {
+            int index = Random.Range(0, candidates.Count);
+            float x = points.GetPosition(candidates[index]).x;
+            candidates[index] = candidates[candidates.Count - 1];
+            candidates.RemoveAt(candidates.Count - 1);
             bool occupied = false;
             foreach (var other in existingPads)
             {
@@ -159,6 +185,7 @@ public class LandingPadPlacer : MonoBehaviour
             float groundY = terrain.GetHighestGround(x - halfWidth, x + halfWidth);
             Vector3 position = new Vector3(x, groundY + Mathf.Max(0.05f, groundOffset) - bottomOffset, pad.position.z);
             if (!LiftUntilClear(ref position)) continue;
+            if (Vector2.Distance(position, lastLanding) > maxNextPadDistance) continue;
             pad.position = position;
             Physics2D.SyncTransforms();
             if (scaleLegs) { UpdateLeg(leftLeg); UpdateLeg(rightLeg); }

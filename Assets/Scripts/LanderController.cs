@@ -16,6 +16,8 @@ public class LanderController : MonoBehaviour
     [HideInInspector] public eLanderState landerState = eLanderState.None;
 
     [Header("Respawn (relative to LandingPad)")]
+    [Tooltip("Minimum sideways offset from the target pad when spawning.")]
+    [Min(0f)] public float minDistanceXToPad = 8f;
     public float maxDistanceXToPad = 6f;
     public float minDistanceYToPad = 6f;
     public float maxDistanceYToPad = 12f;
@@ -99,6 +101,7 @@ public class LanderController : MonoBehaviour
     public bool IsTouchingMoon => !IsCrashed && (moonContacts.Count > 0 || Time.time - lastMoonContact < 0.2f);
     public bool IsTouchingPad => !IsCrashed && padContacts.Count > 0;
     public float FuelFraction => fuelMax > 0f ? Mathf.Clamp01(currentFuel / fuelMax) : 0f;
+    public bool IsParkedOnPad => !isActive && landerState == eLanderState.LandedPad;
     public float GravityAngle => currentGravity.sqrMagnitude > 0.0001f
         ? Vector2.Angle(transform.up, -currentGravity) : 0f;
 
@@ -150,6 +153,7 @@ public class LanderController : MonoBehaviour
         landerIndex = prefab.landerIndex;
         unlockCost = prefab.unlockCost;
         isSecretLander = prefab.isSecretLander;
+        minDistanceXToPad = prefab.minDistanceXToPad;
         maxDistanceXToPad = prefab.maxDistanceXToPad;
         minDistanceYToPad = prefab.minDistanceYToPad;
         maxDistanceYToPad = prefab.maxDistanceYToPad;
@@ -211,7 +215,7 @@ public class LanderController : MonoBehaviour
             rb.angularVelocity = 0f;
         }
         rb.bodyType = RigidbodyType2D.Static;
-        hull.isTrigger = true;
+        hull.isTrigger = landerState != eLanderState.LandedPad;
     }
 
     public void ResumeFlight()
@@ -325,7 +329,10 @@ public class LanderController : MonoBehaviour
         float speed = collision.relativeVelocity.magnitude;
         float vertical = Mathf.Abs(Vector2.Dot(collision.relativeVelocity, down));
         float angle = Mathf.Abs(Mathf.DeltaAngle(0f, rb.rotation));
-        if ((moon || pad) && IsSafeLanding(speed, vertical, angle, moon))
+        var padPlacer = pad ? collision.collider.GetComponentInParent<LandingPadPlacer>() : null;
+        var otherShip = collision.collider.GetComponentInParent<LanderController>();
+        bool occupied = padPlacer && padPlacer.HasParkedShip(this);
+        if ((moon || pad) && !occupied && IsSafeLanding(speed, vertical, angle, moon))
         {
             landerState = moon ? eLanderState.LandedMoon : eLanderState.LandedPad;
             StopThrust();
@@ -335,7 +342,8 @@ public class LanderController : MonoBehaviour
         float impact = Mathf.InverseLerp(1.5f, 10f, speed);
         AudioManager.Instance.PlaySound(AudioManager.Instance.sfxCrash,
             Mathf.Lerp(0.6f, 1f, impact), Mathf.Lerp(0.9f, 1.15f, impact));
-        Crash(pad ? eLanderState.CrashedPad : moon ? eLanderState.CrashedMoon : eLanderState.CrashedLandscape);
+        Crash(pad || (otherShip && otherShip.IsParkedOnPad) ? eLanderState.CrashedPad
+            : moon ? eLanderState.CrashedMoon : eLanderState.CrashedLandscape);
     }
 
     void RecordMoonContact(Collider2D collider)
@@ -504,8 +512,8 @@ public class LanderController : MonoBehaviour
         deadZoneTimer = state.deadZoneTimer;
         rb.bodyType = active ? state.bodyType : RigidbodyType2D.Static;
         spriteRenderer.enabled = hull.enabled = !IsCrashed;
-        hull.isTrigger = !active || (state.bodyType == RigidbodyType2D.Static
-            && (landerState == eLanderState.LandedMoon || landerState == eLanderState.LandedPad));
+        hull.isTrigger = landerState != eLanderState.LandedPad && (!active
+            || (state.bodyType == RigidbodyType2D.Static && landerState == eLanderState.LandedMoon));
         state.Restore(transform, rb);
         if (landerState == eLanderState.LandedMoon) lastMoonContact = Time.time;
         StopThrust();
@@ -526,21 +534,22 @@ public class LanderController : MonoBehaviour
         if (!pad) return;
         Vector2 padPosition = pad.transform.position;
         float levelFactor = GameController.Instance ? Mathf.Clamp(GameController.Instance.level, 1, 30) / 2f : 0.5f;
-        float xRange = maxDistanceXToPad + levelFactor;
+        float xRange = Mathf.Max(0f, maxDistanceXToPad) + levelFactor;
+        float xMin = Mathf.Clamp(minDistanceXToPad, 0f, xRange);
         float yMin = minDistanceYToPad + levelFactor;
         float yMax = Mathf.Max(yMin, maxDistanceYToPad + levelFactor);
         var terrain = RandomLandscape.Instance;
-        var random = new System.Random(terrain ? unchecked(terrain.seed ^ 0x51A7C3) : 1);
         Vector2 position = padPosition;
         float hullRadius = Mathf.Max(hull.bounds.extents.x, hull.bounds.extents.y);
         Physics2D.SyncTransforms();
         for (int attempt = 0; attempt < Mathf.Max(1, tries); attempt++)
         {
-            position = padPosition + new Vector2(Mathf.Lerp(-xRange, xRange, (float)random.NextDouble()),
-                Mathf.Lerp(yMin, yMax, (float)random.NextDouble()));
+            float side = Random.value < 0.5f ? -1f : 1f;
+            position = padPosition + new Vector2(side * Random.Range(xMin, xRange), Random.Range(yMin, yMax));
             if (terrain && terrain.HasLayout)
             {
                 position.x = terrain.ClampSpawnX(position.x, hullRadius + clearance);
+                if (Mathf.Abs(position.x - padPosition.x) < xMin) continue;
                 float routeHeight = terrain.GetHighestGround(Mathf.Min(position.x, padPosition.x) - hullRadius,
                     Mathf.Max(position.x, padPosition.x) + hullRadius);
                 position.y = Mathf.Max(position.y, routeHeight + hullRadius + Mathf.Max(0f, clearance));

@@ -349,6 +349,7 @@ MonoBehaviour:
   isActive: 1
   controlsEnabled: 0
   landerState: 0
+  minDistanceXToPad: 8
   maxDistanceXToPad: 20
   minDistanceYToPad: 10
   maxDistanceYToPad: 20

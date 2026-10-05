@@ -251,6 +251,7 @@ MonoBehaviour:
   clearance: 0.05
   padSpawnRange: 0.4
   minimumPadSpacing: 20
+  maxNextPadDistance: 45
   raycastUp: 5
   raycastDown: 50
   legBottomPadding: 0.02

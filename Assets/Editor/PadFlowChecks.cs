@@ -51,17 +51,19 @@ public static class PadFlowChecks
     static void Finish(int code) { checks = null; SessionState.SetBool("PadFlowChecks", false); EditorApplication.Exit(code); }
     static void Require(bool condition, string message) { if (!condition) throw new Exception(message); passed++; }
     static void Tick(int count) { for (int i = 0; i < count; i++) { tickShip.Invoke(LanderController.Instance, null); Physics2D.Simulate(0.02f); } }
-    static void Land(Collider2D pad)
+    static void Land(Collider2D pad, bool occupied = false, float offsetX = 0f)
     {
         var ship = LanderController.Instance;
         ship.StartLander(); ship.rb.rotation = 0; Physics2D.SyncTransforms();
         float bottom = ship.rb.position.y - ship.GetComponent<Collider2D>().bounds.min.y;
-        ship.rb.position = new Vector2(pad.bounds.center.x, pad.bounds.max.y + bottom + 3);
+        ship.rb.position = new Vector2(pad.bounds.center.x + offsetX, pad.bounds.max.y + bottom + 3);
         Physics2D.SyncTransforms(); Tick(1);
-        ship.rb.position = new Vector2(pad.bounds.center.x, pad.bounds.max.y + bottom + 0.01f);
+        ship.rb.position = new Vector2(pad.bounds.center.x + offsetX, pad.bounds.max.y + bottom + 0.01f);
         ship.rb.linearVelocity = Vector2.down * 0.1f;
         Physics2D.SyncTransforms(); Tick(50);
-        Require(GameController.Instance.Phase == GameController.GamePhase.Landed, "A safe pad landing must enter Landed.");
+        Require(occupied ? ship.landerState == LanderController.eLanderState.CrashedPad
+            : GameController.Instance.Phase == GameController.GamePhase.Landed,
+            occupied ? "Landing on an occupied pad must crash." : "A safe pad landing must enter Landed.");
     }
     static IEnumerator Run()
     {
@@ -136,6 +138,8 @@ public static class PadFlowChecks
         yield return null;
         Require(game.level == level + 1 && game.Phase == GameController.GamePhase.Countdown, "Next Level must advance to a new countdown.");
         Require(oldShip && oldShip.transform.position == shipPosition && !oldShip.isActive && oldShip.rb.bodyType == RigidbodyType2D.Static, "The landed ship must remain parked in place.");
+        Require(!oldShip.GetComponent<Collider2D>().isTrigger && oldPad.HasParkedShip(LanderController.Instance),
+            "The parked ship must have a solid hull and block its pad.");
         Require(oldPad && oldPad.transform.position == padPosition && LandingPadPlacer.Instance != oldPad, "The previous pad must remain in place and the new pad become the target.");
         Require(UnityEngine.Object.FindObjectsByType<LandingPadPlacer>(FindObjectsSortMode.None).Length == countBefore + 1, "Next Level must add exactly one pad.");
         Require(UnityEngine.Object.FindObjectsByType<LanderController>(FindObjectsSortMode.None).Length == shipCountBefore + 1, "Next Level must add exactly one ship.");
@@ -143,6 +147,8 @@ public static class PadFlowChecks
         for (int i = 0; i < vertices.Length; i++) if (vertices[i] != line.GetPosition(i)) throw new Exception("Next Level changed terrain geometry.");
         passed++;
         Require(Mathf.Abs(LandingPadPlacer.Instance.transform.position.x - padPosition.x) >= oldPad.minimumPadSpacing, "Added pads must respect spacing.");
+        Require(Vector2.Distance(LandingPadPlacer.Instance.transform.position, shipPosition) <= oldPad.maxNextPadDistance,
+            "The new pad must remain close to the actual previous landing.");
         var ship = LanderController.Instance;
         game.BeginRun(); ui.HideGameOver();
         Land(LandingPadPlacer.Instance.GetComponentInChildren<Collider2D>());
@@ -152,9 +158,16 @@ public static class PadFlowChecks
         float targetZoom = (float)typeof(CameraController).GetMethod("CalcTargetZoom", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(camera, null);
         Require(Mathf.Abs(targetZoom - minimumZoom) < 0.01f, "Camera must zoom in at a newly added pad.");
         game.ContinueFlight(); game.BeginFlight();
-        Land(oldSurface);
+        int beforeBlockedLanding = score.CollectedScore;
+        Land(oldSurface, true);
         targetZoom = (float)typeof(CameraController).GetMethod("CalcTargetZoom", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(camera, null);
-        Require(Mathf.Abs(targetZoom - minimumZoom) < 0.01f && game.CanRefill, "Old pads must still support landing zoom and refilling.");
+        Require(Mathf.Abs(targetZoom - minimumZoom) < 0.01f && !game.CanRefill && score.CollectedScore == beforeBlockedLanding,
+            "Occupied pads must retain camera zoom but reject scoring and refilling after a ship collision.");
+        game.RestartGame(); game.BeginRun(); ui.HideGameOver();
+        Land(oldSurface, true, oldSurface.bounds.size.x * 0.35f);
+        Require(score.CollectedScore == beforeBlockedLanding, "Touching the empty edge of an occupied pad must not award a landing score.");
+        game.RestartGame(); game.BeginRun(); ui.HideGameOver();
+        Land(LandingPadPlacer.Instance.GetComponentInChildren<Collider2D>());
         game.NextLevel(); yield return null;
         Require(game.level == level + 2 && oldShip && oldPad && UnityEngine.Object.FindObjectsByType<LandingPadPlacer>(FindObjectsSortMode.None).Length == countBefore + 2,
             "Pads and landed ships must accumulate across multiple levels.");
@@ -162,11 +175,20 @@ public static class PadFlowChecks
         var activePad = LandingPadPlacer.Instance;
         Land(activePad.GetComponentInChildren<Collider2D>());
         int beforeFailureLevel = game.level;
+        ui.ShowResults(LanderController.Instance.landerState, false, true);
         activePad.minimumPadSpacing = terrain.width * 2;
         game.NextLevel(); yield return null;
         Require(game.level == beforeFailureLevel && LandingPadPlacer.Instance == activePad && game.Phase == GameController.GamePhase.Landed,
             "A full map must leave the current landing intact without advancing the level.");
+        Require(ui.txtGameOverMessage.gameObject.activeInHierarchy
+            && ui.txtGameOverMessage.text == "No room for another nearby landing pad.\nTry flying instead.",
+            "A failed next level must display its notice inside the result menu instead of the story overlay.");
+        yield return null;
+        Canvas.ForceUpdateCanvases();
+        Require(ui.txtGameOverMessage.rectTransform.rect.height >= ui.txtGameOverMessage.preferredHeight - 1f,
+            "The result menu must reserve enough height for the wrapped notice.");
         game.ContinueFlight(); game.BeginFlight();
+        Require(!ui.txtGameOverMessage.gameObject.activeInHierarchy, "Continuing flight must hide the menu notice.");
         LanderController.Instance.currentFuel = 0;
         game.RefillTank();
         Require(LanderController.Instance.currentFuel == 0, "Refill must be unavailable during flight.");

@@ -11,6 +11,7 @@ public static class TerrainChecks
         if (EditorApplication.isPlaying) throw new InvalidOperationException("Run checks in Edit Mode.");
         var previousTerrain = RandomLandscape.Instance;
         var previousPad = LandingPadPlacer.Instance;
+        var previousRandom = UnityEngine.Random.state;
         var terrainObject = new GameObject("TerrainCheck") { hideFlags = HideFlags.HideAndDontSave };
         var padObject = new GameObject("PadCheck") { hideFlags = HideFlags.HideAndDontSave };
         var shipObject = new GameObject("SpawnCheck") { hideFlags = HideFlags.HideAndDontSave };
@@ -82,6 +83,22 @@ public static class TerrainChecks
 
             terrain.terrainType = RandomLandscape.TerrainType.Automatic;
             terrain.GenerateFromSeed(733, 1);
+            pad.SetRandomPlaceForPad();
+            UnityEngine.Random.InitState(937);
+            bool left = false, right = false;
+            float firstX = float.NaN;
+            bool varied = false;
+            for (int i = 0; i < 60; i++)
+            {
+                ship.SetRandomPosition();
+                float offset = ship.transform.position.x - pad.transform.position.x;
+                Require(Mathf.Abs(offset) >= ship.minDistanceXToPad - 0.001f,
+                    "Spawns must have a meaningful sideways offset.");
+                left |= offset < 0; right |= offset > 0;
+                if (i == 0) firstX = offset;
+                else varied |= Mathf.Abs(offset - firstX) > 0.5f;
+            }
+            Require(left && right && varied, "Repeated spawns in the same world must vary and use both sides of the pad.");
             Require(terrain.GeneratedType == RandomLandscape.TerrainType.Hills, "First levels must start with hills.");
             terrain.GenerateFromSeed(733, 4);
             Require(terrain.GeneratedType == RandomLandscape.TerrainType.Craters, "Later levels must introduce craters.");
@@ -108,6 +125,7 @@ public static class TerrainChecks
             UnityEngine.Object.DestroyImmediate(terrainObject);
             RandomLandscape.Instance = previousTerrain;
             LandingPadPlacer.Instance = previousPad;
+            UnityEngine.Random.state = previousRandom;
         }
     }
 
