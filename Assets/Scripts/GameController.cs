@@ -24,10 +24,12 @@ public class GameController : MonoBehaviour
     public float RefillProgress => IsRefilling && LanderController.Instance
         ? Mathf.InverseLerp(refillStartFuel, LanderController.Instance.fuelMax, LanderController.Instance.currentFuel) : 0f;
     public bool CanRefill => Phase == GamePhase.Landed && LanderController.Instance
+        && (!LanderController.Instance.IsOnStation || SaveLoadManager.Instance.Data.GetFlag("story.registrationComplete"))
         && LanderController.Instance.landerState == LanderController.eLanderState.LandedPad
         && LanderController.Instance.IsTouchingPad;
-    public bool CanStartNextLevel => HasResults && CanRefill;
-    public bool CanChooseLander => HasResults && (!IsExploring || Phase == GamePhase.Crashed
+    public bool CanStartNextLevel => HasResults && CanRefill && !LanderController.Instance.IsOnStation;
+    public bool CanChooseLander => HasResults && (!LanderController.Instance.IsOnStation || Phase == GamePhase.Crashed)
+        && (!IsExploring || Phase == GamePhase.Crashed
         || (CanRefill && SaveLoadManager.Instance.Data.GetFlag("story.companyLanderReturned")));
     public Transform ControlledTarget { get; private set; }
     public Rigidbody2D ControlledBody { get; private set; }
@@ -87,6 +89,8 @@ public class GameController : MonoBehaviour
 
     void StartArcadeRound()
     {
+        if (StationConversation.Instance) StationConversation.Instance.Close();
+        if (StationInterior.Instance) StationInterior.Instance.ResetToOutside();
         IsRefilling = false;
         Phase = GamePhase.Countdown;
         HasResults = false;
@@ -142,8 +146,15 @@ public class GameController : MonoBehaviour
             StoryTextController.Instance.Discover(StoryTextController.Discovery.MoonLanding);
         }
         bool awarded = ScoringController.Instance.CalculateScore(collision);
-        string earthReturn = moon ? null : StoryTextController.Instance.TakeEarthReturnMessage();
-        ResultStoryMessage = moon ? StoryTextController.Instance.TakeMoonLandingMessage() : null;
+        bool station = LanderController.Instance.IsOnStation;
+        if (station)
+        {
+            IsExploring = true;
+            StoryTextController.Instance.Discover(StoryTextController.Discovery.StationLanding);
+        }
+        string earthReturn = moon || station ? null : StoryTextController.Instance.TakeEarthReturnMessage();
+        ResultStoryMessage = moon ? StoryTextController.Instance.TakeMoonLandingMessage()
+            : station ? StoryTextController.Instance.TakeStationLandingMessage() : null;
         resultsHaveScore = awarded;
         HasResults = awarded || !moon || !string.IsNullOrEmpty(ResultStoryMessage);
         LanderController.Instance.controlsEnabled = !HasResults;
@@ -204,9 +215,19 @@ public class GameController : MonoBehaviour
         HasResults = false;
         Phase = GamePhase.Landed;
         LanderUI.Instance.HideGameOver();
-        lander.landerState = LanderController.eLanderState.LandedMoon;
-        lander.ResumeFlight();
+        lander.landerState = lander.StationPad ? LanderController.eLanderState.LandedPad : LanderController.eLanderState.LandedMoon;
+        bool stationServices = lander.StationPad && SaveLoadManager.Instance.Data.GetFlag("story.registrationComplete");
+        if (stationServices)
+        {
+            HasResults = true;
+            resultsHaveScore = false;
+            ResultStoryMessage = "Docked. Refuel or continue your flight.";
+            lander.Park();
+        }
+        else lander.ResumeFlight();
         SetControlledTarget(lander.transform, true);
+        if (stationServices) LanderUI.Instance.ShowResults(lander.landerState, false, true);
+        SaveLoadManager.Instance.Save();
     }
 
     public void HandleCrash(LanderController.eLanderState state)
@@ -267,6 +288,16 @@ public class GameController : MonoBehaviour
             scoring = ScoringController.Instance.CaptureState(pads)
         };
         RandomLandscape.Instance.CaptureWorld(world);
+        if (SpaceStation.Instance)
+        {
+            world.hasStationLayout = true;
+            world.stationLayoutVersion = SpaceStation.LayoutVersion;
+            world.stationOffset = SpaceStation.Instance.OffsetFromMoon;
+        }
+        if (StationInterior.Instance && Phase == GamePhase.EVA) world.stationArea = (int)StationInterior.Instance.CurrentArea;
+        var residents = FindObjectsByType<StationResident>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+        world.stationResidents = new ResidentSave[residents.Length];
+        for (int i = 0; i < residents.Length; i++) world.stationResidents[i] = residents[i].CaptureState();
         StoryTextController.Instance.CaptureState(world);
         var moon = GravityManager2D.Instance.transform;
         world.moonPosition = moon.position; world.moonRotation = moon.eulerAngles.z; world.moonScale = moon.localScale;
@@ -293,12 +324,15 @@ public class GameController : MonoBehaviour
             }
         worldReady = false;
         level = SaveLoadManager.Instance.Data.level;
+        if (StationConversation.Instance) StationConversation.Instance.Close();
+        if (StationInterior.Instance) StationInterior.Instance.ResetToOutside();
         MoonEVAController.Instance.ResetRun();
         LanderUI.Instance.HideGameOver();
         ImpactFX.Instance.ResetEffect();
         RandomLandscape.Instance.RestoreWorld(world);
         var moon = GravityManager2D.Instance.transform;
         moon.position = world.moonPosition; moon.rotation = Quaternion.Euler(0f, 0f, world.moonRotation); moon.localScale = world.moonScale;
+        if (world.hasStationLayout && SpaceStation.Instance) SpaceStation.Instance.RestoreOffset(world.stationOffset);
         var oldPads = FindObjectsByType<LandingPadPlacer>(FindObjectsSortMode.None);
         var pads = new LandingPadPlacer[world.pads.Length];
         for (int i = 0; i < pads.Length; i++)
@@ -318,6 +352,7 @@ public class GameController : MonoBehaviour
             LanderController.Instance = null;
             ships[i] = Instantiate(LanderChooserManager.Instance.GetPrefab(world.ships[i].definitionId), parent).GetComponent<LanderController>();
             ships[i].RestoreState(world.ships[i], i == world.activeShip);
+            if (world.stationLayoutVersion < SpaceStation.LayoutVersion) ships[i].RealignStationDock();
         }
         LanderController.Instance = ships[world.activeShip];
         ScoringController.Instance.Init();
@@ -333,6 +368,7 @@ public class GameController : MonoBehaviour
         Physics2D.SyncTransforms();
         if (Phase == GamePhase.EVA)
         {
+            if (StationInterior.Instance) StationInterior.Instance.RestoreArea(world.stationArea);
             MoonEVAController.Instance.RestoreAstronaut(world.astronaut);
             SetControlledTarget(MoonEVAController.Instance.astronaut.transform, true);
         }
@@ -348,6 +384,9 @@ public class GameController : MonoBehaviour
         }
         MoonEVAController.Instance.RefreshAction();
         if (!HasResults && LanderController.Instance.deadZoneTriggered) LanderUI.Instance.ShowHideDeadZoneWarning(true);
+        if (world.stationResidents != null)
+            foreach (var resident in FindObjectsByType<StationResident>(FindObjectsInactive.Include, FindObjectsSortMode.None))
+                foreach (var saved in world.stationResidents) if (saved.id == resident.Id) { resident.RestoreState(saved); break; }
         worldReady = true;
         nextAutoSave = Time.unscaledTime + Mathf.Max(1f, autoSaveInterval);
         AudioManager.Instance.PlayMusic(AudioManager.Instance.mainMusic);

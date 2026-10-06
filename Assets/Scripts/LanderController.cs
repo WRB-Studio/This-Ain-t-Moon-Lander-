@@ -101,7 +101,11 @@ public class LanderController : MonoBehaviour
         || landerState == eLanderState.CrashedMoon || landerState == eLanderState.CrashedPad
         || landerState == eLanderState.OutOfFuel || landerState == eLanderState.DeadZone;
     public bool IsTouchingMoon => !IsCrashed && (moonContacts.Count > 0 || Time.time - lastMoonContact < 0.2f);
-    public bool IsTouchingPad => !IsCrashed && padContacts.Count > 0;
+    public bool IsTouchingPad => !IsCrashed && (padContacts.Count > 0 || (StationPad
+        && (Time.time - lastPadContact < 0.2f || (rb.bodyType == RigidbodyType2D.Static
+            && StationPad.Surface.Distance(hull).distance <= 0.1f))));
+    public StationLandingPad StationPad { get; private set; }
+    public bool IsOnStation => StationPad && (landerState == eLanderState.LandedPad || IsCrashed);
     public float FuelFraction => fuelMax > 0f ? Mathf.Clamp01(currentFuel / fuelMax) : 0f;
     public bool IsParkedOnPad => !isActive && landerState == eLanderState.LandedPad;
     public float GravityAngle => currentGravity.sqrMagnitude > 0.0001f
@@ -201,7 +205,7 @@ public class LanderController : MonoBehaviour
         newLander.Init();
         if (!newLander.fuelInitialized)
         {
-            newLander.fuelMax = old.fuelMax;
+            newLander.fuelMax = newLander.isSecretLander ? Mathf.Max(old.fuelMax, newLander.fuelMax) : old.fuelMax;
             newLander.currentFuel = newLander.fuelMax * (newLander.isSecretLander ? 1f : 0.75f);
             newLander.fuelInitialized = true;
         }
@@ -223,6 +227,7 @@ public class LanderController : MonoBehaviour
 
     public void ResumeFlight()
     {
+        if (StationPad) lastPadContact = Time.time;
         if (!sfxThrustSound) sfxThrustSound = AudioManager.Instance.CreateThrusterSound();
         fuelEmptyDelayCounter = 0f;
         fuelEmptyTriggered = false;
@@ -344,12 +349,20 @@ public class LanderController : MonoBehaviour
         float vertical = Mathf.Abs(Vector2.Dot(collision.relativeVelocity, down));
         float angle = Mathf.Abs(Mathf.DeltaAngle(0f, rb.rotation));
         var padPlacer = pad ? collision.collider.GetComponentInParent<LandingPadPlacer>() : null;
+        var stationPad = pad ? collision.collider.GetComponentInParent<StationLandingPad>() : null;
         var otherShip = collision.collider.GetComponentInParent<LanderController>();
-        bool occupied = padPlacer && padPlacer.HasParkedShip(this);
+        bool occupied = (padPlacer && padPlacer.HasParkedShip(this)) || (stationPad && stationPad.HasParkedShip(this));
         if ((moon || pad) && !occupied && IsSafeLanding(speed, vertical, angle, moon))
         {
             landerState = moon ? eLanderState.LandedMoon : eLanderState.LandedPad;
+            StationPad = stationPad;
             StopThrust();
+            if (stationPad)
+            {
+                rb.linearVelocity = Vector2.zero;
+                rb.angularVelocity = 0f;
+                rb.bodyType = RigidbodyType2D.Static;
+            }
             GameController.Instance.HandleLanding(collision, moon);
             return;
         }
@@ -368,8 +381,10 @@ public class LanderController : MonoBehaviour
 
     void RecordPadContact(Collider2D collider)
     {
+        bool regainedContact = padContacts.Count == 0;
         padContacts.Add(collider);
         lastPadContact = Time.time;
+        if (regainedContact && StationPad && MoonEVAController.Instance) MoonEVAController.Instance.RefreshAction();
     }
 
     void OnCollisionStay2D(Collision2D collision)
@@ -487,6 +502,14 @@ public class LanderController : MonoBehaviour
     public void ResetLander()
     {
         SetTractorHold(false);
+        var respawnPad = StationPad;
+        var station = SpaceStation.Instance;
+        if (!respawnPad && station && station.GetGravity(rb.position).sqrMagnitude > 0f)
+            foreach (var candidate in station.pads)
+                if (!respawnPad || Vector2.Distance(rb.position, candidate.transform.position)
+                    < Vector2.Distance(rb.position, respawnPad.transform.position)) respawnPad = candidate;
+        float previousCapacity = fuelMax;
+        StationPad = null;
         if (!sfxThrustSound) sfxThrustSound = AudioManager.Instance.CreateThrusterSound();
         controlsEnabled = false;
         StopThrust();
@@ -509,8 +532,16 @@ public class LanderController : MonoBehaviour
         spriteRenderer.enabled = hull.enabled = true;
         hull.isTrigger = false;
         SetRandomPosition();
+        if (respawnPad && station && station.IsAvailable)
+        {
+            StationPad = respawnPad;
+            transform.position = respawnPad.transform.position + new Vector3(Random.Range(-4f, 4f), 10f, 0f);
+            fuelMax = Mathf.Max(0.01f, previousCapacity);
+            currentFuel = fuelMax;
+            fuelInitialized = true;
+        }
         currentGravity = GravityManager2D.Instance.GetGravity(transform.position);
-        CalculateStartFuel(LandingPadPlacer.Instance.transform.position);
+        if (!StationPad) CalculateStartFuel(LandingPadPlacer.Instance.transform.position);
         MoonEVAController.Instance.RefreshAction();
     }
 
@@ -520,6 +551,7 @@ public class LanderController : MonoBehaviour
         {
             definitionId = landerIndex, fuel = currentFuel, fuelMax = fuelMax,
             fuelInitialized = fuelInitialized,
+            stationPad = StationPad ? StationPad.index : -1,
             state = landerState, bodyType = rb.bodyType, controlsEnabled = controlsEnabled,
             targetRotation = targetRotation, gravity = currentGravity,
             fuelEmptyTimer = fuelEmptyDelayCounter, deadZoneTriggered = deadZoneTriggered, deadZoneTimer = deadZoneTimer
@@ -533,6 +565,8 @@ public class LanderController : MonoBehaviour
         Init();
         isActive = active;
         landerState = state.state;
+        StationPad = SpaceStation.Instance ? SpaceStation.Instance.GetPad(state.stationPad) : null;
+        if (StationPad && landerState == eLanderState.LandedPad) lastPadContact = Time.time;
         controlsEnabled = active && state.controlsEnabled && !IsCrashed;
         fuelMax = Mathf.Max(0.01f, state.fuelMax);
         currentFuel = Mathf.Clamp(state.fuel, 0f, fuelMax);
@@ -552,7 +586,27 @@ public class LanderController : MonoBehaviour
         StopThrust();
     }
 
+    public void RealignStationDock()
+    {
+        if (!StationPad || landerState != eLanderState.LandedPad || rb.bodyType != RigidbodyType2D.Static) return;
+        Physics2D.SyncTransforms();
+        float bottomOffset = hull.bounds.min.y - transform.position.y;
+        Vector3 position = transform.position;
+        position.x = StationPad.Surface.bounds.center.x;
+        position.y = StationPad.Surface.bounds.max.y - bottomOffset + 0.01f;
+        transform.position = position;
+        rb.position = position;
+        Physics2D.SyncTransforms();
+    }
+
 #if UNITY_EDITOR
+    public void DebugDockAtStation(StationLandingPad pad)
+    {
+        StationPad = pad;
+        landerState = eLanderState.LandedPad;
+        Park();
+        RealignStationDock();
+    }
     public void DebugPlace(Vector3 position, bool landedMoon)
     {
         ResetLander();

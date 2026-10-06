@@ -10,6 +10,11 @@ public class WorldSave
     public Vector2 landingZone;
     public float landingHalfWidth;
     public Vector3 moonPosition, moonScale;
+    public bool hasStationLayout;
+    public int stationLayoutVersion;
+    public int stationArea;
+    public ResidentSave[] stationResidents;
+    public Vector2 stationOffset;
     public float moonRotation;
     public Vector3[] pads;
     public int activePad, activeShip;
@@ -31,13 +36,20 @@ public class WorldSave
             || !Enum.IsDefined(typeof(GameController.GamePhase), phase) || scoring == null
             || !Finite(landingZone) || !Finite(landingHalfWidth) || !Finite(moonPosition) || !Finite(moonScale)
             || !Finite(moonRotation) || !Finite(scoring.elapsed) || !Finite(scoring.lastTime) || !Finite(storyElapsed) || !Finite(refillStartFuel)
-            || scoring.scoredPad < -1 || scoring.scoredPad >= pads.Length) return false;
+            || scoring.scoredPad < -1 || scoring.scoredPad >= pads.Length
+            || scoring.scoredStationPad < -1 || scoring.scoredStationPad > 1
+            || stationArea < 0 || stationArea > 2
+            || (hasStationLayout && !Finite(stationOffset))) return false;
+        if (stationResidents != null)
+            foreach (var resident in stationResidents)
+                if (resident == null || resident.id < 1 || !Finite(resident.x) || !Finite(resident.pause)) return false;
         for (int i = 0; i < terrain.Length; i++)
             if (!Finite(terrain[i]) || (i > 0 && terrain[i].x <= terrain[i - 1].x)) return false;
         foreach (var pad in pads) if (!Finite(pad)) return false;
         foreach (var ship in ships)
             if (ship == null || !ship.IsValid() || !Finite(ship.fuel) || !Finite(ship.fuelMax)
                 || !Finite(ship.targetRotation) || !Finite(ship.gravity) || !Finite(ship.fuelEmptyTimer) || !Finite(ship.deadZoneTimer)
+                || ship.stationPad < -1 || ship.stationPad > 1
                 || !Enum.IsDefined(typeof(LanderController.eLanderState), ship.state)
                 || !Enum.IsDefined(typeof(RigidbodyType2D), ship.bodyType)) return false;
         return phase != GameController.GamePhase.EVA || (astronaut != null && astronaut.IsValid());
@@ -84,6 +96,7 @@ public class ActorSave
 public class ShipSave : ActorSave
 {
     public int definitionId;
+    public int stationPad = -1;
     public float fuel, fuelMax, targetRotation, fuelEmptyTimer, deadZoneTimer;
     public Vector2 gravity;
     public bool controlsEnabled, deadZoneTriggered, fuelInitialized;
@@ -96,6 +109,15 @@ public class ScoreSave
 {
     public bool padAwarded, moonAwarded, lastWasMoon;
     public int scoredPad = -1;
+    public int scoredStationPad = -1;
     public float elapsed, lastTime;
     public int lastScore, baseScore, speedScore, angleScore, centerScore, fuelScore, timeScore, moonScore, centerPct;
+}
+
+[Serializable]
+public class ResidentSave
+{
+    public int id;
+    public float x, pause;
+    public bool movingRight, walkingToEntrance, entered;
 }

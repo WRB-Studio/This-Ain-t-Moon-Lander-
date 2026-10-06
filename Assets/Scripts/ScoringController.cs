@@ -116,6 +116,8 @@ public class ScoringController : MonoBehaviour
         {
             padAwarded = padAwarded, moonAwarded = moonAwarded,
             scoredPad = scoredPad ? System.Array.IndexOf(pads, scoredPad.GetComponentInParent<LandingPadPlacer>()) : -1,
+            scoredStationPad = scoredPad && scoredPad.GetComponentInParent<StationLandingPad>()
+                ? scoredPad.GetComponentInParent<StationLandingPad>().index : -1,
             elapsed = Mathf.Max(0f, Time.time - runStartTime), lastTime = LastTimeSec, lastWasMoon = LastWasMoon,
             lastScore = LastScore, baseScore = LastBaseScore, speedScore = LastSpeedScore,
             angleScore = LastAngleScore, centerScore = LastCenterScore, fuelScore = LastFuelScore,
@@ -129,6 +131,8 @@ public class ScoringController : MonoBehaviour
         moonAwarded = state.moonAwarded;
         scoredPad = state.scoredPad >= 0 && state.scoredPad < pads.Length
             ? pads[state.scoredPad].GetComponentInChildren<Collider2D>() : null;
+        if (state.scoredStationPad >= 0 && SpaceStation.Instance)
+            scoredPad = SpaceStation.Instance.GetPad(state.scoredStationPad).Surface;
         runStartTime = Time.time - Mathf.Max(0f, state.elapsed);
         LastTimeSec = state.lastTime; LastWasMoon = state.lastWasMoon;
         LastScore = state.lastScore; LastBaseScore = state.baseScore; LastSpeedScore = state.speedScore;

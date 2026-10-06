@@ -4,7 +4,7 @@ using UnityEngine;
 [Serializable]
 public class SaveGame
 {
-    public const int CurrentVersion = 3;
+    public const int CurrentVersion = 4;
     public int version = CurrentVersion;
     public float volMusic = 0.8f;
     public float volSfx = 1f;
@@ -16,6 +16,10 @@ public class SaveGame
     public int earthAsideLevel;
     public string lastEarthAside;
     public Vector3 ufoContactPosition;
+    public float stationSignalStartDistance;
+    public float nextSignalStartDistance;
+    public int stationConversationPage;
+    public string stationConversationReaction;
     public SerializableDictionary<string, bool> flags = new();
     public WorldSave world;
 
@@ -32,6 +36,12 @@ public class SaveGame
     {
         if (version > CurrentVersion) return;
         if (version < 2) selectedLanderId = -1;
+        if (version < 4 && world != null)
+        {
+            if (world.ships != null)
+                foreach (var ship in world.ships) if (ship != null) ship.stationPad = -1;
+            if (world.scoring != null) world.scoring.scoredStationPad = -1;
+        }
         version = CurrentVersion;
         level = Mathf.Max(1, level);
         BestScore = Mathf.Max(0, BestScore);

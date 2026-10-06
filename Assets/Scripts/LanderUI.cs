@@ -241,6 +241,13 @@ public class LanderUI : MonoBehaviour
     void Update()
     {
         if (!initialized || !lander || !GameController.Instance.ControlledTarget) return;
+        if (StationInterior.Instance && GameController.Instance.Phase == GameController.GamePhase.EVA)
+        {
+            bool inside = StationInterior.Instance.IsInside;
+            txtLanderFuel.gameObject.SetActive(!inside);
+            txtLanderInfos.gameObject.SetActive(!inside);
+            navigationGrp.gameObject.SetActive(!inside);
+        }
         if (Time.unscaledTime >= nextHudUpdate)
         {
             RefreshLanderFuel();
@@ -460,7 +467,8 @@ public class LanderUI : MonoBehaviour
         string xp = "XP-SCORE " + scoring.CollectedScore;
         if (landed)
         {
-            landingPanel.title.text = isMoon ? "MOON LANDING" : "LANDED";
+            bool station = lander.IsOnStation;
+            landingPanel.title.text = station ? "STATION LANDING" : isMoon ? "MOON LANDING" : "LANDED";
             landingPanel.message.text = message;
             landingPanel.totalScore.text = xp;
             landingPanel.score.gameObject.SetActive(showScore);
@@ -468,7 +476,8 @@ public class LanderUI : MonoBehaviour
                 ? $"SUCCESS +{scoring.LastBaseScore}\nSPEED   +{scoring.LastSpeedScore}\nFUEL    +{scoring.LastFuelScore}\nTIME    +{scoring.LastTimeScore}\n★MOON★  +{scoring.LastMoonScore}\n────────────\nSCORE   {scoring.LastScore}\n\nBEST    {scoring.BestScore}\n"
                 : $"SUCCESS +{scoring.LastBaseScore}\nSPEED   +{scoring.LastSpeedScore}\nANGLE   +{scoring.LastAngleScore}\nCENTER  +{scoring.LastCenterScore}\nFUEL    +{scoring.LastFuelScore}\nTIME    +{scoring.LastTimeScore}\n────────────\nSCORE   {scoring.LastScore}\n\nBEST    {scoring.BestScore}\n";
             landingPanel.nextLevelButton.gameObject.SetActive(GameController.Instance.CanStartNextLevel);
-            btnRefill.gameObject.SetActive(!isMoon);
+            landingPanel.continueButton.gameObject.SetActive(!station || SaveLoadManager.Instance.Data.GetFlag("story.registrationComplete"));
+            btnRefill.gameObject.SetActive(GameController.Instance.CanRefill);
             landingPanel.gameObject.SetActive(true);
             MoonEVAController.Instance.RefreshAction();
         }
@@ -644,6 +653,8 @@ public class LanderUI : MonoBehaviour
     {
         screenPosition = default;
         if (!GameController.Instance || !GameController.Instance.IsPlaying) return false;
+        if ((StationInterior.Instance && StationInterior.Instance.IsTransitioning)
+            || (StationConversation.Instance && StationConversation.Instance.IsShowing)) return false;
         if (StoryTextController.Instance && StoryTextController.Instance.BlocksGameplayInput) return false;
         for (int i = 0; i < Input.touchCount; i++)
         {

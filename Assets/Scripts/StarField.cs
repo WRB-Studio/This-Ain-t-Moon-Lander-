@@ -11,6 +11,7 @@ public class StarField : MonoBehaviour
 
     Transform target;
     ParticleSystem ps;
+    ParticleSystemRenderer starRenderer;
     ParticleSystem.Particle[] stars;
 
     void Awake()
@@ -22,6 +23,7 @@ public class StarField : MonoBehaviour
     {
         starCount = Mathf.Max(1, starCount);
         ps = GetComponent<ParticleSystem>();
+        starRenderer = GetComponent<ParticleSystemRenderer>();
 
         var main = ps.main;
         main.loop = false;
@@ -44,6 +46,7 @@ public class StarField : MonoBehaviour
     void LateUpdate()
     {
         if (!target) return;
+        if (starRenderer) starRenderer.enabled = !StationInterior.Instance || !StationInterior.Instance.IsInside;
 
         // Starfeld folgt dem Lander (parallax)
         transform.position = Vector3.Lerp(

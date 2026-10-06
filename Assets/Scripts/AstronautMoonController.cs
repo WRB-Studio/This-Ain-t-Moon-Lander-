@@ -43,7 +43,15 @@ public class AstronautMoonController : MonoBehaviour
         if (visualRoot) visualBaseLocalPos = visualRoot.localPosition;
     }
 
-    void Start() => CacheMoonCenter();
+    void Start()
+    {
+        CacheMoonCenter();
+        var body = GetComponent<Collider2D>();
+        foreach (var ship in FindObjectsByType<LanderController>(FindObjectsSortMode.None))
+            if (ship.StationPad && ship.landerState == LanderController.eLanderState.LandedPad)
+                foreach (var collider in ship.GetComponentsInChildren<Collider2D>())
+                    if (!collider.isTrigger) Physics2D.IgnoreCollision(body, collider);
+    }
 
     void Update() => ReadInputDir();
 
@@ -55,6 +63,7 @@ public class AstronautMoonController : MonoBehaviour
         if (toCenter.sqrMagnitude < 0.0001f) return;
 
         Vector2 radialIn = toCenter.normalized;
+        if (SpaceStation.Instance && SpaceStation.Instance.GetGravity(rb.position).sqrMagnitude > 0f) radialIn = Vector2.down;
         Vector2 radialOut = -radialIn;
         Vector2 tangent = new Vector2(-radialOut.y, radialOut.x);
 
@@ -91,7 +100,9 @@ public class AstronautMoonController : MonoBehaviour
 
     void ApplyMoonGravity(Vector2 radialIn)
     {
-        rb.AddForce(radialIn * GravityManager2D.Instance.moonGravityStrength, ForceMode2D.Force);
+        var stationGravity = SpaceStation.Instance ? SpaceStation.Instance.GetGravity(rb.position) : Vector2.zero;
+        rb.AddForce(stationGravity.sqrMagnitude > 0f ? stationGravity
+            : radialIn * GravityManager2D.Instance.moonGravityStrength, ForceMode2D.Force);
     }
 
     void ApplyUprightRotation(Vector2 radialOut)
@@ -137,7 +148,8 @@ public class AstronautMoonController : MonoBehaviour
         if (!visualRoot) return;
 
         // �hop� nur beim laufen
-        if (isWalking)
+        bool onStation = SpaceStation.Instance && SpaceStation.Instance.GetGravity(rb.position).sqrMagnitude > 0f;
+        if (isWalking && !onStation)
         {
             float y = Mathf.Sin(Time.time * hopFreq) * hopAmp;
             visualRoot.localPosition = visualBaseLocalPos + new Vector3(0f, y, 0f);

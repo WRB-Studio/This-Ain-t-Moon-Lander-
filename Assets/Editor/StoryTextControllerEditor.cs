@@ -7,7 +7,7 @@ public class StoryTextControllerEditor : Editor
 {
     bool showDebug = true;
     int earthLevel = 1;
-    static readonly string[] discoveryLabels = { "ZeroG", "Mondanflug", "Mondlandung", "EVA / Aussteigen", "Mondlander gefunden", "UFO-Kontakt" };
+    static readonly string[] discoveryLabels = { "ZeroG", "Mondanflug", "Mondlandung", "EVA / Aussteigen", "Mondlander gefunden", "UFO-Kontakt", "Stationsanflug", "Stationslandung" };
 
     public override bool RequiresConstantRepaint() => Application.isPlaying;
 
@@ -46,7 +46,24 @@ public class StoryTextControllerEditor : Editor
                     if (GUILayout.Button("Erdrückkehr")) story.DebugReturnToEarth();
                 }
                 if (GUILayout.Button("UFO-Anflug")) story.DebugJumpTo(StoryTextController.Discovery.UFO);
-                if (GUILayout.Button("Aktuelle Nachricht schließen")) story.ContinueDiscovery();
+                using (new EditorGUILayout.HorizontalScope())
+                {
+                    if (GUILayout.Button("Stationsanflug")) story.DebugJumpTo(StoryTextController.Discovery.Station);
+                    if (GUILayout.Button("Stationslandung")) story.DebugJumpTo(StoryTextController.Discovery.StationLanding);
+                }
+                if (GUILayout.Button("Aktuelle Nachricht schließen"))
+                {
+                    if (StationConversation.Instance && StationConversation.Instance.IsShowing) StationConversation.Instance.Close();
+                    else story.ContinueDiscovery();
+                }
+                using (new EditorGUI.DisabledScope(!StationInterior.Instance))
+                using (new EditorGUILayout.HorizontalScope())
+                {
+                    if (GUILayout.Button("Hauptgang")) StationInterior.Instance.DebugJump(StationInterior.Area.Hall);
+                    if (GUILayout.Button("Registrierung")) StationInterior.Instance.DebugJump(StationInterior.Area.Registration);
+                }
+                using (new EditorGUI.DisabledScope(!StationConversation.Instance))
+                    if (GUILayout.Button("Stationsgespräch und Bewohner zurücksetzen")) StationConversation.Instance.DebugReset();
             }
             EditorGUILayout.Space(10);
         }
@@ -88,6 +105,16 @@ public class StoryTextControllerEditor : Editor
             bool returned = EditorGUILayout.Toggle(data.GetFlag("story.companyLanderReturned"), GUILayout.Width(60));
             bool read = EditorGUILayout.Toggle(returned && data.GetFlag("story.ack.CompanyReturn"), GUILayout.Width(55));
             if (EditorGUI.EndChangeCheck()) story.DebugSetReturn(enabled, returned || read, read);
+        }
+        using (new EditorGUI.DisabledScope(!StationConversation.Instance))
+        using (new EditorGUILayout.HorizontalScope())
+        {
+            GUILayout.Label("Registrierungsgespräch", GUILayout.MinWidth(100));
+            EditorGUI.BeginChangeCheck();
+            bool enabled = EditorGUILayout.Toggle(StationConversation.Instance && StationConversation.Instance.DebugEnabled, GUILayout.Width(45));
+            GUILayout.Space(64);
+            bool completed = EditorGUILayout.Toggle(data.GetFlag("story.registrationComplete"), GUILayout.Width(55));
+            if (EditorGUI.EndChangeCheck()) StationConversation.Instance.DebugSetProgress(enabled, completed);
         }
         EditorGUILayout.Space(4);
         foreach (int level in new[] { 3, 6, 9 })
