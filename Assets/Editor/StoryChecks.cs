@@ -35,7 +35,7 @@ public static class StoryChecks
         delay.SetValue(story, 0f);
         story.Restart();
         var serial = new UnityEditor.SerializedObject(story);
-        var panel = (GameObject)serial.FindProperty("discoveryPanel").objectReferenceValue;
+        var panel = ((StoryDialog)serial.FindProperty("dialog").objectReferenceValue).gameObject;
         var panelVisibility = (CanvasGroup)serial.FindProperty("gameplayPanelVisibility").objectReferenceValue;
         var info = (TMPro.TMP_Text)serial.FindProperty("txtInfo").objectReferenceValue;
         float originalFixedDeltaTime = Time.fixedDeltaTime;

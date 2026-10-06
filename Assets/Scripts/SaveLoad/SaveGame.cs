@@ -15,6 +15,7 @@ public class SaveGame
     public int selectedLanderId = -1;
     public int earthAsideLevel;
     public string lastEarthAside;
+    public Vector3 ufoContactPosition;
     public SerializableDictionary<string, bool> flags = new();
     public WorldSave world;
 

@@ -587,6 +587,7 @@ public class LanderUI : MonoBehaviour
     public void HideGameOver()
     {
         CancelFlow();
+        txtGameTitle.gameObject.SetActive(false);
         ShowHideDeadZoneWarning(false);
         isGameOver = false;
         nextHudUpdate = 0f;
@@ -659,6 +660,7 @@ public class LanderUI : MonoBehaviour
     }
     private IEnumerator StartCountdownRoutine()
     {
+        txtGameTitle.gameObject.SetActive(true);
         txtLanderFuel.gameObject.SetActive(false);
         txtLanderInfos.gameObject.SetActive(false);
         navigationGrp.gameObject.SetActive(false);

@@ -3,14 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class StoryTextController : MonoBehaviour
 {
     public static StoryTextController Instance;
     public enum eStoryTextType { AtmosphereExit, BackToPlanet, NearToMoon }
-    public enum Discovery { ZeroG, Moon, MoonLanding, EVA, AbandonedShip }
-    public enum DiscoveryPresentation { SlowMotion, Overlay, LandingResults }
+    public enum Discovery { ZeroG, Moon, MoonLanding, EVA, AbandonedShip, UFO }
+    public enum DiscoveryPresentation { SlowMotion, Overlay, LandingResults, Immediate }
 
     [Serializable]
     public class DiscoveryMessage
@@ -40,11 +39,7 @@ public class StoryTextController : MonoBehaviour
 
     [Header("UI")]
     [SerializeField] TMP_Text txtInfo;
-    [SerializeField] GameObject discoveryPanel;
-    [SerializeField] TMP_Text discoveryText;
-    [SerializeField] Button continueButton;
-    [SerializeField] GameObject[] transmissionPortraits = Array.Empty<GameObject>();
-    [SerializeField] GameObject zeroGPortrait;
+    [SerializeField] StoryDialog dialog;
     [SerializeField] CanvasGroup gameplayPanelVisibility;
 
     [Header("Timing")]
@@ -63,10 +58,12 @@ public class StoryTextController : MonoBehaviour
         new(Discovery.Moon, "Oh.\nSo THAT is the Moon.\nMinor naming issue."),
         new(Discovery.MoonLanding, "You actually landed on the Moon.\nI hadn't planned that far ahead.", DiscoveryPresentation.LandingResults),
         new(Discovery.EVA, "You can get out?\nApparently this spacecraft came with legs.", DiscoveryPresentation.Overlay),
-        new(Discovery.AbandonedShip, "Finally. The company lander.\n\nParked on the Moon with a full tank.\nI'll have a word with accounting.\n\nBring it back to Earth in one piece.\nInsurance doesn't cover\n'forgotten on the Moon'.")
+        new(Discovery.AbandonedShip, "Finally. The company lander.\n\nParked on the Moon with a full tank.\nI'll have a word with accounting.\n\nBring it back to Earth in one piece.\nInsurance doesn't cover\n'forgotten on the Moon'.", DiscoveryPresentation.Immediate),
+        new(Discovery.UFO, "INCOMING TRANSMISSION\n\nYou're late.\n\n...Wait. You're not our pilot.\nWhere did you get that ship?", DiscoveryPresentation.Immediate)
     };
     [SerializeField, TextArea] string zeroGAfterDepartureMessage = "Wait. Where are you now?\n\nI know. I said I was leaving.\nBut gravity has stopped participating.\nThat wasn't part of my little landing game.";
     [SerializeField, Range(0f, 1f)] float flightCommentChance = 0.25f;
+    [SerializeField, TextArea(4, 10)] string earthReturnMessage = "Back in one piece. With the company lander.\nExcellent work.\n\nBy 'show some initiative', I did not mean\nan unauthorized Moon trip on company fuel.\n\nStill. The ship is back.\nI'll keep the report suitably vague.";
 
     [Header("Earth Launches")]
     [SerializeField, TextArea] string moonKnownEarthMessage = "You know where the real Moon is.\nBack for fuel, or just fond of this place?";
@@ -111,6 +108,7 @@ public class StoryTextController : MonoBehaviour
     bool shownAtmosphereExit, shownBackToPlanet, shownNearMoon;
     bool flightCommentUsed;
     bool dialogueVisible;
+    bool operatorDialogue;
     bool waitForPointerRelease;
     bool hadResults;
     float runStartTime, previousTimeScale;
@@ -130,9 +128,11 @@ public class StoryTextController : MonoBehaviour
     {
         Instance = this;
         if (txtInfo) txtInfo.gameObject.SetActive(false);
-        if (discoveryPanel) discoveryPanel.SetActive(false);
-        SetTransmissionPortrait(0);
-        if (continueButton) continueButton.onClick.AddListener(ContinueDiscovery);
+        if (dialog)
+        {
+            dialog.Hide();
+            dialog.ContinueClicked += ContinueDiscovery;
+        }
     }
 
     public void Init()
@@ -146,8 +146,12 @@ public class StoryTextController : MonoBehaviour
 
     public void Discover(Discovery discovery)
     {
+#if UNITY_EDITOR
+        if (!DebugIsEnabled(discovery)) return;
+#endif
         if (data == null || HasDiscovered(discovery)) return;
-        if (IsGravityDiscovery(discovery) && runner != null && !IsShowingDialogue) ClearPresentation();
+        if ((IsGravityDiscovery(discovery) || discovery == Discovery.AbandonedShip || discovery == Discovery.UFO)
+            && runner != null && !IsShowingDialogue) ClearPresentation();
         data.SetFlag("discovery." + discovery, true);
         discoveryReadyAt[discovery] = Time.unscaledTime + GetDiscoveryDelay(discovery);
         SaveLoadManager.Instance.Save();
@@ -217,6 +221,9 @@ public class StoryTextController : MonoBehaviour
 
     bool QueueEarthTransmission(int level)
     {
+#if UNITY_EDITOR
+        if (debugDisabledTransmissions.Contains(level)) return true;
+#endif
         foreach (var transmission in earthTransmissions)
         {
             if (transmission.level != level) continue;
@@ -238,13 +245,23 @@ public class StoryTextController : MonoBehaviour
     {
         if (waitForPointerRelease && Input.touchCount == 0 && !Input.GetMouseButton(0)) waitForPointerRelease = false;
         var game = GameController.Instance;
-        if (!game || (!game.IsPlaying && game.Phase != GameController.GamePhase.Landed))
+        if (!game || (!game.IsPlaying && game.Phase != GameController.GamePhase.Landed
+            && !(operatorDialogue && game.HasResults)))
         {
-            if (runner != null) ClearPresentation();
+            if (runner != null || IsShowingDialogue) ClearPresentation();
             return;
         }
+        if (operatorDialogue && !game.HasResults) ClearPresentation();
         if (game.HasResults && !hadResults) ClearPresentation();
         hadResults = game.HasResults;
+        if (game.HasResults && game.Phase == GameController.GamePhase.Landed
+            && LanderController.Instance && LanderController.Instance.landerState == LanderController.eLanderState.LandedPad
+#if UNITY_EDITOR
+            && DebugReturnEnabled
+#endif
+            && data.GetFlag("story.companyLanderReturned") && !data.GetFlag("story.ack.CompanyReturn")
+            && !IsShowingDialogue)
+            ShowOperatorDialogue(earthReturnMessage, "story.ack.CompanyReturn");
         if (!game.IsExploring) QueueEarthTransmission(game.level);
         if (!gravityManager || !game.ControlledTarget) return;
         var target = game.ControlledTarget;
@@ -281,13 +298,16 @@ public class StoryTextController : MonoBehaviour
         // Acknowledgements are separate from discoveries so interrupted notices return after loading.
         foreach (var entry in discoveryMessages)
             if (entry.presentation != DiscoveryPresentation.LandingResults
+#if UNITY_EDITOR
+                && DebugIsEnabled(entry.discovery)
+#endif
                 && HasDiscovered(entry.discovery) && !data.GetFlag("story.ack." + entry.discovery)
                 && DiscoveryIsReady(entry) && queuedDiscoveries.Add(entry.discovery))
                 Enqueue(GetDiscoveryText(entry.discovery), "story.ack." + entry.discovery, 0, entry.discovery);
     }
 
     float GetDiscoveryDelay(Discovery discovery)
-        => IsGravityDiscovery(discovery) ? 0f : discoveryDelay;
+        => IsGravityDiscovery(discovery) || discovery == Discovery.AbandonedShip || discovery == Discovery.UFO ? 0f : discoveryDelay;
 
     static bool IsGravityDiscovery(Discovery discovery) => discovery == Discovery.ZeroG || discovery == Discovery.Moon;
 
@@ -307,6 +327,7 @@ public class StoryTextController : MonoBehaviour
         var game = GameController.Instance;
         if (!game.IsPlaying || !game.ControlledTarget) return false;
         if (discovery == Discovery.AbandonedShip) return game.Phase != GameController.GamePhase.EVA;
+        if (discovery == Discovery.UFO) return UFOEncounter.Instance && UFOEncounter.Instance.IsHolding;
         if (game.Phase != GameController.GamePhase.Flight) return false;
         float distance = Vector2.Distance(game.ControlledTarget.position, gravityManager.transform.position);
         if (discovery == Discovery.ZeroG)
@@ -331,13 +352,53 @@ public class StoryTextController : MonoBehaviour
 
     public string TakeMoonLandingMessage()
     {
+#if UNITY_EDITOR
+        if (!DebugIsEnabled(Discovery.MoonLanding)) return null;
+#endif
         if (data.GetFlag("story.ack.MoonLanding")) return null;
         data.SetFlag("story.ack.MoonLanding", true);
         data.SetFlag("story.ack.Moon", true);
         return GetDiscoveryText(Discovery.MoonLanding);
     }
 
+    public string TakeEarthReturnMessage()
+    {
+#if UNITY_EDITOR
+        if (!DebugReturnEnabled) return null;
+#endif
+        var ship = LanderController.Instance;
+        if (!ship || !ship.isSecretLander || !HasDiscovered(Discovery.AbandonedShip)
+            || data.GetFlag("story.companyLanderReturned")) return null;
+        data.SetFlag("story.companyLanderReturned", true);
+        LanderChooserManager.Instance.RefreshChooser();
+        return earthReturnMessage;
+    }
+
     public void Show(string message) => Enqueue(message, null);
+
+    public void ShowOperatorDialogue(string message, string acknowledgement = null)
+    {
+        ClearPresentation();
+        hadResults = GameController.Instance.HasResults;
+        activeAcknowledgement = acknowledgement ?? "operator";
+        operatorDialogue = true;
+        continueRequested = false;
+        DisplayDialogue(message, 3, false, true);
+    }
+
+    void DisplayDialogue(string message, int portraitLevel, bool surprised, bool canContinue)
+    {
+        StoryDialog.Expression expression = surprised ? StoryDialog.Expression.Surprised : portraitLevel switch
+        {
+            3 => StoryDialog.Expression.Neutral,
+            6 => StoryDialog.Expression.Annoyed,
+            9 => StoryDialog.Expression.Angry,
+            _ => StoryDialog.Expression.None
+        };
+        dialog.Show(message, expression, canContinue);
+        dialogueVisible = true;
+        SetGameplayPanelVisible(false);
+    }
     public void Show(eStoryTextType type)
     {
         if (Time.time - runStartTime < triggerDelayFromRunStart) return;
@@ -379,6 +440,16 @@ public class StoryTextController : MonoBehaviour
                 }
                 activeAcknowledgement = entry.acknowledgement;
                 activeTransmissionLevel = entry.transmissionLevel;
+                bool immediate = entry.discovery.HasValue
+                    && GetDiscoveryPresentation(entry.discovery.Value) == DiscoveryPresentation.Immediate;
+                if (immediate)
+                {
+                    continueRequested = false;
+                    DisplayDialogue(entry.text, entry.discovery == Discovery.AbandonedShip ? 3 : 0, false, true);
+                    while (!continueRequested) yield return null;
+                    EndDiscovery();
+                    continue;
+                }
                 previousTimeScale = Time.timeScale;
                 previousFixedDeltaTime = Time.fixedDeltaTime;
                 ownsTimeScale = true;
@@ -387,13 +458,8 @@ public class StoryTextController : MonoBehaviour
                 float transitionDuration = gravityDiscovery ? gravityTransitionDuration : timeTransitionDuration;
                 yield return ChangeTimeScale(entry.transmissionLevel > 0 ? 0f : previousTimeScale * discoveryTimeScale, transitionDuration, () =>
                 {
-                    SetTransmissionPortrait(entry.discovery == Discovery.AbandonedShip ? 3 : entry.transmissionLevel);
-                    if (zeroGPortrait) zeroGPortrait.SetActive(entry.discovery == Discovery.ZeroG || entry.discovery == Discovery.Moon);
-                    discoveryText.text = entry.text;
-                    discoveryPanel.SetActive(true);
-                    dialogueVisible = true;
-                    continueButton.interactable = false;
-                    SetGameplayPanelVisible(false);
+                    DisplayDialogue(entry.text, entry.transmissionLevel,
+                        entry.discovery == Discovery.ZeroG || entry.discovery == Discovery.Moon, false);
                 });
                 if (entry.discovery.HasValue && !gravityDiscovery && !CanShowDiscovery(entry.discovery.Value))
                 {
@@ -403,9 +469,7 @@ public class StoryTextController : MonoBehaviour
                     EndDiscovery();
                     continue;
                 }
-                continueButton.interactable = true;
-                if (UnityEngine.EventSystems.EventSystem.current)
-                    UnityEngine.EventSystems.EventSystem.current.SetSelectedGameObject(continueButton.gameObject);
+                dialog.SetCanContinue(true);
                 while (!continueRequested) yield return null;
                 yield return ChangeTimeScale(previousTimeScale, transitionDuration);
                 EndDiscovery();
@@ -430,11 +494,12 @@ public class StoryTextController : MonoBehaviour
     public void ContinueDiscovery()
     {
         if (activeAcknowledgement == null || IsTransitioning || continueRequested) return;
-        data.SetFlag(activeAcknowledgement, true);
+        if (activeAcknowledgement != "operator") data.SetFlag(activeAcknowledgement, true);
         continueRequested = true;
         waitForPointerRelease = true;
         HideDialogue();
         SaveLoadManager.Instance.Save();
+        if (operatorDialogue) EndDiscovery();
     }
 
     IEnumerator ChangeTimeScale(float target, float duration, Action onHalfway = null)
@@ -469,12 +534,8 @@ public class StoryTextController : MonoBehaviour
     void HideDialogue()
     {
         dialogueVisible = false;
-        SetTransmissionPortrait(0);
-        if (discoveryPanel) discoveryPanel.SetActive(false);
+        if (dialog) dialog.Hide();
         SetGameplayPanelVisible(true);
-        if (continueButton && UnityEngine.EventSystems.EventSystem.current
-            && UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject == continueButton.gameObject)
-            UnityEngine.EventSystems.EventSystem.current.SetSelectedGameObject(null);
     }
 
     void EndDiscovery()
@@ -489,14 +550,8 @@ public class StoryTextController : MonoBehaviour
         IsTransitioning = false;
         activeAcknowledgement = null;
         activeTransmissionLevel = 0;
+        operatorDialogue = false;
         HideDialogue();
-    }
-
-    void SetTransmissionPortrait(int level)
-    {
-        if (zeroGPortrait) zeroGPortrait.SetActive(false);
-        for (int i = 0; i < transmissionPortraits.Length; i++)
-            if (transmissionPortraits[i]) transmissionPortraits[i].SetActive(level == (i + 1) * 3);
     }
 
     public void CaptureState(WorldSave world)
@@ -510,10 +565,130 @@ public class StoryTextController : MonoBehaviour
         shownAtmosphereExit = world.atmosphereExit; shownBackToPlanet = world.backToPlanet; shownNearMoon = world.nearMoon;
         runStartTime = Time.time - Mathf.Max(0f, world.storyElapsed);
     }
+#if UNITY_EDITOR
+    readonly HashSet<Discovery> debugDisabledDiscoveries = new();
+    readonly HashSet<int> debugDisabledTransmissions = new();
+    public bool DebugReturnEnabled { get; private set; } = true;
+    public bool DebugIsEnabled(Discovery discovery) => !debugDisabledDiscoveries.Contains(discovery);
+    public bool DebugTransmissionEnabled(int level) => !debugDisabledTransmissions.Contains(level);
+
+    public void DebugSetDiscovery(Discovery discovery, bool enabled, bool discovered, bool acknowledged)
+    {
+        Restart();
+        if (UFOEncounter.Instance) UFOEncounter.Instance.DebugReset();
+        if (enabled) debugDisabledDiscoveries.Remove(discovery);
+        else debugDisabledDiscoveries.Add(discovery);
+        data.SetFlag("discovery." + discovery, discovered);
+        data.SetFlag("story.ack." + discovery, discovered && acknowledged);
+        if (discovery == Discovery.UFO) data.SetFlag("story.ufoDeparted", false);
+        if (discovery == Discovery.AbandonedShip) LanderChooserManager.Instance.DebugSetSecretFound(discovered);
+    }
+
+    public void DebugSetTransmission(int level, bool enabled, bool acknowledged)
+    {
+        Restart();
+        if (enabled) debugDisabledTransmissions.Remove(level);
+        else debugDisabledTransmissions.Add(level);
+        data.SetFlag("story.earth." + level, acknowledged);
+    }
+
+    public void DebugSetReturn(bool enabled, bool returned, bool acknowledged)
+    {
+        Restart();
+        DebugReturnEnabled = enabled;
+        data.SetFlag("story.companyLanderReturned", returned);
+        data.SetFlag("story.ack.CompanyReturn", returned && acknowledged);
+        LanderChooserManager.Instance.RefreshChooser();
+    }
+
+    public void DebugJumpTo(Discovery destination)
+    {
+        Restart();
+        if (UFOEncounter.Instance) UFOEncounter.Instance.DebugReset();
+        debugDisabledDiscoveries.Remove(destination);
+        foreach (Discovery discovery in Enum.GetValues(typeof(Discovery)))
+        {
+            bool completed = (int)discovery < (int)destination;
+            data.SetFlag("discovery." + discovery, completed);
+            data.SetFlag("story.ack." + discovery, completed);
+        }
+        foreach (int level in new[] { 3, 6, 9 }) data.SetFlag("story.earth." + level, false);
+        data.SetFlag("story.ufoDeparted", false);
+        data.SetFlag("story.companyLanderReturned", false);
+        data.SetFlag("story.ack.CompanyReturn", false);
+        bool secret = destination == Discovery.AbandonedShip || destination == Discovery.UFO;
+        var chooser = LanderChooserManager.Instance;
+        chooser.DebugSetSecretFound(destination == Discovery.UFO);
+        chooser.DebugSelectLander(secret);
+        var ship = LanderController.Instance;
+        Vector3 position = LandingPadPlacer.Instance.transform.position;
+        bool landedMoon = destination == Discovery.EVA || destination == Discovery.AbandonedShip;
+        if (destination == Discovery.ZeroG) position.y = gravityManager.zeroGFullY + 5f;
+        else if (destination == Discovery.UFO)
+            position = new Vector3(gravityManager.transform.position.x,
+                UFOEncounter.Instance ? UFOEncounter.Instance.DebugTriggerHeight + 5f
+                    : gravityManager.transform.position.y + gravityManager.moonEnterRadius + 55f, 0f);
+        else
+        {
+            var surface = gravityManager.GetComponent<Collider2D>().bounds;
+            float shipHalfHeight = ship.GetComponent<Collider2D>().bounds.extents.y;
+            position = new Vector3(surface.center.x, surface.max.y + shipHalfHeight + 0.1f, 0f);
+            if (destination == Discovery.Moon) position.y = gravityManager.transform.position.y + gravityManager.moonEnterRadius - 1f;
+            else if (destination == Discovery.MoonLanding) position.y += 1f;
+        }
+        GameController.Instance.DebugStartFlight(position, landedMoon);
+        if (destination == Discovery.EVA) MoonEVAController.Instance.ExitLander();
+        if (destination == Discovery.AbandonedShip) chooser.SelectDiscoveredLander(ship);
+    }
+
+    public void DebugReturnToEarth()
+    {
+        DebugJumpTo(Discovery.UFO);
+        data.SetFlag("discovery.UFO", false);
+        data.SetFlag("story.ack.UFO", false);
+        DebugReturnEnabled = true;
+        var ship = LanderController.Instance;
+        Vector3 position = DebugEarthPad().transform.position
+            + Vector3.up * (ship.GetComponent<Collider2D>().bounds.extents.y + 0.5f);
+        GameController.Instance.DebugStartFlight(position, false);
+    }
+
+    public void DebugStartEarth(int level)
+    {
+        Restart();
+        if (UFOEncounter.Instance) UFOEncounter.Instance.DebugReset();
+        foreach (Discovery discovery in Enum.GetValues(typeof(Discovery)))
+        {
+            data.SetFlag("discovery." + discovery, false);
+            data.SetFlag("story.ack." + discovery, false);
+        }
+        foreach (int milestone in new[] { 3, 6, 9 }) data.SetFlag("story.earth." + milestone, false);
+        data.SetFlag("story.ufoDeparted", false);
+        data.SetFlag("story.companyLanderReturned", false);
+        data.SetFlag("story.ack.CompanyReturn", false);
+        data.earthAsideLevel = 0;
+        data.lastEarthAside = null;
+        LanderChooserManager.Instance.DebugSetSecretFound(false);
+        LanderChooserManager.Instance.DebugSelectLander(false);
+        var game = GameController.Instance;
+        game.level = data.level = Mathf.Max(1, level);
+        game.DebugStartFlight(DebugEarthPad().transform.position + new Vector3(10f, 15f, 0f), false, false);
+        ShowEarthBriefing();
+    }
+
+    LandingPadPlacer DebugEarthPad()
+    {
+        foreach (var pad in FindObjectsByType<LandingPadPlacer>(FindObjectsSortMode.None))
+            if (!pad.HasParkedShip(LanderController.Instance)) return pad;
+        var current = LandingPadPlacer.Instance;
+        return current.CreateNextPad(current.transform.position) ?? current;
+    }
+#endif
+
     void OnDisable() => Restart();
     void OnDestroy()
     {
-        if (continueButton) continueButton.onClick.RemoveListener(ContinueDiscovery);
+        if (dialog) dialog.ContinueClicked -= ContinueDiscovery;
         if (Instance == this) Instance = null;
     }
 }

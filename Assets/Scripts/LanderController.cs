@@ -12,6 +12,8 @@ public class LanderController : MonoBehaviour
     public bool isActive = false;
 
     [HideInInspector] public bool controlsEnabled;
+    public bool IsTractorHeld { get; private set; }
+    RigidbodyConstraints2D constraintsBeforeTractor;
     public enum eLanderState { None, Flying, LandedPad, LandedMoon, CrashedLandscape, CrashedMoon, CrashedPad, OutOfFuel, DeadZone };
     [HideInInspector] public eLanderState landerState = eLanderState.None;
 
@@ -207,6 +209,7 @@ public class LanderController : MonoBehaviour
 
     public void Park()
     {
+        SetTractorHold(false);
         controlsEnabled = false;
         StopThrust();
         if (rb.bodyType != RigidbodyType2D.Static)
@@ -235,6 +238,7 @@ public class LanderController : MonoBehaviour
     {
         if (!isActive) return;
         UpdateThrustEffect(isThrusting);
+        if (IsTractorHeld) return;
         if (!controlsEnabled || landerState != eLanderState.Flying
             || GameController.Instance.Phase != GameController.GamePhase.Flight) return;
         if (currentFuel > 0f)
@@ -253,6 +257,7 @@ public class LanderController : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (IsTractorHeld) return;
         if (isActive && GameController.Instance.Phase == GameController.GamePhase.Countdown)
         {
             Park();
@@ -458,8 +463,24 @@ public class LanderController : MonoBehaviour
         }
     }
 
+    public void SetTractorHold(bool held)
+    {
+        if (IsTractorHeld == held || !rb) return;
+        if (held)
+        {
+            constraintsBeforeTractor = rb.constraints;
+            StopThrust();
+            rb.linearVelocity = Vector2.zero;
+            rb.angularVelocity = 0f;
+            rb.constraints = RigidbodyConstraints2D.FreezeAll;
+        }
+        else rb.constraints = constraintsBeforeTractor;
+        IsTractorHeld = held;
+    }
+
     public void ResetLander()
     {
+        SetTractorHold(false);
         if (!sfxThrustSound) sfxThrustSound = AudioManager.Instance.CreateThrusterSound();
         controlsEnabled = false;
         StopThrust();
@@ -524,6 +545,26 @@ public class LanderController : MonoBehaviour
         if (landerState == eLanderState.LandedMoon) lastMoonContact = Time.time;
         StopThrust();
     }
+
+#if UNITY_EDITOR
+    public void DebugPlace(Vector3 position, bool landedMoon)
+    {
+        ResetLander();
+        transform.SetPositionAndRotation(position, Quaternion.identity);
+        rb.position = position;
+        rb.rotation = targetRotation = 0f;
+        currentGravity = GravityManager2D.Instance.GetGravity(position);
+        fuelMax = Mathf.Max(20f, fuelMax);
+        currentFuel = fuelMax;
+        StartLander();
+        if (landedMoon)
+        {
+            landerState = eLanderState.LandedMoon;
+            lastMoonContact = Time.time;
+        }
+        Physics2D.SyncTransforms();
+    }
+#endif
 
     public void StartLander()
     {

@@ -224,7 +224,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   landerIndex: 2
-  unlockCost: 3500
+  unlockCost: 5000000
   isSecretLander: 0
   isActive: 1
   controlsEnabled: 0

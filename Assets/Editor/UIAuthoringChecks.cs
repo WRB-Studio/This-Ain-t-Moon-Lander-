@@ -12,18 +12,19 @@ public static class UIAuthoringChecks
         EditorSceneManager.OpenScene("Assets/Scenes/MainScene.unity");
         var ui = UnityEngine.Object.FindFirstObjectByType<LanderUI>(FindObjectsInactive.Include);
         var story = new SerializedObject(UnityEngine.Object.FindFirstObjectByType<StoryTextController>(FindObjectsInactive.Include));
-        Require(story.FindProperty("discoveryPanel").objectReferenceValue
-            && story.FindProperty("discoveryText").objectReferenceValue
-            && story.FindProperty("continueButton").objectReferenceValue, "Discovery dialogue must be authored in the scene.");
+        var dialogComponent = (StoryDialog)story.FindProperty("dialog").objectReferenceValue;
+        Require(dialogComponent && PrefabUtility.IsPartOfPrefabInstance(dialogComponent),
+            "Discovery dialogue must use the authored dialog prefab.");
+        var dialog = new SerializedObject(dialogComponent);
+        Require(dialog.FindProperty("messageText").objectReferenceValue
+            && dialog.FindProperty("continueButton").objectReferenceValue, "The dialog prefab must have text and a Continue button.");
         Require(story.FindProperty("gameplayPanelVisibility").objectReferenceValue,
             "The HUD visibility group must be authored in the scene.");
-        var portraits = story.FindProperty("transmissionPortraits");
-        Require(portraits.arraySize == 3, "Earth transmissions must have three authored operator expressions.");
-        for (int i = 0; i < portraits.arraySize; i++)
-            Require(portraits.GetArrayElementAtIndex(i).objectReferenceValue
-                && PrefabUtility.IsPartOfPrefabInstance(portraits.GetArrayElementAtIndex(i).objectReferenceValue),
+        foreach (string portrait in new[] { "neutralPortrait", "annoyedPortrait", "angryPortrait", "surprisedPortrait" })
+            Require(dialog.FindProperty(portrait).objectReferenceValue
+                && PrefabUtility.IsPartOfPrefabInstance(dialog.FindProperty(portrait).objectReferenceValue),
                 "Operator portraits must use the shared prefab.");
-        var dialogueText = (TMPro.TMP_Text)story.FindProperty("discoveryText").objectReferenceValue;
+        var dialogueText = (TMPro.TMP_Text)dialog.FindProperty("messageText").objectReferenceValue;
         var transmissions = story.FindProperty("earthTransmissions");
         for (int i = 0; i < transmissions.arraySize; i++)
             Require(dialogueText.GetPreferredValues(transmissions.GetArrayElementAtIndex(i).FindPropertyRelative("text").stringValue,

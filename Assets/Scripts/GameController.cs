@@ -27,7 +27,8 @@ public class GameController : MonoBehaviour
         && LanderController.Instance.landerState == LanderController.eLanderState.LandedPad
         && LanderController.Instance.IsTouchingPad;
     public bool CanStartNextLevel => HasResults && CanRefill;
-    public bool CanChooseLander => HasResults && (!IsExploring || Phase == GamePhase.Crashed);
+    public bool CanChooseLander => HasResults && (!IsExploring || Phase == GamePhase.Crashed
+        || (CanRefill && SaveLoadManager.Instance.Data.GetFlag("story.companyLanderReturned")));
     public Transform ControlledTarget { get; private set; }
     public Rigidbody2D ControlledBody { get; private set; }
     public bool IsPlaying => !HasResults && (Phase == GamePhase.Flight || Phase == GamePhase.Landed || Phase == GamePhase.EVA);
@@ -141,6 +142,7 @@ public class GameController : MonoBehaviour
             StoryTextController.Instance.Discover(StoryTextController.Discovery.MoonLanding);
         }
         bool awarded = ScoringController.Instance.CalculateScore(collision);
+        string earthReturn = moon ? null : StoryTextController.Instance.TakeEarthReturnMessage();
         ResultStoryMessage = moon ? StoryTextController.Instance.TakeMoonLandingMessage() : null;
         resultsHaveScore = awarded;
         HasResults = awarded || !moon || !string.IsNullOrEmpty(ResultStoryMessage);
@@ -149,6 +151,8 @@ public class GameController : MonoBehaviour
         MoonEVAController.Instance.RefreshAction();
         if (!moon) AudioManager.Instance.PlayMusic(AudioManager.Instance.mainMusic, 1.2f);
         SaveLoadManager.Instance.Save();
+        if (!string.IsNullOrEmpty(earthReturn))
+            StoryTextController.Instance.ShowOperatorDialogue(earthReturn, "story.ack.CompanyReturn");
     }
 
     public void ContinueFlight()
@@ -348,6 +352,24 @@ public class GameController : MonoBehaviour
         AudioManager.Instance.PlayMusic(AudioManager.Instance.mainMusic);
         return true;
     }
+
+#if UNITY_EDITOR
+    public void DebugStartFlight(Vector3 position, bool landedMoon, bool exploring = true)
+    {
+        StoryTextController.Instance.Restart();
+        IsRefilling = HasResults = resultsHaveScore = false;
+        ResultStoryMessage = null;
+        IsExploring = exploring;
+        Phase = landedMoon ? GamePhase.Landed : GamePhase.Flight;
+        MoonEVAController.Instance.ResetRun();
+        LanderUI.Instance.HideGameOver();
+        ImpactFX.Instance.ResetEffect();
+        LanderController.Instance.DebugPlace(position, landedMoon);
+        SetControlledTarget(LanderController.Instance.transform, true);
+        ScoringController.Instance.BeginRun();
+        MoonEVAController.Instance.RefreshAction();
+    }
+#endif
 
     void OnDestroy()
     {

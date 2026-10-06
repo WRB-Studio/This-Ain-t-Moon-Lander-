@@ -28,6 +28,10 @@ public class LanderChooserManager : MonoBehaviour
     readonly List<LanderController> configurations = new();
 
     const string KEY_SECRET_FOUND = "LANDER_SECRET_FOUND_";
+    [SerializeField, TextArea] string starterBlockedMessage = "As if I'd let you fly that thing to the Moon again.";
+
+    bool IsStarterBlocked(int index) => index == 0
+        && SaveLoadManager.Instance.Data.GetFlag("story.companyLanderReturned");
 
     private void Awake()
     {
@@ -64,7 +68,11 @@ public class LanderChooserManager : MonoBehaviour
         var data = SaveLoadManager.Instance.Data;
         selectedIndex = configurations.FindIndex(config => config.landerIndex == data.selectedLanderId);
         if (selectedIndex < 0) selectedIndex = Mathf.Clamp(data.selectedLanderIndex, 0, landerPrefabs.Length - 1);
-        if (!IsUnlocked(selectedIndex)) selectedIndex = 0;
+        if (!IsUnlocked(selectedIndex))
+        {
+            selectedIndex = configurations.FindIndex(config => config.isSecretLander && IsSecretFound(config.landerIndex));
+            if (selectedIndex < 0) selectedIndex = 0;
+        }
         data.selectedLanderIndex = selectedIndex;
         data.selectedLanderId = configurations[selectedIndex].landerIndex;
 
@@ -79,6 +87,12 @@ public class LanderChooserManager : MonoBehaviour
 
     void TryChoose(int index)
     {
+        if (IsStarterBlocked(index))
+        {
+            OpenCloseChooser(false);
+            StoryTextController.Instance.ShowOperatorDialogue(starterBlockedMessage);
+            return;
+        }
         if (!IsUnlocked(index)) return;
 
         if (!GameController.Instance.CanChooseLander) return;
@@ -135,6 +149,7 @@ public class LanderChooserManager : MonoBehaviour
 
     bool IsUnlocked(int index)
     {
+        if (IsStarterBlocked(index)) return false;
         var lc = configurations[index];
         if (lc.isSecretLander) return IsSecretFound(lc.landerIndex);
 
@@ -152,6 +167,9 @@ public class LanderChooserManager : MonoBehaviour
 
             var imgShip = btn.transform.GetChild(0).GetComponent<Image>();
             var imgSecret = btn.transform.Find("imgSecret")?.gameObject;
+            var unavailable = btn.transform.Find("imgUnavailable")?.gameObject;
+            bool blocked = IsStarterBlocked(i);
+            if (unavailable) unavailable.SetActive(blocked);
 
             bool secretHidden = lc.isSecretLander && !IsSecretFound(lc.landerIndex);
 
@@ -159,7 +177,8 @@ public class LanderChooserManager : MonoBehaviour
             if (imgSecret) imgSecret.SetActive(secretHidden);
 
             bool unlocked = IsUnlocked(i);
-            btn.interactable = unlocked;
+            // Keep the blocked starter clickable for the operator's refusal, without selecting it.
+            btn.interactable = unlocked || blocked;
 
             TMP_Text txtUnlock = btn.transform.GetChild(1).GetComponent<TMP_Text>();
 
@@ -168,11 +187,16 @@ public class LanderChooserManager : MonoBehaviour
                 img.color = lockedColor;
                 txtUnlock.gameObject.SetActive(false); // kein Preis bei Secret
             }
+            else if (blocked)
+            {
+                img.color = lockedColor;
+                txtUnlock.gameObject.SetActive(false);
+            }
             else if (!unlocked)
             {
                 img.color = lockedColor;
                 txtUnlock.gameObject.SetActive(true);
-                txtUnlock.text = lc.unlockCost.ToString();
+                txtUnlock.text = lc.unlockCost.ToString("N0", System.Globalization.CultureInfo.InvariantCulture);
             }
             else
             {
@@ -180,7 +204,7 @@ public class LanderChooserManager : MonoBehaviour
                 txtUnlock.gameObject.SetActive(false);
             }
 
-            if (i == selectedIndex)
+            if (i == selectedIndex && !blocked)
             {
                 img.color = selectedBtnColor;
                 txtUnlock.gameObject.SetActive(false);
@@ -274,6 +298,25 @@ public class LanderChooserManager : MonoBehaviour
         SaveLoadManager.Instance.Save();
         RefreshChooser();
     }
+
+#if UNITY_EDITOR
+    public void DebugSetSecretFound(bool found)
+    {
+        foreach (var config in configurations)
+            if (config.isSecretLander) SaveLoadManager.Instance.Data.SetFlag(KEY_SECRET_FOUND + config.landerIndex, found);
+        RefreshChooser();
+    }
+
+    public void DebugSelectLander(bool secret)
+    {
+        selectedIndex = secret ? configurations.FindIndex(config => config.isSecretLander) : 0;
+        if (selectedIndex < 0) selectedIndex = 0;
+        SaveLoadManager.Instance.Data.selectedLanderIndex = selectedIndex;
+        SaveLoadManager.Instance.Data.selectedLanderId = configurations[selectedIndex].landerIndex;
+        ApplySelected();
+        RefreshChooser();
+    }
+#endif
 
     void OnDestroy()
     {
