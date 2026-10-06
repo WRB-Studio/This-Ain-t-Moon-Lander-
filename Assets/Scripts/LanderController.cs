@@ -328,14 +328,17 @@ public class LanderController : MonoBehaviour
         => speed <= safeSpeed * tolerance && (moon
             || (verticalSpeed <= safeVerticalSpeed * tolerance && angle <= safeAngleDeg * tolerance));
 
-    void OnCollisionEnter2D(Collision2D collision)
+    void OnCollisionEnter2D(Collision2D collision) => HandleCollision(collision);
+
+    void HandleCollision(Collision2D collision)
     {
         if (!isActive) return;
         bool moon = collision.collider.CompareTag("Moon");
         if (moon) RecordMoonContact(collision.collider);
         bool pad = collision.collider.CompareTag("LandingPad");
         if (pad) RecordPadContact(collision.collider);
-        if (landerState != eLanderState.Flying || !controlsEnabled) return;
+        bool slippedOntoLandscape = landerState == eLanderState.LandedPad && collision.collider.CompareTag("Landscape");
+        if (!slippedOntoLandscape && (landerState != eLanderState.Flying || !controlsEnabled)) return;
         Vector2 down = currentGravity.sqrMagnitude > 0.0001f ? currentGravity.normalized : Vector2.down;
         float speed = collision.relativeVelocity.magnitude;
         float vertical = Mathf.Abs(Vector2.Dot(collision.relativeVelocity, down));
@@ -371,6 +374,8 @@ public class LanderController : MonoBehaviour
 
     void OnCollisionStay2D(Collision2D collision)
     {
+        if (isActive && landerState == eLanderState.LandedPad && collision.collider.CompareTag("Landscape"))
+            HandleCollision(collision);
         if (isActive && collision.collider.CompareTag("Moon")) RecordMoonContact(collision.collider);
         if (isActive && collision.collider.CompareTag("LandingPad")) RecordPadContact(collision.collider);
     }
@@ -411,7 +416,8 @@ public class LanderController : MonoBehaviour
 
     void Crash(eLanderState state)
     {
-        if (IsCrashed || landerState != eLanderState.Flying || !controlsEnabled) return;
+        if (!isActive || IsCrashed || (landerState != eLanderState.LandedPad
+            && (landerState != eLanderState.Flying || !controlsEnabled))) return;
         landerState = state;
         controlsEnabled = false;
         StopThrust();

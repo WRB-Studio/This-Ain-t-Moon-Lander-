@@ -211,6 +211,7 @@ public class GameController : MonoBehaviour
 
     public void HandleCrash(LanderController.eLanderState state)
     {
+        StoryTextController.Instance.Restart();
         ResultStoryMessage = null;
         IsRefilling = false;
         Phase = GamePhase.Crashed;
