@@ -130,6 +130,31 @@ public class StationResident : MonoBehaviour
         gameObject.SetActive(!entered);
     }
     public int Id => residentId;
+    void OnDrawGizmosSelected()
+    {
+        Matrix4x4 previousMatrix = Gizmos.matrix;
+        Color previousColor = Gizmos.color;
+        // Patrol coordinates and floor height are relative to the resident's parent.
+        Gizmos.matrix = transform.parent ? transform.parent.localToWorldMatrix : Matrix4x4.identity;
+        float z = transform.localPosition.z;
+        Vector3 left = new(minX, floorY, z);
+        Vector3 right = new(maxX, floorY, z);
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawLine(left, right);
+        Gizmos.DrawLine(left + Vector3.down * 0.3f, left + Vector3.up * 0.3f);
+        Gizmos.DrawLine(right + Vector3.down * 0.3f, right + Vector3.up * 0.3f);
+        Gizmos.color = Color.yellow;
+        Vector3 floor = new(transform.localPosition.x, floorY, z);
+        Gizmos.DrawWireSphere(floor, 0.12f);
+#if UNITY_EDITOR
+        Vector3 WorldPoint(Vector3 point) => transform.parent ? transform.parent.TransformPoint(point) : point;
+        UnityEditor.Handles.Label(WorldPoint(left + Vector3.up * 0.4f), $"Min X: {minX:0.##}");
+        UnityEditor.Handles.Label(WorldPoint(right + Vector3.up * 0.8f), $"Max X: {maxX:0.##}");
+        UnityEditor.Handles.Label(WorldPoint(floor + Vector3.down * 0.6f), $"Floor Y: {floorY:0.##}");
+#endif
+        Gizmos.matrix = previousMatrix;
+        Gizmos.color = previousColor;
+    }
     void OnDisable()
     {
         activeResidents.Remove(this);

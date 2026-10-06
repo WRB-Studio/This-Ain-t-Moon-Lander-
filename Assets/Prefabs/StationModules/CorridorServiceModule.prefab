@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &621000011
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 620000000, guid: 50bd16fa874740a7a027776c096387ef, type: 3}
+      propertyPath: m_Name
+      value: CorridorServiceModule
+      objectReference: {fileID: 0}
+    - target: {fileID: 620000012, guid: 50bd16fa874740a7a027776c096387ef, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: c065b1ae76554164b10f40224a2ad14f, type: 3}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 50bd16fa874740a7a027776c096387ef, type: 3}
+--- !u!4 &33015370 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 620000001, guid: 50bd16fa874740a7a027776c096387ef, type: 3}
+  m_PrefabInstance: {fileID: 621000011}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &33015371 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 620000000, guid: 50bd16fa874740a7a027776c096387ef, type: 3}
+  m_PrefabInstance: {fileID: 621000011}
+  m_PrefabAsset: {fileID: 0}

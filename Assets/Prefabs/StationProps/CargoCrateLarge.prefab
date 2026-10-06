@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &640002001
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 640000000, guid: 78b5c79c2a5944f19104d240b731cad1, type: 3}
+      propertyPath: m_Name
+      value: CargoCrateLarge
+      objectReference: {fileID: 0}
+    - target: {fileID: 640000001, guid: 78b5c79c2a5944f19104d240b731cad1, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 640000001, guid: 78b5c79c2a5944f19104d240b731cad1, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.5
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 78b5c79c2a5944f19104d240b731cad1, type: 3}
+--- !u!4 &2000 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 640000001, guid: 78b5c79c2a5944f19104d240b731cad1, type: 3}
+  m_PrefabInstance: {fileID: 640002001}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &2001 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 640000000, guid: 78b5c79c2a5944f19104d240b731cad1, type: 3}
+  m_PrefabInstance: {fileID: 640002001}
+  m_PrefabAsset: {fileID: 0}
