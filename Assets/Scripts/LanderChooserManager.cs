@@ -8,7 +8,10 @@ public class LanderChooserManager : MonoBehaviour
     public static LanderChooserManager Instance;
 
     [Header("UI")]
-    public Button btnLanderChooser;
+    public LandingPanel landingPanel;
+    public CrashPanel crashPanel;
+    public Button btnLanderChooser => landingPanel.chooseShipButton;
+    public Button crashChooserButton => crashPanel.chooseShipButton;
     public Transform panelChooser;
     public Transform optionsParent;
     public Button btnOptionPrefab;
@@ -44,9 +47,10 @@ public class LanderChooserManager : MonoBehaviour
         originBtnColor = btnOptionPrefab.GetComponent<Image>().color;
 
         btnLanderChooser.onClick.AddListener(() => OpenCloseChooser());
+        crashChooserButton.onClick.AddListener(() => OpenCloseChooser());
 
         panelChooser.gameObject.SetActive(false);
-        btnLanderChooser.gameObject.SetActive(false);
+        SetChooserButtonsVisible(false);
 
         if (landerPrefabs == null || landerPrefabs.Length == 0 || optionButtons == null
             || optionButtons.Length != landerPrefabs.Length || System.Array.Exists(optionButtons, button => !button))
@@ -322,6 +326,12 @@ public class LanderChooserManager : MonoBehaviour
     {
         if (Instance == this) Instance = null;
     }
+    public void SetChooserButtonsVisible(bool visible)
+    {
+        btnLanderChooser.gameObject.SetActive(visible);
+        crashChooserButton.gameObject.SetActive(visible);
+    }
+
     private void OpenCloseChooser()
     {
         OpenCloseChooser(!panelChooser.gameObject.activeSelf);

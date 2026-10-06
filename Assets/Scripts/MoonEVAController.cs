@@ -11,7 +11,8 @@ public class MoonEVAController : MonoBehaviour
     public Transform astronautParent;
     [Header("UI")]
     public Button btnExit;
-    public Button scoreExitButton;
+    public LandingPanel landingPanel;
+    public Button scoreExitButton => landingPanel.exitLanderButton;
     [HideInInspector] public GameObject astronaut;
 
     readonly HashSet<Collider2D> nearbyLanders = new();
@@ -103,7 +104,6 @@ public class MoonEVAController : MonoBehaviour
         astronaut = Instantiate(astronautPrefab, spawn, lander.transform.rotation, astronautParent);
         lander.Park();
         GameController.Instance.BeginEVA(astronaut.transform);
-        LanderUI.Instance.SetPanelBottomCenter();
         RefreshAction();
     }
 
@@ -125,7 +125,6 @@ public class MoonEVAController : MonoBehaviour
         ResetRun();
         astronaut = Instantiate(astronautPrefab, state.position, Quaternion.Euler(0f, 0f, state.rotation), astronautParent);
         state.Restore(astronaut.transform, astronaut.GetComponent<Rigidbody2D>());
-        LanderUI.Instance.SetPanelBottomCenter();
         RefreshAction();
     }
 

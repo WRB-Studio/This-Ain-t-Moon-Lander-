@@ -12,30 +12,24 @@ public class LanderUI : MonoBehaviour
 
     public int startCountdown = 3;
 
-    [Header("Refs")]
-    public Transform panelGrp;
-    public TMP_Text txtGameTitle;
+    [Header("Panels")]
+    public StartPanel startPanel;
+    public LandingPanel landingPanel;
+    public CrashPanel crashPanel;
+
+    [Header("HUD")]
     public TMP_Text txtLanderFuel;
     public TMP_Text txtLanderInfos;
-    public TMP_Text txtGameOverTitle;
-    public TMP_Text txtGameOverMessage;
-    public TMP_Text txtScore;
-    public TMP_Text txtXPScore;
-    public Button btnRestart;
-    public Button btnContinue;
-    public Button btnRefill;
+    public TMP_Text warningTitle;
+    public TMP_Text warningMessage;
+    public Button btnRefill => landingPanel.refillButton;
+    public Image refillProgressFill => landingPanel.refillProgressFill;
+    public TMP_Text txtGameOverMessage => GameController.Instance.Phase == GameController.GamePhase.Crashed
+        ? crashPanel.message : landingPanel.message;
     TMP_Text refillLabel;
     string refillIdleLabel;
     Selectable.Transition refillTransition;
     bool showingRefill;
-    public GameObject flightActions;
-    [Header("Refill Progress")]
-    public Image refillProgressFill;
-    [Header("Panel Positions")]
-    public RectTransform panelTopPosition;
-    public RectTransform panelCenterPosition;
-    public RectTransform panelBottomPosition;
-
     [Header("Navigation")]
     public Transform navigationGrp;
     public RectTransform indicatorPad;
@@ -228,18 +222,14 @@ public class LanderUI : MonoBehaviour
         imgIndicatorMoon = indicatorMoon.GetComponent<Image>();
 
         ShowHideDeadZoneWarning(false);
-        txtGameOverTitle.gameObject.SetActive(false);
-        txtScore.gameObject.SetActive(false);
-        txtXPScore.gameObject.SetActive(false);
-
-        btnRestart.gameObject.SetActive(false);
-        btnRestart.onClick.AddListener(OnRestartClicked);
-        btnContinue.onClick.AddListener(() => GameController.Instance.ContinueFlight());
+        HidePanels();
+        crashPanel.retryButton.onClick.AddListener(OnRestartClicked);
+        landingPanel.nextLevelButton.onClick.AddListener(OnNextClicked);
+        landingPanel.continueButton.onClick.AddListener(() => GameController.Instance.ContinueFlight());
         btnRefill.onClick.AddListener(() => GameController.Instance.RefillTank());
         refillLabel = btnRefill.GetComponentInChildren<TMP_Text>();
         refillIdleLabel = refillLabel.text;
         refillTransition = btnRefill.transition;
-        flightActions.SetActive(false);
         refillProgressFill.gameObject.SetActive(false);
     }
 
@@ -265,8 +255,8 @@ public class LanderUI : MonoBehaviour
 
         if (showDeadZoneWarning)
         {
-            txtGameOverTitle.text = currentDeadZoneWarningMessage;
-            txtGameOverMessage.text = Mathf.CeilToInt(lander.deadZoneTimer).ToString();
+            warningTitle.text = currentDeadZoneWarningMessage;
+            warningMessage.text = Mathf.CeilToInt(lander.deadZoneTimer).ToString();
             if (lander.deadZoneTimer <= 0)
                 ShowHideDeadZoneWarning(false);
         }
@@ -278,18 +268,18 @@ public class LanderUI : MonoBehaviour
         {
             showDeadZoneWarning = true;
             currentDeadZoneWarningMessage = GetRandomDeadZoneWarning() + "\n\n";
-            txtGameOverTitle.color = Color.red;
-            txtGameOverTitle.gameObject.SetActive(true);
-            txtGameOverMessage.color = Color.red;
-            txtGameOverMessage.gameObject.SetActive(true);
+            warningTitle.color = Color.red;
+            warningTitle.gameObject.SetActive(true);
+            warningMessage.color = Color.red;
+            warningMessage.gameObject.SetActive(true);
         }
         else
         {
             showDeadZoneWarning = false;
-            txtGameOverTitle.color = Color.white;
-            txtGameOverTitle.gameObject.SetActive(false);
-            txtGameOverMessage.color = Color.white;
-            txtGameOverMessage.gameObject.SetActive(false);
+            warningTitle.color = Color.white;
+            warningTitle.gameObject.SetActive(false);
+            warningMessage.color = Color.white;
+            warningMessage.gameObject.SetActive(false);
         }
     }
 
@@ -450,6 +440,8 @@ public class LanderUI : MonoBehaviour
     {
         CancelFlow();
         isGameOver = true;
+        HidePanels();
+        LanderChooserManager.Instance.SetChooserButtonsVisible(false);
         flow = StartCoroutine(ShowEndRoutine(state, showScore, immediate));
     }
 
@@ -458,94 +450,44 @@ public class LanderUI : MonoBehaviour
         bool isMoon = state == LanderController.eLanderState.LandedMoon;
         bool landed = isMoon || state == LanderController.eLanderState.LandedPad;
         if (!immediate) yield return new WaitForSeconds(1.5f);
-
         ShowHideDeadZoneWarning(false);
-
         txtLanderFuel.gameObject.SetActive(true);
         txtLanderInfos.gameObject.SetActive(false);
         navigationGrp.gameObject.SetActive(false);
-
-        txtGameOverTitle.gameObject.SetActive(false);
-        txtGameOverMessage.gameObject.SetActive(false);
-        txtScore.gameObject.SetActive(false);
-
-        txtXPScore.gameObject.SetActive(true);
-        txtXPScore.text = "XP-SCORE " + ScoringController.Instance.CollectedScore;
-
-        txtGameOverMessage.text = string.IsNullOrEmpty(GameController.Instance.ResultStoryMessage)
+        HidePanels();
+        string message = string.IsNullOrEmpty(GameController.Instance.ResultStoryMessage)
             ? GetRandomGameOverMessage(state) : GameController.Instance.ResultStoryMessage;
-        txtGameOverTitle.text = state switch
-        {
-            LanderController.eLanderState.LandedPad => "LANDED\n\n",
-            LanderController.eLanderState.LandedMoon => "MOON LANDING\n\n",
-            LanderController.eLanderState.OutOfFuel => "OUT OF FUEL\n\n",
-            LanderController.eLanderState.DeadZone => "SIGNAL LOST\n\n",
-            _ => "CRASHED\n\n"
-        };
-
-        btnRestart.onClick.RemoveAllListeners();
-        btnRestart.gameObject.SetActive(true);
-
-        LanderChooserManager.Instance.btnLanderChooser.gameObject.SetActive(GameController.Instance.CanChooseLander);
-        LanderChooserManager.Instance.panelChooser.gameObject.SetActive(false);
-
-        SetPanelTopCenter();
-
+        string xp = "XP-SCORE " + scoring.CollectedScore;
         if (landed)
         {
-            txtGameOverTitle.gameObject.SetActive(true);
-            txtGameOverMessage.gameObject.SetActive(true);
-            txtScore.gameObject.SetActive(showScore);
-
-            if (isMoon)
-            {
-                txtScore.text =
-                    $"SUCCESS +{scoring.LastBaseScore}\n" +
-                    $"SPEED   +{scoring.LastSpeedScore}\n" +
-                    $"FUEL    +{scoring.LastFuelScore}\n" +
-                    $"TIME    +{scoring.LastTimeScore}\n" +
-                    $"★MOON★  +{scoring.LastMoonScore}\n" +
-                    "────────────\n" +
-                    $"SCORE   {scoring.LastScore}\n" +
-                    $"\nBEST    {scoring.BestScore}\n";
-
-                MoonEVAController.Instance.RefreshAction();
-            }
-            else
-            {
-                txtScore.text =
-                    $"SUCCESS +{scoring.LastBaseScore}\n" +
-                    $"SPEED   +{scoring.LastSpeedScore}\n" +
-                    $"ANGLE   +{scoring.LastAngleScore}\n" +
-                    $"CENTER  +{scoring.LastCenterScore}\n" +
-                    $"FUEL    +{scoring.LastFuelScore}\n" +
-                    $"TIME    +{scoring.LastTimeScore}\n" +
-                    "────────────\n" +
-                    $"SCORE   {scoring.LastScore}\n" +
-                    $"\nBEST    {scoring.BestScore}\n";
-            }
-
-            btnRestart.transform.GetChild(0).GetComponent<TMP_Text>().text = "Next Level";
-            btnRestart.onClick.AddListener(OnNextClicked);
-            btnRestart.gameObject.SetActive(GameController.Instance.CanStartNextLevel);
+            landingPanel.title.text = isMoon ? "MOON LANDING" : "LANDED";
+            landingPanel.message.text = message;
+            landingPanel.totalScore.text = xp;
+            landingPanel.score.gameObject.SetActive(showScore);
+            landingPanel.score.text = isMoon
+                ? $"SUCCESS +{scoring.LastBaseScore}\nSPEED   +{scoring.LastSpeedScore}\nFUEL    +{scoring.LastFuelScore}\nTIME    +{scoring.LastTimeScore}\n★MOON★  +{scoring.LastMoonScore}\n────────────\nSCORE   {scoring.LastScore}\n\nBEST    {scoring.BestScore}\n"
+                : $"SUCCESS +{scoring.LastBaseScore}\nSPEED   +{scoring.LastSpeedScore}\nANGLE   +{scoring.LastAngleScore}\nCENTER  +{scoring.LastCenterScore}\nFUEL    +{scoring.LastFuelScore}\nTIME    +{scoring.LastTimeScore}\n────────────\nSCORE   {scoring.LastScore}\n\nBEST    {scoring.BestScore}\n";
+            landingPanel.nextLevelButton.gameObject.SetActive(GameController.Instance.CanStartNextLevel);
+            btnRefill.gameObject.SetActive(!isMoon);
+            landingPanel.gameObject.SetActive(true);
+            MoonEVAController.Instance.RefreshAction();
         }
         else
         {
-            SetPanelCenter();
-
-            txtGameOverTitle.gameObject.SetActive(true);
-            txtGameOverMessage.gameObject.SetActive(true);
-
-            btnRestart.transform.GetChild(0).GetComponent<TMP_Text>().text = "Try Again";
-            btnRestart.onClick.AddListener(OnRestartClicked);
+            crashPanel.title.text = state switch
+            {
+                LanderController.eLanderState.OutOfFuel => "OUT OF FUEL",
+                LanderController.eLanderState.DeadZone => "SIGNAL LOST",
+                _ => "CRASHED"
+            };
+            crashPanel.message.text = message;
+            crashPanel.totalScore.text = xp;
+            crashPanel.gameObject.SetActive(true);
         }
-
-        btnContinue.gameObject.SetActive(landed);
-        btnRefill.gameObject.SetActive(state == LanderController.eLanderState.LandedPad);
-        flightActions.SetActive(true);
+        LanderChooserManager.Instance.SetChooserButtonsVisible(GameController.Instance.CanChooseLander);
+        LanderChooserManager.Instance.panelChooser.gameObject.SetActive(false);
         RefreshPanel();
     }
-
     public void ShowResultMessage(string message)
     {
         txtGameOverMessage.text = message;
@@ -553,19 +495,6 @@ public class LanderUI : MonoBehaviour
         RefreshPanel();
     }
 
-    public void SetPanelTopCenter() => SetPanelPosition(panelTopPosition);
-    public void SetPanelCenter() => SetPanelPosition(panelCenterPosition);
-    public void SetPanelBottomCenter() => SetPanelPosition(panelBottomPosition);
-
-    void SetPanelPosition(RectTransform position)
-    {
-        var rect = panelGrp as RectTransform;
-        if (!rect || !position) return;
-        rect.anchorMin = position.anchorMin;
-        rect.anchorMax = position.anchorMax;
-        rect.pivot = position.pivot;
-        rect.anchoredPosition = position.anchoredPosition;
-    }
     string GetRandomGameOverMessage(LanderController.eLanderState state)
     {
         if (!stateMessages.ContainsKey(state)) return "";
@@ -584,32 +513,27 @@ public class LanderUI : MonoBehaviour
         return deadZoneWarnings[Random.Range(0, deadZoneWarnings.Length)];
     }
 
+    void HidePanels()
+    {
+        startPanel.gameObject.SetActive(false);
+        landingPanel.gameObject.SetActive(false);
+        crashPanel.gameObject.SetActive(false);
+    }
+
     public void HideGameOver()
     {
         CancelFlow();
-        txtGameTitle.gameObject.SetActive(false);
+        HidePanels();
         ShowHideDeadZoneWarning(false);
         isGameOver = false;
         nextHudUpdate = 0f;
-
         txtLanderFuel.gameObject.SetActive(true);
         txtLanderInfos.gameObject.SetActive(true);
         navigationGrp.gameObject.SetActive(true);
-
-        txtGameOverTitle.gameObject.SetActive(false);
-        txtGameOverMessage.gameObject.SetActive(false);
-        txtScore.gameObject.SetActive(false);
-        txtXPScore.gameObject.SetActive(false);
-
-        LanderChooserManager.Instance.btnLanderChooser.gameObject.SetActive(false);
+        LanderChooserManager.Instance.SetChooserButtonsVisible(false);
         LanderChooserManager.Instance.panelChooser.gameObject.SetActive(false);
-        btnRestart.gameObject.SetActive(false);
-        btnContinue.gameObject.SetActive(false);
-        btnRefill.gameObject.SetActive(false);
-        flightActions.SetActive(false);
         refillProgressFill.gameObject.SetActive(false);
     }
-
     void OnRestartClicked()
     {
         if (GameController.Instance.Phase == GameController.GamePhase.Crashed)
@@ -620,7 +544,7 @@ public class LanderUI : MonoBehaviour
     {
         if (!btnRefill) return;
         if (GameController.Instance.HasResults && GameController.Instance.Phase == GameController.GamePhase.Landed)
-            btnRestart.gameObject.SetActive(GameController.Instance.CanStartNextLevel);
+            landingPanel.nextLevelButton.gameObject.SetActive(GameController.Instance.CanStartNextLevel);
         btnRefill.interactable = GameController.Instance.CanRefill && !GameController.Instance.IsRefilling && lander.currentFuel < lander.fuelMax;
         bool refilling = GameController.Instance.IsRefilling;
         if (showingRefill != refilling)
@@ -655,46 +579,49 @@ public class LanderUI : MonoBehaviour
     public void StartCountdown()
     {
         CancelFlow();
-        SetPanelCenter();
+        HidePanels();
         flow = StartCoroutine(StartCountdownRoutine());
     }
     private IEnumerator StartCountdownRoutine()
     {
-        txtGameTitle.gameObject.SetActive(true);
+        startPanel.gameObject.SetActive(true);
+        startPanel.gameTitle.gameObject.SetActive(true);
+        startPanel.title.gameObject.SetActive(false);
+        startPanel.message.gameObject.SetActive(false);
         txtLanderFuel.gameObject.SetActive(false);
         txtLanderInfos.gameObject.SetActive(false);
         navigationGrp.gameObject.SetActive(false);
 
         yield return new WaitForSeconds(2f);
-        txtGameTitle.gameObject.SetActive(false);
+        startPanel.gameTitle.gameObject.SetActive(false);
 
-        txtGameOverTitle.gameObject.SetActive(true);
-        txtGameOverMessage.gameObject.SetActive(true);
+        startPanel.title.gameObject.SetActive(true);
+        startPanel.message.gameObject.SetActive(true);
         RefreshPanel();
 
-        txtGameOverMessage.text = "Start in...";
-        txtGameOverTitle.text = "LVL " + GameController.Instance.level + "\n\n ";
+        startPanel.message.text = "Start in...";
+        startPanel.title.text = "LVL " + GameController.Instance.level + "\n\n ";
 
         yield return new WaitForSeconds(1.5f);
 
         for (int count = Mathf.Max(0, startCountdown); count > 0; count--)
         {
             AudioManager.Instance.PlaySound(AudioManager.Instance.sfxCountdown);
-            txtGameOverMessage.text = count.ToString();
+            startPanel.message.text = count.ToString();
             yield return new WaitForSeconds(1f);
         }
-        txtGameOverMessage.gameObject.SetActive(false);
+        startPanel.message.gameObject.SetActive(false);
 
         txtLanderFuel.gameObject.SetActive(true);
         txtLanderInfos.gameObject.SetActive(true);
         navigationGrp.gameObject.SetActive(true);
 
         AudioManager.Instance.PlaySound(AudioManager.Instance.sfxCountdownStart, 1f, 1f, false);
-        txtGameOverTitle.text = "Land!";
+        startPanel.title.text = "Land!";
         GameController.Instance.BeginRun();
         yield return new WaitForSecondsRealtime(1f);
 
-        txtGameOverTitle.gameObject.SetActive(false);
+        startPanel.gameObject.SetActive(false);
 
     }
 
@@ -709,9 +636,8 @@ public class LanderUI : MonoBehaviour
         yield return null;
         layout = null;
 
-        var layoutRoot = panelGrp.GetComponentInChildren<VerticalLayoutGroup>()?.transform as RectTransform;
-        if (layoutRoot != null)
-            LayoutRebuilder.ForceRebuildLayoutImmediate(layoutRoot);
+        foreach (var panel in new[] { startPanel.gameObject, landingPanel.gameObject, crashPanel.gameObject })
+            if (panel.activeInHierarchy) LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)panel.transform);
     }
 
     public bool TryGetGameplayPointer(out Vector2 screenPosition)

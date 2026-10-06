@@ -30,20 +30,15 @@ public static class UIAuthoringChecks
             Require(dialogueText.GetPreferredValues(transmissions.GetArrayElementAtIndex(i).FindPropertyRelative("text").stringValue,
                 dialogueText.rectTransform.rect.width, 0f).y <= dialogueText.rectTransform.rect.height,
                 "The full transmission must fit above the Continue button.");
-        Require(ui.btnContinue && ui.btnRefill && ui.flightActions, "Flight actions must be authored in the scene.");
+        Require(ui.startPanel && ui.landingPanel && ui.crashPanel
+            && PrefabUtility.IsPartOfPrefabInstance(ui.startPanel)
+            && PrefabUtility.IsPartOfPrefabInstance(ui.landingPanel)
+            && PrefabUtility.IsPartOfPrefabInstance(ui.crashPanel), "Start, landing and crash must use separate panel prefabs.");
+        Require(ui.landingPanel.continueButton && ui.btnRefill && ui.crashPanel.retryButton,
+            "Panel actions must be authored in their prefabs.");
         Require(ui.refillProgressFill && ui.refillProgressFill.transform.IsChildOf(ui.btnRefill.transform)
             && ui.refillProgressFill.type == Image.Type.Simple && !ui.refillProgressFill.sprite,
             "Refill progress must be authored inside the button prefab.");
-        Require(ui.panelTopPosition && ui.panelCenterPosition && ui.panelBottomPosition, "Panel positions must be editable in the scene.");
-        foreach (var position in new[] { ui.panelTopPosition, ui.panelCenterPosition, ui.panelBottomPosition })
-        {
-            if (position == ui.panelTopPosition) ui.SetPanelTopCenter();
-            else if (position == ui.panelCenterPosition) ui.SetPanelCenter();
-            else ui.SetPanelBottomCenter();
-            Canvas.ForceUpdateCanvases();
-            Require(Vector3.Distance(ui.panelGrp.position, position.position) < 0.01f,
-                "Panel position must match its editor marker: " + position.name);
-        }
         var buttons = UnityEngine.Object.FindObjectsByType<Button>(FindObjectsInactive.Include, FindObjectsSortMode.None);
         foreach (var button in buttons)
             Require(PrefabUtility.IsPartOfPrefabInstance(button), "Button must use a prefab: " + button.name);
