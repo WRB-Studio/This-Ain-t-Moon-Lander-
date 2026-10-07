@@ -42,3 +42,15 @@ Die Animationen binden an die Pfade unter `Rig`. `Art` sowie die Gelenkabdeckung
 Die Assets sind im Unity-Editor direkt bearbeitbar. `Tools > Characters > Export Animation Preview Frames` rendert die aktuellen Clips nach `Temp/CharacterPreview`. `Update Animations and Export Preview` erzeugt alle drei Clips und den gemeinsamen Animator erneut und rendert sie; die Clips erhalten dieselben Bindungen, damit Gelenke beim Wechsel der Gangart sauber zurückgesetzt werden. `Rebuild Astronaut Rig and Preview` erzeugt zusätzlich die Grafikaufteilung, das Basis-Prefab und die Astronautenvariante erneut; manuelle Änderungen an diesen erzeugten Assets werden dabei überschrieben. Die ursprüngliche Astronauten-Spritegrafik und deren alte Animationen bleiben für bestehende Stationsbewohner erhalten.
 
 Für einen separaten Unity-Batch-Prozess kann `CHARACTER_PREVIEW_OUTPUT` einen eigenen Ausgabeordner festlegen. So bleiben die Renderbilder auch nach dem automatischen Aufräumen des Unity-Temp-Ordners erhalten.
+
+## Stationsbewohner
+
+Neun unterschiedliche Designs verwenden denselben Animator und dieselbe Gelenkhierarchie: Techniker, Wissenschaftlerin, Pilot, Sicherheitskraft, Operatorin, Reisender sowie Grey, Reptilian und Insectoid. Die drei Aliens haben jeweils zwei Arme und zwei Beine und unterscheiden sich durch Kopf, Hände, Füße und Körperdetails. Die visuellen Prefab Variants liegen unter `Assets/Prefabs/Characters/Station`; die vollständigen Bewohner-Varianten unter `Assets/Prefabs/Station01/Residents`.
+
+Die vorhandenen Instanzen in `SpaceStation.prefab` und `StationInterior.prefab` wurden ersetzt. `MainScene` verwendet diese Stations-Prefabs und übernimmt die neuen Figuren. Die bisherigen Bewohner-IDs, Laufbereiche, Dialoge und das Verhalten des Stationsführers bleiben erhalten. Die Zuordnung lautet: ID 1 Pilot, ID 2 Techniker, ID 3 Sicherheitskraft, ID 4 Operatorin, ID 5 Wissenschaftlerin, ID 6 Reisender, ID 7 Operatorin an der Registrierung.
+
+`StationResident` steuert Blickrichtung und Lauf über `CharacterVisual`. Bodenhöhe und Sprechblasenposition richten sich nach den Bounds der gesamten Figur. Der Stationslauf passt sein Tempo an die tatsächliche Bewegung an.
+
+Zusätzliche Instanzen: ID 8 Grey auf dem Stationsdeck, ID 9 Reptilian und ID 10 Insectoid im Innenraum. Sie patrouillieren ohne neue Dialoge oder Story-Aktionen. Ihre unterschiedlichen IDs werden vom bestehenden Speichersystem erfasst. Der Generator ergänzt diese Instanzen nur, wenn die jeweilige ID noch fehlt.
+
+Die Einzelteilgrafiken und Imagegen-Prompts liegen unter `Assets/Images/Characters/Station`. `Characters.layout.json` enthält die Sprite-Rechtecke, Gelenkpunkte und Grafikmaße. `StationCharactersPreview.unity` zeigt alle neun Designs in drei Reihen mit gemeinsamer Laufanimation. `Tools > Characters > Build Station Characters and Preview` erzeugt die Varianten; `Export Station Character Preview` rendert die vollständigen Bewohner-Prefabs. Die Renderausgabe kann für Batch-Aufrufe über `STATION_CHARACTER_PREVIEW_OUTPUT` festgelegt werden.

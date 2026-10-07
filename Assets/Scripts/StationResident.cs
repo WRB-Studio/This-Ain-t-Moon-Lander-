@@ -19,6 +19,7 @@ public class StationResident : MonoBehaviour
     [SerializeField, Min(0f)] float commentCooldown = 10f;
     Animator animator;
     SpriteRenderer sprite;
+    CharacterVisual characterVisual;
     bool movingRight = true;
     bool walkingToEntrance;
     bool entered;
@@ -28,12 +29,14 @@ public class StationResident : MonoBehaviour
     int lastComment = -1;
     static readonly int Walking = Animator.StringToHash("IsWalking");
     static readonly List<StationResident> activeResidents = new();
+    Bounds VisualBounds => characterVisual ? characterVisual.Bounds : sprite.bounds;
 
     void Awake() => Cache();
     void Cache()
     {
         if (!animator) animator = GetComponentInChildren<Animator>(true);
         if (!sprite) sprite = GetComponentInChildren<SpriteRenderer>(true);
+        if (!characterVisual) characterVisual = GetComponentInChildren<CharacterVisual>(true);
     }
     void OnEnable()
     {
@@ -42,7 +45,7 @@ public class StationResident : MonoBehaviour
             && SaveLoadManager.Instance.Data.GetFlag("story.stationGuideEntered")) entered = true;
         if (entered) { gameObject.SetActive(false); return; }
         if (!activeResidents.Contains(this)) activeResidents.Add(this);
-        float bottomOffset = sprite.bounds.min.y - transform.position.y;
+        float bottomOffset = VisualBounds.min.y - transform.position.y;
         Vector3 position = transform.localPosition;
         float parentScale = transform.parent ? Mathf.Max(0.0001f, transform.parent.lossyScale.y) : 1f;
         position.y = floorY - bottomOffset / parentScale;
@@ -62,11 +65,21 @@ public class StationResident : MonoBehaviour
         pause = Mathf.Max(0f, pause - Time.deltaTime);
         Vector3 local = transform.localPosition;
         float previousX = local.x;
+        Vector3 previousWorldPosition = transform.position;
         if (pause <= 0f) local.x = Mathf.MoveTowards(local.x, goal, walkSpeed * Time.deltaTime);
         transform.localPosition = local;
         bool moving = Mathf.Abs(local.x - previousX) > 0.00001f;
-        if (animator) animator.SetBool(Walking, moving);
-        if (moving) sprite.flipX = local.x < previousX;
+        if (characterVisual)
+        {
+            float worldSpeed = Vector3.Distance(transform.position, previousWorldPosition) / Mathf.Max(0.0001f, Time.deltaTime);
+            characterVisual.SetWalking(moving, worldSpeed);
+            if (moving) characterVisual.FaceLeft(local.x < previousX);
+        }
+        else
+        {
+            if (animator) animator.SetBool(Walking, moving);
+            if (moving && sprite) sprite.flipX = local.x < previousX;
+        }
         if (Mathf.Abs(local.x - goal) < 0.03f && pause <= 0f)
         {
             if (walkingToEntrance)
@@ -85,9 +98,10 @@ public class StationResident : MonoBehaviour
     void UpdateComment(GameController game)
     {
         if (!bubbleText) return;
+        Bounds bounds = VisualBounds;
         Vector3 bubblePosition = bubbleText.transform.parent.position;
-        bubblePosition.x = sprite.bounds.center.x;
-        bubblePosition.y = sprite.bounds.max.y + 0.7f;
+        bubblePosition.x = bounds.center.x;
+        bubblePosition.y = bounds.max.y + 0.7f;
         bubbleText.transform.parent.position = bubblePosition;
         bool canComment = game.IsPlaying && game.Phase == GameController.GamePhase.EVA && game.ControlledTarget
             && (!StationConversation.Instance || !StationConversation.Instance.IsShowing)

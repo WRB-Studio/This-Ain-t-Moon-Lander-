@@ -1295,7 +1295,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 500000101, guid: 76166eb61a43438fb932fb0a993548d3, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.35
+      value: 0.37
       objectReference: {fileID: 0}
     - target: {fileID: 500000102, guid: 76166eb61a43438fb932fb0a993548d3, type: 3}
       propertyPath: m_Size.y
@@ -1303,7 +1303,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 500000201, guid: 76166eb61a43438fb932fb0a993548d3, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.35
+      value: 0.37
       objectReference: {fileID: 0}
     - target: {fileID: 500000202, guid: 76166eb61a43438fb932fb0a993548d3, type: 3}
       propertyPath: m_Size.y
@@ -1333,8 +1333,37 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1371857031861633725, guid: 76166eb61a43438fb932fb0a993548d3, type: 3}
+      propertyPath: floorY
+      value: 0.03
+      objectReference: {fileID: 0}
+    - target: {fileID: 5525612642024873267, guid: 76166eb61a43438fb932fb0a993548d3, type: 3}
+      propertyPath: m_AdditionalShaderChannelsFlag
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 5525612642024873271, guid: 76166eb61a43438fb932fb0a993548d3, type: 3}
+      propertyPath: m_TextStyleHashCode
+      value: -1183493901
+      objectReference: {fileID: 0}
+    - target: {fileID: 5822331856936184515, guid: 76166eb61a43438fb932fb0a993548d3, type: 3}
+      propertyPath: m_AdditionalShaderChannelsFlag
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 5822331856936184519, guid: 76166eb61a43438fb932fb0a993548d3, type: 3}
+      propertyPath: m_TextStyleHashCode
+      value: -1183493901
+      objectReference: {fileID: 0}
+    - target: {fileID: 7610899619987137499, guid: 76166eb61a43438fb932fb0a993548d3, type: 3}
+      propertyPath: m_AdditionalShaderChannelsFlag
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 7610899619987137503, guid: 76166eb61a43438fb932fb0a993548d3, type: 3}
+      propertyPath: m_TextStyleHashCode
+      value: -1183493901
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 1676447531706031907, guid: 76166eb61a43438fb932fb0a993548d3, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 76166eb61a43438fb932fb0a993548d3, type: 3}

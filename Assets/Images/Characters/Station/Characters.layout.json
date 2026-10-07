@@ -1,0 +1,1273 @@
+{
+  "characters": [
+    {
+      "name": "Technician",
+      "torsoWidth": 0.64,
+      "headHeight": 0.65,
+      "bootWidth": 0.36,
+      "backpack": true,
+      "parts": [
+        {
+          "name": "Helmet",
+          "x": 45,
+          "y": 161,
+          "width": 261,
+          "height": 302,
+          "jointX": 160.2,
+          "jointY": 436.32,
+          "endX": 160.2,
+          "endY": 164
+        },
+        {
+          "name": "Torso",
+          "x": 365,
+          "y": 165,
+          "width": 247,
+          "height": 305,
+          "jointX": 488.5,
+          "jointY": 449.06,
+          "endX": 488.5,
+          "endY": 168
+        },
+        {
+          "name": "Pelvis",
+          "x": 701,
+          "y": 302,
+          "width": 186,
+          "height": 165,
+          "jointX": 794.0,
+          "jointY": 355.88,
+          "endX": 794.0,
+          "endY": 440.15
+        },
+        {
+          "name": "Backpack",
+          "x": 1018,
+          "y": 268,
+          "width": 152,
+          "height": 198,
+          "jointX": 1094.0,
+          "jointY": 367.0,
+          "endX": 1094.0,
+          "endY": 463
+        },
+        {
+          "name": "UpperArm",
+          "x": 98,
+          "y": 510,
+          "width": 142,
+          "height": 218,
+          "jointX": 175.8,
+          "jointY": 555.4,
+          "endX": 169.0,
+          "endY": 695.3199999999999
+        },
+        {
+          "name": "Forearm",
+          "x": 441,
+          "y": 535,
+          "width": 111,
+          "height": 255,
+          "jointX": 492.3,
+          "jointY": 582.82,
+          "endX": 499.65,
+          "endY": 752.14
+        },
+        {
+          "name": "Hand",
+          "x": 733,
+          "y": 600,
+          "width": 148,
+          "height": 190,
+          "jointX": 797.06,
+          "jointY": 625.08,
+          "endX": 797.06,
+          "endY": 779.64
+        },
+        {
+          "name": "Elbow",
+          "x": 1035,
+          "y": 608,
+          "width": 119,
+          "height": 120,
+          "jointX": 1094.5,
+          "jointY": 668.0,
+          "endX": 1094.5,
+          "endY": 725
+        },
+        {
+          "name": "Thigh",
+          "x": 100,
+          "y": 826,
+          "width": 169,
+          "height": 311,
+          "jointX": 168.2,
+          "jointY": 880.85,
+          "endX": 207.32,
+          "endY": 1088.25
+        },
+        {
+          "name": "Shin",
+          "x": 441,
+          "y": 846,
+          "width": 114,
+          "height": 287,
+          "jointX": 498.0,
+          "jointY": 896.77,
+          "endX": 498.0,
+          "endY": 1096.28
+        },
+        {
+          "name": "Boot",
+          "x": 686,
+          "y": 964,
+          "width": 222,
+          "height": 165,
+          "jointX": 743.0,
+          "jointY": 990.85,
+          "endX": 743.0,
+          "endY": 1121.23
+        },
+        {
+          "name": "Knee",
+          "x": 1035,
+          "y": 959,
+          "width": 117,
+          "height": 115,
+          "jointX": 1093.5,
+          "jointY": 1016.5,
+          "endX": 1093.5,
+          "endY": 1071
+        }
+      ]
+    },
+    {
+      "name": "Scientist",
+      "torsoWidth": 0.52,
+      "headHeight": 0.65,
+      "bootWidth": 0.31,
+      "backpack": false,
+      "parts": [
+        {
+          "name": "Helmet",
+          "x": 23,
+          "y": 97,
+          "width": 323,
+          "height": 340,
+          "jointX": 181.32999999999998,
+          "jointY": 407.28000000000003,
+          "endX": 181.32999999999998,
+          "endY": 100
+        },
+        {
+          "name": "Torso",
+          "x": 419,
+          "y": 112,
+          "width": 200,
+          "height": 332,
+          "jointX": 519.0,
+          "jointY": 421.44,
+          "endX": 519.0,
+          "endY": 115
+        },
+        {
+          "name": "Pelvis",
+          "x": 704,
+          "y": 265,
+          "width": 202,
+          "height": 175,
+          "jointX": 805.0,
+          "jointY": 322.08,
+          "endX": 805.0,
+          "endY": 411.65
+        },
+        {
+          "name": "Backpack",
+          "x": 1020,
+          "y": 245,
+          "width": 179,
+          "height": 182,
+          "jointX": 1109.5,
+          "jointY": 336.0,
+          "endX": 1109.5,
+          "endY": 424
+        },
+        {
+          "name": "UpperArm",
+          "x": 111,
+          "y": 511,
+          "width": 118,
+          "height": 275,
+          "jointX": 175.60000000000002,
+          "jointY": 567.8,
+          "endX": 170.0,
+          "endY": 745.34
+        },
+        {
+          "name": "Forearm",
+          "x": 427,
+          "y": 542,
+          "width": 122,
+          "height": 241,
+          "jointX": 483.36,
+          "jointY": 587.3,
+          "endX": 491.48,
+          "endY": 747.1
+        },
+        {
+          "name": "Hand",
+          "x": 740,
+          "y": 602,
+          "width": 112,
+          "height": 174,
+          "jointX": 788.58,
+          "jointY": 625.16,
+          "endX": 788.58,
+          "endY": 766.28
+        },
+        {
+          "name": "Elbow",
+          "x": 1045,
+          "y": 606,
+          "width": 124,
+          "height": 122,
+          "jointX": 1107.0,
+          "jointY": 667.0,
+          "endX": 1107.0,
+          "endY": 725
+        },
+        {
+          "name": "Thigh",
+          "x": 104,
+          "y": 843,
+          "width": 146,
+          "height": 318,
+          "jointX": 163.0,
+          "jointY": 899.04,
+          "endX": 196.60000000000002,
+          "endY": 1111.2
+        },
+        {
+          "name": "Shin",
+          "x": 437,
+          "y": 868,
+          "width": 107,
+          "height": 288,
+          "jointX": 490.5,
+          "jointY": 918.94,
+          "endX": 490.5,
+          "endY": 1119.16
+        },
+        {
+          "name": "Boot",
+          "x": 711,
+          "y": 1022,
+          "width": 206,
+          "height": 145,
+          "jointX": 764.0,
+          "jointY": 1045.85,
+          "endX": 764.0,
+          "endY": 1159.83
+        },
+        {
+          "name": "Knee",
+          "x": 1052,
+          "y": 973,
+          "width": 120,
+          "height": 116,
+          "jointX": 1112.0,
+          "jointY": 1031.0,
+          "endX": 1112.0,
+          "endY": 1086
+        }
+      ]
+    },
+    {
+      "name": "Pilot",
+      "torsoWidth": 0.6,
+      "headHeight": 0.7,
+      "bootWidth": 0.34,
+      "backpack": true,
+      "parts": [
+        {
+          "name": "Helmet",
+          "x": 44,
+          "y": 162,
+          "width": 255,
+          "height": 266,
+          "jointX": 161.54000000000002,
+          "jointY": 404.20000000000005,
+          "endX": 161.54000000000002,
+          "endY": 165
+        },
+        {
+          "name": "Torso",
+          "x": 375,
+          "y": 193,
+          "width": 222,
+          "height": 246,
+          "jointX": 486.0,
+          "jointY": 421.6,
+          "endX": 486.0,
+          "endY": 196
+        },
+        {
+          "name": "Pelvis",
+          "x": 685,
+          "y": 301,
+          "width": 229,
+          "height": 148,
+          "jointX": 799.5,
+          "jointY": 349.44,
+          "endX": 799.5,
+          "endY": 424.7
+        },
+        {
+          "name": "Backpack",
+          "x": 1041,
+          "y": 225,
+          "width": 158,
+          "height": 190,
+          "jointX": 1120.0,
+          "jointY": 320.0,
+          "endX": 1120.0,
+          "endY": 412
+        },
+        {
+          "name": "UpperArm",
+          "x": 114,
+          "y": 504,
+          "width": 121,
+          "height": 266,
+          "jointX": 180.25,
+          "jointY": 559.0,
+          "endX": 174.5,
+          "endY": 730.6
+        },
+        {
+          "name": "Forearm",
+          "x": 429,
+          "y": 514,
+          "width": 129,
+          "height": 250,
+          "jointX": 488.58,
+          "jointY": 560.92,
+          "endX": 497.19,
+          "endY": 726.84
+        },
+        {
+          "name": "Hand",
+          "x": 742,
+          "y": 579,
+          "width": 117,
+          "height": 178,
+          "jointX": 792.73,
+          "jointY": 602.64,
+          "endX": 792.73,
+          "endY": 747.12
+        },
+        {
+          "name": "Elbow",
+          "x": 1048,
+          "y": 586,
+          "width": 121,
+          "height": 121,
+          "jointX": 1108.5,
+          "jointY": 646.5,
+          "endX": 1108.5,
+          "endY": 704
+        },
+        {
+          "name": "Thigh",
+          "x": 89,
+          "y": 816,
+          "width": 163,
+          "height": 300,
+          "jointX": 154.8,
+          "jointY": 868.98,
+          "endX": 192.48000000000002,
+          "endY": 1068.9
+        },
+        {
+          "name": "Shin",
+          "x": 430,
+          "y": 827,
+          "width": 106,
+          "height": 286,
+          "jointX": 483.0,
+          "jointY": 877.6,
+          "endX": 483.0,
+          "endY": 1076.4
+        },
+        {
+          "name": "Boot",
+          "x": 696,
+          "y": 928,
+          "width": 204,
+          "height": 157,
+          "jointX": 748.5,
+          "jointY": 953.65,
+          "endX": 748.5,
+          "endY": 1077.47
+        },
+        {
+          "name": "Knee",
+          "x": 1055,
+          "y": 940,
+          "width": 113,
+          "height": 113,
+          "jointX": 1111.5,
+          "jointY": 996.5,
+          "endX": 1111.5,
+          "endY": 1050
+        }
+      ]
+    },
+    {
+      "name": "Security",
+      "torsoWidth": 0.73,
+      "headHeight": 0.73,
+      "bootWidth": 0.39,
+      "backpack": false,
+      "parts": [
+        {
+          "name": "Helmet",
+          "x": 42,
+          "y": 161,
+          "width": 277,
+          "height": 263,
+          "jointX": 172.37,
+          "jointY": 400.44,
+          "endX": 172.37,
+          "endY": 164
+        },
+        {
+          "name": "Torso",
+          "x": 384,
+          "y": 181,
+          "width": 220,
+          "height": 245,
+          "jointX": 494.0,
+          "jointY": 408.65999999999997,
+          "endX": 494.0,
+          "endY": 184
+        },
+        {
+          "name": "Pelvis",
+          "x": 677,
+          "y": 287,
+          "width": 243,
+          "height": 144,
+          "jointX": 798.5,
+          "jointY": 334.16,
+          "endX": 798.5,
+          "endY": 407.3
+        },
+        {
+          "name": "Backpack",
+          "x": 1010,
+          "y": 217,
+          "width": 178,
+          "height": 205,
+          "jointX": 1099.0,
+          "jointY": 319.5,
+          "endX": 1099.0,
+          "endY": 419
+        },
+        {
+          "name": "UpperArm",
+          "x": 108,
+          "y": 505,
+          "width": 133,
+          "height": 286,
+          "jointX": 180.85000000000002,
+          "jointY": 564.0,
+          "endX": 174.5,
+          "endY": 748.8
+        },
+        {
+          "name": "Forearm",
+          "x": 439,
+          "y": 515,
+          "width": 123,
+          "height": 269,
+          "jointX": 495.82,
+          "jointY": 565.34,
+          "endX": 504.01,
+          "endY": 744.1800000000001
+        },
+        {
+          "name": "Hand",
+          "x": 735,
+          "y": 593,
+          "width": 149,
+          "height": 183,
+          "jointX": 799.49,
+          "jointY": 617.24,
+          "endX": 799.49,
+          "endY": 765.92
+        },
+        {
+          "name": "Elbow",
+          "x": 1046,
+          "y": 613,
+          "width": 111,
+          "height": 110,
+          "jointX": 1101.5,
+          "jointY": 668.0,
+          "endX": 1101.5,
+          "endY": 720
+        },
+        {
+          "name": "Thigh",
+          "x": 111,
+          "y": 836,
+          "width": 152,
+          "height": 298,
+          "jointX": 172.4,
+          "jointY": 888.64,
+          "endX": 207.44,
+          "endY": 1087.2
+        },
+        {
+          "name": "Shin",
+          "x": 428,
+          "y": 851,
+          "width": 112,
+          "height": 284,
+          "jointX": 484.0,
+          "jointY": 901.26,
+          "endX": 484.0,
+          "endY": 1098.64
+        },
+        {
+          "name": "Boot",
+          "x": 689,
+          "y": 965,
+          "width": 233,
+          "height": 157,
+          "jointX": 748.75,
+          "jointY": 990.65,
+          "endX": 748.75,
+          "endY": 1114.47
+        },
+        {
+          "name": "Knee",
+          "x": 1046,
+          "y": 979,
+          "width": 112,
+          "height": 110,
+          "jointX": 1102.0,
+          "jointY": 1034.0,
+          "endX": 1102.0,
+          "endY": 1086
+        }
+      ]
+    },
+    {
+      "name": "Operator",
+      "torsoWidth": 0.52,
+      "headHeight": 0.65,
+      "bootWidth": 0.3,
+      "backpack": false,
+      "parts": [
+        {
+          "name": "Helmet",
+          "x": 39,
+          "y": 119,
+          "width": 285,
+          "height": 324,
+          "jointX": 203.82,
+          "jointY": 414.56,
+          "endX": 203.82,
+          "endY": 122
+        },
+        {
+          "name": "Torso",
+          "x": 416,
+          "y": 164,
+          "width": 197,
+          "height": 276,
+          "jointX": 514.5,
+          "jointY": 420.79999999999995,
+          "endX": 514.5,
+          "endY": 167
+        },
+        {
+          "name": "Pelvis",
+          "x": 733,
+          "y": 292,
+          "width": 171,
+          "height": 153,
+          "jointX": 818.5,
+          "jointY": 342.04,
+          "endX": 818.5,
+          "endY": 419.95
+        },
+        {
+          "name": "Backpack",
+          "x": 1059,
+          "y": 292,
+          "width": 118,
+          "height": 140,
+          "jointX": 1118.0,
+          "jointY": 362.0,
+          "endX": 1118.0,
+          "endY": 429
+        },
+        {
+          "name": "UpperArm",
+          "x": 139,
+          "y": 530,
+          "width": 96,
+          "height": 231,
+          "jointX": 191.5,
+          "jointY": 578.0,
+          "endX": 187.0,
+          "endY": 726.5
+        },
+        {
+          "name": "Forearm",
+          "x": 452,
+          "y": 524,
+          "width": 103,
+          "height": 250,
+          "jointX": 499.62,
+          "jointY": 570.92,
+          "endX": 506.41,
+          "endY": 736.84
+        },
+        {
+          "name": "Hand",
+          "x": 778,
+          "y": 604,
+          "width": 93,
+          "height": 167,
+          "jointX": 818.41,
+          "jointY": 626.32,
+          "endX": 818.41,
+          "endY": 761.56
+        },
+        {
+          "name": "Elbow",
+          "x": 1064,
+          "y": 620,
+          "width": 110,
+          "height": 108,
+          "jointX": 1119.0,
+          "jointY": 674.0,
+          "endX": 1119.0,
+          "endY": 725
+        },
+        {
+          "name": "Thigh",
+          "x": 124,
+          "y": 825,
+          "width": 130,
+          "height": 309,
+          "jointX": 176.6,
+          "jointY": 879.51,
+          "endX": 206.36,
+          "endY": 1085.55
+        },
+        {
+          "name": "Shin",
+          "x": 445,
+          "y": 845,
+          "width": 100,
+          "height": 285,
+          "jointX": 495.0,
+          "jointY": 895.4300000000001,
+          "endX": 495.0,
+          "endY": 1093.52
+        },
+        {
+          "name": "Boot",
+          "x": 714,
+          "y": 978,
+          "width": 203,
+          "height": 145,
+          "jointX": 766.25,
+          "jointY": 1001.85,
+          "endX": 766.25,
+          "endY": 1115.83
+        },
+        {
+          "name": "Knee",
+          "x": 1060,
+          "y": 972,
+          "width": 116,
+          "height": 113,
+          "jointX": 1118.0,
+          "jointY": 1028.5,
+          "endX": 1118.0,
+          "endY": 1082
+        }
+      ]
+    },
+    {
+      "name": "Traveler",
+      "torsoWidth": 0.73,
+      "headHeight": 0.66,
+      "bootWidth": 0.39,
+      "backpack": true,
+      "parts": [
+        {
+          "name": "Helmet",
+          "x": 48,
+          "y": 107,
+          "width": 273,
+          "height": 332,
+          "jointX": 165.81,
+          "jointY": 409.92,
+          "endX": 165.81,
+          "endY": 110
+        },
+        {
+          "name": "Torso",
+          "x": 388,
+          "y": 136,
+          "width": 265,
+          "height": 316,
+          "jointX": 520.5,
+          "jointY": 430.4,
+          "endX": 520.5,
+          "endY": 139
+        },
+        {
+          "name": "Pelvis",
+          "x": 725,
+          "y": 262,
+          "width": 217,
+          "height": 186,
+          "jointX": 833.5,
+          "jointY": 322.6,
+          "endX": 833.5,
+          "endY": 418.0
+        },
+        {
+          "name": "Backpack",
+          "x": 1037,
+          "y": 218,
+          "width": 176,
+          "height": 222,
+          "jointX": 1125.0,
+          "jointY": 329.0,
+          "endX": 1125.0,
+          "endY": 437
+        },
+        {
+          "name": "UpperArm",
+          "x": 100,
+          "y": 513,
+          "width": 128,
+          "height": 285,
+          "jointX": 170.10000000000002,
+          "jointY": 571.8,
+          "endX": 164.0,
+          "endY": 755.94
+        },
+        {
+          "name": "Forearm",
+          "x": 439,
+          "y": 516,
+          "width": 136,
+          "height": 279,
+          "jointX": 501.8,
+          "jointY": 568.14,
+          "endX": 510.9,
+          "endY": 753.78
+        },
+        {
+          "name": "Hand",
+          "x": 760,
+          "y": 584,
+          "width": 146,
+          "height": 194,
+          "jointX": 823.2,
+          "jointY": 609.56,
+          "endX": 823.2,
+          "endY": 767.48
+        },
+        {
+          "name": "Elbow",
+          "x": 1044,
+          "y": 609,
+          "width": 130,
+          "height": 129,
+          "jointX": 1109.0,
+          "jointY": 673.5,
+          "endX": 1109.0,
+          "endY": 735
+        },
+        {
+          "name": "Thigh",
+          "x": 84,
+          "y": 832,
+          "width": 172,
+          "height": 322,
+          "jointX": 153.4,
+          "jointY": 888.72,
+          "endX": 193.24,
+          "endY": 1103.6
+        },
+        {
+          "name": "Shin",
+          "x": 438,
+          "y": 845,
+          "width": 121,
+          "height": 304,
+          "jointX": 498.5,
+          "jointY": 898.66,
+          "endX": 498.5,
+          "endY": 1110.24
+        },
+        {
+          "name": "Boot",
+          "x": 700,
+          "y": 950,
+          "width": 254,
+          "height": 177,
+          "jointX": 765.0,
+          "jointY": 978.65,
+          "endX": 765.0,
+          "endY": 1118.87
+        },
+        {
+          "name": "Knee",
+          "x": 1045,
+          "y": 958,
+          "width": 129,
+          "height": 130,
+          "jointX": 1109.5,
+          "jointY": 1023.0,
+          "endX": 1109.5,
+          "endY": 1085
+        }
+      ]
+    },
+    {
+      "name": "Grey",
+      "torsoWidth": 0.5,
+      "headHeight": 0.78,
+      "bootWidth": 0.33,
+      "backpack": false,
+      "parts": [
+        {
+          "name": "Helmet",
+          "x": 67,
+          "y": 141,
+          "width": 277,
+          "height": 309,
+          "jointX": 224.47,
+          "jointY": 422.76,
+          "endX": 224.47,
+          "endY": 144
+        },
+        {
+          "name": "Torso",
+          "x": 413,
+          "y": 177,
+          "width": 209,
+          "height": 293,
+          "jointX": 517.5,
+          "jointY": 449.78,
+          "endX": 517.5,
+          "endY": 180
+        },
+        {
+          "name": "Pelvis",
+          "x": 718,
+          "y": 306,
+          "width": 200,
+          "height": 167,
+          "jointX": 818.0,
+          "jointY": 360.52,
+          "endX": 818.0,
+          "endY": 445.85
+        },
+        {
+          "name": "Backpack",
+          "x": 1033,
+          "y": 253,
+          "width": 162,
+          "height": 218,
+          "jointX": 1114.0,
+          "jointY": 362.0,
+          "endX": 1114.0,
+          "endY": 468
+        },
+        {
+          "name": "UpperArm",
+          "x": 118,
+          "y": 510,
+          "width": 135,
+          "height": 252,
+          "jointX": 191.95,
+          "jointY": 562.2,
+          "endX": 185.5,
+          "endY": 724.56
+        },
+        {
+          "name": "Forearm",
+          "x": 465,
+          "y": 534,
+          "width": 108,
+          "height": 264,
+          "jointX": 514.92,
+          "jointY": 583.44,
+          "endX": 522.06,
+          "endY": 758.88
+        },
+        {
+          "name": "Hand",
+          "x": 758,
+          "y": 599,
+          "width": 152,
+          "height": 223,
+          "jointX": 823.78,
+          "jointY": 628.04,
+          "endX": 823.78,
+          "endY": 810.3199999999999
+        },
+        {
+          "name": "Elbow",
+          "x": 1049,
+          "y": 617,
+          "width": 131,
+          "height": 124,
+          "jointX": 1114.5,
+          "jointY": 679.0,
+          "endX": 1114.5,
+          "endY": 738
+        },
+        {
+          "name": "Thigh",
+          "x": 127,
+          "y": 829,
+          "width": 161,
+          "height": 313,
+          "jointX": 192.0,
+          "jointY": 884.19,
+          "endX": 229.2,
+          "endY": 1092.95
+        },
+        {
+          "name": "Shin",
+          "x": 457,
+          "y": 846,
+          "width": 110,
+          "height": 298,
+          "jointX": 512.0,
+          "jointY": 898.64,
+          "endX": 512.0,
+          "endY": 1105.96
+        },
+        {
+          "name": "Boot",
+          "x": 714,
+          "y": 980,
+          "width": 241,
+          "height": 162,
+          "jointX": 775.75,
+          "jointY": 1006.4,
+          "endX": 775.75,
+          "endY": 1134.32
+        },
+        {
+          "name": "Knee",
+          "x": 1050,
+          "y": 979,
+          "width": 125,
+          "height": 118,
+          "jointX": 1112.5,
+          "jointY": 1038.0,
+          "endX": 1112.5,
+          "endY": 1094
+        }
+      ]
+    },
+    {
+      "name": "Reptilian",
+      "torsoWidth": 0.67,
+      "headHeight": 0.74,
+      "bootWidth": 0.4,
+      "backpack": false,
+      "parts": [
+        {
+          "name": "Helmet",
+          "x": 48,
+          "y": 124,
+          "width": 314,
+          "height": 329,
+          "jointX": 174.2,
+          "jointY": 424.16,
+          "endX": 174.2,
+          "endY": 127
+        },
+        {
+          "name": "Torso",
+          "x": 381,
+          "y": 128,
+          "width": 259,
+          "height": 322,
+          "jointX": 510.5,
+          "jointY": 428.03999999999996,
+          "endX": 510.5,
+          "endY": 131
+        },
+        {
+          "name": "Pelvis",
+          "x": 699,
+          "y": 272,
+          "width": 231,
+          "height": 183,
+          "jointX": 814.5,
+          "jointY": 331.64,
+          "endX": 814.5,
+          "endY": 425.45
+        },
+        {
+          "name": "Backpack",
+          "x": 1003,
+          "y": 232,
+          "width": 196,
+          "height": 227,
+          "jointX": 1101.0,
+          "jointY": 345.5,
+          "endX": 1101.0,
+          "endY": 456
+        },
+        {
+          "name": "UpperArm",
+          "x": 86,
+          "y": 488,
+          "width": 160,
+          "height": 259,
+          "jointX": 173.7,
+          "jointY": 541.6,
+          "endX": 166.0,
+          "endY": 708.5799999999999
+        },
+        {
+          "name": "Forearm",
+          "x": 443,
+          "y": 508,
+          "width": 124,
+          "height": 280,
+          "jointX": 500.28,
+          "jointY": 560.32,
+          "endX": 508.54,
+          "endY": 746.64
+        },
+        {
+          "name": "Hand",
+          "x": 732,
+          "y": 576,
+          "width": 164,
+          "height": 220,
+          "jointX": 802.94,
+          "jointY": 604.68,
+          "endX": 802.94,
+          "endY": 784.44
+        },
+        {
+          "name": "Elbow",
+          "x": 1028,
+          "y": 603,
+          "width": 132,
+          "height": 127,
+          "jointX": 1094.0,
+          "jointY": 666.5,
+          "endX": 1094.0,
+          "endY": 727
+        },
+        {
+          "name": "Thigh",
+          "x": 88,
+          "y": 808,
+          "width": 189,
+          "height": 339,
+          "jointX": 164.2,
+          "jointY": 867.61,
+          "endX": 208.12,
+          "endY": 1094.05
+        },
+        {
+          "name": "Shin",
+          "x": 428,
+          "y": 827,
+          "width": 135,
+          "height": 315,
+          "jointX": 495.5,
+          "jointY": 882.53,
+          "endX": 495.5,
+          "endY": 1101.92
+        },
+        {
+          "name": "Boot",
+          "x": 674,
+          "y": 975,
+          "width": 258,
+          "height": 185,
+          "jointX": 740.0,
+          "jointY": 1004.85,
+          "endX": 740.0,
+          "endY": 1151.63
+        },
+        {
+          "name": "Knee",
+          "x": 1037,
+          "y": 958,
+          "width": 125,
+          "height": 122,
+          "jointX": 1099.5,
+          "jointY": 1019.0,
+          "endX": 1099.5,
+          "endY": 1077
+        }
+      ]
+    },
+    {
+      "name": "Insectoid",
+      "torsoWidth": 0.56,
+      "headHeight": 0.8,
+      "bootWidth": 0.34,
+      "backpack": false,
+      "parts": [
+        {
+          "name": "Helmet",
+          "x": 64,
+          "y": 113,
+          "width": 312,
+          "height": 349,
+          "jointX": 195.51999999999998,
+          "jointY": 431.56,
+          "endX": 195.51999999999998,
+          "endY": 116
+        },
+        {
+          "name": "Torso",
+          "x": 407,
+          "y": 164,
+          "width": 224,
+          "height": 316,
+          "jointX": 519.0,
+          "jointY": 458.4,
+          "endX": 519.0,
+          "endY": 167
+        },
+        {
+          "name": "Pelvis",
+          "x": 705,
+          "y": 341,
+          "width": 230,
+          "height": 143,
+          "jointX": 820.0,
+          "jointY": 387.84000000000003,
+          "endX": 820.0,
+          "endY": 460.45
+        },
+        {
+          "name": "Backpack",
+          "x": 1025,
+          "y": 260,
+          "width": 171,
+          "height": 213,
+          "jointX": 1110.5,
+          "jointY": 366.5,
+          "endX": 1110.5,
+          "endY": 470
+        },
+        {
+          "name": "UpperArm",
+          "x": 117,
+          "y": 518,
+          "width": 133,
+          "height": 273,
+          "jointX": 189.85000000000002,
+          "jointY": 574.4,
+          "endX": 183.5,
+          "endY": 750.62
+        },
+        {
+          "name": "Forearm",
+          "x": 452,
+          "y": 528,
+          "width": 112,
+          "height": 282,
+          "jointX": 503.76,
+          "jointY": 580.68,
+          "endX": 511.18,
+          "endY": 768.36
+        },
+        {
+          "name": "Hand",
+          "x": 744,
+          "y": 608,
+          "width": 142,
+          "height": 221,
+          "jointX": 805.48,
+          "jointY": 636.8,
+          "endX": 805.48,
+          "endY": 817.4
+        },
+        {
+          "name": "Elbow",
+          "x": 1048,
+          "y": 626,
+          "width": 113,
+          "height": 112,
+          "jointX": 1104.5,
+          "jointY": 682.0,
+          "endX": 1104.5,
+          "endY": 735
+        },
+        {
+          "name": "Thigh",
+          "x": 103,
+          "y": 824,
+          "width": 182,
+          "height": 319,
+          "jointX": 176.4,
+          "jointY": 880.21,
+          "endX": 218.64,
+          "endY": 1093.05
+        },
+        {
+          "name": "Shin",
+          "x": 451,
+          "y": 852,
+          "width": 112,
+          "height": 287,
+          "jointX": 507.0,
+          "jointY": 902.77,
+          "endX": 507.0,
+          "endY": 1102.28
+        },
+        {
+          "name": "Boot",
+          "x": 697,
+          "y": 1000,
+          "width": 240,
+          "height": 137,
+          "jointX": 758.5,
+          "jointY": 1022.65,
+          "endX": 758.5,
+          "endY": 1130.07
+        },
+        {
+          "name": "Knee",
+          "x": 1047,
+          "y": 979,
+          "width": 114,
+          "height": 113,
+          "jointX": 1104.0,
+          "jointY": 1035.5,
+          "endX": 1104.0,
+          "endY": 1089
+        }
+      ]
+    }
+  ]
+}

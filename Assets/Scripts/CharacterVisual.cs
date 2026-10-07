@@ -6,6 +6,24 @@ public class CharacterVisual : MonoBehaviour
     [SerializeField] Transform facingRoot;
     [SerializeField] Animator animator;
     [SerializeField, Min(0.01f)] float referenceWalkSpeed = 2f;
+    SpriteRenderer[] renderers;
+
+    public Bounds Bounds
+    {
+        get
+        {
+            renderers ??= GetComponentsInChildren<SpriteRenderer>(true);
+            Bounds bounds = new(transform.position, Vector3.zero);
+            bool hasRenderer = false;
+            foreach (var renderer in renderers)
+            {
+                if (!renderer || !renderer.enabled || !renderer.gameObject.activeInHierarchy) continue;
+                if (!hasRenderer) { bounds = renderer.bounds; hasRenderer = true; }
+                else bounds.Encapsulate(renderer.bounds);
+            }
+            return bounds;
+        }
+    }
 
     static readonly int IsWalking = Animator.StringToHash("IsWalking");
     static readonly int WalkSpeed = Animator.StringToHash("WalkSpeed");
