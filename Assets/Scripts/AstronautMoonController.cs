@@ -20,6 +20,7 @@ public class AstronautMoonController : MonoBehaviour
 
     Animator anim;
     SpriteRenderer sr;
+    CharacterVisual characterVisual;
     Rigidbody2D rb;
     Transform moonCenter;
 
@@ -37,6 +38,7 @@ public class AstronautMoonController : MonoBehaviour
 
         sr = GetComponentInChildren<SpriteRenderer>();
         anim = GetComponentInChildren<Animator>();
+        characterVisual = GetComponentInChildren<CharacterVisual>();
 
         gameCamera = Camera.main;
         visualRoot = transform.childCount > 0 ? transform.GetChild(0) : null;
@@ -136,14 +138,21 @@ public class AstronautMoonController : MonoBehaviour
     void UpdateAnimAndFlip(float targetTangent)
     {
         bool isWalking = Mathf.Abs(targetTangent) > moveEpsilon;
-        if (anim) anim.SetBool(AnimIsWalking, isWalking);
 
-        if (isWalking && sr)
+        if (isWalking)
         {
             bool flip = targetTangent > 0f;
             lastFlip = invertFlip ? !flip : flip;
         }
 
+        if (characterVisual)
+        {
+            characterVisual.SetWalking(isWalking, Mathf.Abs(targetTangent));
+            characterVisual.FaceLeft(lastFlip);
+            return;
+        }
+
+        if (anim) anim.SetBool(AnimIsWalking, isWalking);
         if (sr) sr.flipX = lastFlip;
         if (!visualRoot) return;
 

@@ -47,7 +47,7 @@ public class StationResident : MonoBehaviour
         float parentScale = transform.parent ? Mathf.Max(0.0001f, transform.parent.lossyScale.y) : 1f;
         position.y = floorY - bottomOffset / parentScale;
         transform.localPosition = position;
-        bubbleText.gameObject.SetActive(false);
+        if (bubbleText) bubbleText.gameObject.SetActive(false);
     }
     void Update()
     {
@@ -84,6 +84,7 @@ public class StationResident : MonoBehaviour
     }
     void UpdateComment(GameController game)
     {
+        if (!bubbleText) return;
         Vector3 bubblePosition = bubbleText.transform.parent.position;
         bubblePosition.x = sprite.bounds.center.x;
         bubblePosition.y = sprite.bounds.max.y + 0.7f;

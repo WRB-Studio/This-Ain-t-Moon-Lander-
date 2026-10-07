@@ -1,0 +1,556 @@
+fileFormatVersion: 2
+guid: c6133eae6ed45fe4db48f05fb9032851
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -2062548358835144537
+    second: AstronautParts_0
+  - first:
+      213: 3683813312072913874
+    second: AstronautParts_1
+  - first:
+      213: -3309171160201707489
+    second: AstronautParts_2
+  - first:
+      213: 6079610722829700590
+    second: AstronautParts_3
+  - first:
+      213: 7315948017088256623
+    second: AstronautParts_4
+  - first:
+      213: 4236841625880554707
+    second: AstronautParts_5
+  - first:
+      213: -4324610219919228577
+    second: AstronautParts_6
+  - first:
+      213: -1057377507195515726
+    second: AstronautParts_7
+  - first:
+      213: -6779771051940777453
+    second: AstronautParts_8
+  - first:
+      213: -8660141233755509068
+    second: AstronautParts_9
+  - first:
+      213: 1139765514218661951
+    second: AstronautParts_10
+  - first:
+      213: 997960599048512511
+    second: AstronautParts_11
+  - first:
+      213: -4434386223980103979
+    second: AstronautParts_12
+  - first:
+      213: -4554972406744812300
+    second: AstronautParts_13
+  - first:
+      213: -7094792545971145431
+    second: AstronautParts_14
+  - first:
+      213: -6610753612523319024
+    second: AstronautParts_15
+  - first:
+      213: 468250040330517275
+    second: AstronautParts_16
+  - first:
+      213: -2832749056944538561
+    second: AstronautParts_17
+  - first:
+      213: 1883729311738086941
+    second: AstronautParts_18
+  - first:
+      213: -8234736951985440008
+    second: AstronautParts_19
+  - first:
+      213: -1883268704054496344
+    second: AstronautParts_20
+  - first:
+      213: -5623297626735554867
+    second: AstronautParts_21
+  - first:
+      213: 5680016011064260184
+    second: AstronautParts_22
+  - first:
+      213: -8026099322168866056
+    second: AstronautParts_23
+  - first:
+      213: 9092941846998388507
+    second: AstronautParts_24
+  - first:
+      213: -1065213447469434332
+    second: AstronautParts_25
+  - first:
+      213: 6708879085081938850
+    second: AstronautParts_26
+  - first:
+      213: 1024576162567500430
+    second: AstronautParts_27
+  - first:
+      213: 8957616653348411588
+    second: AstronautParts_28
+  - first:
+      213: -4859341240704426816
+    second: AstronautParts_29
+  - first:
+      213: -1929040677462292763
+    second: AstronautParts_30
+  - first:
+      213: -5737549663744198318
+    second: AstronautParts_31
+  - first:
+      213: 390532122768519529
+    second: AstronautParts_32
+  - first:
+      213: 5375807400846451853
+    second: AstronautParts_33
+  - first:
+      213: -1058710913001633550
+    second: AstronautParts_34
+  - first:
+      213: -1105726747064724355
+    second: AstronautParts_35
+  - first:
+      213: -8684671328451522197
+    second: AstronautParts_36
+  - first:
+      213: -356692437799434588
+    second: AstronautParts_37
+  - first:
+      213: -3507398019431581199
+    second: AstronautParts_38
+  - first:
+      213: -607317007184920035
+    second: AstronautParts_39
+  - first:
+      213: -239932799472228700
+    second: AstronautParts_40
+  - first:
+      213: 4619638657279247529
+    second: AstronautParts_41
+  - first:
+      213: -9080242104018794809
+    second: AstronautParts_42
+  - first:
+      213: -1714573066417510994
+    second: AstronautParts_43
+  - first:
+      213: 8141021286945621050
+    second: AstronautParts_44
+  - first:
+      213: 7430366348539767048
+    second: AstronautParts_45
+  - first:
+      213: 7992632954867455716
+    second: AstronautParts_46
+  - first:
+      213: -575603760449655957
+    second: AstronautParts_47
+  - first:
+      213: -6371292133690081338
+    second: AstronautParts_48
+  - first:
+      213: -8673404486717617590
+    second: AstronautParts_49
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Helmet
+      rect:
+        serializedVersion: 2
+        x: 38
+        y: 844
+        width: 260
+        height: 249
+      alignment: 9
+      pivot: {x: 0.49615383, y: 0.08032128}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9e55431d94ee60546bcfdb307e85267f
+      internalID: 1843302901
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Torso
+      rect:
+        serializedVersion: 2
+        x: 380
+        y: 858
+        width: 206
+        height: 203
+      alignment: 9
+      pivot: {x: 0.5048544, y: 0.08374384}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: de2ffd41d2d471240b91da57698ef8e0
+      internalID: -1404188670
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pelvis
+      rect:
+        serializedVersion: 2
+        x: 667
+        y: 852
+        width: 236
+        height: 151
+      alignment: 9
+      pivot: {x: 0.5, y: 0.7086093}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e74cb7df50f92c140af97ee0c2fee004
+      internalID: 483298647
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Backpack
+      rect:
+        serializedVersion: 2
+        x: 999
+        y: 843
+        width: 201
+        height: 238
+      alignment: 9
+      pivot: {x: 0.50248754, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 797d8cb82fc0d9842bae30bf32d87810
+      internalID: -1983249048
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpperArm
+      rect:
+        serializedVersion: 2
+        x: 104
+        y: 494
+        width: 132
+        height: 265
+      alignment: 9
+      pivot: {x: 0.46212122, y: 0.7924528}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 62e066ec70b677848a75da2c69d554aa
+      internalID: -1600829745
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Forearm
+      rect:
+        serializedVersion: 2
+        x: 418
+        y: 495
+        width: 147
+        height: 250
+      alignment: 9
+      pivot: {x: 0.34013605, y: 0.832}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cdbf00602fb91ec408321e40d11550c8
+      internalID: 615373331
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Hand
+      rect:
+        serializedVersion: 2
+        x: 725
+        y: 513
+        width: 151
+        height: 181
+      alignment: 9
+      pivot: {x: 0.37086093, y: 0.83425415}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c0f011da52f670b4d87e995f50911e59
+      internalID: 1389344077
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Elbow
+      rect:
+        serializedVersion: 2
+        x: 1035
+        y: 560
+        width: 121
+        height: 124
+      alignment: 9
+      pivot: {x: 0.49586776, y: 0.516129}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 29c138bee392845498307f6a1c6f063d
+      internalID: 19502376
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Thigh
+      rect:
+        serializedVersion: 2
+        x: 85
+        y: 160
+        width: 165
+        height: 287
+      alignment: 9
+      pivot: {x: 0.38181818, y: 0.81881535}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2b5424ed546d7af4ebbcbb09c2df6452
+      internalID: -1029210699
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Shin
+      rect:
+        serializedVersion: 2
+        x: 418
+        y: 160
+        width: 115
+        height: 275
+      alignment: 9
+      pivot: {x: 0.49565217, y: 0.80727273}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 706ceb0e4f1e29343b1655e8382b7708
+      internalID: -2018465133
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Boot
+      rect:
+        serializedVersion: 2
+        x: 678
+        y: 183
+        width: 214
+        height: 176
+      alignment: 9
+      pivot: {x: 0.28504673, y: 0.77840906}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d20ea2489eab6e84bafef0347f61d3eb
+      internalID: -1498130696
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Knee
+      rect:
+        serializedVersion: 2
+        x: 1035
+        y: 222
+        width: 120
+        height: 120
+      alignment: 9
+      pivot: {x: 0.5, y: 0.51666665}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1f5a193f11ad1f6499eed8486089ff51
+      internalID: 1868167527
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 112170d88a96d43409e7581866561b8b
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Backpack: -1983249048
+      Boot: -1498130696
+      Elbow: 19502376
+      Forearm: 615373331
+      Hand: 1389344077
+      Helmet: 1843302901
+      Knee: 1868167527
+      Pelvis: 483298647
+      Shin: -2018465133
+      Thigh: -1029210699
+      Torso: -1404188670
+      UpperArm: -1600829745
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
