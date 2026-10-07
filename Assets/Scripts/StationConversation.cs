@@ -14,6 +14,7 @@ public class StationConversation : MonoBehaviour
     {
         [TextArea(2, 8)] public string message;
         public Answer[] answers;
+        public bool givesRadio;
     }
     [SerializeField] string speaker = "Registration";
     [SerializeField] ConversationStep[] steps;
@@ -38,7 +39,8 @@ public class StationConversation : MonoBehaviour
 #if UNITY_EDITOR
         if (!DebugEnabled) return;
 #endif
-        if (IsShowing || !dialog || steps == null || steps.Length == 0 || !GameController.Instance.IsPlaying || StoryTextController.Instance.BlocksGameplayInput
+        if (IsShowing || (RadioController.Instance && RadioController.Instance.IsOpen)
+            || !dialog || steps == null || steps.Length == 0 || !GameController.Instance.IsPlaying || StoryTextController.Instance.BlocksGameplayInput
             || !StationInterior.Instance || StationInterior.Instance.CurrentArea != StationInterior.Area.Registration) return;
         StoryTextController.Instance.Restart();
         repeat = SaveLoadManager.Instance.Data.GetFlag("story.registrationComplete");
@@ -76,10 +78,15 @@ public class StationConversation : MonoBehaviour
         var step = steps[data.stationConversationPage];
         if (index < 0 || index >= step.answers.Length) return;
         data.stationConversationReaction = step.answers[index].reaction;
+        if (step.givesRadio && RadioController.Instance) RadioController.Instance.Acquire();
         data.stationConversationPage++;
         if (data.stationConversationPage >= steps.Length)
         {
             data.SetFlag("story.registrationComplete", true);
+            if (RadioController.Instance)
+            {
+                RadioController.Instance.Acquire();
+            }
             data.nextSignalStartDistance = 0f;
             var ship = LanderController.Instance;
             if (ship && ship.StationPad)
@@ -88,6 +95,7 @@ public class StationConversation : MonoBehaviour
                 if (ship.isSecretLander) ship.fuelMax = Mathf.Max(ship.fuelMax, specification.fuelMax);
                 ship.currentFuel = ship.fuelMax;
             }
+            if (RadioController.Instance) RadioController.Instance.ReceivePickup();
             Close();
         }
         else ShowPage();
@@ -115,6 +123,7 @@ public class StationConversation : MonoBehaviour
         DebugEnabled = enabled;
         var data = SaveLoadManager.Instance.Data;
         data.SetFlag("story.registrationComplete", completed);
+        ResetRadio(data, completed);
         data.stationConversationPage = completed ? steps.Length : 0;
         data.stationConversationReaction = null;
         data.nextSignalStartDistance = 0f;
@@ -129,9 +138,18 @@ public class StationConversation : MonoBehaviour
         data.stationConversationReaction = null;
         data.nextSignalStartDistance = 0f;
         data.SetFlag("story.registrationComplete", false);
+        ResetRadio(data, false);
         data.SetFlag("story.stationGuideEntered", false);
         foreach (var resident in FindObjectsByType<StationResident>(FindObjectsInactive.Include, FindObjectsSortMode.None)) resident.DebugReset();
         SaveLoadManager.Instance.Save();
+    }
+    static void ResetRadio(SaveGame data, bool owned)
+    {
+        if (RadioController.Instance) RadioController.Instance.Close();
+        data.SetFlag("story.radioOwned", owned);
+        data.radioMessages.Clear();
+        data.radioTrackedMessageId = null;
+        if (owned && RadioController.Instance) RadioController.Instance.ReceivePickup();
     }
 #endif
     void OnDisable() => Close();

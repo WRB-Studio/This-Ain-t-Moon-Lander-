@@ -656,6 +656,7 @@ public class LanderUI : MonoBehaviour
         if ((StationInterior.Instance && StationInterior.Instance.IsTransitioning)
             || (StationConversation.Instance && StationConversation.Instance.IsShowing)) return false;
         if (StoryTextController.Instance && StoryTextController.Instance.BlocksGameplayInput) return false;
+        if (RadioController.Instance && RadioController.Instance.IsOpen) return false;
         for (int i = 0; i < Input.touchCount; i++)
         {
             var touch = Input.GetTouch(i);

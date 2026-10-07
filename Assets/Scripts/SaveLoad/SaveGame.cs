@@ -1,10 +1,11 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 [Serializable]
 public class SaveGame
 {
-    public const int CurrentVersion = 4;
+    public const int CurrentVersion = 5;
     public int version = CurrentVersion;
     public float volMusic = 0.8f;
     public float volSfx = 1f;
@@ -20,6 +21,8 @@ public class SaveGame
     public float nextSignalStartDistance;
     public int stationConversationPage;
     public string stationConversationReaction;
+    public List<RadioMessage> radioMessages = new();
+    public string radioTrackedMessageId;
     public SerializableDictionary<string, bool> flags = new();
     public WorldSave world;
 
@@ -42,6 +45,9 @@ public class SaveGame
                 foreach (var ship in world.ships) if (ship != null) ship.stationPad = -1;
             if (world.scoring != null) world.scoring.scoredStationPad = -1;
         }
+        if (version < 5 && GetFlag("story.registrationComplete")) SetFlag("story.radioOwned", true);
+        radioMessages ??= new();
+        radioMessages.RemoveAll(message => message == null || string.IsNullOrEmpty(message.id));
         version = CurrentVersion;
         level = Mathf.Max(1, level);
         BestScore = Mathf.Max(0, BestScore);

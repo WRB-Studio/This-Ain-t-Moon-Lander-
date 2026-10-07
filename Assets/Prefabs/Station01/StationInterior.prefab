@@ -82,6 +82,7 @@ MonoBehaviour:
       reaction: Then you're the replacement finder. Close enough.
     - text: Who were you expecting?
       reaction: Someone with that lander. You meet half the requirements.
+    givesRadio: 0
   - message: Where did you get the ship?
     answers:
     - text: It was parked on the Moon.
@@ -89,6 +90,7 @@ MonoBehaviour:
     - text: The Moon. Full tank, no pilot.
       reaction: A full tank? I'll have a word with accounting. The missing pilot
         can wait.
+    givesRadio: 0
   - message: 'Did you bring the delivery?
 
       We were expecting that ship yesterday.'
@@ -98,6 +100,24 @@ MonoBehaviour:
         concept at that company.
     - text: There was nobody there to ask.
       reaction: That's inconvenient. People are usually our best source of excuses.
+    givesRadio: 0
+  - message: 'Before we get to the coordinates: take this radio.
+
+
+      Messages,
+      optional video, signal tracking. It even keeps the old messages.
+
+
+      Please
+      take it. Our last pilot was difficult to reach.'
+    answers:
+    - text: All right. I'll take it.
+      reaction: Excellent. One radio issued. Try to return with the same number of
+        radios.
+    - text: No thanks. I don't need a radio.
+      reaction: Of course. I'll record 'accepted reluctantly'. Here you go. Refusing
+        equipment requires a radio to submit the refusal.
+    givesRadio: 1
   - message: 'The cargo compartment was opened.
 
       After that, the log goes quiet.
@@ -111,30 +131,38 @@ MonoBehaviour:
     - text: Am I supposed to fix this now?
       reaction: Supposed to? No. You just happen to have the ship and very little
         supervision.
-  - message: 'The coordinates are on your radio.
-
-      Maintenance has topped up
-      your tank.
+    givesRadio: 0
+  - message: 'The coordinates are in a message on your new radio.
 
 
-      Take a look if you like. For now I''ll write:
+      Open RADIO
+      and select ''Track signal'' when you''re ready.
 
-      ''Ship
-      returned. Rest unclear.''
 
-      That holds up surprisingly well.'
+      Maintenance has topped
+      up your tank.
+
+
+      For now I''ll write: ''Ship returned. Rest unclear.''
+
+
+      That
+      holds up surprisingly well.'
     answers:
     - text: I'll take a look.
       reaction:
     - text: No promises.
       reaction:
+    givesRadio: 0
   repeatMessage: 'The pickup coordinates are still on your radio.
 
 
-    Investigate,
-    go home, or enjoy the corridor.
+    Open RADIO
+    to read the message or track the signal.
 
-    I have plenty of forms to keep me company.'
+
+    Investigate, go home, or enjoy
+    the corridor. I have plenty of forms to keep me company.'
   goodbyeAnswer: Thanks. I will take a look.
 --- !u!1 &560001000
 GameObject:
@@ -2293,14 +2321,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 560002001}
     m_Modifications:
-    - target: {fileID: 57383816, guid: 3262a9735f2d49039c077c72d0a670ab, type: 3}
-      propertyPath: m_AdditionalShaderChannelsFlag
-      value: 25
-      objectReference: {fileID: 0}
-    - target: {fileID: 57383820, guid: 3262a9735f2d49039c077c72d0a670ab, type: 3}
-      propertyPath: m_TextStyleHashCode
-      value: -1183493901
-      objectReference: {fileID: 0}
     - target: {fileID: 1371857031817832832, guid: e77d577946abaa84c94491ff58a664ca, type: 3}
       propertyPath: maxX
       value: 4
@@ -2336,6 +2356,14 @@ PrefabInstance:
     - target: {fileID: 2944419324217019131, guid: e77d577946abaa84c94491ff58a664ca, type: 3}
       propertyPath: m_LocalPosition.y
       value: 0.53
+      objectReference: {fileID: 0}
+    - target: {fileID: 57383816, guid: 3262a9735f2d49039c077c72d0a670ab, type: 3}
+      propertyPath: m_AdditionalShaderChannelsFlag
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 57383820, guid: 3262a9735f2d49039c077c72d0a670ab, type: 3}
+      propertyPath: m_TextStyleHashCode
+      value: -1183493901
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:

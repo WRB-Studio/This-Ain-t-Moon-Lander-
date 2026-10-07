@@ -128,6 +128,15 @@ public class StoryTextController : MonoBehaviour
     public bool IsShowingTransmission => activeTransmissionLevel > 0;
     public bool IsShowingDialogue => activeAcknowledgement != null;
     public bool BlocksGameplayInput => dialogueVisible || waitForPointerRelease;
+    public bool HasPendingDialogue
+    {
+        get
+        {
+            if (IsShowingDialogue || IsTransitioning) return true;
+            foreach (var entry in queue) if (entry.acknowledgement != null) return true;
+            return false;
+        }
+    }
 
     void Awake()
     {
@@ -249,6 +258,7 @@ public class StoryTextController : MonoBehaviour
     void Update()
     {
         if (waitForPointerRelease && Input.touchCount == 0 && !Input.GetMouseButton(0)) waitForPointerRelease = false;
+        if (RadioController.Instance && RadioController.Instance.IsOpen) return;
         if (StationConversation.Instance && StationConversation.Instance.IsShowing) return;
         var game = GameController.Instance;
         if (!game || (!game.IsPlaying && game.Phase != GameController.GamePhase.Landed
@@ -393,6 +403,17 @@ public class StoryTextController : MonoBehaviour
 
     public void ShowOperatorDialogue(string message, string acknowledgement = null)
     {
+        if (RadioController.Instance && RadioController.Instance.IsOwned)
+        {
+            RadioController.Instance.Receive(new RadioMessage
+            {
+                id = acknowledgement ?? "operator." + message, sender = "Company", title = "Company transmission",
+                body = message, portrait = StoryDialog.Expression.Neutral
+            });
+            if (acknowledgement != null) data.SetFlag(acknowledgement, true);
+            SaveLoadManager.Instance.Save();
+            return;
+        }
         ClearPresentation();
         hadResults = GameController.Instance.HasResults;
         activeAcknowledgement = acknowledgement ?? "operator";
@@ -403,15 +424,7 @@ public class StoryTextController : MonoBehaviour
 
     void DisplayDialogue(string message, int portraitLevel, bool surprised, bool canContinue)
     {
-        StoryDialog.Expression expression = surprised ? StoryDialog.Expression.Surprised : portraitLevel switch
-        {
-            3 => StoryDialog.Expression.Neutral,
-            6 => StoryDialog.Expression.Annoyed,
-            9 => StoryDialog.Expression.Angry,
-            12 => StoryDialog.Expression.StationCrew,
-            _ => StoryDialog.Expression.None
-        };
-        dialog.Show(message, expression, canContinue);
+        dialog.Show(message, StoryDialog.Expression.None, canContinue);
         dialogueVisible = true;
         SetGameplayPanelVisible(false);
     }
@@ -452,6 +465,25 @@ public class StoryTextController : MonoBehaviour
                 if (entry.discovery.HasValue && !CanShowDiscovery(entry.discovery.Value))
                 {
                     queuedDiscoveries.Remove(entry.discovery.Value);
+                    continue;
+                }
+                bool communication = entry.transmissionLevel > 0 || entry.discovery == Discovery.Station
+                    || entry.discovery == Discovery.UFO || entry.discovery == Discovery.AbandonedShip;
+                if (communication && RadioController.Instance && RadioController.Instance.IsOwned)
+                {
+                    bool station = entry.discovery == Discovery.Station;
+                    bool unknown = entry.discovery == Discovery.UFO;
+                    var portrait = station ? StoryDialog.Expression.StationCrew : unknown ? StoryDialog.Expression.None
+                        : entry.transmissionLevel == 6 ? StoryDialog.Expression.Annoyed
+                        : entry.transmissionLevel == 9 ? StoryDialog.Expression.Angry : StoryDialog.Expression.Neutral;
+                    RadioController.Instance.Receive(new RadioMessage
+                    {
+                        id = entry.acknowledgement, sender = station ? "Station" : unknown ? "Unknown sender" : "Company",
+                        title = unknown ? "Unidentified transmission" : "Incoming transmission", body = entry.text, portrait = portrait
+                    });
+                    data.SetFlag(entry.acknowledgement, true);
+                    if (entry.discovery.HasValue) queuedDiscoveries.Remove(entry.discovery.Value);
+                    SaveLoadManager.Instance.Save();
                     continue;
                 }
                 activeAcknowledgement = entry.acknowledgement;

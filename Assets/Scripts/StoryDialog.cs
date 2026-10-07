@@ -10,11 +10,6 @@ public class StoryDialog : MonoBehaviour
 
     [SerializeField] TMP_Text messageText;
     [SerializeField] Button continueButton;
-    [SerializeField] GameObject neutralPortrait;
-    [SerializeField] GameObject annoyedPortrait;
-    [SerializeField] GameObject angryPortrait;
-    [SerializeField] GameObject surprisedPortrait;
-    [SerializeField] GameObject stationPortrait;
     [SerializeField] GameObject conversationContent;
     [SerializeField] TMP_Text speakerText;
     [SerializeField] TMP_Text conversationText;
@@ -44,11 +39,6 @@ public class StoryDialog : MonoBehaviour
         messageText.gameObject.SetActive(true);
         continueButton.gameObject.SetActive(true);
         messageText.text = message;
-        if (neutralPortrait) neutralPortrait.SetActive(expression == Expression.Neutral);
-        if (annoyedPortrait) annoyedPortrait.SetActive(expression == Expression.Annoyed);
-        if (angryPortrait) angryPortrait.SetActive(expression == Expression.Angry);
-        if (surprisedPortrait) surprisedPortrait.SetActive(expression == Expression.Surprised);
-        if (stationPortrait) stationPortrait.SetActive(expression == Expression.StationCrew);
         gameObject.SetActive(true);
         SetCanContinue(canContinue);
     }

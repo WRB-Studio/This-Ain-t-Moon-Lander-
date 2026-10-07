@@ -20,10 +20,6 @@ public static class UIAuthoringChecks
             && dialog.FindProperty("continueButton").objectReferenceValue, "The dialog prefab must have text and a Continue button.");
         Require(story.FindProperty("gameplayPanelVisibility").objectReferenceValue,
             "The HUD visibility group must be authored in the scene.");
-        foreach (string portrait in new[] { "neutralPortrait", "annoyedPortrait", "angryPortrait", "surprisedPortrait" })
-            Require(dialog.FindProperty(portrait).objectReferenceValue
-                && PrefabUtility.IsPartOfPrefabInstance(dialog.FindProperty(portrait).objectReferenceValue),
-                "Operator portraits must use the shared prefab.");
         var dialogueText = (TMPro.TMP_Text)dialog.FindProperty("messageText").objectReferenceValue;
         var transmissions = story.FindProperty("earthTransmissions");
         for (int i = 0; i < transmissions.arraySize; i++)

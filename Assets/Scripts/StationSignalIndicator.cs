@@ -18,7 +18,8 @@ public class StationSignalIndicator : MonoBehaviour
         var game = GameController.Instance;
         var camera = Camera.main;
         bool visible = station && station.IsAvailable && game && game.ControlledTarget && camera
-            && game.Phase == GameController.GamePhase.Flight;
+            && game.Phase == GameController.GamePhase.Flight
+            && !(RadioController.Instance && RadioController.Instance.IsOwned);
         graphic.enabled = visible;
         if (!visible) return;
         var canvas = GetComponentInParent<Canvas>();

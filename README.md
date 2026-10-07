@@ -22,6 +22,7 @@
 - **Explore on foot:** Leave the craft and move across the lunar surface.
 - **Master the landing:** Gravity, landing-pad placement and scoring reward control and planning.
 - **Persistent story prototype:** Story and local save support are included.
+- **Station radio:** Registration issues a portable radio with saved messages, optional video portraits, short replies and selectable signal tracking.
 
 ## Technical details
 
