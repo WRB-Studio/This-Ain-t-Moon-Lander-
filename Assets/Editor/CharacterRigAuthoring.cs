@@ -18,10 +18,17 @@ public static class CharacterRigAuthoring
     const string AnimationFolder = "Assets/Animations/Characters";
     const string PreviewPath = "Assets/Scenes/CharacterPreview.unity";
     const float WalkDuration = 0.96f;
+    const float MoonDuration = 2.4f;
+    const float MoonContactPhase = 0.36f;
+    const float MoonFootSpan = MoonDuration * MoonContactPhase * 0.5f;
+    const float MoonJumpHeight = 0.35f;
+    const float MoonPreviewSpeedMultiplier = 0.75f;
     const float ThighLength = 0.4f;
     const float ShinLength = 0.4f;
     const float AnkleY = -1.07f;
     const float LegOffsetX = -0.04f;
+
+    enum Gait { Idle, Walk, MoonHop }
 
     // Atlas coordinates use a top-left origin; joint coordinates refer to the source image.
     struct Part
@@ -61,9 +68,10 @@ public static class CharacterRigAuthoring
         var sprites = AssetDatabase.LoadAllAssetsAtPath(AtlasPath).OfType<Sprite>().ToDictionary(s => s.name);
         var oldPrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/Astronaut.prefab");
         var material = oldPrefab.GetComponentInChildren<SpriteRenderer>().sharedMaterial;
-        var idle = MakeClip("BipedIdle", 2.4f, false);
-        var walk = MakeClip("BipedWalk", WalkDuration, true);
-        var controller = MakeController(idle, walk);
+        var idle = MakeClip("BipedIdle", 2.4f, Gait.Idle);
+        var walk = MakeClip("BipedWalk", WalkDuration, Gait.Walk);
+        var moonHop = MakeClip("BipedMoonHop", MoonDuration, Gait.MoonHop);
+        var controller = MakeController(idle, walk, moonHop);
         var root = MakeRig(sprites, material, controller);
         idle.SampleAnimation(root.transform.Find("Facing/Rig").gameObject, 0f);
         var basePrefab = PrefabUtility.SaveAsPrefabAsset(root, BasePath);
@@ -77,18 +85,20 @@ public static class CharacterRigAuthoring
         AssetDatabase.SaveAssets();
         MakePreviewScene(visualPrefab);
         AssetDatabase.SaveAssets();
-        ExportFrames(visualPrefab, idle, walk);
+        ExportFrames(visualPrefab, idle, walk, moonHop);
         Debug.Log("Character authoring complete: shared rig, astronaut variant, idle/walk clips and preview scene.");
     }
 
     [MenuItem("Tools/Characters/Update Animations and Export Preview")]
     public static void UpdateAnimations()
     {
-        var idle = MakeClip("BipedIdle", 2.4f, false);
-        var walk = MakeClip("BipedWalk", WalkDuration, true);
+        var idle = MakeClip("BipedIdle", 2.4f, Gait.Idle);
+        var walk = MakeClip("BipedWalk", WalkDuration, Gait.Walk);
+        var moonHop = MakeClip("BipedMoonHop", MoonDuration, Gait.MoonHop);
+        MakeController(idle, walk, moonHop);
         AssetDatabase.SaveAssets();
-        ExportFrames(AssetDatabase.LoadAssetAtPath<GameObject>(VisualPath), idle, walk);
-        Debug.Log("Character animations updated: heel strike, toe roll and delayed upper-body motion.");
+        ExportFrames(AssetDatabase.LoadAssetAtPath<GameObject>(VisualPath), idle, walk, moonHop);
+        Debug.Log("Character animations updated: idle, station walk and moon hop.");
     }
 
     static void ImportParts()
@@ -202,8 +212,10 @@ public static class CharacterRigAuthoring
         return bone;
     }
 
-    static AnimationClip MakeClip(string name, float duration, bool walking)
+    static AnimationClip MakeClip(string name, float duration, Gait gait)
     {
+        bool walking = gait == Gait.Walk;
+        bool hopping = gait == Gait.MoonHop;
         string path = $"{AnimationFolder}/{name}.anim";
         var clip = AssetDatabase.LoadAssetAtPath<AnimationClip>(path);
         if (!clip)
@@ -222,24 +234,29 @@ public static class CharacterRigAuthoring
         Curve("Hips", "m_LocalPosition.y", HipY);
         Rotation("Hips", HipsRotation);
         Rotation("Hips/Spine", SpineRotation);
-        Curve("Hips/Spine", "m_LocalPosition.y", phase => walking ? 0.14f + 0.008f * Mathf.Sin((phase - 0.055f) * Mathf.PI * 4f) : 0.14f);
-        Curve("Hips/Spine", "m_LocalScale.y", phase => walking ? 1f : 1f + 0.009f * Mathf.Sin(phase * Mathf.PI * 2f));
-        Rotation("Hips/Spine/Head", phase => walking ? -SpineRotation(phase) - 0.8f * HipsRotation(phase)
+        Curve("Hips/Spine", "m_LocalPosition.y", phase => hopping ? 0.14f + 0.008f * Mathf.Sin((phase - 0.04f) * Mathf.PI * 4f)
+            : walking ? 0.14f + 0.008f * Mathf.Sin((phase - 0.055f) * Mathf.PI * 4f) : 0.14f);
+        Curve("Hips/Spine", "m_LocalScale.y", phase => walking || hopping ? 1f : 1f + 0.009f * Mathf.Sin(phase * Mathf.PI * 2f));
+        Rotation("Hips/Spine/Head", phase => walking || hopping ? -SpineRotation(phase) - 0.8f * HipsRotation(phase)
             + 0.6f * Mathf.Sin((phase - 0.10f) * Mathf.PI * 2f) : -0.8f * Mathf.Sin(phase * Mathf.PI * 2f));
-        Rotation("Hips/Spine/Backpack", phase => walking ? 2.1f * Mathf.Sin((phase - 0.075f) * Mathf.PI * 4f)
+        Rotation("Hips/Spine/Backpack", phase => hopping ? 1.8f * Mathf.Sin((phase - 0.06f) * Mathf.PI * 4f)
+            : walking ? 2.1f * Mathf.Sin((phase - 0.075f) * Mathf.PI * 4f)
             + 0.6f * Mathf.Sin((phase - 0.045f) * Mathf.PI * 2f) : 0f);
         foreach (bool near in new[] { false, true })
         {
             string arm = "Hips/Spine/" + (near ? "ArmNear" : "ArmFar");
             float offset = near ? 0f : 0.5f;
             Curve(arm, "m_LocalPosition.x", phase => (near ? 0.075f : -0.10f)
-                + (walking ? 0.008f * Mathf.Cos((phase + offset - 0.035f) * Mathf.PI * 2f) : 0f));
-            Curve(arm, "m_LocalPosition.y", phase => walking ? 0.43f + 0.012f * Mathf.Sin((phase + offset - 0.035f) * Mathf.PI * 2f) : 0.43f);
-            Rotation(arm, phase => walking ? -25f * Mathf.Cos((phase + offset - 0.055f) * Mathf.PI * 2f)
+                + (walking || hopping ? 0.008f * Mathf.Cos((phase + offset - 0.035f) * Mathf.PI * 2f) : 0f));
+            Curve(arm, "m_LocalPosition.y", phase => walking || hopping ? 0.43f + 0.012f * Mathf.Sin((phase + offset - 0.035f) * Mathf.PI * 2f) : 0.43f);
+            Rotation(arm, phase => hopping ? -18f * Mathf.Cos((phase + offset - 0.045f) * Mathf.PI * 2f)
+                : walking ? -25f * Mathf.Cos((phase + offset - 0.055f) * Mathf.PI * 2f)
                 - 2f * Mathf.Sin((phase + offset - 0.025f) * Mathf.PI * 4f)
                 : (near ? 3f : -4f) + 1.2f * Mathf.Sin((phase + offset) * Mathf.PI * 2f));
-            Rotation(arm + "/Forearm", phase => walking ? 23f - 10f * Mathf.Cos((phase + offset - 0.09f) * Mathf.PI * 2f) : 12f);
-            Rotation(arm + "/Forearm/Hand", phase => walking ? -5f * Mathf.Sin((phase + offset - 0.12f) * Mathf.PI * 2f) : -2f);
+            Rotation(arm + "/Forearm", phase => hopping ? 28f - 7f * Mathf.Cos((phase + offset - 0.09f) * Mathf.PI * 2f)
+                : walking ? 23f - 10f * Mathf.Cos((phase + offset - 0.09f) * Mathf.PI * 2f) : 12f);
+            Rotation(arm + "/Forearm/Hand", phase => hopping ? -4f * Mathf.Sin((phase + offset - 0.12f) * Mathf.PI * 2f)
+                : walking ? -5f * Mathf.Sin((phase + offset - 0.12f) * Mathf.PI * 2f) : -2f);
             string leg = "Hips/" + (near ? "LegNear" : "LegFar");
             Rotation(leg, phase => LegPose(phase, near).x);
             Rotation(leg + "/Shin", phase => LegPose(phase, near).y);
@@ -248,16 +265,34 @@ public static class CharacterRigAuthoring
         EditorUtility.SetDirty(clip);
         return clip;
 
-        float HipY(float phase) => walking ? -0.395f + 0.10f * Mathf.Pow(Mathf.Sin(phase * Mathf.PI * 2f), 2f)
-            + 0.006f * Mathf.Sin((phase - 0.02f) * Mathf.PI * 2f)
-            : -0.23f + 0.003f * Mathf.Sin(phase * Mathf.PI * 2f);
+        float HipY(float phase)
+        {
+            if (hopping)
+            {
+                float step = MoonStepPhase(phase);
+                if (step < MoonContactPhase)
+                {
+                    float contact = step / MoonContactPhase;
+                    return -0.37f - 0.045f * Mathf.Sin(contact * Mathf.PI) + 0.07f * contact * contact;
+                }
+                float flight = Mathf.InverseLerp(MoonContactPhase, 1f, step);
+                return Mathf.Lerp(-0.30f, -0.37f, Mathf.SmoothStep(0f, 1f, flight)) + MoonLift(phase);
+            }
+            return walking ? -0.395f + 0.10f * Mathf.Pow(Mathf.Sin(phase * Mathf.PI * 2f), 2f)
+                + 0.006f * Mathf.Sin((phase - 0.02f) * Mathf.PI * 2f)
+                : -0.23f + 0.003f * Mathf.Sin(phase * Mathf.PI * 2f);
+        }
 
-        float HipX(float phase) => walking ? 0.012f * Mathf.Sin(phase * Mathf.PI * 4f) : 0f;
+        float HipX(float phase) => hopping ? 0.01f * Mathf.Sin(phase * Mathf.PI * 2f)
+            : walking ? 0.012f * Mathf.Sin(phase * Mathf.PI * 4f) : 0f;
 
-        float HipsRotation(float phase) => walking ? 2.2f * Mathf.Sin(phase * Mathf.PI * 2f)
+        float HipsRotation(float phase) => hopping ? 1.6f * Mathf.Sin(phase * Mathf.PI * 2f)
+            : walking ? 2.2f * Mathf.Sin(phase * Mathf.PI * 2f)
             + 0.35f * Mathf.Sin(phase * Mathf.PI * 4f - 0.5f) : 0f;
 
-        float SpineRotation(float phase) => walking ? -3f - 1.4f * Mathf.Sin((phase - 0.04f) * Mathf.PI * 2f)
+        float SpineRotation(float phase) => hopping ? -2f - 0.9f * Mathf.Sin((phase - 0.04f) * Mathf.PI * 2f)
+            + 0.8f * Mathf.Cos((phase - 0.02f) * Mathf.PI * 4f)
+            : walking ? -3f - 1.4f * Mathf.Sin((phase - 0.04f) * Mathf.PI * 2f)
             + 0.8f * Mathf.Cos((phase - 0.02f) * Mathf.PI * 4f) : 0.6f * Mathf.Sin(phase * Mathf.PI * 2f);
 
         Vector2 RollOffset(float pitch, Vector2 contact)
@@ -273,7 +308,13 @@ public static class CharacterRigAuthoring
                 + new Vector2(HipX(phase), HipY(phase));
             Vector2 foot = new((near ? 0.13f : -0.14f) + LegOffsetX, AnkleY);
             float footPitch = 0f;
-            if (walking)
+            if (hopping)
+            {
+                var pose = MoonFootPose(phase, hipX, near);
+                foot = new Vector2(pose.x, pose.y);
+                footPitch = pose.z;
+            }
+            else if (walking)
             {
                 float legPhase = Mathf.Repeat(phase + (near ? 0f : 0.5f), 1f);
                 Vector2 heel = new(-0.075f, -0.217f);
@@ -309,6 +350,44 @@ public static class CharacterRigAuthoring
                 footPitch - (thigh + knee) * Mathf.Rad2Deg);
         }
 
+        float MoonStepPhase(float phase) => Mathf.Repeat(phase * 2f, 1f);
+
+        float MoonLift(float phase)
+        {
+            float flight = Mathf.InverseLerp(MoonContactPhase, 1f, MoonStepPhase(phase));
+            return MoonJumpHeight * 4f * flight * (1f - flight);
+        }
+
+        Vector3 MoonFootPose(float phase, float hipX, bool near)
+        {
+            Vector2 heel = new(-0.075f, -0.217f);
+            Vector2 toe = new(0.24f, -0.217f);
+            Vector2 foot = new(hipX, AnkleY);
+            float legPhase = Mathf.Repeat(phase + (near ? 0f : 0.5f), 1f);
+            float contactPhase = MoonContactPhase * 0.5f;
+            float pitch;
+            if (legPhase < contactPhase)
+            {
+                float contact = legPhase / contactPhase;
+                // Each leg supports one springing step; its contact stroke matches the 2-unit reference speed.
+                foot.x += Mathf.Lerp(MoonFootSpan, -MoonFootSpan, contact);
+                float heelDown = Mathf.SmoothStep(0f, 1f, Mathf.InverseLerp(0f, 0.20f, contact));
+                float push = Mathf.SmoothStep(0f, 1f, Mathf.InverseLerp(0.60f, 1f, contact));
+                pitch = 8f * (1f - heelDown) - 18f * push;
+                foot += RollOffset(pitch, pitch > 0f ? heel : toe);
+            }
+            else
+            {
+                float swing = Mathf.InverseLerp(contactPhase, 1f, legPhase);
+                float recovery = Mathf.SmoothStep(0f, 1f, swing);
+                foot.x += Mathf.Lerp(-MoonFootSpan, MoonFootSpan, recovery);
+                foot.y += MoonLift(phase) + 0.12f * Mathf.Sin(swing * Mathf.PI);
+                foot += Vector2.Lerp(RollOffset(-18f, toe), RollOffset(8f, heel), recovery);
+                pitch = Mathf.Lerp(-18f, 8f, recovery);
+            }
+            return new Vector3(foot.x, foot.y, pitch);
+        }
+
         void Rotation(string bone, Func<float, float> value) => Curve(bone, "localEulerAnglesRaw.z", value);
 
         void Curve(string bone, string property, Func<float, float> value)
@@ -327,7 +406,7 @@ public static class CharacterRigAuthoring
         }
     }
 
-    static AnimatorController MakeController(AnimationClip idle, AnimationClip walk)
+    static AnimatorController MakeController(AnimationClip idle, AnimationClip walk, AnimationClip moonHop)
     {
         string path = $"{AnimationFolder}/Biped.controller";
         var controller = AssetDatabase.LoadAssetAtPath<AnimatorController>(path);
@@ -336,7 +415,8 @@ public static class CharacterRigAuthoring
         controller.parameters = new[]
         {
             new AnimatorControllerParameter { name = "IsWalking", type = AnimatorControllerParameterType.Bool },
-            new AnimatorControllerParameter { name = "WalkSpeed", type = AnimatorControllerParameterType.Float, defaultFloat = 1f }
+            new AnimatorControllerParameter { name = "WalkSpeed", type = AnimatorControllerParameterType.Float, defaultFloat = 1f },
+            new AnimatorControllerParameter { name = "IsOnMoon", type = AnimatorControllerParameterType.Bool }
         };
         var machine = controller.layers[0].stateMachine;
         foreach (var state in machine.states) machine.RemoveState(state.state);
@@ -349,14 +429,39 @@ public static class CharacterRigAuthoring
         walkState.writeDefaultValues = false;
         walkState.speedParameter = "WalkSpeed";
         walkState.speedParameterActive = true;
+        var moonState = machine.AddState("MoonHop", new Vector3(450f, 65f));
+        moonState.motion = moonHop;
+        moonState.writeDefaultValues = false;
+        moonState.speedParameter = "WalkSpeed";
+        moonState.speedParameterActive = true;
         var toWalk = idleState.AddTransition(walkState);
         toWalk.hasExitTime = false;
         toWalk.duration = 0.12f;
         toWalk.AddCondition(AnimatorConditionMode.If, 0f, "IsWalking");
+        toWalk.AddCondition(AnimatorConditionMode.IfNot, 0f, "IsOnMoon");
         var toIdle = walkState.AddTransition(idleState);
         toIdle.hasExitTime = false;
         toIdle.duration = 0.16f;
         toIdle.AddCondition(AnimatorConditionMode.IfNot, 0f, "IsWalking");
+        var toMoon = idleState.AddTransition(moonState);
+        toMoon.hasExitTime = false;
+        toMoon.duration = 0.14f;
+        toMoon.AddCondition(AnimatorConditionMode.If, 0f, "IsWalking");
+        toMoon.AddCondition(AnimatorConditionMode.If, 0f, "IsOnMoon");
+        var walkToMoon = walkState.AddTransition(moonState);
+        walkToMoon.hasExitTime = false;
+        walkToMoon.duration = 0.14f;
+        walkToMoon.AddCondition(AnimatorConditionMode.If, 0f, "IsWalking");
+        walkToMoon.AddCondition(AnimatorConditionMode.If, 0f, "IsOnMoon");
+        var moonToWalk = moonState.AddTransition(walkState);
+        moonToWalk.hasExitTime = false;
+        moonToWalk.duration = 0.14f;
+        moonToWalk.AddCondition(AnimatorConditionMode.If, 0f, "IsWalking");
+        moonToWalk.AddCondition(AnimatorConditionMode.IfNot, 0f, "IsOnMoon");
+        var moonToIdle = moonState.AddTransition(idleState);
+        moonToIdle.hasExitTime = false;
+        moonToIdle.duration = 0.20f;
+        moonToIdle.AddCondition(AnimatorConditionMode.IfNot, 0f, "IsWalking");
         EditorUtility.SetDirty(controller);
         return controller;
     }
@@ -390,7 +495,7 @@ public static class CharacterRigAuthoring
         for (int i = 0; i < 3; i++)
         {
             var character = (GameObject)PrefabUtility.InstantiatePrefab(visualPrefab, scene);
-            character.name = i == 0 ? "Idle" : i == 1 ? "Walk Right" : "Walk Left";
+            character.name = i == 0 ? "Idle" : i == 1 ? "Walk Right" : "Moon Hop Left";
             character.transform.position = new Vector3((i - 1) * 1.6f, 0f, 0f);
             character.transform.localScale = Vector3.one * 0.8f;
             var preview = character.AddComponent<CharacterAnimationPreview>();
@@ -398,7 +503,8 @@ public static class CharacterRigAuthoring
             serialized.FindProperty("character").objectReferenceValue = character.GetComponent<CharacterVisual>();
             serialized.FindProperty("walking").boolValue = i > 0;
             serialized.FindProperty("faceLeft").boolValue = i == 2;
-            serialized.FindProperty("worldSpeed").floatValue = 1.6f;
+            serialized.FindProperty("moonWalk").boolValue = i == 2;
+            serialized.FindProperty("worldSpeed").floatValue = i == 2 ? 1.6f * MoonPreviewSpeedMultiplier : 1.6f;
             serialized.ApplyModifiedPropertiesWithoutUndo();
         }
         EditorSceneManager.SaveScene(scene, PreviewPath);
@@ -409,10 +515,11 @@ public static class CharacterRigAuthoring
     {
         ExportFrames(AssetDatabase.LoadAssetAtPath<GameObject>(VisualPath),
             AssetDatabase.LoadAssetAtPath<AnimationClip>($"{AnimationFolder}/BipedIdle.anim"),
-            AssetDatabase.LoadAssetAtPath<AnimationClip>($"{AnimationFolder}/BipedWalk.anim"));
+            AssetDatabase.LoadAssetAtPath<AnimationClip>($"{AnimationFolder}/BipedWalk.anim"),
+            AssetDatabase.LoadAssetAtPath<AnimationClip>($"{AnimationFolder}/BipedMoonHop.anim"));
     }
 
-    static void ExportFrames(GameObject visualPrefab, AnimationClip idle, AnimationClip walk)
+    static void ExportFrames(GameObject visualPrefab, AnimationClip idle, AnimationClip walk, AnimationClip moonHop)
     {
         string folder = Path.GetFullPath(Environment.GetEnvironmentVariable("CHARACTER_PREVIEW_OUTPUT") ?? "Temp/CharacterPreview");
         Directory.CreateDirectory(folder);
@@ -442,14 +549,15 @@ public static class CharacterRigAuthoring
         }
         try
         {
-            const int frameCount = 144;
+            const int frameCount = 288;
             for (int frame = 0; frame < frameCount; frame++)
             {
                 float time = frame / 30f;
                 for (int i = 0; i < characters.Length; i++)
                 {
-                    var clip = i == 0 ? idle : walk;
-                    clip.SampleAnimation(rigs[i], time % clip.length);
+                    var clip = i == 0 ? idle : i == 1 ? walk : moonHop;
+                    float sampleTime = i == 2 ? time * MoonPreviewSpeedMultiplier : time;
+                    clip.SampleAnimation(rigs[i], sampleTime % clip.length);
                 }
                 if (GraphicsSettings.currentRenderPipeline)
                     RenderPipeline.SubmitRenderRequest(camera, new RenderPipeline.StandardRequest { destination = target });

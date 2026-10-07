@@ -285,7 +285,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8019343633498990692, guid: 9439b6fcc6e59ad45b2782fa9e8facab, type: 3}
       propertyPath: m_Name
-      value: Walk Left
+      value: Moon Hop Left
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -326,7 +326,8 @@ MonoBehaviour:
   character: {fileID: 1350423731}
   walking: 1
   faceLeft: 1
-  worldSpeed: 1.6
+  moonWalk: 1
+  worldSpeed: 1.2
 --- !u!1 &1562262722
 GameObject:
   m_ObjectHideFlags: 0

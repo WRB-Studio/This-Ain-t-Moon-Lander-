@@ -9,14 +9,16 @@ public class CharacterVisual : MonoBehaviour
 
     static readonly int IsWalking = Animator.StringToHash("IsWalking");
     static readonly int WalkSpeed = Animator.StringToHash("WalkSpeed");
+    static readonly int IsOnMoon = Animator.StringToHash("IsOnMoon");
 
-    public void SetWalking(bool walking, float worldSpeed)
+    public void SetWalking(bool walking, float worldSpeed, bool onMoon = false)
     {
         if (!animator) return;
         animator.SetBool(IsWalking, walking);
+        animator.SetBool(IsOnMoon, onMoon);
+        if (!walking) return;
         float referenceSpeed = referenceWalkSpeed * Mathf.Abs(transform.lossyScale.x);
-        animator.SetFloat(WalkSpeed, walking
-            ? Mathf.Max(0.1f, Mathf.Abs(worldSpeed) / Mathf.Max(0.0001f, referenceSpeed)) : 1f);
+        animator.SetFloat(WalkSpeed, Mathf.Max(0.1f, Mathf.Abs(worldSpeed) / Mathf.Max(0.0001f, referenceSpeed)));
     }
 
     public void FaceLeft(bool left)

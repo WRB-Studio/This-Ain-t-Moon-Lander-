@@ -15,6 +15,7 @@ public class AstronautMoonController : MonoBehaviour
 
     [Header("Movement")]
     [SerializeField] float maxMoveSpeed = 6f;
+    [SerializeField, Range(0.1f, 1f)] float moonSpeedMultiplier = 0.75f;
     [SerializeField] float rotateSmooth = 12f;
     [Range(0f, 1f)][SerializeField] float inputDeadZone = 0.15f;
 
@@ -65,17 +66,20 @@ public class AstronautMoonController : MonoBehaviour
         if (toCenter.sqrMagnitude < 0.0001f) return;
 
         Vector2 radialIn = toCenter.normalized;
-        if (SpaceStation.Instance && SpaceStation.Instance.GetGravity(rb.position).sqrMagnitude > 0f) radialIn = Vector2.down;
+        Vector2 stationGravity = SpaceStation.Instance ? SpaceStation.Instance.GetGravity(rb.position) : Vector2.zero;
+        bool onStation = stationGravity.sqrMagnitude > 0f;
+        if (onStation) radialIn = Vector2.down;
         Vector2 radialOut = -radialIn;
         Vector2 tangent = new Vector2(-radialOut.y, radialOut.x);
 
-        ApplyMoonGravity(radialIn);
+        ApplyMoonGravity(radialIn, stationGravity);
         ApplyUprightRotation(radialOut);
 
         float targetTangent = CalcTargetTangentSpeed(tangent);
+        if (!onStation) targetTangent *= moonSpeedMultiplier;
         ApplyTangentialVelocity(radialIn, tangent, targetTangent);
 
-        UpdateAnimAndFlip(targetTangent);
+        UpdateAnimAndFlip(targetTangent, onStation);
     }
 
     void CacheMoonCenter()
@@ -100,9 +104,8 @@ public class AstronautMoonController : MonoBehaviour
 
     Vector2 GetToMoonCenter() => (Vector2)moonCenter.position - rb.position;
 
-    void ApplyMoonGravity(Vector2 radialIn)
+    void ApplyMoonGravity(Vector2 radialIn, Vector2 stationGravity)
     {
-        var stationGravity = SpaceStation.Instance ? SpaceStation.Instance.GetGravity(rb.position) : Vector2.zero;
         rb.AddForce(stationGravity.sqrMagnitude > 0f ? stationGravity
             : radialIn * GravityManager2D.Instance.moonGravityStrength, ForceMode2D.Force);
     }
@@ -135,7 +138,7 @@ public class AstronautMoonController : MonoBehaviour
         rb.linearVelocity = vRadial + vTangent;
     }
 
-    void UpdateAnimAndFlip(float targetTangent)
+    void UpdateAnimAndFlip(float targetTangent, bool onStation)
     {
         bool isWalking = Mathf.Abs(targetTangent) > moveEpsilon;
 
@@ -147,7 +150,7 @@ public class AstronautMoonController : MonoBehaviour
 
         if (characterVisual)
         {
-            characterVisual.SetWalking(isWalking, Mathf.Abs(targetTangent));
+            characterVisual.SetWalking(isWalking, Mathf.Abs(targetTangent), !onStation);
             characterVisual.FaceLeft(lastFlip);
             return;
         }
@@ -157,7 +160,6 @@ public class AstronautMoonController : MonoBehaviour
         if (!visualRoot) return;
 
         // �hop� nur beim laufen
-        bool onStation = SpaceStation.Instance && SpaceStation.Instance.GetGravity(rb.position).sqrMagnitude > 0f;
         if (isWalking && !onStation)
         {
             float y = Mathf.Sin(Time.time * hopFreq) * hopAmp;

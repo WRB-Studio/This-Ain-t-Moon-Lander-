@@ -9,7 +9,7 @@ Die Figur wird aus starren Sprites animiert. Dadurch bleiben die weißen Konture
 1. Eine Prefab Variant von `BipedRig.prefab` erstellen.
 2. Die Sprites unter den `Art`-Objekten ersetzen. Dort können auch Grafikmaßstab, Position und Ausrichtung angepasst werden.
 3. Gelenknamen, Hierarchie und Gelenkabstände beibehalten. Die Sprite-Pivots müssen zu den jeweiligen Gelenken passen. So bleiben die gemeinsamen AnimationClips verwendbar.
-4. Die neue Variante als visuelles Kind des jeweiligen Spielcharakters einsetzen. Dessen Steuerung ruft `CharacterVisual.SetWalking(walking, worldSpeed)` und `FaceLeft(left)` auf.
+4. Die neue Variante als visuelles Kind des jeweiligen Spielcharakters einsetzen. Dessen Steuerung ruft `CharacterVisual.SetWalking(walking, worldSpeed, onMoon)` und `FaceLeft(left)` auf. `onMoon` kann für normale Gehbewegungen weggelassen werden.
 
 Der gemeinsame Aufbau ist:
 
@@ -33,10 +33,12 @@ Die Animationen binden an die Pfade unter `Rig`. `Art` sowie die Gelenkabdeckung
 
 - `BipedIdle.anim`: 2,4 Sekunden, ruhige Atmung und leichte Bewegung von Kopf und Armen.
 - `BipedWalk.anim`: 0,96 Sekunden, Fersenaufsatz, Abrollen und Abstoß mit festen Kontaktpunkten. Der Fuß wird in der Schwungphase nach vorne geführt; Hüfte und Schultern bewegen sich leicht gegeneinander, Unterarme, Hände und Rucksack folgen etwas verzögert. Die Beinwinkel werden beim Erstellen berechnet und als normale Transform-Kurven gespeichert.
-- `Biped.controller`: gemeinsame Zustände `Idle` und `Walk`, Parameter `IsWalking` und `WalkSpeed`.
+- `BipedMoonHop.anim`: 2,4 Sekunden für zwei wechselseitige Schritte. Jedes Bein übernimmt abwechselnd Bodenkontakt, Einfedern und Abstoß; zwischen den Schritten liegt eine kleine Schwebephase. Die Arme schwingen gegenläufig. Das federnde Gehen entsteht in der visuellen Rig-Animation. Der jeweilige Standfuß bewegt sich während des Bodenkontakts mit derselben Referenzgeschwindigkeit wie beim normalen Lauf.
+- `Biped.controller`: gemeinsame Zustände `Idle`, `Walk` und `MoonHop`, Parameter `IsWalking`, `WalkSpeed` und `IsOnMoon`.
 - `CharacterVisual`: spiegelt die ganze Figur und passt das Animationstempo an die Bewegungsgeschwindigkeit und den Maßstab des Charakters an. Die Referenz beträgt zwei lokale Einheiten pro Sekunde.
-- `Assets/Scenes/CharacterPreview.unity`: im Editor öffnen und Play drücken; links Idle, in der Mitte Lauf nach rechts, rechts Lauf nach links. Die Szene ist nicht in den Spiel-Build aufgenommen.
+- `AstronautMoonController`: wählt den Mondgang anhand der bestehenden Stations-Schwerkrafterkennung aus; Station und Innenräume verwenden den normalen Lauf. `Moon Speed Multiplier` im Astronaut-Prefab steht auf 0,75: auf dem Mond bewegt sich die Figur dadurch 25 Prozent langsamer, und das Animationstempo folgt dieser Geschwindigkeit. `MoonJumpHeight` im Generator beträgt 0,35 lokale Einheiten.
+- `Assets/Scenes/CharacterPreview.unity`: im Editor öffnen und Play drücken; links Idle, in der Mitte Stationslauf nach rechts, rechts Mondgang nach links. Am `CharacterAnimationPreview`-Component können Richtung und Mondgang umgestellt werden. Die Szene ist nicht in den Spiel-Build aufgenommen.
 
-Die Assets sind im Unity-Editor direkt bearbeitbar. `Tools > Characters > Export Animation Preview Frames` rendert die aktuellen Clips nach `Temp/CharacterPreview`. `Update Animations and Export Preview` erzeugt nur Idle und Walk erneut und rendert sie; beide Clips erhalten dieselben Bindungen, damit zusätzliche Schulterbewegungen beim Übergang zu Idle zurückgesetzt werden. `Rebuild Astronaut Rig and Preview` erzeugt zusätzlich die Grafikaufteilung, das Basis-Prefab und die Astronautenvariante erneut; manuelle Änderungen an diesen erzeugten Assets werden dabei überschrieben. Die ursprüngliche Astronauten-Spritegrafik und deren alte Animationen bleiben für bestehende Stationsbewohner erhalten.
+Die Assets sind im Unity-Editor direkt bearbeitbar. `Tools > Characters > Export Animation Preview Frames` rendert die aktuellen Clips nach `Temp/CharacterPreview`. `Update Animations and Export Preview` erzeugt alle drei Clips und den gemeinsamen Animator erneut und rendert sie; die Clips erhalten dieselben Bindungen, damit Gelenke beim Wechsel der Gangart sauber zurückgesetzt werden. `Rebuild Astronaut Rig and Preview` erzeugt zusätzlich die Grafikaufteilung, das Basis-Prefab und die Astronautenvariante erneut; manuelle Änderungen an diesen erzeugten Assets werden dabei überschrieben. Die ursprüngliche Astronauten-Spritegrafik und deren alte Animationen bleiben für bestehende Stationsbewohner erhalten.
 
 Für einen separaten Unity-Batch-Prozess kann `CHARACTER_PREVIEW_OUTPUT` einen eigenen Ausgabeordner festlegen. So bleiben die Renderbilder auch nach dem automatischen Aufräumen des Unity-Temp-Ordners erhalten.

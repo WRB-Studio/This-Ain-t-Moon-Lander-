@@ -52,6 +52,7 @@ MonoBehaviour:
   hopAmp: 0.5
   hopFreq: 5
   maxMoveSpeed: 2
+  moonSpeedMultiplier: 0.75
   rotateSmooth: 12
   inputDeadZone: 0.6
 --- !u!50 &217283479221188408
