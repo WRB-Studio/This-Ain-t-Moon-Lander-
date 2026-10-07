@@ -131,6 +131,7 @@ GameObject:
   - component: {fileID: 48447083}
   - component: {fileID: 48447082}
   - component: {fileID: 48447081}
+  - component: {fileID: 48447084}
   m_Layer: 5
   m_Name: txtMessage
   m_TagString: Untagged
@@ -191,7 +192,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Here is a little message for you!
+  m_text: "Hier ist eine kleine Nachricht f\xFCr dich!"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 9dd5fef454fcab945a18f10eb1b3cd79, type: 2}
   m_sharedMaterial: {fileID: 1726415759315284689, guid: 9dd5fef454fcab945a18f10eb1b3cd79, type: 2}
@@ -747,6 +748,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2152368078960794949, guid: 54ade548721b1cb439cc8b0923a044a8, type: 3}
+      propertyPath: source
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3471771395403667805, guid: 54ade548721b1cb439cc8b0923a044a8, type: 3}
       propertyPath: m_text
       value: 0
@@ -924,6 +929,7 @@ GameObject:
   - component: {fileID: 375912944}
   - component: {fileID: 375912943}
   - component: {fileID: 375912945}
+  - component: {fileID: 375912946}
   m_Layer: 5
   m_Name: txtFuel
   m_TagString: Untagged
@@ -1240,6 +1246,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2152368078960794949, guid: 54ade548721b1cb439cc8b0923a044a8, type: 3}
+      propertyPath: source
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3471771395403667805, guid: 54ade548721b1cb439cc8b0923a044a8, type: 3}
       propertyPath: m_text
       value: 0
@@ -1337,9 +1347,21 @@ PrefabInstance:
       propertyPath: floorY
       value: 0.03
       objectReference: {fileID: 0}
+    - target: {fileID: 1987102904745528190, guid: 76166eb61a43438fb932fb0a993548d3, type: 3}
+      propertyPath: m_text
+      value: Station
+      objectReference: {fileID: 0}
+    - target: {fileID: 2328092277959532580, guid: 76166eb61a43438fb932fb0a993548d3, type: 3}
+      propertyPath: m_text
+      value: Station
+      objectReference: {fileID: 0}
     - target: {fileID: 5525612642024873267, guid: 76166eb61a43438fb932fb0a993548d3, type: 3}
       propertyPath: m_AdditionalShaderChannelsFlag
       value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 5525612642024873271, guid: 76166eb61a43438fb932fb0a993548d3, type: 3}
+      propertyPath: m_text
+      value: Station
       objectReference: {fileID: 0}
     - target: {fileID: 5525612642024873271, guid: 76166eb61a43438fb932fb0a993548d3, type: 3}
       propertyPath: m_TextStyleHashCode
@@ -1350,16 +1372,40 @@ PrefabInstance:
       value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 5822331856936184519, guid: 76166eb61a43438fb932fb0a993548d3, type: 3}
+      propertyPath: m_text
+      value: Station
+      objectReference: {fileID: 0}
+    - target: {fileID: 5822331856936184519, guid: 76166eb61a43438fb932fb0a993548d3, type: 3}
       propertyPath: m_TextStyleHashCode
       value: -1183493901
+      objectReference: {fileID: 0}
+    - target: {fileID: 7090364241973350906, guid: 76166eb61a43438fb932fb0a993548d3, type: 3}
+      propertyPath: m_text
+      value: Station
+      objectReference: {fileID: 0}
+    - target: {fileID: 7116125479979356600, guid: 76166eb61a43438fb932fb0a993548d3, type: 3}
+      propertyPath: m_text
+      value: Station
+      objectReference: {fileID: 0}
+    - target: {fileID: 7254246168924891209, guid: 76166eb61a43438fb932fb0a993548d3, type: 3}
+      propertyPath: m_text
+      value: Station
       objectReference: {fileID: 0}
     - target: {fileID: 7610899619987137499, guid: 76166eb61a43438fb932fb0a993548d3, type: 3}
       propertyPath: m_AdditionalShaderChannelsFlag
       value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 7610899619987137503, guid: 76166eb61a43438fb932fb0a993548d3, type: 3}
+      propertyPath: m_text
+      value: Station
+      objectReference: {fileID: 0}
+    - target: {fileID: 7610899619987137503, guid: 76166eb61a43438fb932fb0a993548d3, type: 3}
       propertyPath: m_TextStyleHashCode
       value: -1183493901
+      objectReference: {fileID: 0}
+    - target: {fileID: 8769758790730949223, guid: 76166eb61a43438fb932fb0a993548d3, type: 3}
+      propertyPath: m_text
+      value: Station
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
@@ -2056,6 +2102,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2152368078960794949, guid: 54ade548721b1cb439cc8b0923a044a8, type: 3}
+      propertyPath: source
+      value: 16000
+      objectReference: {fileID: 0}
     - target: {fileID: 3471771395403667805, guid: 54ade548721b1cb439cc8b0923a044a8, type: 3}
       propertyPath: m_text
       value: 16000
@@ -2260,6 +2310,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2152368078960794949, guid: 54ade548721b1cb439cc8b0923a044a8, type: 3}
+      propertyPath: source
+      value: 3500
+      objectReference: {fileID: 0}
     - target: {fileID: 3471771395403667805, guid: 54ade548721b1cb439cc8b0923a044a8, type: 3}
       propertyPath: m_text
       value: 3500
@@ -2355,6 +2409,7 @@ GameObject:
   - component: {fileID: 809604939}
   - component: {fileID: 809604938}
   - component: {fileID: 809604940}
+  - component: {fileID: 809604941}
   m_Layer: 5
   m_Name: txtLander
   m_TagString: Untagged
@@ -2897,6 +2952,7 @@ GameObject:
   - component: {fileID: 1099285163}
   - component: {fileID: 1099285162}
   - component: {fileID: 1099285164}
+  - component: {fileID: 1099285165}
   m_Layer: 5
   m_Name: txtGameOverTitle
   m_TagString: Untagged
@@ -2943,7 +2999,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'LANDED
+  m_text: 'GELANDET
 
 
 '
@@ -2973,7 +3029,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 90
+  m_fontSize: 89.85
   m_fontSizeBase: 60
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -3204,6 +3260,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3769036778487311302, guid: 864ec2ddca4e7f94ab6e21ffd4d88ad2, type: 3}
+      propertyPath: m_text
+      value: SIGNAL
+      objectReference: {fileID: 0}
     - target: {fileID: 3770585238855290387, guid: 864ec2ddca4e7f94ab6e21ffd4d88ad2, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -3305,6 +3365,7 @@ GameObject:
   - component: {fileID: 1233918618}
   - component: {fileID: 1233918617}
   - component: {fileID: 1233918616}
+  - component: {fileID: 1233918619}
   m_Layer: 5
   m_Name: txtStoryMessages
   m_TagString: Untagged
@@ -3365,7 +3426,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Here is a little message text for you!
+  m_text: "Hier ist ein kleiner Nachrichtentext f\xFCr dich!"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 9dd5fef454fcab945a18f10eb1b3cd79, type: 2}
   m_sharedMaterial: {fileID: 1726415759315284689, guid: 9dd5fef454fcab945a18f10eb1b3cd79, type: 2}
@@ -10314,6 +10375,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2152368078960794949, guid: 54ade548721b1cb439cc8b0923a044a8, type: 3}
+      propertyPath: source
+      value: 8500
+      objectReference: {fileID: 0}
     - target: {fileID: 3471771395403667805, guid: 54ade548721b1cb439cc8b0923a044a8, type: 3}
       propertyPath: m_text
       value: 8500
@@ -10418,7 +10483,7 @@ MonoBehaviour:
   selectedBtnColor: {r: 0.3490566, g: 0.3490566, b: 0.3490566, a: 1}
   lockedColor: {r: 1, g: 0, b: 0, a: 0.19607843}
   newUnlockedColor: {r: 1, g: 0.9094448, b: 0, a: 0.19607843}
-  starterBlockedMessage: As if I'd let you fly that thing to the Moon again.
+  starterBlockedMessage: '[[game.as.if.i.d.let.you.fly.that.thing.to.the.moon.again]]'
 --- !u!1 &1861438058
 GameObject:
   m_ObjectHideFlags: 0
@@ -10547,6 +10612,10 @@ PrefabInstance:
     - target: {fileID: 2105353989200604958, guid: 54ade548721b1cb439cc8b0923a044a8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2152368078960794949, guid: 54ade548721b1cb439cc8b0923a044a8, type: 3}
+      propertyPath: source
+      value: 1500
       objectReference: {fileID: 0}
     - target: {fileID: 3471771395403667805, guid: 54ade548721b1cb439cc8b0923a044a8, type: 3}
       propertyPath: m_text
@@ -11209,250 +11278,87 @@ MonoBehaviour:
   timeTransitionDuration: 0.65
   discoveryMessages:
   - discovery: 0
-    text: 'Oh. You''re actually trying something else.
-
-
-      And gravity has stopped
-      participating.
-
-      I hadn''t planned for that.'
+    text: '[[game.oh.you.re.actually.trying.something.else.and.gravity.has.stopped]]'
     presentation: 0
   - discovery: 1
-    text: 'Oh.
-
-      So THAT is the Moon.
-
-      Minor naming issue.'
+    text: '[[game.oh.so.that.is.the.moon.minor.naming.issue]]'
     presentation: 0
   - discovery: 2
-    text: 'You actually landed on the Moon.
-
-      I hadn''t planned that far ahead.'
+    text: '[[game.you.actually.landed.on.the.moon.i.hadn.t.planned.that.far.ahead]]'
     presentation: 2
   - discovery: 3
-    text: 'You can get out?
-
-      Apparently this spacecraft came with legs.'
+    text: '[[game.you.can.get.out.apparently.this.spacecraft.came.with.legs]]'
     presentation: 1
   - discovery: 4
-    text: 'Finally. The company lander.
-
-
-      Parked on the Moon with a full tank.
-
-      I''ll
-      have a word with accounting.
-
-
-      Bring it back to Earth in one piece.
-
-      Insurance
-      doesn''t cover
-
-      ''forgotten on the Moon''.'
+    text: '[[game.finally.the.company.lander.parked.on.the.moon.with.a.full.tank.i]]'
     presentation: 3
   - discovery: 5
-    text: 'INCOMING TRANSMISSION
-
-
-      You''re late.
-
-
-      ...Wait. You''re not
-      our pilot.
-
-      Where did you get that ship?'
+    text: '[[game.incoming.transmission.you.re.late.wait.you.re.not.our.pilot.where]]'
     presentation: 3
   - discovery: 6
-    text: 'There you are. Welcome to the station.
-
-      We were expecting that lander.
-
-
-      Use
-      either landing pad.
-
-      Keep it upright, please.
-
-      Our maintenance
-      crew has had
-
-      a very long day.'
+    text: '[[game.there.you.are.welcome.to.the.station.we.were.expecting.that.lande]]'
     presentation: 4
   - discovery: 7
-    text: 'Docking confirmed.
-
-      You can step outside.'
+    text: '[[game.docking.confirmed.you.can.step.outside]]'
     presentation: 2
-  zeroGAfterDepartureMessage: 'Wait. Where are you now?
-
-
-    I know. I said I was
-    leaving.
-
-    But gravity has stopped participating.
-
-    That wasn''t part of
-    my little landing game.'
+  zeroGAfterDepartureMessage: '[[game.wait.where.are.you.now.i.know.i.said.i.was.leaving.but.gravity.ha]]'
   flightCommentChance: 0.25
-  earthReturnMessage: 'Back in one piece. With the company lander.
-
-    Excellent
-    work.
-
-
-    By ''show some initiative'', I did not mean
-
-    an unauthorized
-    Moon trip on company fuel.
-
-
-    Still. The ship is back.
-
-    I''ll keep the
-    report suitably vague.'
-  moonKnownEarthMessage: 'You know where the real Moon is.
-
-    Back for fuel, or
-    just fond of this place?'
+  earthReturnMessage: '[[game.back.in.one.piece.with.the.company.lander.excellent.work.by.show]]'
+  moonKnownEarthMessage: '[[game.you.know.where.the.real.moon.is.back.for.fuel.or.just.fond.of.thi]]'
   earthMessages:
   - fromLevel: 1
     messages:
-    - Land safely on the marked pad.
-    - Slow your descent before touching down.
-    - Keep the spacecraft upright. Aim for the pad.
+    - '[[game.land.safely.on.the.marked.pad]]'
+    - '[[game.slow.your.descent.before.touching.down]]'
+    - '[[game.keep.the.spacecraft.upright.aim.for.the.pad]]'
   - fromLevel: 2
     messages:
-    - Another pad. Same procedure.
-    - Bring it down. Preferably in one piece.
-    - Try landing near the middle this time.
+    - '[[game.another.pad.same.procedure]]'
+    - '[[game.bring.it.down.preferably.in.one.piece]]'
+    - '[[game.try.landing.near.the.middle.this.time]]'
   - fromLevel: 4
     messages:
-    - Yes. Another landing. How adventurous.
-    - Another parking spot awaits your grand entrance.
-    - You seem very committed to the obvious task.
+    - '[[game.yes.another.landing.how.adventurous]]'
+    - '[[game.another.parking.spot.awaits.your.grand.entrance]]'
+    - '[[game.you.seem.very.committed.to.the.obvious.task]]'
   - fromLevel: 5
     messages:
-    - You have really made landing your whole thing.
-    - I briefly hoped you would surprise me.
-    - The scenery changes. Your ambition does not.
+    - '[[game.you.have.really.made.landing.your.whole.thing]]'
+    - '[[game.i.briefly.hoped.you.would.surprise.me]]'
+    - '[[game.the.scenery.changes.your.ambition.does.not]]'
   - fromLevel: 7
     messages:
-    - I am no longer counting enthusiastically.
-    - You could explore. Or polish your parking record.
-    - I specifically told you that you can fly up.
+    - '[[game.i.am.no.longer.counting.enthusiastically]]'
+    - '[[game.you.could.explore.or.polish.your.parking.record]]'
+    - '[[game.i.specifically.told.you.that.you.can.fly.up]]'
   - fromLevel: 8
     messages:
-    - You are remarkably good at missing the point.
-    - I would sigh, but this is text.
-    - Land if you must. I am past negotiating.
+    - '[[game.you.are.remarkably.good.at.missing.the.point]]'
+    - '[[game.i.would.sigh.but.this.is.text]]'
+    - '[[game.land.if.you.must.i.am.past.negotiating]]'
   earthTransmissions:
   - level: 3
-    text: 'Good. Third level.
-
-      You understand how a landing pad works.
-
-
-      I
-      was hoping for a little more
-
-      initiative after the introduction.
-
-      But
-      fine. Another pad.
-
-
-      Don''t let me interrupt your parking.'
+    text: '[[game.good.third.level.you.understand.how.a.landing.pad.works.i.was.hop]]'
   - level: 6
-    text: 'Sixth level.
-
-      You are seriously collecting
-
-      parking spots.
-
-
-      Fine.
-      Let me be very clear:
-
-      Fill your tank. Fly up.
-
-      And don''t stop
-      just because
-
-      the landing pad disappears from view.
-
-
-      The edge
-      of the screen is not a wall.
-
-      I really thought you would
-
-      try that
-      yourself eventually.'
+    text: '[[game.sixth.level.you.are.seriously.collecting.parking.spots.fine.let.m]]'
   - level: 9
-    text: 'NINE LEVELS!
-
-      I gave you a sky!
-
-      A spacecraft! Thrusters!
-
-      And
-      you keep opening
-
-      one parking spot after another!
-
-
-      FULL TANK.
-      FLY UP. KEEP GOING.
-
-      I don''t know how to make
-
-      this any clearer!
-
-
-      You
-      know what? Do whatever you want.
-
-      Land another hundred times.
-
-      Give
-      the pads names. I''m out.'
+    text: '[[game.nine.levels.i.gave.you.a.sky.a.spacecraft.thrusters.and.you.keep]]'
   earthAsideChance: 0.25
   earthAsides:
   - ...
-  - Uh-huh.
-  - Sure.
-  - Of course.
-  - How surprising.
-  - Another one.
-  - You've got this.
-  - I'm not here.
-  - That was not an invitation to talk.
-  - No. I am not commenting on this.
-  - '''Is that pilot still landing?''
-
-    ''Yes. Don''t ask.''
-
-    Oh. The microphone
-    is on.'
-  - '''Coffee?''
-
-    ''Please. It''s been nothing but parking all day.''
-
-    Wait.
-    Is this still broadcasting?'
-  - '''Has anyone told them they can leave?''
-
-    ''I did. Several times.''
-
-    Oh.
-    You can hear us.'
-  - '''Any progress?''
-
-    ''The parking situation is excellent.''
-
-    Right. Microphone
-    off.'
+  - '[[game.uh.huh]]'
+  - '[[game.sure]]'
+  - '[[game.of.course]]'
+  - '[[game.how.surprising]]'
+  - '[[game.another.one]]'
+  - '[[game.you.ve.got.this]]'
+  - '[[game.i.m.not.here]]'
+  - '[[game.that.was.not.an.invitation.to.talk]]'
+  - '[[game.no.i.am.not.commenting.on.this]]'
+  - '[[game.is.that.pilot.still.landing.yes.don.t.ask.oh.the.microphone.is.on]]'
+  - '[[game.coffee.please.it.s.been.nothing.but.parking.all.day.wait.is.this]]'
+  - '[[game.has.anyone.told.them.they.can.leave.i.did.several.times.oh.you.ca]]'
+  - '[[game.any.progress.the.parking.situation.is.excellent.right.microphone]]'
 --- !u!1001 &6637967133513131067
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11708,3 +11614,170 @@ SceneRoots:
   - {fileID: 1352619282}
   - {fileID: 1449695888}
   - {fileID: 1214585778}
+  - {fileID: 797101640}
+--- !u!114 &48447084
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 48447079}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 933f5654dd184ec7825d27a182bdb5d8, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::LocalizedText
+  source: '[[game.here.is.a.little.message.for.you]]'
+--- !u!114 &375912946
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 375912941}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 933f5654dd184ec7825d27a182bdb5d8, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::LocalizedText
+  source: "FUEL  \u25AE\u25AE\u25AE\u25AE\u25AE\u25AE\u25AF\u25AF\u25AF\u25AF\u25AF\u25AF\n"
+--- !u!1001 &797101640
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 589671326971395349, guid: 12aedb8311eb2374eb6b97e16f5fab2f, type: 3}
+      propertyPath: m_Name
+      value: PauseMenu
+      objectReference: {fileID: 0}
+    - target: {fileID: 3321898894940279937, guid: 12aedb8311eb2374eb6b97e16f5fab2f, type: 3}
+      propertyPath: m_text
+      value: PAUSE
+      objectReference: {fileID: 0}
+    - target: {fileID: 5357492554461444946, guid: 12aedb8311eb2374eb6b97e16f5fab2f, type: 3}
+      propertyPath: m_Pivot.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5357492554461444946, guid: 12aedb8311eb2374eb6b97e16f5fab2f, type: 3}
+      propertyPath: m_Pivot.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5357492554461444946, guid: 12aedb8311eb2374eb6b97e16f5fab2f, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5357492554461444946, guid: 12aedb8311eb2374eb6b97e16f5fab2f, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5357492554461444946, guid: 12aedb8311eb2374eb6b97e16f5fab2f, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5357492554461444946, guid: 12aedb8311eb2374eb6b97e16f5fab2f, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5357492554461444946, guid: 12aedb8311eb2374eb6b97e16f5fab2f, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5357492554461444946, guid: 12aedb8311eb2374eb6b97e16f5fab2f, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5357492554461444946, guid: 12aedb8311eb2374eb6b97e16f5fab2f, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5357492554461444946, guid: 12aedb8311eb2374eb6b97e16f5fab2f, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5357492554461444946, guid: 12aedb8311eb2374eb6b97e16f5fab2f, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5357492554461444946, guid: 12aedb8311eb2374eb6b97e16f5fab2f, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5357492554461444946, guid: 12aedb8311eb2374eb6b97e16f5fab2f, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5357492554461444946, guid: 12aedb8311eb2374eb6b97e16f5fab2f, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5357492554461444946, guid: 12aedb8311eb2374eb6b97e16f5fab2f, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5357492554461444946, guid: 12aedb8311eb2374eb6b97e16f5fab2f, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5357492554461444946, guid: 12aedb8311eb2374eb6b97e16f5fab2f, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5357492554461444946, guid: 12aedb8311eb2374eb6b97e16f5fab2f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5357492554461444946, guid: 12aedb8311eb2374eb6b97e16f5fab2f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5357492554461444946, guid: 12aedb8311eb2374eb6b97e16f5fab2f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 12aedb8311eb2374eb6b97e16f5fab2f, type: 3}
+--- !u!114 &809604941
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 809604936}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 933f5654dd184ec7825d27a182bdb5d8, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::LocalizedText
+  source: "SPD   3\nANG   8\xB0\nALT   ---\nSTAT  OK"
+--- !u!114 &1099285165
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1099285160}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 933f5654dd184ec7825d27a182bdb5d8, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::LocalizedText
+  source: '[[game.landed]]'
+--- !u!114 &1233918619
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1233918614}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 933f5654dd184ec7825d27a182bdb5d8, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::LocalizedText
+  source: '[[game.here.is.a.little.message.text.for.you]]'

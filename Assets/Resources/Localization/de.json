@@ -1,0 +1,1114 @@
+{
+  "code": "de",
+  "nativeName": "Deutsch",
+  "entries": [
+    {
+      "key": "game.a.full.tank.i.ll.have.a.word.with.accounting.the.missing.pilot.ca",
+      "text": "Ein voller Tank? Ich rede mal mit der Buchhaltung. Der vermisste Pilot kann warten."
+    },
+    {
+      "key": "game.all.right.i.ll.take.it",
+      "text": "Gut. Ich nehme es."
+    },
+    {
+      "key": "game.am.i.supposed.to.fix.this.now",
+      "text": "Soll ich das jetzt in Ordnung bringen?"
+    },
+    {
+      "key": "game.another.one",
+      "text": "Noch einer."
+    },
+    {
+      "key": "game.another.pad.same.procedure",
+      "text": "Noch ein Landeplatz. Gleiches Verfahren."
+    },
+    {
+      "key": "game.another.parking.spot.awaits.your.grand.entrance",
+      "text": "Ein weiterer Parkplatz wartet auf deinen großen Auftritt."
+    },
+    {
+      "key": "game.any.progress.the.parking.situation.is.excellent.right.microphone",
+      "text": "„Fortschritte?“\n„Die Parkplatzsituation ist ausgezeichnet.“\nRichtig. Mikrofon aus."
+    },
+    {
+      "key": "game.as.if.i.d.let.you.fly.that.thing.to.the.moon.again",
+      "text": "Als würde ich dich mit dem Ding noch einmal zum Mond fliegen lassen."
+    },
+    {
+      "key": "game.audio.only",
+      "text": "NUR\nAUDIO"
+    },
+    {
+      "key": "game.back.in.one.piece.with.the.company.lander.excellent.work.by.show",
+      "text": "In einem Stück zurück. Mit dem Firmenschiff.\nAusgezeichnet.\n\nMit „etwas Eigeninitiative“ meinte ich keinen\nungenehmigten Mondausflug auf Firmenkosten.\n\nImmerhin. Das Schiff ist zurück.\nIch halte den Bericht angemessen vage."
+    },
+    {
+      "key": "game.before.we.get.to.the.coordinates.take.this.radio.messages.optiona",
+      "text": "Bevor wir zu den Koordinaten kommen: Nimm dieses Funkgerät.\n\nNachrichten, optionales Bild und Signalortung. Es speichert sogar alte Nachrichten.\n\nNimm es bitte. Unser letzter Pilot war schwer zu erreichen."
+    },
+    {
+      "key": "game.bring.it.down.preferably.in.one.piece",
+      "text": "Bring es runter. Möglichst in einem Stück."
+    },
+    {
+      "key": "game.close",
+      "text": "SCHLIESSEN"
+    },
+    {
+      "key": "game.coffee.please.it.s.been.nothing.but.parking.all.day.wait.is.this",
+      "text": "„Kaffee?“\n„Bitte. Den ganzen Tag nur Parkplätze.“\nMoment. Wird das noch übertragen?"
+    },
+    {
+      "key": "game.concourse",
+      "text": "HAUPTHALLE"
+    },
+    {
+      "key": "game.continue",
+      "text": "Weiter"
+    },
+    {
+      "key": "game.continue.flight",
+      "text": "Weiterfliegen"
+    },
+    {
+      "key": "game.crew.quarters",
+      "text": "MANNSCHAFTSQUARTIERE"
+    },
+    {
+      "key": "game.did.you.bring.the.delivery.we.were.expecting.that.ship.yesterday",
+      "text": "Hast du die Lieferung dabei?\nWir haben das Schiff gestern erwartet."
+    },
+    {
+      "key": "game.docking.confirmed.you.can.step.outside",
+      "text": "Andocken bestätigt.\nDu kannst aussteigen."
+    },
+    {
+      "key": "game.done.no.heroic.speeches.required",
+      "text": "Erledigt. Keine Heldenrede erforderlich."
+    },
+    {
+      "key": "game.door",
+      "text": "TÜR"
+    },
+    {
+      "key": "game.enter",
+      "text": "Betreten"
+    },
+    {
+      "key": "game.enter.station",
+      "text": "Station betreten"
+    },
+    {
+      "key": "game.excellent.a.confirmed.receipt.my.favourite.kind.of.adventure",
+      "text": "Ausgezeichnet. Eine bestätigte Empfangsbestätigung. Meine liebste Art von Abenteuer."
+    },
+    {
+      "key": "game.excellent.one.radio.issued.try.to.return.with.the.same.number.of",
+      "text": "Ausgezeichnet. Ein Funkgerät ausgegeben. Komm möglichst mit derselben Anzahl zurück."
+    },
+    {
+      "key": "game.exit.lander",
+      "text": "Aussteigen"
+    },
+    {
+      "key": "game.exit.station",
+      "text": "Station verlassen"
+    },
+    {
+      "key": "game.exterior.deck",
+      "text": "Außendeck"
+    },
+    {
+      "key": "game.finally.the.company.lander.parked.on.the.moon.with.a.full.tank.i",
+      "text": "Endlich. Das Firmenschiff.\n\nMit vollem Tank auf dem Mond geparkt.\nIch rede mal mit der Buchhaltung.\n\nBring es in einem Stück zur Erde zurück.\nDie Versicherung deckt\n„auf dem Mond vergessen“ nicht ab."
+    },
+    {
+      "key": "game.good.third.level.you.understand.how.a.landing.pad.works.i.was.hop",
+      "text": "Gut. Drittes Level.\nDu weißt, wie ein Landeplatz funktioniert.\n\nNach der Einführung hatte ich auf etwas\nmehr Eigeninitiative gehofft.\nAber gut. Noch ein Landeplatz.\n\nLass dich beim Einparken nicht stören."
+    },
+    {
+      "key": "game.has.anyone.told.them.they.can.leave.i.did.several.times.oh.you.ca",
+      "text": "„Hat ihnen jemand gesagt, dass sie wegfliegen können?“\n„Ich. Mehrmals.“\nOh. Du kannst uns hören."
+    },
+    {
+      "key": "game.here.is.a.little.message.for.you",
+      "text": "Hier ist eine kleine Nachricht für dich!"
+    },
+    {
+      "key": "game.here.is.a.little.message.text.for.you",
+      "text": "Hier ist ein kleiner Nachrichtentext für dich!"
+    },
+    {
+      "key": "game.how.surprising",
+      "text": "Wie überraschend."
+    },
+    {
+      "key": "game.i.am.no.longer.counting.enthusiastically",
+      "text": "Ich zähle inzwischen ohne Begeisterung mit."
+    },
+    {
+      "key": "game.i.briefly.hoped.you.would.surprise.me",
+      "text": "Kurz hatte ich gehofft, du würdest mich überraschen."
+    },
+    {
+      "key": "game.i.only.found.the.ship",
+      "text": "Ich habe das Schiff nur gefunden."
+    },
+    {
+      "key": "game.i.specifically.told.you.that.you.can.fly.up",
+      "text": "Ich habe dir ausdrücklich gesagt, dass du nach oben fliegen kannst."
+    },
+    {
+      "key": "game.i.would.sigh.but.this.is.text",
+      "text": "Ich würde seufzen, aber das hier ist Text."
+    },
+    {
+      "key": "game.if.it.rattles.it.was.doing.that.before",
+      "text": "Wenn es klappert, hat es das vorher schon getan."
+    },
+    {
+      "key": "game.if.this.is.about.the.delivery.please.do.not.give.it.to.me",
+      "text": "Falls es um die Lieferung geht: Gib sie bitte nicht mir."
+    },
+    {
+      "key": "game.i.ll.take.a.look",
+      "text": "Ich sehe es mir an."
+    },
+    {
+      "key": "game.i.m.not.here",
+      "text": "Ich bin nicht da."
+    },
+    {
+      "key": "game.i.m.not.your.courier",
+      "text": "Ich bin nicht euer Kurier."
+    },
+    {
+      "key": "game.incoming.transmission.you.re.late.wait.you.re.not.our.pilot.where",
+      "text": "EINGEHENDE ÜBERTRAGUNG\n\nDu bist spät dran.\n\n...Moment. Du bist nicht unser Pilot.\nWoher hast du das Schiff?"
+    },
+    {
+      "key": "game.is.that.pilot.still.landing.yes.don.t.ask.oh.the.microphone.is.on",
+      "text": "„Landet dieser Pilot immer noch?“\n„Ja. Frag nicht.“\nOh. Das Mikrofon ist an."
+    },
+    {
+      "key": "game.it.was.parked.on.the.moon",
+      "text": "Es stand auf dem Mond."
+    },
+    {
+      "key": "game.keep.the.spacecraft.upright.aim.for.the.pad",
+      "text": "Halte das Schiff aufrecht. Ziele auf den Landeplatz."
+    },
+    {
+      "key": "game.land.if.you.must.i.am.past.negotiating",
+      "text": "Lande, wenn es sein muss. Ich verhandele nicht mehr."
+    },
+    {
+      "key": "game.land.safely.on.the.marked.pad",
+      "text": "Lande sicher auf dem markierten Landeplatz."
+    },
+    {
+      "key": "game.landed",
+      "text": "GELANDET\n\n"
+    },
+    {
+      "key": "game.lander.bay",
+      "text": "Landehangar"
+    },
+    {
+      "key": "game.last.confirmed.pickup",
+      "text": "Letzte bestätigte Abholung"
+    },
+    {
+      "key": "game.locked",
+      "text": "Gesperrt"
+    },
+    {
+      "key": "game.maintenance",
+      "text": "WARTUNG"
+    },
+    {
+      "key": "game.maintenance.is.closed.officially",
+      "text": "Die Wartung ist geschlossen. Offiziell."
+    },
+    {
+      "key": "game.new.here.registration.is.over.there",
+      "text": "Neu hier? Die Registrierung ist dort drüben."
+    },
+    {
+      "key": "game.next",
+      "text": "NÄCHSTE"
+    },
+    {
+      "key": "game.next.level",
+      "text": "Nächstes Level"
+    },
+    {
+      "key": "game.nine.levels.i.gave.you.a.sky.a.spacecraft.thrusters.and.you.keep",
+      "text": "NEUN LEVEL!\nIch habe dir einen Himmel gegeben!\nEin Raumschiff! Triebwerke!\nUnd du schaltest einen Parkplatz\nnach dem anderen frei!\n\nTANK VOLL. NACH OBEN. WEITERFLIEGEN.\nIch weiß nicht, wie ich das\nnoch deutlicher machen soll!\n\nWeißt du was? Mach, was du willst.\nLande noch hundertmal.\nGib den Landeplätzen Namen. Ich bin raus."
+    },
+    {
+      "key": "game.no.promises",
+      "text": "Keine Versprechen."
+    },
+    {
+      "key": "game.no.thanks.i.don.t.need.a.radio",
+      "text": "Nein danke. Ich brauche kein Funkgerät."
+    },
+    {
+      "key": "game.no.i.am.not.commenting.on.this",
+      "text": "Nein. Dazu sage ich nichts."
+    },
+    {
+      "key": "game.noted.i.ll.put.that.under.courier.comments",
+      "text": "Notiert. Das kommt unter „Anmerkungen des Kuriers“."
+    },
+    {
+      "key": "game.of.course.nobody.told.you.communication.is.more.of.a.decorative.c",
+      "text": "Natürlich hat dir niemand etwas gesagt. Kommunikation ist bei dieser Firma eher Dekoration."
+    },
+    {
+      "key": "game.of.course",
+      "text": "Natürlich."
+    },
+    {
+      "key": "game.of.course.i.ll.record.accepted.reluctantly.here.you.go.refusing.e",
+      "text": "Natürlich. Ich notiere „widerwillig angenommen“. Hier bitte. Für die Ablehnung von Ausrüstung brauchst du ein Funkgerät, um die Ablehnung einzureichen."
+    },
+    {
+      "key": "game.oh.you.re.actually.trying.something.else.and.gravity.has.stopped",
+      "text": "Oh. Du probierst tatsächlich etwas anderes.\n\nUnd die Schwerkraft macht nicht mehr mit.\nDas hatte ich nicht eingeplant."
+    },
+    {
+      "key": "game.oh.so.that.is.the.moon.minor.naming.issue",
+      "text": "Oh.\nDAS ist also der Mond.\nKleines Problem mit dem Namen."
+    },
+    {
+      "key": "game.on.the.moon.well.at.least.we.know.where.our.pilot.parked",
+      "text": "Auf dem Mond. Na gut. Zumindest wissen wir, wo unser Pilot geparkt hat."
+    },
+    {
+      "key": "game.outpost.radio",
+      "text": "AUSSENPOSTEN / FUNK"
+    },
+    {
+      "key": "game.please.keep.the.landing.pads.clear",
+      "text": "Bitte die Landeplätze freihalten."
+    },
+    {
+      "key": "game.previous",
+      "text": "VORHERIGE"
+    },
+    {
+      "key": "game.radio",
+      "text": "FUNK"
+    },
+    {
+      "key": "game.received.i.ll.take.a.look",
+      "text": "Verstanden. Ich sehe es mir an."
+    },
+    {
+      "key": "game.refill.tank",
+      "text": "Auftanken"
+    },
+    {
+      "key": "game.registration",
+      "text": "Registrierung"
+    },
+    {
+      "key": "game.registration.sign",
+      "text": "REGISTRIERUNG"
+    },
+    {
+      "key": "game.registration.is.inside.i.was.heading.there.anyway",
+      "text": "Die Registrierung ist drinnen. Ich wollte ohnehin dorthin."
+    },
+    {
+      "key": "game.return",
+      "text": "Zurück"
+    },
+    {
+      "key": "game.scroll.swipe",
+      "text": "SCROLLEN / WISCHEN"
+    },
+    {
+      "key": "game.secret",
+      "text": "Geheim"
+    },
+    {
+      "key": "game.selected.station",
+      "text": "AUSGEWÄHLT  STATION"
+    },
+    {
+      "key": "game.send.me.the.coordinates",
+      "text": "Schick mir die Koordinaten."
+    },
+    {
+      "key": "game.signal",
+      "text": "SIGNAL"
+    },
+    {
+      "key": "game.sixth.level.you.are.seriously.collecting.parking.spots.fine.let.m",
+      "text": "Sechstes Level.\nDu sammelst wirklich\nParkplätze.\n\nGut. Dann ganz deutlich:\nTank auffüllen. Nach oben fliegen.\nUnd nicht aufhören, nur weil\nder Landeplatz aus dem Bild verschwindet.\n\nDer Bildschirmrand ist keine Wand.\nIch dachte wirklich, du würdest\ndas irgendwann selbst ausprobieren."
+    },
+    {
+      "key": "game.slow.your.descent.before.touching.down",
+      "text": "Bremse vor dem Aufsetzen deinen Sinkflug ab."
+    },
+    {
+      "key": "game.someone.with.that.lander.you.meet.half.the.requirements",
+      "text": "Jemanden mit diesem Schiff. Du erfüllst die Hälfte der Anforderungen."
+    },
+    {
+      "key": "game.station",
+      "text": "Station"
+    },
+    {
+      "key": "game.storage",
+      "text": "LAGER"
+    },
+    {
+      "key": "game.storage.says.it.is.not.their.problem",
+      "text": "Das Lager sagt, es sei nicht sein Problem."
+    },
+    {
+      "key": "game.supposed.to.no.you.just.happen.to.have.the.ship.and.very.little.s",
+      "text": "Sollen? Nein. Du hast nur zufällig das Schiff und sehr wenig Aufsicht."
+    },
+    {
+      "key": "game.sure",
+      "text": "Klar."
+    },
+    {
+      "key": "game.talk",
+      "text": "Sprechen"
+    },
+    {
+      "key": "game.thanks.i.will.take.a.look",
+      "text": "Danke. Ich sehe es mir an."
+    },
+    {
+      "key": "game.that.was.not.an.invitation.to.talk",
+      "text": "Das war keine Einladung zum Reden."
+    },
+    {
+      "key": "game.that.s.inconvenient.people.are.usually.our.best.source.of.excuses",
+      "text": "Das ist ungünstig. Menschen sind normalerweise unsere beste Quelle für Ausreden."
+    },
+    {
+      "key": "game.the.cargo.compartment.was.opened.after.that.the.log.goes.quiet.i",
+      "text": "Der Frachtraum wurde geöffnet.\nDanach schweigt das Logbuch.\n\nIch habe den letzten bestätigten Abholort."
+    },
+    {
+      "key": "game.the.coordinates.are.in.a.message.on.your.new.radio.open.radio.and",
+      "text": "Die Koordinaten findest du in einer Nachricht auf deinem neuen Funkgerät.\n\nÖffne FUNK und wähle „Signal orten“, wenn du bereit bist.\n\nDie Wartung hat deinen Tank aufgefüllt.\n\nVorerst notiere ich: „Schiff zurück. Rest unklar.“\n\nDas hält erstaunlich gut stand."
+    },
+    {
+      "key": "game.the.corridor.is.free.the.paperwork.is.not",
+      "text": "Der Flur ist frei. Der Papierkram nicht."
+    },
+    {
+      "key": "game.the.lander.is.back.finally",
+      "text": "Das Schiff ist zurück. Endlich."
+    },
+    {
+      "key": "game.the.moon.full.tank.no.pilot",
+      "text": "Der Mond. Voller Tank, kein Pilot."
+    },
+    {
+      "key": "game.the.pickup.coordinates.are.still.on.your.radio.open.radio.to.read",
+      "text": "Die Abholkoordinaten sind noch auf deinem Funkgerät.\n\nÖffne FUNK, um die Nachricht zu lesen oder das Signal zu orten.\n\nSieh nach, flieg heim oder genieße den Flur. Ich habe genug Formulare zur Gesellschaft."
+    },
+    {
+      "key": "game.the.replacement.pilot.take.a.seat.or.stand.the.chair.is.being.rep",
+      "text": "Der Ersatzpilot?\nSetz dich. Oder bleib stehen. Der Stuhl wird repariert."
+    },
+    {
+      "key": "game.the.scenery.changes.your.ambition.does.not",
+      "text": "Die Landschaft ändert sich. Dein Ehrgeiz nicht."
+    },
+    {
+      "key": "game.then.you.re.the.replacement.finder.close.enough",
+      "text": "Dann bist du der Ersatzfinder. Nahe genug dran."
+    },
+    {
+      "key": "game.there.was.nobody.there.to.ask",
+      "text": "Es war niemand da, den ich hätte fragen können."
+    },
+    {
+      "key": "game.there.you.are.welcome.to.the.station.we.were.expecting.that.lande",
+      "text": "Da bist du ja. Willkommen auf der Station.\nWir haben dieses Schiff erwartet.\n\nNimm einen der beiden Landeplätze.\nHalte es bitte aufrecht.\nUnser Wartungsteam hatte\neinen sehr langen Tag."
+    },
+    {
+      "key": "game.those.parcels.have.been.waiting.longer.than.i.have",
+      "text": "Diese Pakete warten schon länger als ich."
+    },
+    {
+      "key": "game.track.signal",
+      "text": "Signal orten"
+    },
+    {
+      "key": "game.try.again",
+      "text": "Erneut versuchen"
+    },
+    {
+      "key": "game.try.landing.near.the.middle.this.time",
+      "text": "Lande diesmal möglichst in der Mitte."
+    },
+    {
+      "key": "game.uh.huh",
+      "text": "Mhm."
+    },
+    {
+      "key": "game.wait.where.are.you.now.i.know.i.said.i.was.leaving.but.gravity.ha",
+      "text": "Moment. Wo bist du jetzt?\n\nIch weiß. Ich wollte gehen.\nAber die Schwerkraft macht nicht mehr mit.\nDas war kein Teil meines kleinen Landespiels."
+    },
+    {
+      "key": "game.we.expected.the.ship.yesterday",
+      "text": "Wir haben das Schiff gestern erwartet."
+    },
+    {
+      "key": "game.what.delivery",
+      "text": "Welche Lieferung?"
+    },
+    {
+      "key": "game.where.did.you.get.the.ship",
+      "text": "Woher hast du das Schiff?"
+    },
+    {
+      "key": "game.who.were.you.expecting",
+      "text": "Wen habt ihr erwartet?"
+    },
+    {
+      "key": "game.yes.another.landing.how.adventurous",
+      "text": "Ja. Noch eine Landung. Wie abenteuerlich."
+    },
+    {
+      "key": "game.you.actually.landed.on.the.moon.i.hadn.t.planned.that.far.ahead",
+      "text": "Du bist tatsächlich auf dem Mond gelandet.\nSo weit hatte ich nicht geplant."
+    },
+    {
+      "key": "game.you.are.remarkably.good.at.missing.the.point",
+      "text": "Du bist erstaunlich gut darin, am Ziel vorbeizudenken."
+    },
+    {
+      "key": "game.you.can.get.out.apparently.this.spacecraft.came.with.legs",
+      "text": "Du kannst aussteigen?\nOffenbar hatte dieses Raumschiff Beine dabei."
+    },
+    {
+      "key": "game.you.could.explore.or.polish.your.parking.record",
+      "text": "Du könntest auf Entdeckung gehen. Oder deinen Parkrekord verbessern."
+    },
+    {
+      "key": "game.you.have.really.made.landing.your.whole.thing",
+      "text": "Landungen sind wirklich dein Lebensinhalt geworden."
+    },
+    {
+      "key": "game.you.know.where.the.real.moon.is.back.for.fuel.or.just.fond.of.thi",
+      "text": "Du weißt, wo der echte Mond ist.\nZurück zum Tanken, oder gefällt es dir hier einfach?"
+    },
+    {
+      "key": "game.you.look.different.on.the.duty.roster",
+      "text": "Auf dem Dienstplan siehst du anders aus."
+    },
+    {
+      "key": "game.you.seem.very.committed.to.the.obvious.task",
+      "text": "Du widmest dich sehr konsequent der offensichtlichen Aufgabe."
+    },
+    {
+      "key": "game.your.radio.is.registered.equipment.issued.acceptance.recorded.att",
+      "text": "Dein Funkgerät ist registriert. Ausrüstung ausgegeben, Annahme vermerkt.\n\nAnbei die letzten bestätigten Abholkoordinaten. Dort wurde der Frachtraum geöffnet. Danach schweigt das Logbuch.\n\nDein Schiff ist aufgetankt. Sieh es dir an, wenn du möchtest.\n\nAktenstatus: „Schiff zurück. Rest unklar.“"
+    },
+    {
+      "key": "game.your.radio.is.registered.last.confirmed.pickup.coordinates.attach",
+      "text": "Dein Funkgerät ist registriert.\n\nLetzte bestätigte Abholkoordinaten anbei."
+    },
+    {
+      "key": "game.you.ve.got.this",
+      "text": "Du schaffst das."
+    },
+    {
+      "key": "game.landing.confirmed",
+      "text": "Landung bestätigt."
+    },
+    {
+      "key": "game.touchdown.achieved",
+      "text": "Aufsetzen bestätigt."
+    },
+    {
+      "key": "game.surface.contact.stable",
+      "text": "Bodenkontakt stabil."
+    },
+    {
+      "key": "game.landing.successful",
+      "text": "Landung erfolgreich."
+    },
+    {
+      "key": "game.descent.nominal",
+      "text": "Sinkflug nach Plan."
+    },
+    {
+      "key": "game.contact.within.limits",
+      "text": "Kontakt innerhalb der Grenzwerte."
+    },
+    {
+      "key": "game.landing.sequence.complete",
+      "text": "Landesequenz abgeschlossen."
+    },
+    {
+      "key": "game.surface.secured",
+      "text": "Oberfläche gesichert."
+    },
+    {
+      "key": "game.all.systems.stable",
+      "text": "Alle Systeme stabil."
+    },
+    {
+      "key": "game.mission.step.completed",
+      "text": "Missionsschritt abgeschlossen."
+    },
+    {
+      "key": "game.terrain.resistance.exceeded",
+      "text": "Geländewiderstand überschritten."
+    },
+    {
+      "key": "game.surface.integrity.lost",
+      "text": "Hülle nicht mehr intakt."
+    },
+    {
+      "key": "game.that.mountain.won",
+      "text": "Der Berg hat gewonnen."
+    },
+    {
+      "key": "game.structural.failure.on.contact",
+      "text": "Strukturversagen beim Kontakt."
+    },
+    {
+      "key": "game.impact.outside.tolerance",
+      "text": "Aufprall außerhalb der Toleranz."
+    },
+    {
+      "key": "game.terrain.interaction.unsuccessful",
+      "text": "Geländekontakt fehlgeschlagen."
+    },
+    {
+      "key": "game.hull.met.geology",
+      "text": "Hülle traf Geologie."
+    },
+    {
+      "key": "game.descent.ended.abruptly",
+      "text": "Sinkflug abrupt beendet."
+    },
+    {
+      "key": "game.surface.was.not.negotiable",
+      "text": "Die Oberfläche war nicht verhandlungsbereit."
+    },
+    {
+      "key": "game.topography.prevailed",
+      "text": "Die Topografie hat gewonnen."
+    },
+    {
+      "key": "game.pad.alignment.failed",
+      "text": "Ausrichtung zum Landeplatz fehlgeschlagen."
+    },
+    {
+      "key": "game.close.too.close",
+      "text": "Knapp. Zu knapp."
+    },
+    {
+      "key": "game.docking.attempt.rejected",
+      "text": "Andockversuch abgelehnt."
+    },
+    {
+      "key": "game.landing.protocol.violated",
+      "text": "Landeprotokoll verletzt."
+    },
+    {
+      "key": "game.pad.contact.unstable",
+      "text": "Kontakt zum Landeplatz instabil."
+    },
+    {
+      "key": "game.approach.vector.incorrect",
+      "text": "Anflugvektor falsch."
+    },
+    {
+      "key": "game.clearance.insufficient",
+      "text": "Abstand unzureichend."
+    },
+    {
+      "key": "game.landing.pad.disagreed",
+      "text": "Der Landeplatz war anderer Meinung."
+    },
+    {
+      "key": "game.almost.counted",
+      "text": "Fast hätte es gezählt."
+    },
+    {
+      "key": "game.precision.required",
+      "text": "Präzision erforderlich."
+    },
+    {
+      "key": "game.fuel.depleted",
+      "text": "Treibstoff aufgebraucht."
+    },
+    {
+      "key": "game.engines.silent",
+      "text": "Triebwerke verstummt."
+    },
+    {
+      "key": "game.momentum.only",
+      "text": "Nur noch Schwung."
+    },
+    {
+      "key": "game.that.was.the.last.drop",
+      "text": "Das war der letzte Tropfen."
+    },
+    {
+      "key": "game.no.propellant.remaining",
+      "text": "Kein Treibstoff mehr übrig."
+    },
+    {
+      "key": "game.thrust.unavailable",
+      "text": "Schub nicht verfügbar."
+    },
+    {
+      "key": "game.fuel.reserves.exhausted",
+      "text": "Treibstoffreserven erschöpft."
+    },
+    {
+      "key": "game.power.without.control",
+      "text": "Kraft ohne Kontrolle."
+    },
+    {
+      "key": "game.burn.sequence.incomplete",
+      "text": "Brennsequenz unvollständig."
+    },
+    {
+      "key": "game.nothing.left.to.burn",
+      "text": "Nichts mehr zu verbrennen."
+    },
+    {
+      "key": "game.navigation.boundary.exceeded",
+      "text": "Navigationsgrenze überschritten."
+    },
+    {
+      "key": "game.signal.lost",
+      "text": "Signal verloren."
+    },
+    {
+      "key": "game.you.went.too.far",
+      "text": "Du bist zu weit geflogen."
+    },
+    {
+      "key": "game.that.space.was.not.for.you",
+      "text": "Dieser Weltraum war nicht für dich gedacht."
+    },
+    {
+      "key": "game.operational.area.left",
+      "text": "Einsatzgebiet verlassen."
+    },
+    {
+      "key": "game.tracking.terminated",
+      "text": "Ortung beendet."
+    },
+    {
+      "key": "game.return.vector.invalid",
+      "text": "Rückkehrvektor ungültig."
+    },
+    {
+      "key": "game.out.of.bounds",
+      "text": "Außerhalb des Bereichs."
+    },
+    {
+      "key": "game.no.recovery.possible",
+      "text": "Keine Bergung möglich."
+    },
+    {
+      "key": "game.mission.envelope.breached",
+      "text": "Missionsgrenzen überschritten."
+    },
+    {
+      "key": "game.impressive.trajectory.incorrect.destination",
+      "text": "Beeindruckende Flugbahn. Falsches Ziel."
+    },
+    {
+      "key": "game.you.have.achieved.an.unintended.milestone",
+      "text": "Du hast einen unbeabsichtigten Meilenstein erreicht."
+    },
+    {
+      "key": "game.this.maneuver.was.not.in.the.flight.manual",
+      "text": "Dieses Manöver stand nicht im Flughandbuch."
+    },
+    {
+      "key": "game.congratulations.wrong.target.successfully.reached",
+      "text": "Glückwunsch. Falsches Ziel erfolgreich erreicht."
+    },
+    {
+      "key": "game.you.missed.the.pad.by.targetdistance.units.the.moon.was.not.the.b",
+      "text": "Du hast den Landeplatz um {0} Einheiten verfehlt. Der Mond war nicht Plan B."
+    },
+    {
+      "key": "game.you.were.not.supposed.to.land.here",
+      "text": "Hier solltest du nicht landen."
+    },
+    {
+      "key": "game.unplanned.landing.succeeded",
+      "text": "Ungeplante Landung gelungen."
+    },
+    {
+      "key": "game.this.should.not.have.worked",
+      "text": "Das hätte nicht funktionieren sollen."
+    },
+    {
+      "key": "game.edge.case.resolved",
+      "text": "Sonderfall erledigt."
+    },
+    {
+      "key": "game.this.was.not.the.objective.you.were.targetdistance.units.away.but",
+      "text": "Das war nicht das Ziel. Du warst {0} Einheiten entfernt, aber du bist gelandet."
+    },
+    {
+      "key": "game.and.that.s.why.the.moon.was.not.the.mission",
+      "text": "Und deshalb war der Mond nicht das Missionsziel."
+    },
+    {
+      "key": "game.the.moon.was.never.in.the.briefing",
+      "text": "Der Mond kam nie in der Einweisung vor."
+    },
+    {
+      "key": "game.unplanned.lunar.crash.predictable",
+      "text": "Ungeplanter Mondabsturz. Vorhersehbar."
+    },
+    {
+      "key": "game.congratulations.you.crashed.on.the.wrong.objective",
+      "text": "Glückwunsch. Du bist am falschen Ziel abgestürzt."
+    },
+    {
+      "key": "game.the.pad.is.still.down.there.not.on.the.moon",
+      "text": "Der Landeplatz ist noch dort unten. Nicht auf dem Mond."
+    },
+    {
+      "key": "game.you.went.off.script.hard",
+      "text": "Du bist vom Plan abgewichen. Heftig."
+    },
+    {
+      "key": "game.next.time.land.where.you.re.supposed.to",
+      "text": "Nächstes Mal: Lande dort, wo du sollst."
+    },
+    {
+      "key": "game.lunar.impact.confirmed",
+      "text": "Mondaufprall bestätigt."
+    },
+    {
+      "key": "game.foreign.gravity.misjudged",
+      "text": "Fremde Schwerkraft falsch eingeschätzt."
+    },
+    {
+      "key": "game.moonfall.aborted",
+      "text": "Mondfall abgebrochen."
+    },
+    {
+      "key": "game.lunar.approach.ended",
+      "text": "Mondanflug beendet."
+    },
+    {
+      "key": "game.this.was.not.the.objective.and.you.did.not.make.it",
+      "text": "Das war nicht das Ziel, und du hast es nicht geschafft."
+    },
+    {
+      "key": "game.this.was.not.the.objective.you.were.targetdistance.units.away.and",
+      "text": "Das war nicht das Ziel. Du warst {0} Einheiten entfernt und bist gescheitert."
+    },
+    {
+      "key": "game.danger.turn.back",
+      "text": "GEFAHR: UMKEHREN"
+    },
+    {
+      "key": "game.critical.return.now",
+      "text": "KRITISCH: SOFORT ZURÜCK"
+    },
+    {
+      "key": "game.danger.exit.immediately",
+      "text": "GEFAHR: SOFORT VERLASSEN"
+    },
+    {
+      "key": "game.warning.leaving.safe.zone",
+      "text": "WARNUNG: SICHEREN BEREICH VERLASSEN"
+    },
+    {
+      "key": "game.danger.nav.limit",
+      "text": "GEFAHR: NAVIGATIONSGRENZE"
+    },
+    {
+      "key": "game.there.you.go.beyond.the.parking.spots",
+      "text": "Da geht es hin. Über die Parkplätze hinaus."
+    },
+    {
+      "key": "game.still.exploring.now.i.m.curious",
+      "text": "Du erkundest noch. Jetzt bin ich neugierig."
+    },
+    {
+      "key": "game.i.wonder.how.far.this.goes",
+      "text": "Wie weit das wohl geht?"
+    },
+    {
+      "key": "game.ah.parking.spots.again",
+      "text": "Ah. Wieder Parkplätze."
+    },
+    {
+      "key": "game.a.familiar.view.try.not.to.get.too.comfortable",
+      "text": "Vertrauter Anblick. Mach es dir nicht zu bequem."
+    },
+    {
+      "key": "game.back.for.fuel.that.sounds.like.a.plan",
+      "text": "Zurück zum Tanken? Das klingt nach einem Plan."
+    },
+    {
+      "key": "game.back.to.the.moon.you.know.more.about.it.than.i.do",
+      "text": "Zurück zum Mond. Du weißt mehr darüber als ich."
+    },
+    {
+      "key": "game.i.wonder.what.else.is.up.there",
+      "text": "Was da oben wohl noch ist?"
+    },
+    {
+      "key": "game.still.there.this.wasn.t.in.my.little.landing.game",
+      "text": "Immer noch da. Das war nicht in meinem kleinen Landespiel."
+    },
+    {
+      "key": "game.company",
+      "text": "Firma"
+    },
+    {
+      "key": "game.company.transmission",
+      "text": "Firmenübertragung"
+    },
+    {
+      "key": "game.back.on.earth.you.can.refuel.on.a.free.landing.pad",
+      "text": "Zurück auf der Erde. Du kannst an einem freien Landeplatz auftanken."
+    },
+    {
+      "key": "game.unknown.sender",
+      "text": "Unbekannter Absender"
+    },
+    {
+      "key": "game.unidentified.transmission",
+      "text": "Unbekannte Übertragung"
+    },
+    {
+      "key": "game.incoming.transmission",
+      "text": "Eingehende Übertragung"
+    },
+    {
+      "key": "game.no.transmissions",
+      "text": "Keine Übertragungen"
+    },
+    {
+      "key": "game.receiver.ready",
+      "text": "Empfänger bereit"
+    },
+    {
+      "key": "game.new.messages.will.be.stored.here",
+      "text": "Neue Nachrichten werden hier gespeichert."
+    },
+    {
+      "key": "game.no.known.signals",
+      "text": "Keine bekannten Signale"
+    },
+    {
+      "key": "game.coordinates.appear.here.when.a.signal.is.received",
+      "text": "Hier erscheinen Koordinaten, sobald ein Signal empfangen wird."
+    },
+    {
+      "key": "game.docked.refuel.or.continue.your.flight",
+      "text": "Angedockt. Auftanken oder weiterfliegen."
+    },
+    {
+      "key": "game.enter.lander",
+      "text": "Einsteigen"
+    },
+    {
+      "key": "game.stop.tracking",
+      "text": "Ortung beenden"
+    },
+    {
+      "key": "game.signal.nearby",
+      "text": "SIGNAL IN DER NÄHE"
+    },
+    {
+      "key": "game.start.in",
+      "text": "Start in..."
+    },
+    {
+      "key": "game.land",
+      "text": "Lande!"
+    },
+    {
+      "key": "game.station.landing",
+      "text": "STATIONSLANDUNG"
+    },
+    {
+      "key": "game.moon.landing",
+      "text": "MONDLANDUNG"
+    },
+    {
+      "key": "game.landed.title",
+      "text": "GELANDET"
+    },
+    {
+      "key": "game.out.of.fuel",
+      "text": "TANK LEER"
+    },
+    {
+      "key": "game.signal.lost.title",
+      "text": "SIGNAL VERLOREN"
+    },
+    {
+      "key": "game.crashed",
+      "text": "ABGESTÜRZT"
+    },
+    {
+      "key": "menu.pause",
+      "text": "PAUSE"
+    },
+    {
+      "key": "menu.paused",
+      "text": "PAUSIERT"
+    },
+    {
+      "key": "menu.resume",
+      "text": "Fortsetzen"
+    },
+    {
+      "key": "menu.settings",
+      "text": "Einstellungen"
+    },
+    {
+      "key": "menu.language",
+      "text": "Sprache"
+    },
+    {
+      "key": "menu.music",
+      "text": "Musiklautstärke"
+    },
+    {
+      "key": "menu.effects",
+      "text": "Effektlautstärke"
+    },
+    {
+      "key": "menu.back",
+      "text": "Zurück"
+    },
+    {
+      "key": "menu.hint",
+      "text": "Fortschritt wird automatisch gespeichert.\nEscape: Pause / Fortsetzen"
+    },
+    {
+      "key": "hud.fuel",
+      "text": "TANK"
+    },
+    {
+      "key": "hud.angle",
+      "text": "WINK"
+    },
+    {
+      "key": "hud.gravity",
+      "text": "GRAV"
+    },
+    {
+      "key": "hud.speed",
+      "text": "GESCH"
+    },
+    {
+      "key": "hud.altitude",
+      "text": "HÖHE"
+    },
+    {
+      "key": "hud.status",
+      "text": "STAT"
+    },
+    {
+      "key": "hud.ok",
+      "text": "OK"
+    },
+    {
+      "key": "hud.warn",
+      "text": "WARN"
+    },
+    {
+      "key": "hud.danger",
+      "text": "GEFAHR"
+    },
+    {
+      "key": "score.xp",
+      "text": "XP-PUNKTE"
+    },
+    {
+      "key": "score.success",
+      "text": "ERFOLG"
+    },
+    {
+      "key": "score.speed",
+      "text": "TEMPO"
+    },
+    {
+      "key": "score.angle",
+      "text": "WINKEL"
+    },
+    {
+      "key": "score.center",
+      "text": "MITTE"
+    },
+    {
+      "key": "score.fuel",
+      "text": "TANK"
+    },
+    {
+      "key": "score.time",
+      "text": "ZEIT"
+    },
+    {
+      "key": "score.moon",
+      "text": "MOND"
+    },
+    {
+      "key": "score.score",
+      "text": "PUNKTE"
+    },
+    {
+      "key": "score.best",
+      "text": "REKORD"
+    },
+    {
+      "key": "radio.you",
+      "text": "DU"
+    },
+    {
+      "key": "radio.active",
+      "text": "AKTIV"
+    },
+    {
+      "key": "radio.selected",
+      "text": "AUSGEWÄHLT"
+    },
+    {
+      "key": "radio.distance",
+      "text": "ENTFERNUNG"
+    },
+    {
+      "key": "radio.units",
+      "text": "Einheiten"
+    },
+    {
+      "key": "hud.level",
+      "text": "LVL"
+    },
+    {
+      "key": "hud.refilling",
+      "text": "Auftanken... {0}%"
+    },
+    {
+      "key": "menu.exit",
+      "text": "Spiel beenden"
+    }
+  ]
+}

@@ -48,6 +48,22 @@ public class SaveGame
         if (version < 5 && GetFlag("story.registrationComplete")) SetFlag("story.radioOwned", true);
         radioMessages ??= new();
         radioMessages.RemoveAll(message => message == null || string.IsNullOrEmpty(message.id));
+        stationConversationReaction = Localization.Reference(stationConversationReaction);
+        lastEarthAside = Localization.Reference(lastEarthAside);
+        if (world != null) world.resultStoryMessage = Localization.Reference(world.resultStoryMessage);
+        foreach (var message in radioMessages)
+        {
+            message.sender = Localization.Reference(message.sender);
+            message.title = Localization.Reference(message.title);
+            message.body = Localization.Reference(message.body);
+            if (message.replies == null) continue;
+            foreach (var reply in message.replies)
+                if (reply != null)
+                {
+                    reply.text = Localization.Reference(reply.text);
+                    reply.reaction = Localization.Reference(reply.reaction);
+                }
+        }
         version = CurrentVersion;
         level = Mathf.Max(1, level);
         BestScore = Mathf.Max(0, BestScore);

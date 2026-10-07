@@ -37,7 +37,7 @@ public class StationDoorPrompt : MonoBehaviour
         enterButton.gameObject.SetActive(visible);
         if (!visible) return;
         enterButton.interactable = selected.CanUse;
-        label.text = selected.buttonLabel;
+        label.SetLocalizedText(selected.buttonLabel);
     }
     void OnDestroy()
     {

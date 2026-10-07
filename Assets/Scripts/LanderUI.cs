@@ -90,120 +90,120 @@ public class LanderUI : MonoBehaviour
         {
             LanderController.eLanderState.LandedPad, new[]
             {
-                "Landing confirmed.",
-                "Touchdown achieved.",
-                "Surface contact stable.",
-                "Landing successful.",
-                "Descent nominal.",
-                "Contact within limits.",
-                "Landing sequence complete.",
-                "Surface secured.",
-                "All systems stable.",
-                "Mission step completed."
+                "[[game.landing.confirmed]]",
+                "[[game.touchdown.achieved]]",
+                "[[game.surface.contact.stable]]",
+                "[[game.landing.successful]]",
+                "[[game.descent.nominal]]",
+                "[[game.contact.within.limits]]",
+                "[[game.landing.sequence.complete]]",
+                "[[game.surface.secured]]",
+                "[[game.all.systems.stable]]",
+                "[[game.mission.step.completed]]"
             }
         },
         {
             LanderController.eLanderState.CrashedLandscape, new[]
             {
-                "Terrain resistance exceeded.",
-                "Surface integrity lost.",
-                "That mountain won.",
-                "Structural failure on contact.",
-                "Impact outside tolerance.",
-                "Terrain interaction unsuccessful.",
-                "Hull met geology.",
-                "Descent ended abruptly.",
-                "Surface was not negotiable.",
-                "Topography prevailed."
+                "[[game.terrain.resistance.exceeded]]",
+                "[[game.surface.integrity.lost]]",
+                "[[game.that.mountain.won]]",
+                "[[game.structural.failure.on.contact]]",
+                "[[game.impact.outside.tolerance]]",
+                "[[game.terrain.interaction.unsuccessful]]",
+                "[[game.hull.met.geology]]",
+                "[[game.descent.ended.abruptly]]",
+                "[[game.surface.was.not.negotiable]]",
+                "[[game.topography.prevailed]]"
             }
         },
         {
             LanderController.eLanderState.CrashedPad, new[]
             {
-                "Pad alignment failed.",
-                "Close. Too close.",
-                "Docking attempt rejected.",
-                "Landing protocol violated.",
-                "Pad contact unstable.",
-                "Approach vector incorrect.",
-                "Clearance insufficient.",
-                "Landing pad disagreed.",
-                "Almost counted.",
-                "Precision required."
+                "[[game.pad.alignment.failed]]",
+                "[[game.close.too.close]]",
+                "[[game.docking.attempt.rejected]]",
+                "[[game.landing.protocol.violated]]",
+                "[[game.pad.contact.unstable]]",
+                "[[game.approach.vector.incorrect]]",
+                "[[game.clearance.insufficient]]",
+                "[[game.landing.pad.disagreed]]",
+                "[[game.almost.counted]]",
+                "[[game.precision.required]]"
             }
         },
         {
             LanderController.eLanderState.OutOfFuel, new[]
             {
-                "Fuel depleted.",
-                "Engines silent.",
-                "Momentum only.",
-                "That was the last drop.",
-                "No propellant remaining.",
-                "Thrust unavailable.",
-                "Fuel reserves exhausted.",
-                "Power without control.",
-                "Burn sequence incomplete.",
-                "Nothing left to burn."
+                "[[game.fuel.depleted]]",
+                "[[game.engines.silent]]",
+                "[[game.momentum.only]]",
+                "[[game.that.was.the.last.drop]]",
+                "[[game.no.propellant.remaining]]",
+                "[[game.thrust.unavailable]]",
+                "[[game.fuel.reserves.exhausted]]",
+                "[[game.power.without.control]]",
+                "[[game.burn.sequence.incomplete]]",
+                "[[game.nothing.left.to.burn]]"
             }
         },
         {
             LanderController.eLanderState.DeadZone, new[]
             {
-                "Navigation boundary exceeded.",
-                "Signal lost.",
-                "You went too far.",
-                "That space was not for you.",
-                "Operational area left.",
-                "Tracking terminated.",
-                "Return vector invalid.",
-                "Out of bounds.",
-                "No recovery possible.",
-                "Mission envelope breached."
+                "[[game.navigation.boundary.exceeded]]",
+                "[[game.signal.lost]]",
+                "[[game.you.went.too.far]]",
+                "[[game.that.space.was.not.for.you]]",
+                "[[game.operational.area.left]]",
+                "[[game.tracking.terminated]]",
+                "[[game.return.vector.invalid]]",
+                "[[game.out.of.bounds]]",
+                "[[game.no.recovery.possible]]",
+                "[[game.mission.envelope.breached]]"
             }
         },
         {
             LanderController.eLanderState.LandedMoon, new[]
             {
-                "Impressive trajectory. Incorrect destination.",
-                "You have achieved an unintended milestone.",
-                "This maneuver was not in the flight manual.",
-                "Congratulations. Wrong target successfully reached.",
-                "You missed the pad by {TargetDistance} units. The moon was not the backup plan.",
-                "You were not supposed to land here.",
-                "Unplanned landing succeeded.",
-                "This should not have worked.",
-                "Edge case resolved.",
-                "This was not the objective. You were {TargetDistance} units away, but you landed."
+                "[[game.impressive.trajectory.incorrect.destination]]",
+                "[[game.you.have.achieved.an.unintended.milestone]]",
+                "[[game.this.maneuver.was.not.in.the.flight.manual]]",
+                "[[game.congratulations.wrong.target.successfully.reached]]",
+                "[[game.you.missed.the.pad.by.targetdistance.units.the.moon.was.not.the.b]]",
+                "[[game.you.were.not.supposed.to.land.here]]",
+                "[[game.unplanned.landing.succeeded]]",
+                "[[game.this.should.not.have.worked]]",
+                "[[game.edge.case.resolved]]",
+                "[[game.this.was.not.the.objective.you.were.targetdistance.units.away.but]]"
             }
         },
         {
             LanderController.eLanderState.CrashedMoon, new[]
             {
-                "And that's why the moon was not the mission.",
-                "The Moon was never in the briefing.",
-                "Unplanned lunar crash. Predictable.",
-                "Congratulations. You crashed on the wrong objective.",
-                "The pad is still down there. Not on the Moon.",
-                "You went off-script. Hard.",
-                "Next time: land where you're supposed to.",
-                "Lunar impact confirmed.",
-                "Foreign gravity misjudged.",
-                "Moonfall aborted.",
-                "Lunar approach ended.",
-                "This was not the objective, and you did not make it.",
-                "This was not the objective. You were {TargetDistance} units away, and you failed."
+                "[[game.and.that.s.why.the.moon.was.not.the.mission]]",
+                "[[game.the.moon.was.never.in.the.briefing]]",
+                "[[game.unplanned.lunar.crash.predictable]]",
+                "[[game.congratulations.you.crashed.on.the.wrong.objective]]",
+                "[[game.the.pad.is.still.down.there.not.on.the.moon]]",
+                "[[game.you.went.off.script.hard]]",
+                "[[game.next.time.land.where.you.re.supposed.to]]",
+                "[[game.lunar.impact.confirmed]]",
+                "[[game.foreign.gravity.misjudged]]",
+                "[[game.moonfall.aborted]]",
+                "[[game.lunar.approach.ended]]",
+                "[[game.this.was.not.the.objective.and.you.did.not.make.it]]",
+                "[[game.this.was.not.the.objective.you.were.targetdistance.units.away.and]]"
             }
         }
     };
 
     readonly string[] deadZoneWarnings =
     {
-        "DANGER: TURN BACK",
-        "CRITICAL: RETURN NOW",
-        "DANGER: EXIT IMMEDIATELY",
-        "WARNING: LEAVING SAFE ZONE",
-        "DANGER: NAV LIMIT"
+        "[[game.danger.turn.back]]",
+        "[[game.critical.return.now]]",
+        "[[game.danger.exit.immediately]]",
+        "[[game.warning.leaving.safe.zone]]",
+        "[[game.danger.nav.limit]]"
     };
 
     private string currentDeadZoneWarningMessage;
@@ -228,7 +228,7 @@ public class LanderUI : MonoBehaviour
         landingPanel.continueButton.onClick.AddListener(() => GameController.Instance.ContinueFlight());
         btnRefill.onClick.AddListener(() => GameController.Instance.RefillTank());
         refillLabel = btnRefill.GetComponentInChildren<TMP_Text>();
-        refillIdleLabel = refillLabel.text;
+        refillIdleLabel = refillLabel.LocalizationSource();
         refillTransition = btnRefill.transition;
         refillProgressFill.gameObject.SetActive(false);
     }
@@ -262,8 +262,8 @@ public class LanderUI : MonoBehaviour
 
         if (showDeadZoneWarning)
         {
-            warningTitle.text = currentDeadZoneWarningMessage;
-            warningMessage.text = Mathf.CeilToInt(lander.deadZoneTimer).ToString();
+            warningTitle.SetLocalizedText(currentDeadZoneWarningMessage);
+            warningMessage.SetLocalizedText(Mathf.CeilToInt(lander.deadZoneTimer).ToString());
             if (lander.deadZoneTimer <= 0)
                 ShowHideDeadZoneWarning(false);
         }
@@ -329,7 +329,7 @@ public class LanderUI : MonoBehaviour
         int filled = Mathf.RoundToInt(fuelT * blocks);
 
         fuelText.Clear();
-        fuelText.Append("FUEL  ");
+        fuelText.Append("[[hud.fuel]]  ");
         for (int i = 0; i < blocks; i++) fuelText.Append(i < filled ? fullBlock : emptyBlock);
         fuelText.Append('\n');
 
@@ -348,7 +348,7 @@ public class LanderUI : MonoBehaviour
         }
 
         // Text setzen
-        txtLanderFuel.SetText(fuelText);
+        txtLanderFuel.SetLocalizedText(fuelText.ToString());
         txtLanderFuel.color = fuelColor;
     }
 
@@ -365,7 +365,7 @@ public class LanderUI : MonoBehaviour
 
         // Angle (nur sinnvoll mit Gravity)
         string angleStr = hasGravity
-            ? $"ANG   {Mathf.RoundToInt(Vector2.Angle(hudBody.transform.up, -g))}°\n"
+            ? $"[[hud.angle]]   {Mathf.RoundToInt(Vector2.Angle(hudBody.transform.up, -g))}°\n"
             : "";
 
         // Altitude
@@ -374,7 +374,7 @@ public class LanderUI : MonoBehaviour
         string gravStr = "";
         if (hudBody.position.y > GravityManager2D.Instance.zeroGStartY)
         {
-            gravStr = $"GRAV  {g.magnitude:F2}";
+            gravStr = $"[[hud.gravity]]  {g.magnitude:F2}";
         }
 
         // Status (nur wenn wir wirklich Boden "unten" haben)
@@ -389,15 +389,14 @@ public class LanderUI : MonoBehaviour
             bool ok = lander.IsSafeLanding(speed, vertical, angle, moon);
             bool warn = lander.IsSafeLanding(speed, vertical, angle, moon, warnMultiplier);
 
-            status = ok ? "OK" : (warn ? "WARN" : "DANGER");
+            status = ok ? "[[hud.ok]]" : (warn ? "[[hud.warn]]" : "[[hud.danger]]");
         }
 
         // Final text
-        txtLanderInfos.text =
-            $"SPD   {speedI}\n" +
+        txtLanderInfos.SetLocalizedText($"[[hud.speed]]   {speedI}\n" +
             angleStr +
-            $"ALT   {altText}\n" +
-            $"STAT  {status}\n" + gravStr;
+            $"[[hud.altitude]]   {altText}\n" +
+            $"[[hud.status]]  {status}\n" + gravStr);
     }
 
     private void ShowRayEditorVisuals()
@@ -464,17 +463,17 @@ public class LanderUI : MonoBehaviour
         HidePanels();
         string message = string.IsNullOrEmpty(GameController.Instance.ResultStoryMessage)
             ? GetRandomGameOverMessage(state) : GameController.Instance.ResultStoryMessage;
-        string xp = "XP-SCORE " + scoring.CollectedScore;
+        string xp = "[[score.xp]] " + scoring.CollectedScore;
         if (landed)
         {
             bool station = lander.IsOnStation;
-            landingPanel.title.text = station ? "STATION LANDING" : isMoon ? "MOON LANDING" : "LANDED";
-            landingPanel.message.text = message;
-            landingPanel.totalScore.text = xp;
+            landingPanel.title.SetLocalizedText(station ? "[[game.station.landing]]" : isMoon ? "[[game.moon.landing]]" : "[[game.landed.title]]");
+            landingPanel.message.SetLocalizedText(message);
+            landingPanel.totalScore.SetLocalizedText(xp);
             landingPanel.score.gameObject.SetActive(showScore);
-            landingPanel.score.text = isMoon
-                ? $"SUCCESS +{scoring.LastBaseScore}\nSPEED   +{scoring.LastSpeedScore}\nFUEL    +{scoring.LastFuelScore}\nTIME    +{scoring.LastTimeScore}\n★MOON★  +{scoring.LastMoonScore}\n────────────\nSCORE   {scoring.LastScore}\n\nBEST    {scoring.BestScore}\n"
-                : $"SUCCESS +{scoring.LastBaseScore}\nSPEED   +{scoring.LastSpeedScore}\nANGLE   +{scoring.LastAngleScore}\nCENTER  +{scoring.LastCenterScore}\nFUEL    +{scoring.LastFuelScore}\nTIME    +{scoring.LastTimeScore}\n────────────\nSCORE   {scoring.LastScore}\n\nBEST    {scoring.BestScore}\n";
+            landingPanel.score.SetLocalizedText(isMoon
+                ? $"[[score.success]] +{scoring.LastBaseScore}\n[[score.speed]]   +{scoring.LastSpeedScore}\n[[score.fuel]]    +{scoring.LastFuelScore}\n[[score.time]]    +{scoring.LastTimeScore}\n★[[score.moon]]★  +{scoring.LastMoonScore}\n────────────\n[[score.score]]   {scoring.LastScore}\n\n[[score.best]]    {scoring.BestScore}\n"
+                : $"[[score.success]] +{scoring.LastBaseScore}\n[[score.speed]]   +{scoring.LastSpeedScore}\n[[score.angle]]   +{scoring.LastAngleScore}\n[[score.center]]  +{scoring.LastCenterScore}\n[[score.fuel]]    +{scoring.LastFuelScore}\n[[score.time]]    +{scoring.LastTimeScore}\n────────────\n[[score.score]]   {scoring.LastScore}\n\n[[score.best]]    {scoring.BestScore}\n");
             landingPanel.nextLevelButton.gameObject.SetActive(GameController.Instance.CanStartNextLevel);
             landingPanel.continueButton.gameObject.SetActive(!station || SaveLoadManager.Instance.Data.GetFlag("story.registrationComplete"));
             btnRefill.gameObject.SetActive(GameController.Instance.CanRefill);
@@ -483,14 +482,14 @@ public class LanderUI : MonoBehaviour
         }
         else
         {
-            crashPanel.title.text = state switch
+            crashPanel.title.SetLocalizedText(state switch
             {
-                LanderController.eLanderState.OutOfFuel => "OUT OF FUEL",
-                LanderController.eLanderState.DeadZone => "SIGNAL LOST",
-                _ => "CRASHED"
-            };
-            crashPanel.message.text = message;
-            crashPanel.totalScore.text = xp;
+                LanderController.eLanderState.OutOfFuel => "[[game.out.of.fuel]]",
+                LanderController.eLanderState.DeadZone => "[[game.signal.lost.title]]",
+                _ => "[[game.crashed]]"
+            });
+            crashPanel.message.SetLocalizedText(message);
+            crashPanel.totalScore.SetLocalizedText(xp);
             crashPanel.gameObject.SetActive(true);
         }
         LanderChooserManager.Instance.SetChooserButtonsVisible(GameController.Instance.CanChooseLander);
@@ -499,7 +498,7 @@ public class LanderUI : MonoBehaviour
     }
     public void ShowResultMessage(string message)
     {
-        txtGameOverMessage.text = message;
+        txtGameOverMessage.SetLocalizedText(message);
         txtGameOverMessage.gameObject.SetActive(true);
         RefreshPanel();
     }
@@ -509,10 +508,10 @@ public class LanderUI : MonoBehaviour
         if (!stateMessages.ContainsKey(state)) return "";
         var arr = stateMessages[state];
         var msg = arr[Random.Range(0, arr.Length)];
-        if (msg.Contains("{TargetDistance}"))
+        if (Localization.Resolve(msg).Contains("{0}"))
         {
             int distI = Mathf.RoundToInt(Vector2.Distance(lander.transform.position, landingPad.transform.position));
-            msg = msg.Replace("{TargetDistance}", distI.ToString());
+            msg = Localization.FormatReference(msg, distI);
         }
         return msg;
     }
@@ -567,8 +566,8 @@ public class LanderUI : MonoBehaviour
             btnRefill.targetGraphic.CrossFadeColor((refilling ? colors.normalColor : tint) * colors.colorMultiplier, 0f, true, true);
         }
         if (GameController.Instance.IsRefilling)
-            refillLabel.SetText("Refilling... {0}%", Mathf.RoundToInt(GameController.Instance.RefillProgress * 100f));
-        else refillLabel.text = refillIdleLabel;
+            refillLabel.SetLocalizedText(Localization.FormatReference("[[hud.refilling]]", Mathf.RoundToInt(GameController.Instance.RefillProgress * 100f)));
+        else refillLabel.SetLocalizedText(refillIdleLabel);
         refillProgressFill.gameObject.SetActive(GameController.Instance.IsRefilling);
         refillProgressFill.rectTransform.anchorMax = new Vector2(GameController.Instance.RefillProgress, 1f);
     }
@@ -608,15 +607,15 @@ public class LanderUI : MonoBehaviour
         startPanel.message.gameObject.SetActive(true);
         RefreshPanel();
 
-        startPanel.message.text = "Start in...";
-        startPanel.title.text = "LVL " + GameController.Instance.level + "\n\n ";
+        startPanel.message.SetLocalizedText("[[game.start.in]]");
+        startPanel.title.SetLocalizedText("[[hud.level]] " + GameController.Instance.level + "\n\n ");
 
         yield return new WaitForSeconds(1.5f);
 
         for (int count = Mathf.Max(0, startCountdown); count > 0; count--)
         {
             AudioManager.Instance.PlaySound(AudioManager.Instance.sfxCountdown);
-            startPanel.message.text = count.ToString();
+            startPanel.message.SetLocalizedText(count.ToString());
             yield return new WaitForSeconds(1f);
         }
         startPanel.message.gameObject.SetActive(false);
@@ -626,9 +625,9 @@ public class LanderUI : MonoBehaviour
         navigationGrp.gameObject.SetActive(true);
 
         AudioManager.Instance.PlaySound(AudioManager.Instance.sfxCountdownStart, 1f, 1f, false);
-        startPanel.title.text = "Land!";
+        startPanel.title.SetLocalizedText("[[game.land]]");
         GameController.Instance.BeginRun();
-        yield return new WaitForSecondsRealtime(1f);
+        yield return PauseMenu.WaitUnpaused(1f);
 
         startPanel.gameObject.SetActive(false);
 
@@ -657,6 +656,7 @@ public class LanderUI : MonoBehaviour
             || (StationConversation.Instance && StationConversation.Instance.IsShowing)) return false;
         if (StoryTextController.Instance && StoryTextController.Instance.BlocksGameplayInput) return false;
         if (RadioController.Instance && RadioController.Instance.IsOpen) return false;
+        if (PauseMenu.IsPaused) return false;
         for (int i = 0; i < Input.touchCount; i++)
         {
             var touch = Input.GetTouch(i);

@@ -221,7 +221,7 @@ public class GameController : MonoBehaviour
         {
             HasResults = true;
             resultsHaveScore = false;
-            ResultStoryMessage = "Docked. Refuel or continue your flight.";
+            ResultStoryMessage = "[[game.docked.refuel.or.continue.your.flight]]";
             lander.Park();
         }
         else lander.ResumeFlight();

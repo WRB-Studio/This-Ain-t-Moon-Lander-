@@ -162,6 +162,7 @@ GameObject:
   - component: {fileID: 2626320320603392683}
   - component: {fileID: 8116685590770370792}
   - component: {fileID: 6892606046797106211}
+  - component: {fileID: 3602818015250855007}
   m_Layer: 5
   m_Name: SignalCoordinates
   m_TagString: Untagged
@@ -216,7 +217,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: SELECTED  STATION
+  m_text: "AUSGEW\xC4HLT  STATION"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 9dd5fef454fcab945a18f10eb1b3cd79, type: 2}
   m_sharedMaterial: {fileID: 1726415759315284689, guid: 9dd5fef454fcab945a18f10eb1b3cd79, type: 2}
@@ -374,6 +375,7 @@ GameObject:
   - component: {fileID: 3906602106266946153}
   - component: {fileID: 4804557057101187202}
   - component: {fileID: 2155794041812724820}
+  - component: {fileID: 2615183753850468014}
   m_Layer: 5
   m_Name: SignalName
   m_TagString: Untagged
@@ -587,6 +589,7 @@ GameObject:
   - component: {fileID: 1442746337961564573}
   - component: {fileID: 1781187478381609753}
   - component: {fileID: 3936863283523245620}
+  - component: {fileID: 2785391209852962608}
   m_Layer: 5
   m_Name: Subject
   m_TagString: Untagged
@@ -641,7 +644,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Last confirmed pickup
+  m_text: "Letzte best\xE4tigte Abholung"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 9dd5fef454fcab945a18f10eb1b3cd79, type: 2}
   m_sharedMaterial: {fileID: 1726415759315284689, guid: 9dd5fef454fcab945a18f10eb1b3cd79, type: 2}
@@ -724,6 +727,7 @@ GameObject:
   - component: {fileID: 6355633745543432457}
   - component: {fileID: 6838506818772797001}
   - component: {fileID: 8792658804606648464}
+  - component: {fileID: 6747017508918218835}
   m_Layer: 5
   m_Name: VoiceOnly
   m_TagString: Untagged
@@ -778,9 +782,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'AUDIO
+  m_text: 'NUR
 
-    ONLY'
+    AUDIO'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 9dd5fef454fcab945a18f10eb1b3cd79, type: 2}
   m_sharedMaterial: {fileID: 1726415759315284689, guid: 9dd5fef454fcab945a18f10eb1b3cd79, type: 2}
@@ -863,6 +867,7 @@ GameObject:
   - component: {fileID: 4895465289651031607}
   - component: {fileID: 2303327606447103626}
   - component: {fileID: 7308788174616765619}
+  - component: {fileID: 8677580765184510252}
   m_Layer: 5
   m_Name: ScrollHint
   m_TagString: Untagged
@@ -917,7 +922,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: SCROLL / SWIPE
+  m_text: SCROLLEN / WISCHEN
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 9dd5fef454fcab945a18f10eb1b3cd79, type: 2}
   m_sharedMaterial: {fileID: 1726415759315284689, guid: 9dd5fef454fcab945a18f10eb1b3cd79, type: 2}
@@ -1145,30 +1150,18 @@ MonoBehaviour:
   orbitRadius: 150
   pickupMessage:
     id: station.pickup
-    sender: Registration
-    title: Last confirmed pickup
-    body: 'Your radio is registered. Equipment issued, acceptance recorded.
-
-
-      Attached:
-      the last confirmed pickup coordinates. The cargo compartment was opened there.
-      After that, the log goes quiet.
-
-
-      Your ship has been refuelled. Take
-      a look if you like.
-
-
-      File status: ''Ship returned. Rest unclear.'''
+    sender: '[[game.registration]]'
+    title: '[[game.last.confirmed.pickup]]'
+    body: '[[game.your.radio.is.registered.equipment.issued.acceptance.recorded.att]]'
     portrait: 5
     signal: pickup
     coordinates: {x: 0, y: 0, z: 0}
     read: 0
     replies:
-    - text: Received. I'll take a look.
-      reaction: Excellent. A confirmed receipt. My favourite kind of adventure.
-    - text: I'm not your courier.
-      reaction: Noted. I'll put that under 'courier comments'.
+    - text: '[[game.received.i.ll.take.a.look]]'
+      reaction: '[[game.excellent.a.confirmed.receipt.my.favourite.kind.of.adventure]]'
+    - text: '[[game.i.m.not.your.courier]]'
+      reaction: '[[game.noted.i.ll.put.that.under.courier.comments]]'
     chosenReply: -1
 --- !u!1 &4486892662967288432
 GameObject:
@@ -1256,6 +1249,7 @@ GameObject:
   - component: {fileID: 8404949328116011404}
   - component: {fileID: 4482118925084467229}
   - component: {fileID: 1568347519734763463}
+  - component: {fileID: 441583558408246212}
   m_Layer: 5
   m_Name: MessageNumber
   m_TagString: Untagged
@@ -1471,6 +1465,7 @@ GameObject:
   - component: {fileID: 5055685507043417967}
   - component: {fileID: 7487392854101237322}
   - component: {fileID: 1125206267325230360}
+  - component: {fileID: 734279944317958055}
   m_Layer: 5
   m_Name: DeviceTitle
   m_TagString: Untagged
@@ -1525,7 +1520,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: OUTPOST / RADIO
+  m_text: AUSSENPOSTEN / FUNK
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 9dd5fef454fcab945a18f10eb1b3cd79, type: 2}
   m_sharedMaterial: {fileID: 1726415759315284689, guid: 9dd5fef454fcab945a18f10eb1b3cd79, type: 2}
@@ -1704,6 +1699,7 @@ GameObject:
   - component: {fileID: 4736198829157296100}
   - component: {fileID: 7854076905318937222}
   - component: {fileID: 4564014547398792837}
+  - component: {fileID: 1733412919055844727}
   m_Layer: 5
   m_Name: Sender
   m_TagString: Untagged
@@ -1758,7 +1754,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Registration
+  m_text: Registrierung
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 9dd5fef454fcab945a18f10eb1b3cd79, type: 2}
   m_sharedMaterial: {fileID: 1726415759315284689, guid: 9dd5fef454fcab945a18f10eb1b3cd79, type: 2}
@@ -1917,6 +1913,7 @@ GameObject:
   - component: {fileID: 7969894573260481683}
   - component: {fileID: 4092818771128631286}
   - component: {fileID: 8001031938972153062}
+  - component: {fileID: 4846359184075637983}
   m_Layer: 5
   m_Name: MessageBody
   m_TagString: Untagged
@@ -1971,10 +1968,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Your radio is registered.
-
-
-    Last confirmed pickup coordinates attached.'
+  m_text: "Dein Funkger\xE4t ist registriert.\n\nLetzte best\xE4tigte Abholkoordinaten
+    anbei."
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 9dd5fef454fcab945a18f10eb1b3cd79, type: 2}
   m_sharedMaterial: {fileID: 1726415759315284689, guid: 9dd5fef454fcab945a18f10eb1b3cd79, type: 2}
@@ -2321,6 +2316,7 @@ GameObject:
   - component: {fileID: 1755736108071673972}
   - component: {fileID: 7901191739143306839}
   - component: {fileID: 3769036778487311302}
+  - component: {fileID: 6789471513926118710}
   m_Layer: 5
   m_Name: Distance
   m_TagString: Untagged
@@ -2631,7 +2627,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3911204865833771429, guid: 25267e7561b60474481e9415ae50a634, type: 3}
       propertyPath: m_text
-      value: '>'
+      value: "N\xE4chstes Level"
       objectReference: {fileID: 0}
     - target: {fileID: 3911204865833771429, guid: 25267e7561b60474481e9415ae50a634, type: 3}
       propertyPath: m_fontSizeMax
@@ -2760,7 +2756,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3911204865833771429, guid: 25267e7561b60474481e9415ae50a634, type: 3}
       propertyPath: m_text
-      value: NEXT
+      value: "N\xC4CHSTE"
       objectReference: {fileID: 0}
     - target: {fileID: 3911204865833771429, guid: 25267e7561b60474481e9415ae50a634, type: 3}
       propertyPath: m_fontSizeMax
@@ -2777,6 +2773,10 @@ PrefabInstance:
     - target: {fileID: 6250363556625553409, guid: 25267e7561b60474481e9415ae50a634, type: 3}
       propertyPath: m_Name
       value: NextMessage
+      objectReference: {fileID: 0}
+    - target: {fileID: 8627084704633323183, guid: 25267e7561b60474481e9415ae50a634, type: 3}
+      propertyPath: source
+      value: '[[game.next]]'
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2889,7 +2889,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3911204865833771429, guid: 25267e7561b60474481e9415ae50a634, type: 3}
       propertyPath: m_text
-      value: <
+      value: "N\xE4chstes Level"
       objectReference: {fileID: 0}
     - target: {fileID: 3911204865833771429, guid: 25267e7561b60474481e9415ae50a634, type: 3}
       propertyPath: m_fontSizeMax
@@ -3018,7 +3018,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3911204865833771429, guid: 25267e7561b60474481e9415ae50a634, type: 3}
       propertyPath: m_text
-      value: Received. I'll take a look.
+      value: Verstanden. Ich sehe es mir an.
       objectReference: {fileID: 0}
     - target: {fileID: 3911204865833771429, guid: 25267e7561b60474481e9415ae50a634, type: 3}
       propertyPath: m_fontSizeMax
@@ -3035,6 +3035,10 @@ PrefabInstance:
     - target: {fileID: 6250363556625553409, guid: 25267e7561b60474481e9415ae50a634, type: 3}
       propertyPath: m_Name
       value: Reply0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8627084704633323183, guid: 25267e7561b60474481e9415ae50a634, type: 3}
+      propertyPath: source
+      value: '[[game.received.i.ll.take.a.look]]'
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3206,7 +3210,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3911204865833771429, guid: 25267e7561b60474481e9415ae50a634, type: 3}
       propertyPath: m_text
-      value: I'm not your courier.
+      value: Ich bin nicht euer Kurier.
       objectReference: {fileID: 0}
     - target: {fileID: 3911204865833771429, guid: 25267e7561b60474481e9415ae50a634, type: 3}
       propertyPath: m_fontSizeMax
@@ -3223,6 +3227,10 @@ PrefabInstance:
     - target: {fileID: 6250363556625553409, guid: 25267e7561b60474481e9415ae50a634, type: 3}
       propertyPath: m_Name
       value: Reply1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8627084704633323183, guid: 25267e7561b60474481e9415ae50a634, type: 3}
+      propertyPath: source
+      value: '[[game.i.m.not.your.courier]]'
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3335,7 +3343,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3911204865833771429, guid: 25267e7561b60474481e9415ae50a634, type: 3}
       propertyPath: m_text
-      value: RADIO
+      value: FUNK
       objectReference: {fileID: 0}
     - target: {fileID: 3911204865833771429, guid: 25267e7561b60474481e9415ae50a634, type: 3}
       propertyPath: m_fontSizeMax
@@ -3356,6 +3364,10 @@ PrefabInstance:
     - target: {fileID: 6250363556625553409, guid: 25267e7561b60474481e9415ae50a634, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8627084704633323183, guid: 25267e7561b60474481e9415ae50a634, type: 3}
+      propertyPath: source
+      value: '[[game.radio]]'
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3482,7 +3494,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3911204865833771429, guid: 25267e7561b60474481e9415ae50a634, type: 3}
       propertyPath: m_text
-      value: CLOSE
+      value: SCHLIESSEN
       objectReference: {fileID: 0}
     - target: {fileID: 3911204865833771429, guid: 25267e7561b60474481e9415ae50a634, type: 3}
       propertyPath: m_fontSizeMax
@@ -3499,6 +3511,10 @@ PrefabInstance:
     - target: {fileID: 6250363556625553409, guid: 25267e7561b60474481e9415ae50a634, type: 3}
       propertyPath: m_Name
       value: Close
+      objectReference: {fileID: 0}
+    - target: {fileID: 8627084704633323183, guid: 25267e7561b60474481e9415ae50a634, type: 3}
+      propertyPath: source
+      value: '[[game.close]]'
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3758,7 +3774,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3911204865833771429, guid: 25267e7561b60474481e9415ae50a634, type: 3}
       propertyPath: m_text
-      value: PREVIOUS
+      value: VORHERIGE
       objectReference: {fileID: 0}
     - target: {fileID: 3911204865833771429, guid: 25267e7561b60474481e9415ae50a634, type: 3}
       propertyPath: m_fontSizeMax
@@ -3775,6 +3791,10 @@ PrefabInstance:
     - target: {fileID: 6250363556625553409, guid: 25267e7561b60474481e9415ae50a634, type: 3}
       propertyPath: m_Name
       value: PreviousMessage
+      objectReference: {fileID: 0}
+    - target: {fileID: 8627084704633323183, guid: 25267e7561b60474481e9415ae50a634, type: 3}
+      propertyPath: source
+      value: '[[game.previous]]'
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4404,7 +4424,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3911204865833771429, guid: 25267e7561b60474481e9415ae50a634, type: 3}
       propertyPath: m_text
-      value: Track signal
+      value: Signal orten
       objectReference: {fileID: 0}
     - target: {fileID: 3911204865833771429, guid: 25267e7561b60474481e9415ae50a634, type: 3}
       propertyPath: m_fontSizeMax
@@ -4421,6 +4441,10 @@ PrefabInstance:
     - target: {fileID: 6250363556625553409, guid: 25267e7561b60474481e9415ae50a634, type: 3}
       propertyPath: m_Name
       value: TrackSignal
+      objectReference: {fileID: 0}
+    - target: {fileID: 8627084704633323183, guid: 25267e7561b60474481e9415ae50a634, type: 3}
+      propertyPath: source
+      value: '[[game.track.signal]]'
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4454,3 +4478,133 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 1518464956479249069, guid: 25267e7561b60474481e9415ae50a634, type: 3}
   m_PrefabInstance: {fileID: 7926423141815154224}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &3602818015250855007
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 458024166970401199}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 933f5654dd184ec7825d27a182bdb5d8, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::LocalizedText
+  source: '[[game.selected.station]]'
+--- !u!114 &2615183753850468014
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2033108592300591072}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 933f5654dd184ec7825d27a182bdb5d8, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::LocalizedText
+  source: Station (1/2)
+--- !u!114 &2785391209852962608
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2398400843448656945}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 933f5654dd184ec7825d27a182bdb5d8, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::LocalizedText
+  source: '[[game.last.confirmed.pickup]]'
+--- !u!114 &6747017508918218835
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3303345511323383933}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 933f5654dd184ec7825d27a182bdb5d8, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::LocalizedText
+  source: '[[game.audio.only]]'
+--- !u!114 &8677580765184510252
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3548341516436145030}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 933f5654dd184ec7825d27a182bdb5d8, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::LocalizedText
+  source: '[[game.scroll.swipe]]'
+--- !u!114 &441583558408246212
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4990366383695620177}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 933f5654dd184ec7825d27a182bdb5d8, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::LocalizedText
+  source: 1 / 1
+--- !u!114 &734279944317958055
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6219699972522203017}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 933f5654dd184ec7825d27a182bdb5d8, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::LocalizedText
+  source: '[[game.outpost.radio]]'
+--- !u!114 &1733412919055844727
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6633161447700599783}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 933f5654dd184ec7825d27a182bdb5d8, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::LocalizedText
+  source: '[[game.registration]]'
+--- !u!114 &4846359184075637983
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7154573423477193831}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 933f5654dd184ec7825d27a182bdb5d8, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::LocalizedText
+  source: '[[game.your.radio.is.registered.last.confirmed.pickup.coordinates.attach]]'
+--- !u!114 &6789471513926118710
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8954893012288761363}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 933f5654dd184ec7825d27a182bdb5d8, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::LocalizedText
+  source: '[[game.signal]]'

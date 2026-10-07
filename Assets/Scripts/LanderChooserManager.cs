@@ -31,7 +31,7 @@ public class LanderChooserManager : MonoBehaviour
     readonly List<LanderController> configurations = new();
 
     const string KEY_SECRET_FOUND = "LANDER_SECRET_FOUND_";
-    [SerializeField, TextArea] string starterBlockedMessage = "As if I'd let you fly that thing to the Moon again.";
+    [SerializeField, TextArea] string starterBlockedMessage = "[[game.as.if.i.d.let.you.fly.that.thing.to.the.moon.again]]";
 
     bool IsStarterBlocked(int index) => index == 0
         && SaveLoadManager.Instance.Data.GetFlag("story.companyLanderReturned");
@@ -200,7 +200,7 @@ public class LanderChooserManager : MonoBehaviour
             {
                 img.color = lockedColor;
                 txtUnlock.gameObject.SetActive(true);
-                txtUnlock.text = lc.unlockCost.ToString("N0", System.Globalization.CultureInfo.InvariantCulture);
+                txtUnlock.SetLocalizedText(lc.unlockCost.ToString("N0", System.Globalization.CultureInfo.InvariantCulture));
             }
             else
             {

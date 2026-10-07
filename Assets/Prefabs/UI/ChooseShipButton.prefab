@@ -90,7 +90,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3911204865833771429, guid: 25267e7561b60474481e9415ae50a634, type: 3}
       propertyPath: m_text
-      value: Lander Bay
+      value: Landehangar
       objectReference: {fileID: 0}
     - target: {fileID: 3911204865833771429, guid: 25267e7561b60474481e9415ae50a634, type: 3}
       propertyPath: m_fontSizeMax
@@ -107,6 +107,10 @@ PrefabInstance:
     - target: {fileID: 6250363556625553409, guid: 25267e7561b60474481e9415ae50a634, type: 3}
       propertyPath: m_Name
       value: ChooseShipButton
+      objectReference: {fileID: 0}
+    - target: {fileID: 8627084704633323183, guid: 25267e7561b60474481e9415ae50a634, type: 3}
+      propertyPath: source
+      value: '[[game.lander.bay]]'
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 48447083}
   - component: {fileID: 48447082}
   - component: {fileID: 48447081}
+  - component: {fileID: 7835654221942705781}
   m_Layer: 5
   m_Name: txtMessage
   m_TagString: Untagged
@@ -66,7 +67,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Here is a little message for you!
+  m_text: "Hier ist eine kleine Nachricht f\xFCr dich!"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 9dd5fef454fcab945a18f10eb1b3cd79, type: 2}
   m_sharedMaterial: {fileID: 1726415759315284689, guid: 9dd5fef454fcab945a18f10eb1b3cd79, type: 2}
@@ -164,6 +165,7 @@ GameObject:
   - component: {fileID: 444255399}
   - component: {fileID: 444255398}
   - component: {fileID: 444255400}
+  - component: {fileID: 7836042632394050158}
   m_Layer: 5
   m_Name: txtScore
   m_TagString: Untagged
@@ -425,6 +427,7 @@ GameObject:
   - component: {fileID: 963409763}
   - component: {fileID: 963409762}
   - component: {fileID: 963409761}
+  - component: {fileID: 5636866441525141373}
   m_Layer: 5
   m_Name: txtXPScore
   m_TagString: Untagged
@@ -577,6 +580,7 @@ GameObject:
   - component: {fileID: 1099285163}
   - component: {fileID: 1099285162}
   - component: {fileID: 1099285164}
+  - component: {fileID: 5195661843650866493}
   m_Layer: 5
   m_Name: txtGameOverTitle
   m_TagString: Untagged
@@ -631,7 +635,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'LANDED
+  m_text: 'GELANDET
 
 
 '
@@ -909,7 +913,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3911204865833771429, guid: 25267e7561b60474481e9415ae50a634, type: 3}
       propertyPath: m_text
-      value: Continue Flight
+      value: Weiterfliegen
       objectReference: {fileID: 0}
     - target: {fileID: 3911204865833771429, guid: 25267e7561b60474481e9415ae50a634, type: 3}
       propertyPath: m_fontSize
@@ -918,6 +922,10 @@ PrefabInstance:
     - target: {fileID: 6250363556625553409, guid: 25267e7561b60474481e9415ae50a634, type: 3}
       propertyPath: m_Name
       value: ContinueFlight
+      objectReference: {fileID: 0}
+    - target: {fileID: 8627084704633323183, guid: 25267e7561b60474481e9415ae50a634, type: 3}
+      propertyPath: source
+      value: '[[game.continue.flight]]'
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1030,7 +1038,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3911204865833771429, guid: 25267e7561b60474481e9415ae50a634, type: 3}
       propertyPath: m_text
-      value: Next Level
+      value: "N\xE4chstes Level"
       objectReference: {fileID: 0}
     - target: {fileID: 3911204865833771429, guid: 25267e7561b60474481e9415ae50a634, type: 3}
       propertyPath: m_fontSize
@@ -1415,3 +1423,57 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 127908166255387509, guid: fec84832433a22643b38ce6aa046c50f, type: 3}
   m_PrefabInstance: {fileID: 7442279590167782689}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &7835654221942705781
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 48447079}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 933f5654dd184ec7825d27a182bdb5d8, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::LocalizedText
+  source: '[[game.here.is.a.little.message.for.you]]'
+--- !u!114 &7836042632394050158
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 444255396}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 933f5654dd184ec7825d27a182bdb5d8, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::LocalizedText
+  source: "SUCCESS +999\nSPEED   +999\nANGLE   +999\nCENTER  +999\nFUEL    +999\nTIME
+    +999\n\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\nSCORE
+    999\n\nBEST    999\n"
+--- !u!114 &5636866441525141373
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 963409759}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 933f5654dd184ec7825d27a182bdb5d8, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::LocalizedText
+  source: XP-SCORE  999999
+--- !u!114 &5195661843650866493
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1099285160}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 933f5654dd184ec7825d27a182bdb5d8, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::LocalizedText
+  source: '[[game.landed]]'

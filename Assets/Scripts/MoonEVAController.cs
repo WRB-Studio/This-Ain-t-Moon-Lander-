@@ -119,7 +119,7 @@ public class MoonEVAController : MonoBehaviour
     {
         if (!btnExit) return;
         bool entering = astronaut != null;
-        if (buttonText) buttonText.text = entering ? "Enter Lander" : "Exit Lander";
+        if (buttonText) buttonText.SetLocalizedText(entering ? "[[game.enter.lander]]" : "[[game.exit.lander]]");
         bool canExit = lander && ((lander.landerState == LanderController.eLanderState.LandedMoon && lander.IsTouchingMoon)
             || (lander.IsOnStation && lander.IsTouchingPad)) && GameController.Instance.Phase == GameController.GamePhase.Landed;
         btnExit.gameObject.SetActive(!GameController.Instance.HasResults

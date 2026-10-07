@@ -16,10 +16,10 @@ public class StationConversation : MonoBehaviour
         public Answer[] answers;
         public bool givesRadio;
     }
-    [SerializeField] string speaker = "Registration";
+    [SerializeField] string speaker = "[[game.registration]]";
     [SerializeField] ConversationStep[] steps;
-    [SerializeField, TextArea] string repeatMessage = "The pickup coordinates are still on your radio.\n\nInvestigate, go home, or enjoy the corridor.\nI have plenty of forms to keep me company.";
-    [SerializeField] string goodbyeAnswer = "Thanks. I'll take a look.";
+    [SerializeField, TextArea] string repeatMessage = "[[game.the.pickup.coordinates.are.still.on.your.radio.open.radio.to.read]]";
+    [SerializeField] string goodbyeAnswer = "[[game.thanks.i.will.take.a.look]]";
     public bool IsShowing { get; private set; }
     StoryDialog dialog;
     CanvasGroup hud;
@@ -39,7 +39,7 @@ public class StationConversation : MonoBehaviour
 #if UNITY_EDITOR
         if (!DebugEnabled) return;
 #endif
-        if (IsShowing || (RadioController.Instance && RadioController.Instance.IsOpen)
+        if (PauseMenu.IsPaused || IsShowing || (RadioController.Instance && RadioController.Instance.IsOpen)
             || !dialog || steps == null || steps.Length == 0 || !GameController.Instance.IsPlaying || StoryTextController.Instance.BlocksGameplayInput
             || !StationInterior.Instance || StationInterior.Instance.CurrentArea != StationInterior.Area.Registration) return;
         StoryTextController.Instance.Restart();
@@ -66,7 +66,7 @@ public class StationConversation : MonoBehaviour
         data.stationConversationPage = page;
         var step = steps[page];
         string[] answers = System.Array.ConvertAll(step.answers, answer => answer.text);
-        string reaction = data.stationConversationReaction;
+        string reaction = Localization.Reference(data.stationConversationReaction);
         string message = string.IsNullOrEmpty(reaction) ? step.message : reaction + "\n\n" + step.message;
         dialog.ShowConversation(speaker, message, answers);
     }

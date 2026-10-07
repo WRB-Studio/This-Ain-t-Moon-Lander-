@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 534726941}
   - component: {fileID: 534726943}
   - component: {fileID: 534726942}
+  - component: {fileID: 5837097313023110921}
   m_Layer: 5
   m_Name: MessageText
   m_TagString: Untagged
@@ -67,9 +68,9 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'Oh.
 
-    So THAT is the Moon.
+    DAS ist also der Mond.
 
-    Minor naming issue.'
+    Kleines Problem mit dem Namen.'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 9dd5fef454fcab945a18f10eb1b3cd79, type: 2}
   m_sharedMaterial: {fileID: 1726415759315284689, guid: 9dd5fef454fcab945a18f10eb1b3cd79, type: 2}
@@ -189,6 +190,7 @@ GameObject:
   - component: {fileID: 610000011}
   - component: {fileID: 610000013}
   - component: {fileID: 610000012}
+  - component: {fileID: 1527106143738858246}
   m_Layer: 5
   m_Name: Speaker
   m_TagString: Untagged
@@ -212,8 +214,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -335, y: 0}
-  m_SizeDelta: {x: 230, y: 480}
+  m_AnchoredPosition: {x: 0, y: 285}
+  m_SizeDelta: {x: 900, y: 65}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &610000013
 CanvasRenderer:
@@ -326,6 +328,7 @@ GameObject:
   - component: {fileID: 610000021}
   - component: {fileID: 610000023}
   - component: {fileID: 610000022}
+  - component: {fileID: 7110641908318767331}
   m_Layer: 5
   m_Name: ConversationText
   m_TagString: Untagged
@@ -411,7 +414,7 @@ MonoBehaviour:
   m_fontSizeBase: 40
   m_fontWeight: 400
   m_enableAutoSizing: 1
-  m_fontSizeMin: 28
+  m_fontSizeMin: 22
   m_fontSizeMax: 34
   m_fontStyle: 0
   m_HorizontalAlignment: 1
@@ -595,7 +598,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3911204865833771429, guid: 25267e7561b60474481e9415ae50a634, type: 3}
       propertyPath: m_text
-      value: Your answer
+      value: "N\xE4chstes Level"
       objectReference: {fileID: 0}
     - target: {fileID: 3911204865833771429, guid: 25267e7561b60474481e9415ae50a634, type: 3}
       propertyPath: m_margin.x
@@ -684,7 +687,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3911204865833771429, guid: 25267e7561b60474481e9415ae50a634, type: 3}
       propertyPath: m_text
-      value: Your answer
+      value: "N\xE4chstes Level"
       objectReference: {fileID: 0}
     - target: {fileID: 3911204865833771429, guid: 25267e7561b60474481e9415ae50a634, type: 3}
       propertyPath: m_margin.x
@@ -821,11 +824,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3911204865833771429, guid: 25267e7561b60474481e9415ae50a634, type: 3}
       propertyPath: m_text
-      value: Continue
+      value: Weiter
       objectReference: {fileID: 0}
     - target: {fileID: 6250363556625553409, guid: 25267e7561b60474481e9415ae50a634, type: 3}
       propertyPath: m_Name
       value: Continue
+      objectReference: {fileID: 0}
+    - target: {fileID: 8627084704633323183, guid: 25267e7561b60474481e9415ae50a634, type: 3}
+      propertyPath: source
+      value: '[[game.continue]]'
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -848,3 +855,42 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name:
   m_EditorClassIdentifier:
+--- !u!114 &5837097313023110921
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 534726940}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 933f5654dd184ec7825d27a182bdb5d8, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::LocalizedText
+  source: '[[game.oh.so.that.is.the.moon.minor.naming.issue]]'
+--- !u!114 &1527106143738858246
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 610000010}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 933f5654dd184ec7825d27a182bdb5d8, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::LocalizedText
+  source: Speaker
+--- !u!114 &7110641908318767331
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 610000020}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 933f5654dd184ec7825d27a182bdb5d8, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::LocalizedText
+  source: ConversationText

@@ -117,7 +117,7 @@ public class StationResident : MonoBehaviour
             int index = Random.Range(0, comments.Length);
             if (comments.Length > 1 && index == lastComment) index = (index + 1) % comments.Length;
             lastComment = index;
-            bubbleText.text = comments[index];
+            bubbleText.SetLocalizedText(comments[index]);
             bubbleUntil = Time.time + commentDuration;
             nextComment = bubbleUntil + commentCooldown;
         }

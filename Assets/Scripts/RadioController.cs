@@ -33,21 +33,19 @@ public class RadioController : MonoBehaviour
     [SerializeField] float orbitRadius = 150f;
     [SerializeField] RadioMessage pickupMessage = new()
     {
-        id = "station.pickup", sender = "Registration", title = "Last confirmed pickup",
-        body = "Your radio is registered. Equipment issued, acceptance recorded.\n\n"
-            + "Attached: the last confirmed pickup coordinates. The cargo compartment was opened there. After that, the log goes quiet.\n\n"
-            + "Your ship has been refuelled. Take a look if you like.\n\nFile status: 'Ship returned. Rest unclear.'",
+        id = "station.pickup", sender = "[[game.registration]]", title = "[[game.last.confirmed.pickup]]",
+        body = "[[game.your.radio.is.registered.equipment.issued.acceptance.recorded.att]]",
         portrait = StoryDialog.Expression.StationCrew, signal = "pickup",
         replies = new[]
         {
-            new RadioReply { text = "Received. I'll take a look.", reaction = "Excellent. A confirmed receipt. My favourite kind of adventure." },
-            new RadioReply { text = "I'm not your courier.", reaction = "Noted. I'll put that under 'courier comments'." }
+            new RadioReply { text = "[[game.received.i.ll.take.a.look]]", reaction = "[[game.excellent.a.confirmed.receipt.my.favourite.kind.of.adventure]]" },
+            new RadioReply { text = "[[game.i.m.not.your.courier]]", reaction = "[[game.noted.i.ll.put.that.under.courier.comments]]" }
         }
     };
     int selected;
     int selectedSignal;
     readonly List<RadioMessage> signals = new();
-    readonly RadioMessage stationSignal = new() { id = "station.beacon", title = "Station", signal = "station" };
+    readonly RadioMessage stationSignal = new() { id = "station.beacon", title = "[[game.station]]", signal = "station" };
     float previousTimeScale;
     bool initialized;
     TMP_Text[] replyLabels;
@@ -84,7 +82,7 @@ public class RadioController : MonoBehaviour
 
     void Update()
     {
-        if (Data == null || !GameController.Instance) return;
+        if (Data == null || !GameController.Instance || PauseMenu.IsPaused) return;
         if (!initialized)
         {
             initialized = true;
@@ -94,17 +92,17 @@ public class RadioController : MonoBehaviour
         bool available = IsOwned && (GameController.Instance.IsPlaying
             || GameController.Instance.Phase == GameController.GamePhase.Landed)
             && !(StationConversation.Instance && StationConversation.Instance.IsShowing)
-            && !(StoryTextController.Instance && (StoryTextController.Instance.BlocksGameplayInput
+            && !(StoryTextController.Instance && ((StoryTextController.Instance.BlocksGameplayInput && !IsOpen)
                 || StoryTextController.Instance.HasPendingDialogue))
             && !(StationInterior.Instance && StationInterior.Instance.IsTransitioning);
         openButton.gameObject.SetActive(available && !IsOpen);
         if (IsOpen && !available) Close();
         int unread = Data.radioMessages.Count(m => !m.read);
-        openLabel.text = unread > 0 ? $"RADIO ({unread})" : "RADIO";
+        openLabel.SetLocalizedText(unread > 0 ? $"[[game.radio]] ({unread})" : "[[game.radio]]");
         unreadLight.SetActive(unread > 0 && Mathf.Repeat(Time.unscaledTime, 1.2f) < 0.8f);
 #if UNITY_EDITOR || UNITY_STANDALONE
         if (Input.GetKeyDown(KeyCode.R)) { if (IsOpen) Close(); else if (available) Open(); }
-        if (IsOpen && Input.GetKeyDown(KeyCode.Escape)) Close();
+        if (IsOpen && !PauseMenu.HandledEscape && Input.GetKeyDown(KeyCode.Escape)) Close();
 #endif
         if (IsOpen) UpdateSignalText();
     }
@@ -139,7 +137,7 @@ public class RadioController : MonoBehaviour
 
     public void Open()
     {
-        if (!IsOwned || IsOpen || !GameController.Instance
+        if (PauseMenu.IsPaused || !IsOwned || IsOpen || !GameController.Instance
             || !(GameController.Instance.IsPlaying || GameController.Instance.Phase == GameController.GamePhase.Landed)
             || (StoryTextController.Instance && (StoryTextController.Instance.BlocksGameplayInput
                 || StoryTextController.Instance.HasPendingDialogue))
@@ -167,10 +165,10 @@ public class RadioController : MonoBehaviour
         selected = Mathf.Clamp(index, 0, Mathf.Max(0, Data.radioMessages.Count - 1));
         if (Data.radioMessages.Count == 0)
         {
-            senderText.text = "No transmissions";
-            titleText.text = "Receiver ready";
-            bodyText.text = "New messages will be stored here.";
-            pageText.text = "0 / 0";
+            senderText.SetLocalizedText("[[game.no.transmissions]]");
+            titleText.SetLocalizedText("[[game.receiver.ready]]");
+            bodyText.SetLocalizedText("[[game.new.messages.will.be.stored.here]]");
+            pageText.SetLocalizedText("0 / 0");
             ShowPortrait(StoryDialog.Expression.None);
             previousButton.interactable = nextButton.interactable = false;
             foreach (var button in replyButtons) button.gameObject.SetActive(false);
@@ -180,15 +178,15 @@ public class RadioController : MonoBehaviour
         var message = Data.radioMessages[selected];
         bool unread = !message.read;
         message.read = true;
-        senderText.text = message.sender;
-        titleText.text = message.title;
-        bodyText.text = message.body;
+        senderText.SetLocalizedText(message.sender);
+        titleText.SetLocalizedText(message.title);
+        bodyText.SetLocalizedText(Localization.Reference(message.body));
         if (message.chosenReply >= 0 && message.replies != null && message.chosenReply < message.replies.Length)
         {
             var reply = message.replies[message.chosenReply];
-            bodyText.text += $"\n\nYOU: {reply.text}\n\n{message.sender}: {reply.reaction}";
+            bodyText.SetLocalizedText(Localization.Reference(message.body) + $"\n\n[[radio.you]]: {Localization.Reference(reply.text)}\n\n{Localization.Reference(message.sender)}: {Localization.Reference(reply.reaction)}");
         }
-        pageText.text = $"{selected + 1} / {Data.radioMessages.Count}";
+        pageText.SetLocalizedText($"{selected + 1} / {Data.radioMessages.Count}");
         previousButton.interactable = selected > 0;
         nextButton.interactable = selected < Data.radioMessages.Count - 1;
         ShowPortrait(message.portrait);
@@ -196,7 +194,7 @@ public class RadioController : MonoBehaviour
         {
             bool visible = message.chosenReply < 0 && message.replies != null && i < message.replies.Length;
             replyButtons[i].gameObject.SetActive(visible);
-            if (visible) replyLabels[i].text = message.replies[i].text;
+            if (visible) replyLabels[i].SetLocalizedText(message.replies[i].text);
         }
         Canvas.ForceUpdateCanvases();
         messageScroll.verticalNormalizedPosition = 1f;
@@ -269,17 +267,17 @@ public class RadioController : MonoBehaviour
         trackButton.gameObject.SetActive(message != null);
         if (message == null)
         {
-            signalNameText.text = "No known signals";
-            signalText.text = "Coordinates appear here when a signal is received.";
+            signalNameText.SetLocalizedText("[[game.no.known.signals]]");
+            signalText.SetLocalizedText("[[game.coordinates.appear.here.when.a.signal.is.received]]");
             return;
         }
-        signalNameText.text = $"{message.title}  ({selectedSignal + 1}/{signals.Count})";
-        trackLabel.text = Data.radioTrackedMessageId == message.id ? "Stop tracking" : "Track signal";
+        signalNameText.SetLocalizedText($"{Localization.Reference(message.title)}  ({selectedSignal + 1}/{signals.Count})");
+        trackLabel.SetLocalizedText(Data.radioTrackedMessageId == message.id ? "[[game.stop.tracking]]" : "[[game.track.signal]]");
         var position = Destination(message);
         float distance = GameController.Instance.ControlledTarget
             ? Vector2.Distance(GameController.Instance.ControlledTarget.position, position) : 0f;
-        string status = Data.radioTrackedMessageId == message.id ? "ACTIVE" : "SELECTED";
-        signalText.text = $"{status}  {position.x:0}, {position.y:0}\nDISTANCE  {distance:0} units";
+        string status = Data.radioTrackedMessageId == message.id ? "[[radio.active]]" : "[[radio.selected]]";
+        signalText.SetLocalizedText($"{status}  {position.x:0}, {position.y:0}\n[[radio.distance]]  {distance:0} [[radio.units]]");
     }
 
     void LateUpdate()
@@ -302,7 +300,7 @@ public class RadioController : MonoBehaviour
         navigationIcon.localRotation = Quaternion.Euler(0f, 0f, Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg);
         navigationDistance.transform.rotation = Quaternion.identity;
         float distance = Vector2.Distance(game.ControlledTarget.position, destination);
-        navigationDistance.text = message.title + "\n" + (distance < 10f ? "SIGNAL NEARBY" : $"{distance:0} u");
+        navigationDistance.SetLocalizedText(Localization.Reference(message.title) + "\n" + (distance < 10f ? "[[game.signal.nearby]]" : $"{distance:0} u"));
         navigationGraphic.color = Color.white;
     }
 

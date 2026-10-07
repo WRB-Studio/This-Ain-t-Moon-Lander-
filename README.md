@@ -23,6 +23,7 @@
 - **Master the landing:** Gravity, landing-pad placement and scoring reward control and planning.
 - **Persistent story prototype:** Story and local save support are included.
 - **Station radio:** Registration issues a portable radio with saved messages, optional video portraits, short replies and selectable signal tracking.
+- **Pause and settings:** Pause with Escape or the HUD button, adjust music/effects and switch all game texts between German and English. [Localization guide](Documentation/Localization.md).
 
 ## Technical details
 

@@ -38,7 +38,7 @@ public class StoryDialog : MonoBehaviour
         foreach (var button in answerButtons) button.gameObject.SetActive(false);
         messageText.gameObject.SetActive(true);
         continueButton.gameObject.SetActive(true);
-        messageText.text = message;
+        messageText.SetLocalizedText(message);
         gameObject.SetActive(true);
         SetCanContinue(canContinue);
     }
@@ -49,13 +49,13 @@ public class StoryDialog : MonoBehaviour
         messageText.gameObject.SetActive(false);
         continueButton.gameObject.SetActive(false);
         conversationContent.SetActive(true);
-        speakerText.text = speaker + ":";
-        conversationText.text = message;
+        speakerText.SetLocalizedText(Localization.Reference(speaker) + ":");
+        conversationText.SetLocalizedText(message);
         for (int i = 0; i < answerButtons.Length; i++)
         {
             bool visible = i < answers.Length;
             answerButtons[i].gameObject.SetActive(visible);
-            if (visible) answerLabels[i].text = answers[i];
+            if (visible) answerLabels[i].SetLocalizedText(answers[i]);
         }
         if (EventSystem.current) EventSystem.current.SetSelectedGameObject(null);
     }

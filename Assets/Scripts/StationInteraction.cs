@@ -4,7 +4,7 @@ public class StationInteraction : MonoBehaviour
 {
     public enum Action { OutsideEntrance, ExitStation, RegistrationEntrance, ExitRegistration, Talk, Locked }
     public Action action;
-    public string buttonLabel = "Enter";
+    public string buttonLabel = "[[game.enter]]";
     [Min(0.1f)] public float distance = 2f;
     public bool CanUse => action != Action.Locked;
 
@@ -14,7 +14,7 @@ public class StationInteraction : MonoBehaviour
     public void Use()
     {
         var game = GameController.Instance;
-        if (!CanUse || !game || game.Phase != GameController.GamePhase.EVA || !game.ControlledTarget
+        if (PauseMenu.IsPaused || !CanUse || !game || game.Phase != GameController.GamePhase.EVA || !game.ControlledTarget
             || !IsNear(game.ControlledTarget.position) || !StationInterior.Instance) return;
         switch (action)
         {

@@ -57,51 +57,51 @@ public class StoryTextController : MonoBehaviour
 
     [Header("First Discoveries")]
     [SerializeField] DiscoveryMessage[] discoveryMessages = {
-        new(Discovery.ZeroG, "Oh. You're actually trying something else.\n\nAnd gravity has stopped participating.\nI hadn't planned for that."),
-        new(Discovery.Moon, "Oh.\nSo THAT is the Moon.\nMinor naming issue."),
-        new(Discovery.MoonLanding, "You actually landed on the Moon.\nI hadn't planned that far ahead.", DiscoveryPresentation.LandingResults),
-        new(Discovery.EVA, "You can get out?\nApparently this spacecraft came with legs.", DiscoveryPresentation.Overlay),
-        new(Discovery.AbandonedShip, "Finally. The company lander.\n\nParked on the Moon with a full tank.\nI'll have a word with accounting.\n\nBring it back to Earth in one piece.\nInsurance doesn't cover\n'forgotten on the Moon'.", DiscoveryPresentation.Immediate),
-        new(Discovery.UFO, "INCOMING TRANSMISSION\n\nYou're late.\n\n...Wait. You're not our pilot.\nWhere did you get that ship?", DiscoveryPresentation.Immediate),
-        new(Discovery.Station, "There you are. Welcome to the station.\nWe were expecting that lander.\n\nUse either landing pad.\nKeep it upright, please.\nOur maintenance crew has had\na very long day.", DiscoveryPresentation.Paused),
-        new(Discovery.StationLanding, "Docking confirmed.\nYou can step outside.", DiscoveryPresentation.LandingResults)
+        new(Discovery.ZeroG, "[[game.oh.you.re.actually.trying.something.else.and.gravity.has.stopped]]"),
+        new(Discovery.Moon, "[[game.oh.so.that.is.the.moon.minor.naming.issue]]"),
+        new(Discovery.MoonLanding, "[[game.you.actually.landed.on.the.moon.i.hadn.t.planned.that.far.ahead]]", DiscoveryPresentation.LandingResults),
+        new(Discovery.EVA, "[[game.you.can.get.out.apparently.this.spacecraft.came.with.legs]]", DiscoveryPresentation.Overlay),
+        new(Discovery.AbandonedShip, "[[game.finally.the.company.lander.parked.on.the.moon.with.a.full.tank.i]]", DiscoveryPresentation.Immediate),
+        new(Discovery.UFO, "[[game.incoming.transmission.you.re.late.wait.you.re.not.our.pilot.where]]", DiscoveryPresentation.Immediate),
+        new(Discovery.Station, "[[game.there.you.are.welcome.to.the.station.we.were.expecting.that.lande]]", DiscoveryPresentation.Paused),
+        new(Discovery.StationLanding, "[[game.docking.confirmed.you.can.step.outside]]", DiscoveryPresentation.LandingResults)
     };
-    [SerializeField, TextArea] string zeroGAfterDepartureMessage = "Wait. Where are you now?\n\nI know. I said I was leaving.\nBut gravity has stopped participating.\nThat wasn't part of my little landing game.";
+    [SerializeField, TextArea] string zeroGAfterDepartureMessage = "[[game.wait.where.are.you.now.i.know.i.said.i.was.leaving.but.gravity.ha]]";
     [SerializeField, Range(0f, 1f)] float flightCommentChance = 0.25f;
-    [SerializeField, TextArea(4, 10)] string earthReturnMessage = "Back in one piece. With the company lander.\nExcellent work.\n\nBy 'show some initiative', I did not mean\nan unauthorized Moon trip on company fuel.\n\nStill. The ship is back.\nI'll keep the report suitably vague.";
+    [SerializeField, TextArea(4, 10)] string earthReturnMessage = "[[game.back.in.one.piece.with.the.company.lander.excellent.work.by.show]]";
 
     [Header("Earth Launches")]
-    [SerializeField, TextArea] string moonKnownEarthMessage = "You know where the real Moon is.\nBack for fuel, or just fond of this place?";
+    [SerializeField, TextArea] string moonKnownEarthMessage = "[[game.you.know.where.the.real.moon.is.back.for.fuel.or.just.fond.of.thi]]";
     [SerializeField] LevelMessages[] earthMessages = {
-        new(1, "Land safely on the marked pad.", "Slow your descent before touching down.", "Keep the spacecraft upright. Aim for the pad."),
-        new(2, "Another pad. Same procedure.", "Bring it down. Preferably in one piece.", "Try landing near the middle this time."),
-        new(4, "Yes. Another landing. How adventurous.", "Another parking spot awaits your grand entrance.", "You seem very committed to the obvious task."),
-        new(5, "You have really made landing your whole thing.", "I briefly hoped you would surprise me.", "The scenery changes. Your ambition does not."),
-        new(7, "I am no longer counting enthusiastically.", "You could explore. Or polish your parking record.", "I specifically told you that you can fly up."),
-        new(8, "You are remarkably good at missing the point.", "I would sigh, but this is text.", "Land if you must. I am past negotiating.")
+        new(1, "[[game.land.safely.on.the.marked.pad]]", "[[game.slow.your.descent.before.touching.down]]", "[[game.keep.the.spacecraft.upright.aim.for.the.pad]]"),
+        new(2, "[[game.another.pad.same.procedure]]", "[[game.bring.it.down.preferably.in.one.piece]]", "[[game.try.landing.near.the.middle.this.time]]"),
+        new(4, "[[game.yes.another.landing.how.adventurous]]", "[[game.another.parking.spot.awaits.your.grand.entrance]]", "[[game.you.seem.very.committed.to.the.obvious.task]]"),
+        new(5, "[[game.you.have.really.made.landing.your.whole.thing]]", "[[game.i.briefly.hoped.you.would.surprise.me]]", "[[game.the.scenery.changes.your.ambition.does.not]]"),
+        new(7, "[[game.i.am.no.longer.counting.enthusiastically]]", "[[game.you.could.explore.or.polish.your.parking.record]]", "[[game.i.specifically.told.you.that.you.can.fly.up]]"),
+        new(8, "[[game.you.are.remarkably.good.at.missing.the.point]]", "[[game.i.would.sigh.but.this.is.text]]", "[[game.land.if.you.must.i.am.past.negotiating]]")
     };
 
     readonly Dictionary<eStoryTextType, string[]> stateMessages = new() {
-        { eStoryTextType.AtmosphereExit, new[] { "There you go. Beyond the parking spots.", "Still exploring. Now I'm curious.", "I wonder how far this goes." } },
-        { eStoryTextType.BackToPlanet, new[] { "Ah. Parking spots again.", "A familiar view. Try not to get too comfortable.", "Back for fuel? That sounds like a plan." } },
-        { eStoryTextType.NearToMoon, new[] { "Back to the Moon. You know more about it than I do.", "I wonder what else is up there.", "Still there. This wasn't in my little landing game." } }
+        { eStoryTextType.AtmosphereExit, new[] { "[[game.there.you.go.beyond.the.parking.spots]]", "[[game.still.exploring.now.i.m.curious]]", "[[game.i.wonder.how.far.this.goes]]" } },
+        { eStoryTextType.BackToPlanet, new[] { "[[game.ah.parking.spots.again]]", "[[game.a.familiar.view.try.not.to.get.too.comfortable]]", "[[game.back.for.fuel.that.sounds.like.a.plan]]" } },
+        { eStoryTextType.NearToMoon, new[] { "[[game.back.to.the.moon.you.know.more.about.it.than.i.do]]", "[[game.i.wonder.what.else.is.up.there]]", "[[game.still.there.this.wasn.t.in.my.little.landing.game]]" } }
     };
 
     [Header("Earth Transmissions")]
     [SerializeField] EarthTransmission[] earthTransmissions = {
-        new(3, "Good. Third level.\nYou understand how a landing pad works.\n\nI was hoping for a little more\ninitiative after the introduction.\nBut fine. Another pad.\n\nDon't let me interrupt your parking."),
-        new(6, "Sixth level.\nYou are seriously collecting\nparking spots.\n\nFine. Let me be very clear:\nFill your tank. Fly up.\nAnd don't stop just because\nthe landing pad disappears from view.\n\nThe edge of the screen is not a wall.\nI really thought you would\ntry that yourself eventually."),
-        new(9, "NINE LEVELS!\nI gave you a sky!\nA spacecraft! Thrusters!\nAnd you keep opening\none parking spot after another!\n\nFULL TANK. FLY UP. KEEP GOING.\nI don't know how to make\nthis any clearer!\n\nYou know what? Do whatever you want.\nLand another hundred times.\nGive the pads names. I'm out.")
+        new(3, "[[game.good.third.level.you.understand.how.a.landing.pad.works.i.was.hop]]"),
+        new(6, "[[game.sixth.level.you.are.seriously.collecting.parking.spots.fine.let.m]]"),
+        new(9, "[[game.nine.levels.i.gave.you.a.sky.a.spacecraft.thrusters.and.you.keep]]")
     };
     [Header("After Level Nine")]
     [SerializeField, Range(0f, 1f)] float earthAsideChance = 0.25f;
     [SerializeField, TextArea(1, 5)] string[] earthAsides = {
-        "...", "Uh-huh.", "Sure.", "Of course.", "How surprising.", "Another one.",
-        "You've got this.", "I'm not here.", "That was not an invitation to talk.", "No. I am not commenting on this.",
-        "'Is that pilot still landing?'\n'Yes. Don't ask.'\nOh. The microphone is on.",
-        "'Coffee?'\n'Please. It's been nothing but parking all day.'\nWait. Is this still broadcasting?",
-        "'Has anyone told them they can leave?'\n'I did. Several times.'\nOh. You can hear us.",
-        "'Any progress?'\n'The parking situation is excellent.'\nRight. Microphone off."
+        "...", "[[game.uh.huh]]", "[[game.sure]]", "[[game.of.course]]", "[[game.how.surprising]]", "[[game.another.one]]",
+        "[[game.you.ve.got.this]]", "[[game.i.m.not.here]]", "[[game.that.was.not.an.invitation.to.talk]]", "[[game.no.i.am.not.commenting.on.this]]",
+        "[[game.is.that.pilot.still.landing.yes.don.t.ask.oh.the.microphone.is.on]]",
+        "[[game.coffee.please.it.s.been.nothing.but.parking.all.day.wait.is.this]]",
+        "[[game.has.anyone.told.them.they.can.leave.i.did.several.times.oh.you.ca]]",
+        "[[game.any.progress.the.parking.situation.is.excellent.right.microphone]]"
     };
 
     readonly Queue<(string text, string acknowledgement, int transmissionLevel, Discovery? discovery)> queue = new();
@@ -258,6 +258,7 @@ public class StoryTextController : MonoBehaviour
     void Update()
     {
         if (waitForPointerRelease && Input.touchCount == 0 && !Input.GetMouseButton(0)) waitForPointerRelease = false;
+        if (PauseMenu.IsPaused) return;
         if (RadioController.Instance && RadioController.Instance.IsOpen) return;
         if (StationConversation.Instance && StationConversation.Instance.IsShowing) return;
         var game = GameController.Instance;
@@ -407,7 +408,7 @@ public class StoryTextController : MonoBehaviour
         {
             RadioController.Instance.Receive(new RadioMessage
             {
-                id = acknowledgement ?? "operator." + message, sender = "Company", title = "Company transmission",
+                id = acknowledgement ?? "operator." + message, sender = "[[game.company]]", title = "[[game.company.transmission]]",
                 body = message, portrait = StoryDialog.Expression.Neutral
             });
             if (acknowledgement != null) data.SetFlag(acknowledgement, true);
@@ -439,7 +440,7 @@ public class StoryTextController : MonoBehaviour
         if (!stateMessages.TryGetValue(type, out var messages) || messages.Length == 0) return;
         string message = messages[UnityEngine.Random.Range(0, messages.Length)];
         if (GameController.Instance.level < 3 && type == eStoryTextType.BackToPlanet)
-            message = "Back on Earth. You can refuel on a free landing pad.";
+            message = "[[game.back.on.earth.you.can.refuel.on.a.free.landing.pad]]";
         flightCommentUsed = true;
         Show(message);
     }
@@ -457,6 +458,7 @@ public class StoryTextController : MonoBehaviour
         yield return null;
         while (queue.Count > 0)
         {
+            while (PauseMenu.IsPaused) yield return null;
             var entry = queue.Dequeue();
             bool overlay = entry.discovery.HasValue && GetDiscoveryPresentation(entry.discovery.Value) == DiscoveryPresentation.Overlay;
             if (entry.acknowledgement != null && !overlay)
@@ -478,8 +480,8 @@ public class StoryTextController : MonoBehaviour
                         : entry.transmissionLevel == 9 ? StoryDialog.Expression.Angry : StoryDialog.Expression.Neutral;
                     RadioController.Instance.Receive(new RadioMessage
                     {
-                        id = entry.acknowledgement, sender = station ? "Station" : unknown ? "Unknown sender" : "Company",
-                        title = unknown ? "Unidentified transmission" : "Incoming transmission", body = entry.text, portrait = portrait
+                        id = entry.acknowledgement, sender = station ? "[[game.station]]" : unknown ? "[[game.unknown.sender]]" : "[[game.company]]",
+                        title = unknown ? "[[game.unidentified.transmission]]" : "[[game.incoming.transmission]]", body = entry.text, portrait = portrait
                     });
                     data.SetFlag(entry.acknowledgement, true);
                     if (entry.discovery.HasValue) queuedDiscoveries.Remove(entry.discovery.Value);
@@ -535,14 +537,14 @@ public class StoryTextController : MonoBehaviour
             else
             {
                 if (!GameController.Instance.IsPlaying) continue;
-                txtInfo.text = entry.text;
+                txtInfo.SetLocalizedText(entry.text);
                 txtInfo.gameObject.SetActive(true);
                 if (entry.acknowledgement != null)
                 {
                     data.SetFlag(entry.acknowledgement, true);
                     SaveLoadManager.Instance.Save();
                 }
-                yield return new WaitForSecondsRealtime(Mathf.Max(visibleTime, entry.text.Length * 0.055f));
+                yield return PauseMenu.WaitUnpaused(Mathf.Max(visibleTime, Localization.Resolve(entry.text).Length * 0.055f));
                 txtInfo.gameObject.SetActive(false);
             }
         }
@@ -567,6 +569,7 @@ public class StoryTextController : MonoBehaviour
         float elapsed = 0f;
         while (elapsed < duration)
         {
+            while (PauseMenu.IsPaused) yield return null;
             elapsed += Time.unscaledDeltaTime;
             Time.timeScale = Mathf.Lerp(start, target, Mathf.SmoothStep(0f, 1f, Mathf.Clamp01(elapsed / duration)));
             Time.fixedDeltaTime = previousFixedDeltaTime * Mathf.Max(0.01f, Time.timeScale / Mathf.Max(0.001f, previousTimeScale));

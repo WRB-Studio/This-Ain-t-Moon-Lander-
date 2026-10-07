@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 48447083}
   - component: {fileID: 48447082}
   - component: {fileID: 48447081}
+  - component: {fileID: 755776654664953470}
   m_Layer: 5
   m_Name: txtMessage
   m_TagString: Untagged
@@ -66,7 +67,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Here is a little message for you!
+  m_text: "Hier ist eine kleine Nachricht f\xFCr dich!"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 9dd5fef454fcab945a18f10eb1b3cd79, type: 2}
   m_sharedMaterial: {fileID: 1726415759315284689, guid: 9dd5fef454fcab945a18f10eb1b3cd79, type: 2}
@@ -260,6 +261,7 @@ GameObject:
   - component: {fileID: 726297363}
   - component: {fileID: 726297362}
   - component: {fileID: 726297361}
+  - component: {fileID: 2180844545873673803}
   m_Layer: 5
   m_Name: txtGameTitle
   m_TagString: Untagged
@@ -412,6 +414,7 @@ GameObject:
   - component: {fileID: 1099285163}
   - component: {fileID: 1099285162}
   - component: {fileID: 1099285164}
+  - component: {fileID: 3627321557819034300}
   m_Layer: 5
   m_Name: txtGameOverTitle
   m_TagString: Untagged
@@ -466,7 +469,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'LANDED
+  m_text: 'GELANDET
 
 
 '
@@ -555,3 +558,42 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_HorizontalFit: 0
   m_VerticalFit: 2
+--- !u!114 &755776654664953470
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 48447079}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 933f5654dd184ec7825d27a182bdb5d8, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::LocalizedText
+  source: '[[game.here.is.a.little.message.for.you]]'
+--- !u!114 &2180844545873673803
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 726297359}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 933f5654dd184ec7825d27a182bdb5d8, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::LocalizedText
+  source: "This Ain\u2019t Moon Lander!"
+--- !u!114 &3627321557819034300
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1099285160}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 933f5654dd184ec7825d27a182bdb5d8, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::LocalizedText
+  source: '[[game.landed]]'

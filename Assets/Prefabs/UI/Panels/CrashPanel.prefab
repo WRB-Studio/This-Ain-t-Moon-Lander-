@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 48447083}
   - component: {fileID: 48447082}
   - component: {fileID: 48447081}
+  - component: {fileID: 2121016278989805221}
   m_Layer: 5
   m_Name: txtMessage
   m_TagString: Untagged
@@ -66,7 +67,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Here is a little message for you!
+  m_text: "Hier ist eine kleine Nachricht f\xFCr dich!"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 9dd5fef454fcab945a18f10eb1b3cd79, type: 2}
   m_sharedMaterial: {fileID: 1726415759315284689, guid: 9dd5fef454fcab945a18f10eb1b3cd79, type: 2}
@@ -267,6 +268,7 @@ GameObject:
   - component: {fileID: 963409763}
   - component: {fileID: 963409762}
   - component: {fileID: 963409761}
+  - component: {fileID: 3841071561854946532}
   m_Layer: 5
   m_Name: txtXPScore
   m_TagString: Untagged
@@ -419,6 +421,7 @@ GameObject:
   - component: {fileID: 1099285163}
   - component: {fileID: 1099285162}
   - component: {fileID: 1099285164}
+  - component: {fileID: 6977408096746535443}
   m_Layer: 5
   m_Name: txtGameOverTitle
   m_TagString: Untagged
@@ -473,7 +476,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'LANDED
+  m_text: 'GELANDET
 
 
 '
@@ -757,11 +760,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3911204865833771429, guid: 25267e7561b60474481e9415ae50a634, type: 3}
       propertyPath: m_text
-      value: Try Again
+      value: Erneut versuchen
       objectReference: {fileID: 0}
     - target: {fileID: 6250363556625553409, guid: 25267e7561b60474481e9415ae50a634, type: 3}
       propertyPath: m_Name
       value: TryAgain
+      objectReference: {fileID: 0}
+    - target: {fileID: 8627084704633323183, guid: 25267e7561b60474481e9415ae50a634, type: 3}
+      propertyPath: source
+      value: '[[game.try.again]]'
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -897,3 +904,42 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 127908166255387509, guid: fec84832433a22643b38ce6aa046c50f, type: 3}
   m_PrefabInstance: {fileID: 7442279590167782689}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2121016278989805221
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 48447079}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 933f5654dd184ec7825d27a182bdb5d8, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::LocalizedText
+  source: '[[game.here.is.a.little.message.for.you]]'
+--- !u!114 &3841071561854946532
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 963409759}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 933f5654dd184ec7825d27a182bdb5d8, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::LocalizedText
+  source: XP-SCORE  999999
+--- !u!114 &6977408096746535443
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1099285160}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 933f5654dd184ec7825d27a182bdb5d8, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::LocalizedText
+  source: '[[game.landed]]'
