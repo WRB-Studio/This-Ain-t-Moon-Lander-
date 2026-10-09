@@ -15,7 +15,6 @@ public static class RadioAuthoring
     const string InteriorPath = "Assets/Prefabs/Station01/StationInterior.prefab";
     static TMP_FontAsset Font => AssetDatabase.LoadAssetAtPath<TMP_FontAsset>("Assets/Fonts/DejaVuSansMono SDF.asset");
 
-    [MenuItem("Tools/Radio/Build Radio and Registration")]
     public static void Build()
     {
         if (!Application.isBatchMode && !EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo()) return;

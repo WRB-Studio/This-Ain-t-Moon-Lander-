@@ -32,7 +32,6 @@ public static class StationCharacterAuthoring
         public float jointX, jointY, endX, endY;
     }
 
-    [MenuItem("Tools/Characters/Build Station Characters and Preview")]
     public static void Build()
     {
         if (!Application.isBatchMode && !EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo()) return;
@@ -319,7 +318,6 @@ public static class StationCharacterAuthoring
         finally { PrefabUtility.UnloadPrefabContents(root); }
     }
 
-    [MenuItem("Tools/Characters/Export Station Character Preview")]
     public static void ExportResidentPreview()
     {
         var library = JsonUtility.FromJson<Library>(File.ReadAllText($"{ImageFolder}/Characters.layout.json"));

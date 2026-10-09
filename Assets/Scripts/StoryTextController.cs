@@ -109,6 +109,7 @@ public class StoryTextController : MonoBehaviour
     readonly Dictionary<eStoryTextType, float> nextAllowed = new();
     readonly Dictionary<Discovery, float> discoveryReadyAt = new();
     Coroutine runner;
+    StoryLineAudio lineAudio;
     string lastQueued;
     bool shownAtmosphereExit, shownBackToPlanet, shownNearMoon;
     bool flightCommentUsed;
@@ -188,6 +189,7 @@ public class StoryTextController : MonoBehaviour
         EndDiscovery();
         if (txtInfo) txtInfo.gameObject.SetActive(false);
         queue.Clear(); queuedDiscoveries.Clear(); lastQueued = null;
+        if (lineAudio) lineAudio.Stop();
         queuedTransmissions.Clear();
     }
 
@@ -539,8 +541,11 @@ public class StoryTextController : MonoBehaviour
             else
             {
                 if (!GameController.Instance.IsPlaying) continue;
-                txtInfo.SetLocalizedText(entry.text);
+                var node = StoryLibrary.Project ? StoryLibrary.Project.Match(entry.text, StoryLibrary.Flag) : null;
+                txtInfo.SetLocalizedText(node == null ? entry.text : "[[" + node.textKey + "]]");
                 txtInfo.gameObject.SetActive(true);
+                if (!lineAudio) lineAudio = txtInfo.gameObject.AddComponent<StoryLineAudio>();
+                lineAudio.Play(node);
                 if (entry.acknowledgement != null)
                 {
                     data.SetFlag(entry.acknowledgement, true);

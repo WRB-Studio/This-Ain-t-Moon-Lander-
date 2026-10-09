@@ -15,4 +15,4 @@ Die Grafik liegt in `Assets/Images/World/Stairs/StationStairs.png`; `.layout.jso
 
 Zum Platzieren ein Prefab in die Szene ziehen, seinen `LowerConnection` an den unteren Boden und `UpperConnection` an die obere Etage ausrichten. Für eine andere Gesamthöhe möglichst gleichmäßig skalieren. Renderer und Collider bleiben im Editor bearbeitbar. Die Treppen wurden als Bauteile angelegt und noch nicht automatisch in bestehende Stationen eingebaut.
 
-`Tools > Art > Build Station Stairs` erzeugt die Prefabs erneut. `Assets/Scenes/StationStairsPreview.unity` zeigt die vier Bauformen; die Szene gehört nicht zu den Build-Szenen. Die statische Übersicht liegt in `Documentation/StationStairs.png`.
+Der interne Generator `StationStairAuthoring.Build` erzeugt die Prefabs erneut. `Assets/Scenes/StationStairsPreview.unity` zeigt die vier Bauformen; die Szene gehört nicht zu den Build-Szenen. Die statische Übersicht liegt in `Documentation/StationStairs.png`.

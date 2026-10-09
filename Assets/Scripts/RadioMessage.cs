@@ -14,6 +14,8 @@ public class RadioMessage
     public bool read;
     public RadioReply[] replies;
     public int chosenReply = -1;
+    public string storyNodeId;
+    public int storyOriginalReply = -1;
 }
 
 [Serializable]

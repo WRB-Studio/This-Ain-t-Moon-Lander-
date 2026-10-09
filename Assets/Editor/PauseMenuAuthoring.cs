@@ -18,7 +18,6 @@ public static class PauseMenuAuthoring
         ExportConversationPreview();
     }
     static TMP_FontAsset Font => AssetDatabase.LoadAssetAtPath<TMP_FontAsset>("Assets/Fonts/DejaVuSansMono SDF.asset");
-    [MenuItem("Tools/UI/Build Pause Menu")]
     public static void Build()
     {
         if (!Application.isBatchMode && !EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo()) return;

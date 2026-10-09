@@ -60,7 +60,6 @@ public static class CharacterRigAuthoring
         new("Knee", 1035, 912, 120, 120, 1095, 970)
     };
 
-    [MenuItem("Tools/Characters/Rebuild Astronaut Rig and Preview")]
     public static void Build()
     {
         if (!Application.isBatchMode && !EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo()) return;
@@ -510,7 +509,6 @@ public static class CharacterRigAuthoring
         EditorSceneManager.SaveScene(scene, PreviewPath);
     }
 
-    [MenuItem("Tools/Characters/Export Animation Preview Frames")]
     public static void ExportPreview()
     {
         ExportFrames(AssetDatabase.LoadAssetAtPath<GameObject>(VisualPath),

@@ -78,7 +78,7 @@ public class StationConversation : MonoBehaviour
         if (repeat) { Close(); return; }
         var step = steps[data.stationConversationPage];
         if (index < 0 || index >= step.answers.Length) return;
-        data.stationConversationReaction = step.answers[index].reaction;
+        data.stationConversationReaction = dialog.LastStoryReactionReference ?? step.answers[index].reaction;
         if (step.givesRadio && RadioController.Instance) RadioController.Instance.Acquire();
         data.stationConversationPage++;
         if (data.stationConversationPage >= steps.Length)

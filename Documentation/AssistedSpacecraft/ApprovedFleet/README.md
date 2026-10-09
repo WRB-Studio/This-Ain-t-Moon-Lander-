@@ -19,6 +19,6 @@ Die sechs Prefabs in Assets/Prefabs/Spacecraft/AssistedFlight und ihre Instanzen
 
 Die Grafikmaster liegen unter Assets/Images/Spacecraft/ApprovedFleet. Der bestehende Outline-Shader blendet die schwarzen Bildhintergründe aus. Frühere Entwürfe bleiben erhalten.
 
-Assets/Scenes/ApprovedFleetScalePreview.unity ist ein editierbarer statischer Größenvergleich mit sechs Original-Testpads und je einem Astronauten. ScaleOverview.png zeigt diesen Vergleich; Measurements.txt enthält die beim Import gemessenen Werte. Tools > Spacecraft > Apply Approved Upright Fleet wendet die Grafiken erneut an und erzeugt den Vergleich. Der vollständige Flight-Sandbox-Generator berücksichtigt diese Flotte ebenfalls, sofern alle sechs Master vorhanden sind.
+Assets/Scenes/ApprovedFleetScalePreview.unity ist ein editierbarer statischer Größenvergleich mit sechs Original-Testpads und je einem Astronauten. ScaleOverview.png zeigt diesen Vergleich; Measurements.txt enthält die beim Import gemessenen Werte. Der interne Generator ApprovedFleetAuthoring.Build wendet die Grafiken erneut an und erzeugt den Vergleich. Der vollständige Flight-Sandbox-Generator berücksichtigt diese Flotte ebenfalls, sofern alle sechs Master vorhanden sind.
 
 Unity-Kompilierung, Asset-Erstellung und statisches Editor-Rendering durchgeführt. Keine Play-Mode-Tests: Starten, Drehen, seitliches Fliegen, Landen und Aus-/Einsteigen mit den neuen Collidergrößen müssen noch manuell geprüft werden. Funktionale Rollenfähigkeiten (Scannen, Reparatur, neue Abschleppmechanik) sind weiterhin späterer Umfang.

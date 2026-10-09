@@ -18,7 +18,6 @@ public static class CargoMissionAuthoring
     static TMP_FontAsset Font => AssetDatabase.LoadAssetAtPath<TMP_FontAsset>("Assets/Fonts/DejaVuSansMono SDF.asset");
     static Sprite Square => AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Images/Missions/Panel.png");
 
-    [MenuItem("Tools/Story/Build Asteroid Cargo Mission")]
     public static void Build()
     {
         if (!Application.isBatchMode && !EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo()) return;
@@ -448,7 +447,6 @@ public static class CargoMissionAuthoring
     }
     static void Set(SerializedObject data, string field, UnityEngine.Object value) => data.FindProperty(field).objectReferenceValue = value;
 
-    [MenuItem("Tools/Story/Export Cargo Mission Preview")]
     public static void ExportPreview()
     {
         // Render authored assets in Edit Mode; this never enters Play Mode or advances a savegame.

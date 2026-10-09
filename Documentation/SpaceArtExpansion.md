@@ -45,7 +45,7 @@ Diese sechs Rasterquellen wurden mit dem eingebauten Imagegen-Werkzeug erzeugt. 
 
 Architekturmodule liegen in `Assets/Prefabs/World/Modules`; Stationen unter `Assets/Prefabs/World/Stations`; weitere Schiffe unter `Assets/Prefabs/Spacecraft`; die neuen Bewohner unter `Assets/Prefabs/Characters/Expansion`. Die zugehörigen `.layout.json`-Dateien definieren Sprite-Ausschnitte und Gelenkpunkte. `OutlineWorldAuthoring.cs` enthält die Konturpunkte der Asteroiden und die Mondkrater; die resultierenden Meshes, Collider und Linien sind auch direkt im Editor bearbeitbar.
 
-`Tools > Art > Build Space Art Expansion` erzeugt die Outline-Assets erneut. Manuelle Änderungen an erzeugten Prefabs vorher sichern. `Assets/Scenes/SpaceArtGallery.unity` zeigt die Assets und gehört nicht zu den Spiel-Build-Szenen.
+Der interne Generator `SpaceArtAuthoring.Build` erzeugt die Outline-Assets erneut. Manuelle Änderungen an erzeugten Prefabs vorher sichern. `Assets/Scenes/SpaceArtGallery.unity` zeigt die Assets und gehört nicht zu den Spiel-Build-Szenen.
 
 Vorschauen liegen unter `Documentation`: CargoOutpost, CargoAsteroidField, AsteroidVariants, StationExpansion, FleetExpansion, CharacterExpansion, MoonSurface und MoonSurfaceClose.
 

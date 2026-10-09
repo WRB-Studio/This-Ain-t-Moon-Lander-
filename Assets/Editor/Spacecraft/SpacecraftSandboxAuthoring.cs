@@ -31,7 +31,6 @@ public static class SpacecraftSandboxAuthoring
     static Sprite square;
     static TMP_FontAsset font;
 
-    [MenuItem("Tools/Spacecraft/Build Flight Sandbox")]
     public static void Build()
     {
         if (!Application.isBatchMode && !EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo()) return;
@@ -54,7 +53,6 @@ public static class SpacecraftSandboxAuthoring
         if(Names.All(name=>File.Exists("Assets/Images/Spacecraft/ApprovedFleet/"+name+".png"))) ApprovedFleetAuthoring.Build();
         Debug.Log("Spacecraft sandbox authored: 13 assisted-flight ships and 19 pads. No gameplay tests executed.");
     }
-    [MenuItem("Tools/Spacecraft/Add Classic Ships To Sandbox")]
     public static void AddClassicShips()
     {
         if (!Application.isBatchMode && !EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo()) return;
@@ -152,7 +150,6 @@ public static class SpacecraftSandboxAuthoring
         }
         PrefabUtility.SaveAsPrefabAsset(root,path); UnityEngine.Object.DestroyImmediate(root);
     }
-    [MenuItem("Tools/Spacecraft/Use Original Lander Controls")]
     public static void ConfigureClassicFleet()
     {
         for(int i=1;i<=7;i++)

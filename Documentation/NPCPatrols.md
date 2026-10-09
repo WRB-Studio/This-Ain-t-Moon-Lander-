@@ -15,6 +15,6 @@ Vorhandene Bewohner verwenden weiterhin MinMaxX. Neue Speicherstände behalten P
 
 Rhekk nutzt denselben Physikbaustein für seinen Missionsweg. In ausgeblendeten Stationsräumen ohne aktive Boden-Collider läuft seine Raumdurchquerung logisch weiter; beim Raumwechsel wird er auf den jeweiligen Boden gesetzt.
 
-`Assets/Scenes/NPCPatrolPreview.unity` enthält beide Patrouillenarten auf getrennten Treppenstrecken. Sie gehört nicht zu den Build-Szenen. `Tools > Characters > Configure NPC Physics and Patrols` richtet die vorhandenen Prefabs und die Hauptszene erneut ein und erstellt diese Vorschau. Nach einer erneuten Generierung von Charakteren oder Weltbauteilen diesen Schritt wiederholen.
+`Assets/Scenes/NPCPatrolPreview.unity` enthält beide Patrouillenarten auf getrennten Treppenstrecken. Sie gehört nicht zu den Build-Szenen. Der interne Generator `NPCPhysicsAuthoring.Build` richtet die vorhandenen Prefabs und die Hauptszene erneut ein und erstellt diese Vorschau. Nach einer erneuten Generierung von Charakteren oder Weltbauteilen diesen Schritt wiederholen.
 
 Die Skripte wurden im Unity-Editor kompiliert und die Assets gespeichert. Play-Mode-Tests wurden nicht ausgeführt. Manuell prüfen: Auf-/Absteigen, Fallen an Kanten, Pausen/Umkehr, Wegpunktroute, Speichern/Laden und Durchlaufen von Spieler/anderen NPCs.

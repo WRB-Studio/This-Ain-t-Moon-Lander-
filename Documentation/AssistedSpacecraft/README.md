@@ -64,9 +64,9 @@ Die gemeinsamen Prefabs liegen in `Assets/Prefabs/Spacecraft/AssistedFlight`:
 - Schiff-Prefabs: weiteres Schiff hinzufügen, freien `Home Pad` zuweisen und im Editor platzieren. Eindeutigen Namen mit laufender Nummer verwenden; der Testcontroller findet alle Schiffe beim Start und sortiert nach Namen. Neue Schiffe sind automatisch über Tab und Einsteigen erreichbar. Zusätzliche Direktwahlbuttons können aus `SandboxButton` angelegt und über `SelectShip(index)` verbunden werden.
 - `SandboxPilot` und `SandboxButton`: wiederverwendbare Figur und UI-Button.
 
-Die Stationsgeometrie, Collider, Startplätze und das HUD sind im Editor bearbeitbar. `Tools > Spacecraft > Build Flight Sandbox` erzeugt diese Assets neu; Änderungen an der generierten Testszene vorher sichern. Die normale Hauptszene und die bisherigen Lander werden dabei nicht geändert.
+Die Stationsgeometrie, Collider, Startplätze und das HUD sind im Editor bearbeitbar. Der interne Generator `SpacecraftSandboxAuthoring.Build` erzeugt diese Assets neu; Änderungen an der generierten Testszene vorher sichern. Die normale Hauptszene und die bisherigen Lander werden dabei nicht geändert.
 
-`Tools > Spacecraft > Add Classic Ships To Sandbox` ergänzt die alten Modelle in einer bestehenden Testszene, ohne die sechs neuen Schiff-Prefabs erneut zu erzeugen. `Tools > Spacecraft > Use Original Lander Controls` übernimmt die Steuerungswerte aus den Original-Landern in die Testkopien; dabei werden zuvor manuell geänderte klassische Flugwerte ersetzt. Diese Flugwerte und die gemeinsame Tankgröße sind im gleichen Steuerungs-Inspector einstellbar.
+Die interne Methode `SpacecraftSandboxAuthoring.AddClassicShips` ergänzt die alten Modelle in einer bestehenden Testszene, ohne die sechs neuen Schiff-Prefabs erneut zu erzeugen. Die interne Methode `SpacecraftSandboxAuthoring.ConfigureClassicFleet` übernimmt die Steuerungswerte aus den Original-Landern in die Testkopien; dabei werden zuvor manuell geänderte klassische Flugwerte ersetzt. Diese Flugwerte und die gemeinsame Tankgröße sind im gleichen Steuerungs-Inspector einstellbar.
 
 ## Verifikation
 

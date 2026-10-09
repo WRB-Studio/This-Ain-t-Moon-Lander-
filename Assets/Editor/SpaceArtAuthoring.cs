@@ -19,7 +19,6 @@ public static class SpaceArtAuthoring
     static Dictionary<string, GameObject> modules;
     static Dictionary<string, Sprite> fleet;
 
-    [MenuItem("Tools/Art/Build Space Art Expansion")]
     public static void Build()
     {
         if (!Application.isBatchMode && !EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo()) return;

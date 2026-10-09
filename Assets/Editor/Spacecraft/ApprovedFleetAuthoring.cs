@@ -15,7 +15,6 @@ public static class ApprovedFleetAuthoring
     const string Prefabs="Assets/Prefabs/Spacecraft/AssistedFlight";
     static readonly string[] Names={"Courier","Scout","CargoTug","Freighter","Rescue","Maintenance","Interceptor"};
     static readonly float[] Heights={7.5f,9f,8.5f,14f,10f,8.5f,6.5f};
-    [MenuItem("Tools/Spacecraft/Apply Approved Upright Fleet")]
     public static void Build()
     {
         if(!Application.isBatchMode && !EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo()) return;

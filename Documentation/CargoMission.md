@@ -23,7 +23,7 @@ Harte Zusammenstöße der geschleppten Kapsel oder Verlust des Schleppschiffs la
 - `Cargo Rescue Mission` in `MainScene`: Dialogseiten, Zielreferenzen und Missionsparameter.
 - `Assets/Resources/Localization/de.json` und `en.json`: alle Missionsdialoge, Statusmeldungen und Beschriftungen unter `cargo.*`.
 
-`Tools > Story > Build Asteroid Cargo Mission` erstellt die Erstintegration. Bei vorhandener Mission verhindert der Generator eine doppelte Szeneninstanz. Danach die vorhandenen Prefabs und Szeneninstanzen direkt bearbeiten.
+Der interne Generator `CargoMissionAuthoring.Build` erstellt die Erstintegration. Bei vorhandener Mission verhindert der Generator eine doppelte Szeneninstanz. Danach die vorhandenen Prefabs und Szeneninstanzen direkt bearbeiten.
 
 Spielstandversion 6 speichert Kapselposition, Geschwindigkeit, Drehung, Missionsphase, Seillänge, Schleppschiff und den Weg der Figur. Bestehende Spielstände ohne diese Daten beginnen die neue Mission am Außenposten. Die bisherigen Storyflags bleiben erhalten. Die abgeschlossene Rettung bleibt zusätzlich als Storyflag erhalten.
 

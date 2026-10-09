@@ -54,7 +54,7 @@ Alte englische Nachrichten, Gesprächsreaktionen und Ergebnistexte werden anhand
 
 ## Bearbeitung und Prüfung
 
-Layout und Bedienelemente liegen in `Assets/Prefabs/UI/PauseMenu.prefab`; die Buttons verwenden das vorhandene `ActionButton`-Prefab. Das Menü ist in `MainScene` eingebunden. **Tools → UI → Build Pause Menu** baut das Ausgangslayout neu und überschreibt manuelle Änderungen am Menü-Prefab.
+Layout und Bedienelemente liegen in `Assets/Prefabs/UI/PauseMenu.prefab`; die Buttons verwenden das vorhandene `ActionButton`-Prefab. Das Menü ist in `MainScene` eingebunden. Der interne Generator `PauseMenuAuthoring.Build` baut das Ausgangslayout neu und überschreibt manuelle Änderungen am Menü-Prefab.
 
 Für diese Umsetzung wurden die Skripte mit Unity kompiliert und native UI-Vorschauen für Deutsch/Englisch sowie 1080×1920, 1080×2400 und 1920×1080 gerendert. Lange Registrierungsseiten wurden zusätzlich visuell geprüft. Keine automatischen Testläufe oder Spieltests wurden ausgeführt.
 

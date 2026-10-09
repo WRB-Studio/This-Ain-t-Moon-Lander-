@@ -27,6 +27,9 @@ public class RadioController : MonoBehaviour
     [SerializeField] Button[] replyButtons;
     [SerializeField] Portrait[] portraits;
     [SerializeField] GameObject voiceOnly;
+    [SerializeField] Image storyPortrait;
+    StorySession storySession;
+    StoryLineAudio storyAudio;
     [SerializeField] RectTransform navigationIcon;
     [SerializeField] Graphic navigationGraphic;
     [SerializeField] TMP_Text navigationDistance;
@@ -158,6 +161,7 @@ public class RadioController : MonoBehaviour
     {
         if (!IsOpen) return;
         device.SetActive(false);
+        StopStoryAudio(); storySession = null;
         Time.timeScale = previousTimeScale;
         if (EventSystem.current) EventSystem.current.SetSelectedGameObject(null);
         if (StoryTextController.Instance) StoryTextController.Instance.BlockInputUntilRelease();
@@ -165,6 +169,8 @@ public class RadioController : MonoBehaviour
 
     void Select(int index)
     {
+        StopStoryAudio(); storySession = null;
+        if (storyPortrait) storyPortrait.gameObject.SetActive(false);
         selected = Mathf.Clamp(index, 0, Mathf.Max(0, Data.radioMessages.Count - 1));
         if (Data.radioMessages.Count == 0)
         {
@@ -199,6 +205,17 @@ public class RadioController : MonoBehaviour
             replyButtons[i].gameObject.SetActive(visible);
             if (visible) replyLabels[i].SetLocalizedText(message.replies[i].text);
         }
+        if (StoryLibrary.Project)
+        {
+            var node = !string.IsNullOrEmpty(message.storyNodeId) ? StoryLibrary.Project.Find(message.storyNodeId)
+                : StoryLibrary.Project.Match(message.body, StoryLibrary.Flag);
+            if (node != null)
+            {
+                if (message.chosenReply < 0 && node.choices.Count > 0)
+                { storySession = StoryLibrary.Session(); if (storySession.Begin(node)) DrawStoryRadio(); }
+                else ApplyStoryPresentation(node);
+            }
+        }
         Canvas.ForceUpdateCanvases();
         messageScroll.verticalNormalizedPosition = 1f;
         UpdateSignalText();
@@ -222,11 +239,49 @@ public class RadioController : MonoBehaviour
     {
         if (!IsOpen || Data.radioMessages.Count == 0) return;
         var message = Data.radioMessages[selected];
+        if (storySession != null)
+        {
+            if (!storySession.Choose(index, true)) return;
+            if (message.storyOriginalReply < 0) message.storyOriginalReply = storySession.OriginalAnswer;
+            if (storySession.Node != null)
+            { message.storyNodeId = storySession.Node.id; DrawStoryRadio(); SaveLoadManager.Instance.Save(); return; }
+            index = message.storyOriginalReply;
+            if (message.replies != null && index >= 0 && index < message.replies.Length && !string.IsNullOrEmpty(storySession.Reaction))
+                message.replies[index].reaction = "[[" + storySession.Reaction + "]]";
+            message.storyNodeId = null; storySession = null;
+        }
         if (message.chosenReply >= 0 || message.replies == null || index < 0 || index >= message.replies.Length) return;
         message.chosenReply = index;
         Select(selected);
         SaveLoadManager.Instance.Save();
     }
+
+    void DrawStoryRadio()
+    {
+        var node = storySession.Node;
+        senderText.SetLocalizedText(node.speaker ? "[[" + node.speaker.nameKey + "]]" : "");
+        bodyText.SetLocalizedText("[[" + node.textKey + "]]");
+        var choices = storySession.Choices;
+        if (choices.Count > replyButtons.Length) Debug.LogError("Too many story radio answers: " + node.id);
+        for (int i = 0; i < replyButtons.Length; i++)
+        { replyButtons[i].gameObject.SetActive(i < choices.Count); if (i < choices.Count) replyLabels[i].SetLocalizedText("[[" + choices[i].textKey + "]]"); }
+        ApplyStoryPresentation(node);
+    }
+    void ApplyStoryPresentation(StoryNode node)
+    {
+        if (node.channel == StoryChannel.Radio) ShowPortrait(StoryDialog.Expression.None);
+        if (storyPortrait && node.channel != StoryChannel.Radio && node.speaker && node.speaker.portrait)
+        {
+            foreach (var item in portraits) item.visual.SetActive(false);
+            voiceOnly.SetActive(false); storyPortrait.sprite = node.speaker.portrait; storyPortrait.gameObject.SetActive(true);
+        }
+        if (!storyAudio) storyAudio = gameObject.AddComponent<StoryLineAudio>();
+        storyAudio.Play(node);
+    }
+    void StopStoryAudio() { if (storyAudio) storyAudio.Stop(); }
+    void OnEnable() => Localization.Changed += StoryLanguageChanged;
+    void StopStoryPresentation() { Localization.Changed -= StoryLanguageChanged; StopStoryAudio(); }
+    void StoryLanguageChanged() { if (IsOpen && Data != null) Select(selected); }
 
     void TrackSelected()
     {
@@ -309,6 +364,6 @@ public class RadioController : MonoBehaviour
         navigationGraphic.color = Color.white;
     }
 
-    void OnDisable() => Close();
+    void OnDisable() { StopStoryPresentation(); Close(); }
     void OnDestroy() { Close(); if (Instance == this) Instance = null; }
 }

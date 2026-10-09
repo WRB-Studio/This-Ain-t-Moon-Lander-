@@ -10,7 +10,6 @@ public static class FreighterScalePreviewAuthoring
 {
     const string ImagePath = "Assets/Images/Spacecraft/SketchBased/FreighterRefined.png";
     const float Height = 14f;
-    [MenuItem("Tools/Spacecraft/Build Freighter Scale Preview")]
     public static void Build()
     {
         if (!Application.isBatchMode && !EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo()) return;

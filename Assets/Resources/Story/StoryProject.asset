@@ -1,0 +1,3093 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89d31fe232e70614bb90df13b5a6d64b, type: 3}
+  m_Name: StoryProject
+  m_EditorClassIdentifier: Assembly-CSharp::StoryProject
+  chapters:
+  - Ablauf
+  dialogueGroups:
+  - Training und Entdeckungen
+  - Registrierung
+  - Rhekk
+  - Funk
+  - Stationsbewohner
+  chapterAliases: []
+  nodes:
+  - id: game.the.replacement.pilot.take.a.seat.or.stand.the.chair.is.being.rep
+    chapter: Registrierung
+    storyStepId: overview.6
+    title: Der Ersatzpilot?
+    position: {x: 3.782476, y: -569.5536}
+    status: 2
+    purpose: "Bestehender Missionsablauf bleibt beim Abschluss dieses Schritts zust\xE4ndig."
+    questions: 
+    channel: 0
+    speaker: {fileID: 11400000, guid: e1b4e910bb88ddd47a9f1e50c9795e02, type: 2}
+    textKey: game.the.replacement.pilot.take.a.seat.or.stand.the.chair.is.being.rep
+    sourceReference: '[[game.the.replacement.pilot.take.a.seat.or.stand.the.chair.is.being.rep]]'
+    sourcePath: Assets/Prefabs/Station01/StationInterior.prefab
+    sourceProperty: 'steps.Array.data[0]'
+    legacyAnswerCount: 2
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices:
+    - textKey: game.i.only.found.the.ship
+      reactionKey: game.then.you.re.the.replacement.finder.close.enough
+      next: game.where.did.you.get.the.ship
+      conditions: []
+      effects: []
+      continueLegacy: 1
+      legacyAnswer: 0
+      positioned: 0
+      position: {x: 0, y: 0}
+    - textKey: game.who.were.you.expecting
+      reactionKey: game.someone.with.that.lander.you.meet.half.the.requirements
+      next: game.where.did.you.get.the.ship
+      conditions: []
+      effects: []
+      continueLegacy: 1
+      legacyAnswer: 1
+      positioned: 0
+      position: {x: 0, y: 0}
+    overviewOnly: 0
+    answerBoardLayout: 1
+  - id: game.where.did.you.get.the.ship
+    chapter: Registrierung
+    storyStepId: overview.6
+    title: Woher hast du das Schiff?
+    position: {x: 762.0423, y: -297.87003}
+    status: 2
+    purpose: "Bestehender Missionsablauf bleibt beim Abschluss dieses Schritts zust\xE4ndig."
+    questions: 
+    channel: 0
+    speaker: {fileID: 11400000, guid: e1b4e910bb88ddd47a9f1e50c9795e02, type: 2}
+    textKey: game.where.did.you.get.the.ship
+    sourceReference: '[[game.where.did.you.get.the.ship]]'
+    sourcePath: Assets/Prefabs/Station01/StationInterior.prefab
+    sourceProperty: 'steps.Array.data[1]'
+    legacyAnswerCount: 2
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices:
+    - textKey: game.it.was.parked.on.the.moon
+      reactionKey: game.on.the.moon.well.at.least.we.know.where.our.pilot.parked
+      next: game.did.you.bring.the.delivery.we.were.expecting.that.ship.yesterday
+      conditions: []
+      effects: []
+      continueLegacy: 1
+      legacyAnswer: 0
+      positioned: 0
+      position: {x: 0, y: 0}
+    - textKey: game.the.moon.full.tank.no.pilot
+      reactionKey: game.a.full.tank.i.ll.have.a.word.with.accounting.the.missing.pilot.ca
+      next: game.did.you.bring.the.delivery.we.were.expecting.that.ship.yesterday
+      conditions: []
+      effects: []
+      continueLegacy: 1
+      legacyAnswer: 1
+      positioned: 0
+      position: {x: 0, y: 0}
+    overviewOnly: 0
+    answerBoardLayout: 1
+  - id: game.did.you.bring.the.delivery.we.were.expecting.that.ship.yesterday
+    chapter: Registrierung
+    storyStepId: overview.6
+    title: Hast du die Lieferung dabei?
+    position: {x: 1490.0421, y: -166.93811}
+    status: 2
+    purpose: "Bestehender Missionsablauf bleibt beim Abschluss dieses Schritts zust\xE4ndig."
+    questions: 
+    channel: 0
+    speaker: {fileID: 11400000, guid: e1b4e910bb88ddd47a9f1e50c9795e02, type: 2}
+    textKey: game.did.you.bring.the.delivery.we.were.expecting.that.ship.yesterday
+    sourceReference: '[[game.did.you.bring.the.delivery.we.were.expecting.that.ship.yesterday]]'
+    sourcePath: Assets/Prefabs/Station01/StationInterior.prefab
+    sourceProperty: 'steps.Array.data[2]'
+    legacyAnswerCount: 2
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices:
+    - textKey: game.what.delivery
+      reactionKey: game.of.course.nobody.told.you.communication.is.more.of.a.decorative.c
+      next: game.before.we.get.to.the.coordinates.take.this.radio.messages.optiona
+      conditions: []
+      effects: []
+      continueLegacy: 1
+      legacyAnswer: 0
+      positioned: 0
+      position: {x: 0, y: 0}
+    - textKey: game.there.was.nobody.there.to.ask
+      reactionKey: game.that.s.inconvenient.people.are.usually.our.best.source.of.excuses
+      next: game.before.we.get.to.the.coordinates.take.this.radio.messages.optiona
+      conditions: []
+      effects: []
+      continueLegacy: 1
+      legacyAnswer: 1
+      positioned: 0
+      position: {x: 0, y: 0}
+    overviewOnly: 0
+    answerBoardLayout: 1
+  - id: game.before.we.get.to.the.coordinates.take.this.radio.messages.optiona
+    chapter: Registrierung
+    storyStepId: overview.6
+    title: "Bevor wir zu den Koordinaten kommen: Nimm dieses Funkger\xE4t."
+    position: {x: 2365.5588, y: -22.913078}
+    status: 2
+    purpose: "Bestehender Ablauf: Funkger\xE4t ausgeben, unabh\xE4ngig von der Antwort."
+    questions: 
+    channel: 0
+    speaker: {fileID: 11400000, guid: e1b4e910bb88ddd47a9f1e50c9795e02, type: 2}
+    textKey: game.before.we.get.to.the.coordinates.take.this.radio.messages.optiona
+    sourceReference: '[[game.before.we.get.to.the.coordinates.take.this.radio.messages.optiona]]'
+    sourcePath: Assets/Prefabs/Station01/StationInterior.prefab
+    sourceProperty: 'steps.Array.data[3]'
+    legacyAnswerCount: 2
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices:
+    - textKey: game.all.right.i.ll.take.it
+      reactionKey: game.excellent.one.radio.issued.try.to.return.with.the.same.number.of
+      next: game.the.cargo.compartment.was.opened.after.that.the.log.goes.quiet.i
+      conditions: []
+      effects: []
+      continueLegacy: 1
+      legacyAnswer: 0
+      positioned: 0
+      position: {x: 0, y: 0}
+    - textKey: game.no.thanks.i.don.t.need.a.radio
+      reactionKey: game.of.course.i.ll.record.accepted.reluctantly.here.you.go.refusing.e
+      next: game.the.cargo.compartment.was.opened.after.that.the.log.goes.quiet.i
+      conditions: []
+      effects: []
+      continueLegacy: 1
+      legacyAnswer: 1
+      positioned: 0
+      position: {x: 0, y: 0}
+    overviewOnly: 0
+    answerBoardLayout: 1
+  - id: game.the.cargo.compartment.was.opened.after.that.the.log.goes.quiet.i
+    chapter: Registrierung
+    storyStepId: overview.6
+    title: "Der Frachtraum wurde ge\xF6ffnet."
+    position: {x: 147.51657, y: 613.2831}
+    status: 2
+    purpose: "Bestehender Missionsablauf bleibt beim Abschluss dieses Schritts zust\xE4ndig."
+    questions: 
+    channel: 0
+    speaker: {fileID: 11400000, guid: e1b4e910bb88ddd47a9f1e50c9795e02, type: 2}
+    textKey: game.the.cargo.compartment.was.opened.after.that.the.log.goes.quiet.i
+    sourceReference: '[[game.the.cargo.compartment.was.opened.after.that.the.log.goes.quiet.i]]'
+    sourcePath: Assets/Prefabs/Station01/StationInterior.prefab
+    sourceProperty: 'steps.Array.data[4]'
+    legacyAnswerCount: 2
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices:
+    - textKey: game.send.me.the.coordinates
+      reactionKey: game.done.no.heroic.speeches.required
+      next: game.the.coordinates.are.in.a.message.on.your.new.radio.open.radio.and
+      conditions: []
+      effects: []
+      continueLegacy: 1
+      legacyAnswer: 0
+      positioned: 0
+      position: {x: 0, y: 0}
+    - textKey: game.am.i.supposed.to.fix.this.now
+      reactionKey: game.supposed.to.no.you.just.happen.to.have.the.ship.and.very.little.s
+      next: game.the.coordinates.are.in.a.message.on.your.new.radio.open.radio.and
+      conditions: []
+      effects: []
+      continueLegacy: 1
+      legacyAnswer: 1
+      positioned: 0
+      position: {x: 0, y: 0}
+    overviewOnly: 0
+    answerBoardLayout: 1
+  - id: game.the.coordinates.are.in.a.message.on.your.new.radio.open.radio.and
+    chapter: Registrierung
+    storyStepId: overview.6
+    title: "Die Koordinaten findest du in einer Nachricht auf deinem neuen\u2026"
+    position: {x: 1170.5497, y: 678.749}
+    status: 2
+    purpose: "Bestehender Missionsablauf bleibt beim Abschluss dieses Schritts zust\xE4ndig."
+    questions: 
+    channel: 0
+    speaker: {fileID: 11400000, guid: e1b4e910bb88ddd47a9f1e50c9795e02, type: 2}
+    textKey: game.the.coordinates.are.in.a.message.on.your.new.radio.open.radio.and
+    sourceReference: '[[game.the.coordinates.are.in.a.message.on.your.new.radio.open.radio.and]]'
+    sourcePath: Assets/Prefabs/Station01/StationInterior.prefab
+    sourceProperty: 'steps.Array.data[5]'
+    legacyAnswerCount: 2
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices:
+    - textKey: game.i.ll.take.a.look
+      reactionKey: 
+      next: 
+      conditions: []
+      effects: []
+      continueLegacy: 1
+      legacyAnswer: 0
+      positioned: 0
+      position: {x: 0, y: 0}
+    - textKey: game.no.promises
+      reactionKey: 
+      next: 
+      conditions: []
+      effects: []
+      continueLegacy: 1
+      legacyAnswer: 1
+      positioned: 0
+      position: {x: 0, y: 0}
+    overviewOnly: 0
+    answerBoardLayout: 1
+  - id: game.the.pickup.coordinates.are.still.on.your.radio.open.radio.to.read
+    chapter: Registrierung
+    storyStepId: overview.6
+    title: "Die Abholkoordinaten sind noch auf deinem Funkger\xE4t."
+    position: {x: 1909.897, y: 790.04114}
+    status: 2
+    purpose: 
+    questions: 
+    channel: 0
+    speaker: {fileID: 11400000, guid: e1b4e910bb88ddd47a9f1e50c9795e02, type: 2}
+    textKey: game.the.pickup.coordinates.are.still.on.your.radio.open.radio.to.read
+    sourceReference: '[[game.the.pickup.coordinates.are.still.on.your.radio.open.radio.to.read]]'
+    sourcePath: Assets/Prefabs/Station01/StationInterior.prefab
+    sourceProperty: repeatMessage
+    legacyAnswerCount: 1
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices:
+    - textKey: game.thanks.i.will.take.a.look
+      reactionKey: 
+      next: 
+      conditions: []
+      effects: []
+      continueLegacy: 1
+      legacyAnswer: 0
+      positioned: 0
+      position: {x: 0, y: 0}
+    overviewOnly: 0
+    answerBoardLayout: 1
+  - id: game.the.lander.is.back.finally
+    chapter: Stationsbewohner
+    storyStepId: overview.5
+    title: "Das Schiff ist zur\xFCck. Endlich."
+    position: {x: 0, y: 0}
+    status: 2
+    purpose: 
+    questions: 
+    channel: 0
+    speaker: {fileID: 11400000, guid: 4e20f7442cd2cd6419199982e76713ec, type: 2}
+    textKey: game.the.lander.is.back.finally
+    sourceReference: '[[game.the.lander.is.back.finally]]'
+    sourcePath: Assets/Scenes/MainScene.unity
+    sourceProperty: 'comments.Array.data[0]'
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices: []
+    overviewOnly: 0
+    answerBoardLayout: 1
+  - id: game.registration.is.inside.i.was.heading.there.anyway
+    chapter: Stationsbewohner
+    storyStepId: overview.5
+    title: Die Registrierung ist drinnen. Ich wollte ohnehin dorthin.
+    position: {x: 728, y: 0}
+    status: 2
+    purpose: 
+    questions: 
+    channel: 0
+    speaker: {fileID: 11400000, guid: 4e20f7442cd2cd6419199982e76713ec, type: 2}
+    textKey: game.registration.is.inside.i.was.heading.there.anyway
+    sourceReference: '[[game.registration.is.inside.i.was.heading.there.anyway]]'
+    sourcePath: Assets/Scenes/MainScene.unity
+    sourceProperty: 'comments.Array.data[1]'
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices: []
+    overviewOnly: 0
+    answerBoardLayout: 1
+  - id: game.if.it.rattles.it.was.doing.that.before
+    chapter: Stationsbewohner
+    storyStepId: overview.5
+    title: Wenn es klappert, hat es das vorher schon getan.
+    position: {x: 1456, y: 0}
+    status: 2
+    purpose: 
+    questions: 
+    channel: 0
+    speaker: {fileID: 11400000, guid: ee534d94ed841aa479f194b82dbe5f9f, type: 2}
+    textKey: game.if.it.rattles.it.was.doing.that.before
+    sourceReference: '[[game.if.it.rattles.it.was.doing.that.before]]'
+    sourcePath: Assets/Scenes/MainScene.unity
+    sourceProperty: 'comments.Array.data[0]'
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices: []
+    overviewOnly: 0
+    answerBoardLayout: 1
+  - id: game.please.keep.the.landing.pads.clear
+    chapter: Stationsbewohner
+    storyStepId: overview.5
+    title: "Bitte die Landepl\xE4tze freihalten."
+    position: {x: 2184, y: 0}
+    status: 2
+    purpose: 
+    questions: 
+    channel: 0
+    speaker: {fileID: 11400000, guid: ee534d94ed841aa479f194b82dbe5f9f, type: 2}
+    textKey: game.please.keep.the.landing.pads.clear
+    sourceReference: '[[game.please.keep.the.landing.pads.clear]]'
+    sourcePath: Assets/Scenes/MainScene.unity
+    sourceProperty: 'comments.Array.data[1]'
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices: []
+    overviewOnly: 0
+    answerBoardLayout: 1
+  - id: game.you.look.different.on.the.duty.roster
+    chapter: Stationsbewohner
+    storyStepId: overview.5
+    title: Auf dem Dienstplan siehst du anders aus.
+    position: {x: 0, y: 292.5}
+    status: 2
+    purpose: 
+    questions: 
+    channel: 0
+    speaker: {fileID: 11400000, guid: 84780770b5b728a4395bc154f21831b2, type: 2}
+    textKey: game.you.look.different.on.the.duty.roster
+    sourceReference: '[[game.you.look.different.on.the.duty.roster]]'
+    sourcePath: Assets/Scenes/MainScene.unity
+    sourceProperty: 'comments.Array.data[0]'
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices: []
+    overviewOnly: 0
+    answerBoardLayout: 1
+  - id: game.we.expected.the.ship.yesterday
+    chapter: Stationsbewohner
+    storyStepId: overview.5
+    title: Wir haben das Schiff gestern erwartet.
+    position: {x: 728, y: 292.5}
+    status: 2
+    purpose: 
+    questions: 
+    channel: 0
+    speaker: {fileID: 11400000, guid: 84780770b5b728a4395bc154f21831b2, type: 2}
+    textKey: game.we.expected.the.ship.yesterday
+    sourceReference: '[[game.we.expected.the.ship.yesterday]]'
+    sourcePath: Assets/Scenes/MainScene.unity
+    sourceProperty: 'comments.Array.data[1]'
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices: []
+    overviewOnly: 0
+    answerBoardLayout: 1
+  - id: game.new.here.registration.is.over.there
+    chapter: Stationsbewohner
+    storyStepId: overview.5
+    title: "Neu hier? Die Registrierung ist dort dr\xFCben."
+    position: {x: 1456, y: 292.5}
+    status: 2
+    purpose: 
+    questions: 
+    channel: 0
+    speaker: {fileID: 11400000, guid: aa5595844a6f02646b1d504cf29f4637, type: 2}
+    textKey: game.new.here.registration.is.over.there
+    sourceReference: '[[game.new.here.registration.is.over.there]]'
+    sourcePath: Assets/Scenes/MainScene.unity
+    sourceProperty: 'comments.Array.data[0]'
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices: []
+    overviewOnly: 0
+    answerBoardLayout: 1
+  - id: game.the.corridor.is.free.the.paperwork.is.not
+    chapter: Stationsbewohner
+    storyStepId: overview.5
+    title: Der Flur ist frei. Der Papierkram nicht.
+    position: {x: 2184, y: 292.5}
+    status: 2
+    purpose: 
+    questions: 
+    channel: 0
+    speaker: {fileID: 11400000, guid: aa5595844a6f02646b1d504cf29f4637, type: 2}
+    textKey: game.the.corridor.is.free.the.paperwork.is.not
+    sourceReference: '[[game.the.corridor.is.free.the.paperwork.is.not]]'
+    sourcePath: Assets/Scenes/MainScene.unity
+    sourceProperty: 'comments.Array.data[1]'
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices: []
+    overviewOnly: 0
+    answerBoardLayout: 1
+  - id: game.if.this.is.about.the.delivery.please.do.not.give.it.to.me
+    chapter: Stationsbewohner
+    storyStepId: overview.5
+    title: 'Falls es um die Lieferung geht: Gib sie bitte nicht mir.'
+    position: {x: 0, y: 585}
+    status: 2
+    purpose: 
+    questions: 
+    channel: 0
+    speaker: {fileID: 11400000, guid: 605027105623a4a45bf8dcf96ba7b529, type: 2}
+    textKey: game.if.this.is.about.the.delivery.please.do.not.give.it.to.me
+    sourceReference: '[[game.if.this.is.about.the.delivery.please.do.not.give.it.to.me]]'
+    sourcePath: Assets/Scenes/MainScene.unity
+    sourceProperty: 'comments.Array.data[0]'
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices: []
+    overviewOnly: 0
+    answerBoardLayout: 1
+  - id: game.maintenance.is.closed.officially
+    chapter: Stationsbewohner
+    storyStepId: overview.5
+    title: Die Wartung ist geschlossen. Offiziell.
+    position: {x: 728, y: 585}
+    status: 2
+    purpose: 
+    questions: 
+    channel: 0
+    speaker: {fileID: 11400000, guid: 605027105623a4a45bf8dcf96ba7b529, type: 2}
+    textKey: game.maintenance.is.closed.officially
+    sourceReference: '[[game.maintenance.is.closed.officially]]'
+    sourcePath: Assets/Scenes/MainScene.unity
+    sourceProperty: 'comments.Array.data[1]'
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices: []
+    overviewOnly: 0
+    answerBoardLayout: 1
+  - id: game.those.parcels.have.been.waiting.longer.than.i.have
+    chapter: Stationsbewohner
+    storyStepId: overview.5
+    title: "Diese Pakete warten schon l\xE4nger als ich."
+    position: {x: 1456, y: 585}
+    status: 2
+    purpose: 
+    questions: 
+    channel: 0
+    speaker: {fileID: 11400000, guid: 5d7fc6e135e0f0b4c93e91965d00d4c8, type: 2}
+    textKey: game.those.parcels.have.been.waiting.longer.than.i.have
+    sourceReference: '[[game.those.parcels.have.been.waiting.longer.than.i.have]]'
+    sourcePath: Assets/Scenes/MainScene.unity
+    sourceProperty: 'comments.Array.data[0]'
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices: []
+    overviewOnly: 0
+    answerBoardLayout: 1
+  - id: game.storage.says.it.is.not.their.problem
+    chapter: Stationsbewohner
+    storyStepId: overview.5
+    title: Das Lager sagt, es sei nicht sein Problem.
+    position: {x: 2184, y: 585}
+    status: 2
+    purpose: 
+    questions: 
+    channel: 0
+    speaker: {fileID: 11400000, guid: 5d7fc6e135e0f0b4c93e91965d00d4c8, type: 2}
+    textKey: game.storage.says.it.is.not.their.problem
+    sourceReference: '[[game.storage.says.it.is.not.their.problem]]'
+    sourcePath: Assets/Scenes/MainScene.unity
+    sourceProperty: 'comments.Array.data[1]'
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices: []
+    overviewOnly: 0
+    answerBoardLayout: 1
+  - id: game.oh.you.re.actually.trying.something.else.and.gravity.has.stopped
+    chapter: Training und Entdeckungen
+    storyStepId: overview.1
+    title: "Oh. Du probierst tats\xE4chlich etwas anderes."
+    position: {x: 0, y: 0}
+    status: 2
+    purpose: 
+    questions: 
+    channel: 1
+    speaker: {fileID: 11400000, guid: 149b2e3da5e479940a2910bf232e4d67, type: 2}
+    textKey: game.oh.you.re.actually.trying.something.else.and.gravity.has.stopped
+    sourceReference: '[[game.oh.you.re.actually.trying.something.else.and.gravity.has.stopped]]'
+    sourcePath: Assets/Scenes/MainScene.unity
+    sourceProperty: discoveryMessages.Array.data[0].text
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices: []
+    overviewOnly: 0
+    answerBoardLayout: 1
+  - id: game.oh.so.that.is.the.moon.minor.naming.issue
+    chapter: Training und Entdeckungen
+    storyStepId: overview.2
+    title: Oh.
+    position: {x: 728, y: 0}
+    status: 2
+    purpose: 
+    questions: 
+    channel: 1
+    speaker: {fileID: 11400000, guid: 149b2e3da5e479940a2910bf232e4d67, type: 2}
+    textKey: game.oh.so.that.is.the.moon.minor.naming.issue
+    sourceReference: '[[game.oh.so.that.is.the.moon.minor.naming.issue]]'
+    sourcePath: Assets/Scenes/MainScene.unity
+    sourceProperty: discoveryMessages.Array.data[1].text
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices: []
+    overviewOnly: 0
+    answerBoardLayout: 1
+  - id: game.you.actually.landed.on.the.moon.i.hadn.t.planned.that.far.ahead
+    chapter: Training und Entdeckungen
+    storyStepId: overview.2
+    title: "Du bist tats\xE4chlich auf dem Mond gelandet."
+    position: {x: 1456, y: 0}
+    status: 2
+    purpose: 
+    questions: 
+    channel: 1
+    speaker: {fileID: 11400000, guid: 149b2e3da5e479940a2910bf232e4d67, type: 2}
+    textKey: game.you.actually.landed.on.the.moon.i.hadn.t.planned.that.far.ahead
+    sourceReference: '[[game.you.actually.landed.on.the.moon.i.hadn.t.planned.that.far.ahead]]'
+    sourcePath: Assets/Scenes/MainScene.unity
+    sourceProperty: discoveryMessages.Array.data[2].text
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices: []
+    overviewOnly: 0
+    answerBoardLayout: 1
+  - id: game.you.can.get.out.apparently.this.spacecraft.came.with.legs
+    chapter: Training und Entdeckungen
+    storyStepId: overview.3
+    title: Du kannst aussteigen?
+    position: {x: 2184, y: 0}
+    status: 2
+    purpose: 
+    questions: 
+    channel: 1
+    speaker: {fileID: 11400000, guid: 149b2e3da5e479940a2910bf232e4d67, type: 2}
+    textKey: game.you.can.get.out.apparently.this.spacecraft.came.with.legs
+    sourceReference: '[[game.you.can.get.out.apparently.this.spacecraft.came.with.legs]]'
+    sourcePath: Assets/Scenes/MainScene.unity
+    sourceProperty: discoveryMessages.Array.data[3].text
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices: []
+    overviewOnly: 0
+    answerBoardLayout: 1
+  - id: game.finally.the.company.lander.parked.on.the.moon.with.a.full.tank.i
+    chapter: Training und Entdeckungen
+    storyStepId: overview.4
+    title: Endlich. Das Firmenschiff.
+    position: {x: 0, y: 287.9125}
+    status: 2
+    purpose: 
+    questions: 
+    channel: 1
+    speaker: {fileID: 11400000, guid: 149b2e3da5e479940a2910bf232e4d67, type: 2}
+    textKey: game.finally.the.company.lander.parked.on.the.moon.with.a.full.tank.i
+    sourceReference: '[[game.finally.the.company.lander.parked.on.the.moon.with.a.full.tank.i]]'
+    sourcePath: Assets/Scenes/MainScene.unity
+    sourceProperty: discoveryMessages.Array.data[4].text
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices: []
+    overviewOnly: 0
+    answerBoardLayout: 1
+  - id: game.incoming.transmission.you.re.late.wait.you.re.not.our.pilot.where
+    chapter: Training und Entdeckungen
+    storyStepId: overview.5
+    title: "EINGEHENDE \xDCBERTRAGUNG"
+    position: {x: 728, y: 292.5}
+    status: 2
+    purpose: 
+    questions: 
+    channel: 1
+    speaker: {fileID: 11400000, guid: 68d374d89042451429c735183abe2c13, type: 2}
+    textKey: game.incoming.transmission.you.re.late.wait.you.re.not.our.pilot.where
+    sourceReference: '[[game.incoming.transmission.you.re.late.wait.you.re.not.our.pilot.where]]'
+    sourcePath: Assets/Scenes/MainScene.unity
+    sourceProperty: discoveryMessages.Array.data[5].text
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices: []
+    overviewOnly: 0
+    answerBoardLayout: 1
+  - id: game.there.you.are.welcome.to.the.station.we.were.expecting.that.lande
+    chapter: Training und Entdeckungen
+    storyStepId: overview.5
+    title: Da bist du ja. Willkommen auf der Station.
+    position: {x: 1456, y: 292.5}
+    status: 2
+    purpose: 
+    questions: 
+    channel: 1
+    speaker: {fileID: 11400000, guid: e1b4e910bb88ddd47a9f1e50c9795e02, type: 2}
+    textKey: game.there.you.are.welcome.to.the.station.we.were.expecting.that.lande
+    sourceReference: '[[game.there.you.are.welcome.to.the.station.we.were.expecting.that.lande]]'
+    sourcePath: Assets/Scenes/MainScene.unity
+    sourceProperty: discoveryMessages.Array.data[6].text
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices: []
+    overviewOnly: 0
+    answerBoardLayout: 1
+  - id: game.docking.confirmed.you.can.step.outside
+    chapter: Training und Entdeckungen
+    storyStepId: overview.5
+    title: "Andocken best\xE4tigt."
+    position: {x: 2184, y: 292.5}
+    status: 2
+    purpose: 
+    questions: 
+    channel: 1
+    speaker: {fileID: 11400000, guid: e1b4e910bb88ddd47a9f1e50c9795e02, type: 2}
+    textKey: game.docking.confirmed.you.can.step.outside
+    sourceReference: '[[game.docking.confirmed.you.can.step.outside]]'
+    sourcePath: Assets/Scenes/MainScene.unity
+    sourceProperty: discoveryMessages.Array.data[7].text
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices: []
+    overviewOnly: 0
+    answerBoardLayout: 1
+  - id: game.wait.where.are.you.now.i.know.i.said.i.was.leaving.but.gravity.ha
+    chapter: Training und Entdeckungen
+    storyStepId: overview.0
+    title: Moment. Wo bist du jetzt?
+    position: {x: 0, y: 585}
+    status: 2
+    purpose: 
+    questions: 
+    channel: 1
+    speaker: {fileID: 11400000, guid: 149b2e3da5e479940a2910bf232e4d67, type: 2}
+    textKey: game.wait.where.are.you.now.i.know.i.said.i.was.leaving.but.gravity.ha
+    sourceReference: '[[game.wait.where.are.you.now.i.know.i.said.i.was.leaving.but.gravity.ha]]'
+    sourcePath: Assets/Scenes/MainScene.unity
+    sourceProperty: zeroGAfterDepartureMessage
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices: []
+    overviewOnly: 0
+    answerBoardLayout: 1
+  - id: game.back.in.one.piece.with.the.company.lander.excellent.work.by.show
+    chapter: Training und Entdeckungen
+    storyStepId: overview.0
+    title: "In einem St\xFCck zur\xFCck. Mit dem Firmenschiff."
+    position: {x: 728, y: 585}
+    status: 2
+    purpose: 
+    questions: 
+    channel: 1
+    speaker: {fileID: 11400000, guid: 149b2e3da5e479940a2910bf232e4d67, type: 2}
+    textKey: game.back.in.one.piece.with.the.company.lander.excellent.work.by.show
+    sourceReference: '[[game.back.in.one.piece.with.the.company.lander.excellent.work.by.show]]'
+    sourcePath: Assets/Scenes/MainScene.unity
+    sourceProperty: earthReturnMessage
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices: []
+    overviewOnly: 0
+    answerBoardLayout: 1
+  - id: game.you.know.where.the.real.moon.is.back.for.fuel.or.just.fond.of.thi
+    chapter: Training und Entdeckungen
+    storyStepId: overview.0
+    title: "Du wei\xDFt, wo der echte Mond ist."
+    position: {x: 1456, y: 585}
+    status: 2
+    purpose: 
+    questions: 
+    channel: 1
+    speaker: {fileID: 11400000, guid: 149b2e3da5e479940a2910bf232e4d67, type: 2}
+    textKey: game.you.know.where.the.real.moon.is.back.for.fuel.or.just.fond.of.thi
+    sourceReference: '[[game.you.know.where.the.real.moon.is.back.for.fuel.or.just.fond.of.thi]]'
+    sourcePath: Assets/Scenes/MainScene.unity
+    sourceProperty: moonKnownEarthMessage
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices: []
+    overviewOnly: 0
+    answerBoardLayout: 1
+  - id: game.land.safely.on.the.marked.pad
+    chapter: Training und Entdeckungen
+    storyStepId: overview.0
+    title: Lande sicher auf dem markierten Landeplatz.
+    position: {x: 2184, y: 585}
+    status: 2
+    purpose: 
+    questions: 
+    channel: 1
+    speaker: {fileID: 11400000, guid: 149b2e3da5e479940a2910bf232e4d67, type: 2}
+    textKey: game.land.safely.on.the.marked.pad
+    sourceReference: '[[game.land.safely.on.the.marked.pad]]'
+    sourcePath: Assets/Scenes/MainScene.unity
+    sourceProperty: 'earthMessages.Array.data[0].messages.Array.data[0]'
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices: []
+    overviewOnly: 0
+    answerBoardLayout: 1
+  - id: game.slow.your.descent.before.touching.down
+    chapter: Training und Entdeckungen
+    storyStepId: overview.0
+    title: Bremse vor dem Aufsetzen deinen Sinkflug ab.
+    position: {x: 0, y: 877.5}
+    status: 2
+    purpose: 
+    questions: 
+    channel: 1
+    speaker: {fileID: 11400000, guid: 149b2e3da5e479940a2910bf232e4d67, type: 2}
+    textKey: game.slow.your.descent.before.touching.down
+    sourceReference: '[[game.slow.your.descent.before.touching.down]]'
+    sourcePath: Assets/Scenes/MainScene.unity
+    sourceProperty: 'earthMessages.Array.data[0].messages.Array.data[1]'
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices: []
+    overviewOnly: 0
+    answerBoardLayout: 1
+  - id: game.keep.the.spacecraft.upright.aim.for.the.pad
+    chapter: Training und Entdeckungen
+    storyStepId: overview.0
+    title: Halte das Schiff aufrecht. Ziele auf den Landeplatz.
+    position: {x: 728, y: 877.5}
+    status: 2
+    purpose: 
+    questions: 
+    channel: 1
+    speaker: {fileID: 11400000, guid: 149b2e3da5e479940a2910bf232e4d67, type: 2}
+    textKey: game.keep.the.spacecraft.upright.aim.for.the.pad
+    sourceReference: '[[game.keep.the.spacecraft.upright.aim.for.the.pad]]'
+    sourcePath: Assets/Scenes/MainScene.unity
+    sourceProperty: 'earthMessages.Array.data[0].messages.Array.data[2]'
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices: []
+    overviewOnly: 0
+    answerBoardLayout: 1
+  - id: game.another.pad.same.procedure
+    chapter: Training und Entdeckungen
+    storyStepId: overview.0
+    title: Noch ein Landeplatz. Gleiches Verfahren.
+    position: {x: 1456, y: 877.5}
+    status: 2
+    purpose: 
+    questions: 
+    channel: 1
+    speaker: {fileID: 11400000, guid: 149b2e3da5e479940a2910bf232e4d67, type: 2}
+    textKey: game.another.pad.same.procedure
+    sourceReference: '[[game.another.pad.same.procedure]]'
+    sourcePath: Assets/Scenes/MainScene.unity
+    sourceProperty: 'earthMessages.Array.data[1].messages.Array.data[0]'
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices: []
+    overviewOnly: 0
+    answerBoardLayout: 1
+  - id: game.bring.it.down.preferably.in.one.piece
+    chapter: Training und Entdeckungen
+    storyStepId: overview.0
+    title: "Bring es runter. M\xF6glichst in einem St\xFCck."
+    position: {x: 2184, y: 877.5}
+    status: 2
+    purpose: 
+    questions: 
+    channel: 1
+    speaker: {fileID: 11400000, guid: 149b2e3da5e479940a2910bf232e4d67, type: 2}
+    textKey: game.bring.it.down.preferably.in.one.piece
+    sourceReference: '[[game.bring.it.down.preferably.in.one.piece]]'
+    sourcePath: Assets/Scenes/MainScene.unity
+    sourceProperty: 'earthMessages.Array.data[1].messages.Array.data[1]'
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices: []
+    overviewOnly: 0
+    answerBoardLayout: 1
+  - id: game.try.landing.near.the.middle.this.time
+    chapter: Training und Entdeckungen
+    storyStepId: overview.0
+    title: "Lande diesmal m\xF6glichst in der Mitte."
+    position: {x: 0, y: 1170}
+    status: 2
+    purpose: 
+    questions: 
+    channel: 1
+    speaker: {fileID: 11400000, guid: 149b2e3da5e479940a2910bf232e4d67, type: 2}
+    textKey: game.try.landing.near.the.middle.this.time
+    sourceReference: '[[game.try.landing.near.the.middle.this.time]]'
+    sourcePath: Assets/Scenes/MainScene.unity
+    sourceProperty: 'earthMessages.Array.data[1].messages.Array.data[2]'
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices: []
+    overviewOnly: 0
+    answerBoardLayout: 1
+  - id: game.yes.another.landing.how.adventurous
+    chapter: Training und Entdeckungen
+    storyStepId: overview.0
+    title: Ja. Noch eine Landung. Wie abenteuerlich.
+    position: {x: 728, y: 1170}
+    status: 2
+    purpose: 
+    questions: 
+    channel: 1
+    speaker: {fileID: 11400000, guid: 149b2e3da5e479940a2910bf232e4d67, type: 2}
+    textKey: game.yes.another.landing.how.adventurous
+    sourceReference: '[[game.yes.another.landing.how.adventurous]]'
+    sourcePath: Assets/Scenes/MainScene.unity
+    sourceProperty: 'earthMessages.Array.data[2].messages.Array.data[0]'
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices: []
+    overviewOnly: 0
+    answerBoardLayout: 1
+  - id: game.another.parking.spot.awaits.your.grand.entrance
+    chapter: Training und Entdeckungen
+    storyStepId: overview.0
+    title: "Ein weiterer Parkplatz wartet auf deinen gro\xDFen Auftritt."
+    position: {x: 1456, y: 1170}
+    status: 2
+    purpose: 
+    questions: 
+    channel: 1
+    speaker: {fileID: 11400000, guid: 149b2e3da5e479940a2910bf232e4d67, type: 2}
+    textKey: game.another.parking.spot.awaits.your.grand.entrance
+    sourceReference: '[[game.another.parking.spot.awaits.your.grand.entrance]]'
+    sourcePath: Assets/Scenes/MainScene.unity
+    sourceProperty: 'earthMessages.Array.data[2].messages.Array.data[1]'
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices: []
+    overviewOnly: 0
+    answerBoardLayout: 1
+  - id: game.you.seem.very.committed.to.the.obvious.task
+    chapter: Training und Entdeckungen
+    storyStepId: overview.0
+    title: Du widmest dich sehr konsequent der offensichtlichen Aufgabe.
+    position: {x: 2184, y: 1170}
+    status: 2
+    purpose: 
+    questions: 
+    channel: 1
+    speaker: {fileID: 11400000, guid: 149b2e3da5e479940a2910bf232e4d67, type: 2}
+    textKey: game.you.seem.very.committed.to.the.obvious.task
+    sourceReference: '[[game.you.seem.very.committed.to.the.obvious.task]]'
+    sourcePath: Assets/Scenes/MainScene.unity
+    sourceProperty: 'earthMessages.Array.data[2].messages.Array.data[2]'
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices: []
+    overviewOnly: 0
+    answerBoardLayout: 1
+  - id: game.you.have.really.made.landing.your.whole.thing
+    chapter: Training und Entdeckungen
+    storyStepId: overview.0
+    title: Landungen sind wirklich dein Lebensinhalt geworden.
+    position: {x: 0, y: 1462.5}
+    status: 2
+    purpose: 
+    questions: 
+    channel: 1
+    speaker: {fileID: 11400000, guid: 149b2e3da5e479940a2910bf232e4d67, type: 2}
+    textKey: game.you.have.really.made.landing.your.whole.thing
+    sourceReference: '[[game.you.have.really.made.landing.your.whole.thing]]'
+    sourcePath: Assets/Scenes/MainScene.unity
+    sourceProperty: 'earthMessages.Array.data[3].messages.Array.data[0]'
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices: []
+    overviewOnly: 0
+    answerBoardLayout: 1
+  - id: game.i.briefly.hoped.you.would.surprise.me
+    chapter: Training und Entdeckungen
+    storyStepId: overview.0
+    title: "Kurz hatte ich gehofft, du w\xFCrdest mich \xFCberraschen."
+    position: {x: 728, y: 1462.5}
+    status: 2
+    purpose: 
+    questions: 
+    channel: 1
+    speaker: {fileID: 11400000, guid: 149b2e3da5e479940a2910bf232e4d67, type: 2}
+    textKey: game.i.briefly.hoped.you.would.surprise.me
+    sourceReference: '[[game.i.briefly.hoped.you.would.surprise.me]]'
+    sourcePath: Assets/Scenes/MainScene.unity
+    sourceProperty: 'earthMessages.Array.data[3].messages.Array.data[1]'
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices: []
+    overviewOnly: 0
+    answerBoardLayout: 1
+  - id: game.the.scenery.changes.your.ambition.does.not
+    chapter: Training und Entdeckungen
+    storyStepId: overview.0
+    title: "Die Landschaft \xE4ndert sich. Dein Ehrgeiz nicht."
+    position: {x: 1456, y: 1462.5}
+    status: 2
+    purpose: 
+    questions: 
+    channel: 1
+    speaker: {fileID: 11400000, guid: 149b2e3da5e479940a2910bf232e4d67, type: 2}
+    textKey: game.the.scenery.changes.your.ambition.does.not
+    sourceReference: '[[game.the.scenery.changes.your.ambition.does.not]]'
+    sourcePath: Assets/Scenes/MainScene.unity
+    sourceProperty: 'earthMessages.Array.data[3].messages.Array.data[2]'
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices: []
+    overviewOnly: 0
+    answerBoardLayout: 1
+  - id: game.i.am.no.longer.counting.enthusiastically
+    chapter: Training und Entdeckungen
+    storyStepId: overview.0
+    title: "Ich z\xE4hle inzwischen ohne Begeisterung mit."
+    position: {x: 2184, y: 1462.5}
+    status: 2
+    purpose: 
+    questions: 
+    channel: 1
+    speaker: {fileID: 11400000, guid: 149b2e3da5e479940a2910bf232e4d67, type: 2}
+    textKey: game.i.am.no.longer.counting.enthusiastically
+    sourceReference: '[[game.i.am.no.longer.counting.enthusiastically]]'
+    sourcePath: Assets/Scenes/MainScene.unity
+    sourceProperty: 'earthMessages.Array.data[4].messages.Array.data[0]'
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices: []
+    overviewOnly: 0
+    answerBoardLayout: 1
+  - id: game.you.could.explore.or.polish.your.parking.record
+    chapter: Training und Entdeckungen
+    storyStepId: overview.0
+    title: "Du k\xF6nntest auf Entdeckung gehen. Oder deinen Parkrekord verbe\u2026"
+    position: {x: 0, y: 1755}
+    status: 2
+    purpose: 
+    questions: 
+    channel: 1
+    speaker: {fileID: 11400000, guid: 149b2e3da5e479940a2910bf232e4d67, type: 2}
+    textKey: game.you.could.explore.or.polish.your.parking.record
+    sourceReference: '[[game.you.could.explore.or.polish.your.parking.record]]'
+    sourcePath: Assets/Scenes/MainScene.unity
+    sourceProperty: 'earthMessages.Array.data[4].messages.Array.data[1]'
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices: []
+    overviewOnly: 0
+    answerBoardLayout: 1
+  - id: game.i.specifically.told.you.that.you.can.fly.up
+    chapter: Training und Entdeckungen
+    storyStepId: overview.0
+    title: "Ich habe dir ausdr\xFCcklich gesagt, dass du nach oben fliegen ka\u2026"
+    position: {x: 728, y: 1755}
+    status: 2
+    purpose: 
+    questions: 
+    channel: 1
+    speaker: {fileID: 11400000, guid: 149b2e3da5e479940a2910bf232e4d67, type: 2}
+    textKey: game.i.specifically.told.you.that.you.can.fly.up
+    sourceReference: '[[game.i.specifically.told.you.that.you.can.fly.up]]'
+    sourcePath: Assets/Scenes/MainScene.unity
+    sourceProperty: 'earthMessages.Array.data[4].messages.Array.data[2]'
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices: []
+    overviewOnly: 0
+    answerBoardLayout: 1
+  - id: game.you.are.remarkably.good.at.missing.the.point
+    chapter: Training und Entdeckungen
+    storyStepId: overview.0
+    title: Du bist erstaunlich gut darin, am Ziel vorbeizudenken.
+    position: {x: 1456, y: 1755}
+    status: 2
+    purpose: 
+    questions: 
+    channel: 1
+    speaker: {fileID: 11400000, guid: 149b2e3da5e479940a2910bf232e4d67, type: 2}
+    textKey: game.you.are.remarkably.good.at.missing.the.point
+    sourceReference: '[[game.you.are.remarkably.good.at.missing.the.point]]'
+    sourcePath: Assets/Scenes/MainScene.unity
+    sourceProperty: 'earthMessages.Array.data[5].messages.Array.data[0]'
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices: []
+    overviewOnly: 0
+    answerBoardLayout: 1
+  - id: game.i.would.sigh.but.this.is.text
+    chapter: Training und Entdeckungen
+    storyStepId: overview.0
+    title: "Ich w\xFCrde seufzen, aber das hier ist Text."
+    position: {x: 2184, y: 1755}
+    status: 2
+    purpose: 
+    questions: 
+    channel: 1
+    speaker: {fileID: 11400000, guid: 149b2e3da5e479940a2910bf232e4d67, type: 2}
+    textKey: game.i.would.sigh.but.this.is.text
+    sourceReference: '[[game.i.would.sigh.but.this.is.text]]'
+    sourcePath: Assets/Scenes/MainScene.unity
+    sourceProperty: 'earthMessages.Array.data[5].messages.Array.data[1]'
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices: []
+    overviewOnly: 0
+    answerBoardLayout: 1
+  - id: game.land.if.you.must.i.am.past.negotiating
+    chapter: Training und Entdeckungen
+    storyStepId: overview.0
+    title: Lande, wenn es sein muss. Ich verhandele nicht mehr.
+    position: {x: 0, y: 2047.5}
+    status: 2
+    purpose: 
+    questions: 
+    channel: 1
+    speaker: {fileID: 11400000, guid: 149b2e3da5e479940a2910bf232e4d67, type: 2}
+    textKey: game.land.if.you.must.i.am.past.negotiating
+    sourceReference: '[[game.land.if.you.must.i.am.past.negotiating]]'
+    sourcePath: Assets/Scenes/MainScene.unity
+    sourceProperty: 'earthMessages.Array.data[5].messages.Array.data[2]'
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices: []
+    overviewOnly: 0
+    answerBoardLayout: 1
+  - id: game.good.third.level.you.understand.how.a.landing.pad.works.i.was.hop
+    chapter: Training und Entdeckungen
+    storyStepId: overview.0
+    title: Gut. Drittes Level.
+    position: {x: 728, y: 2047.5}
+    status: 2
+    purpose: 
+    questions: 
+    channel: 1
+    speaker: {fileID: 11400000, guid: 149b2e3da5e479940a2910bf232e4d67, type: 2}
+    textKey: game.good.third.level.you.understand.how.a.landing.pad.works.i.was.hop
+    sourceReference: '[[game.good.third.level.you.understand.how.a.landing.pad.works.i.was.hop]]'
+    sourcePath: Assets/Scenes/MainScene.unity
+    sourceProperty: earthTransmissions.Array.data[0].text
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices: []
+    overviewOnly: 0
+    answerBoardLayout: 1
+  - id: game.sixth.level.you.are.seriously.collecting.parking.spots.fine.let.m
+    chapter: Training und Entdeckungen
+    storyStepId: overview.0
+    title: Sechstes Level.
+    position: {x: 1456, y: 2047.5}
+    status: 2
+    purpose: 
+    questions: 
+    channel: 1
+    speaker: {fileID: 11400000, guid: 149b2e3da5e479940a2910bf232e4d67, type: 2}
+    textKey: game.sixth.level.you.are.seriously.collecting.parking.spots.fine.let.m
+    sourceReference: '[[game.sixth.level.you.are.seriously.collecting.parking.spots.fine.let.m]]'
+    sourcePath: Assets/Scenes/MainScene.unity
+    sourceProperty: earthTransmissions.Array.data[1].text
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices: []
+    overviewOnly: 0
+    answerBoardLayout: 1
+  - id: game.nine.levels.i.gave.you.a.sky.a.spacecraft.thrusters.and.you.keep
+    chapter: Training und Entdeckungen
+    storyStepId: overview.0
+    title: NEUN LEVEL!
+    position: {x: 2184, y: 2047.5}
+    status: 2
+    purpose: 
+    questions: 
+    channel: 1
+    speaker: {fileID: 11400000, guid: 149b2e3da5e479940a2910bf232e4d67, type: 2}
+    textKey: game.nine.levels.i.gave.you.a.sky.a.spacecraft.thrusters.and.you.keep
+    sourceReference: '[[game.nine.levels.i.gave.you.a.sky.a.spacecraft.thrusters.and.you.keep]]'
+    sourcePath: Assets/Scenes/MainScene.unity
+    sourceProperty: earthTransmissions.Array.data[2].text
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices: []
+    overviewOnly: 0
+    answerBoardLayout: 1
+  - id: game.uh.huh
+    chapter: Training und Entdeckungen
+    storyStepId: overview.0
+    title: Mhm.
+    position: {x: 0, y: 2340}
+    status: 2
+    purpose: 
+    questions: 
+    channel: 1
+    speaker: {fileID: 11400000, guid: 149b2e3da5e479940a2910bf232e4d67, type: 2}
+    textKey: game.uh.huh
+    sourceReference: '[[game.uh.huh]]'
+    sourcePath: Assets/Scenes/MainScene.unity
+    sourceProperty: 'earthAsides.Array.data[1]'
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices: []
+    overviewOnly: 0
+    answerBoardLayout: 1
+  - id: game.sure
+    chapter: Training und Entdeckungen
+    storyStepId: overview.0
+    title: Klar.
+    position: {x: 728, y: 2340}
+    status: 2
+    purpose: 
+    questions: 
+    channel: 1
+    speaker: {fileID: 11400000, guid: 149b2e3da5e479940a2910bf232e4d67, type: 2}
+    textKey: game.sure
+    sourceReference: '[[game.sure]]'
+    sourcePath: Assets/Scenes/MainScene.unity
+    sourceProperty: 'earthAsides.Array.data[2]'
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices: []
+    overviewOnly: 0
+    answerBoardLayout: 1
+  - id: game.of.course
+    chapter: Training und Entdeckungen
+    storyStepId: overview.0
+    title: "Nat\xFCrlich."
+    position: {x: 1456, y: 2340}
+    status: 2
+    purpose: 
+    questions: 
+    channel: 1
+    speaker: {fileID: 11400000, guid: 149b2e3da5e479940a2910bf232e4d67, type: 2}
+    textKey: game.of.course
+    sourceReference: '[[game.of.course]]'
+    sourcePath: Assets/Scenes/MainScene.unity
+    sourceProperty: 'earthAsides.Array.data[3]'
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices: []
+    overviewOnly: 0
+    answerBoardLayout: 1
+  - id: game.how.surprising
+    chapter: Training und Entdeckungen
+    storyStepId: overview.0
+    title: "Wie \xFCberraschend."
+    position: {x: 2184, y: 2340}
+    status: 2
+    purpose: 
+    questions: 
+    channel: 1
+    speaker: {fileID: 11400000, guid: 149b2e3da5e479940a2910bf232e4d67, type: 2}
+    textKey: game.how.surprising
+    sourceReference: '[[game.how.surprising]]'
+    sourcePath: Assets/Scenes/MainScene.unity
+    sourceProperty: 'earthAsides.Array.data[4]'
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices: []
+    overviewOnly: 0
+    answerBoardLayout: 1
+  - id: game.another.one
+    chapter: Training und Entdeckungen
+    storyStepId: overview.0
+    title: Noch einer.
+    position: {x: 0, y: 2632.5}
+    status: 2
+    purpose: 
+    questions: 
+    channel: 1
+    speaker: {fileID: 11400000, guid: 149b2e3da5e479940a2910bf232e4d67, type: 2}
+    textKey: game.another.one
+    sourceReference: '[[game.another.one]]'
+    sourcePath: Assets/Scenes/MainScene.unity
+    sourceProperty: 'earthAsides.Array.data[5]'
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices: []
+    overviewOnly: 0
+    answerBoardLayout: 1
+  - id: game.you.ve.got.this
+    chapter: Training und Entdeckungen
+    storyStepId: overview.0
+    title: Du schaffst das.
+    position: {x: 728, y: 2632.5}
+    status: 2
+    purpose: 
+    questions: 
+    channel: 1
+    speaker: {fileID: 11400000, guid: 149b2e3da5e479940a2910bf232e4d67, type: 2}
+    textKey: game.you.ve.got.this
+    sourceReference: '[[game.you.ve.got.this]]'
+    sourcePath: Assets/Scenes/MainScene.unity
+    sourceProperty: 'earthAsides.Array.data[6]'
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices: []
+    overviewOnly: 0
+    answerBoardLayout: 1
+  - id: game.i.m.not.here
+    chapter: Training und Entdeckungen
+    storyStepId: overview.0
+    title: Ich bin nicht da.
+    position: {x: 1456, y: 2632.5}
+    status: 2
+    purpose: 
+    questions: 
+    channel: 1
+    speaker: {fileID: 11400000, guid: 149b2e3da5e479940a2910bf232e4d67, type: 2}
+    textKey: game.i.m.not.here
+    sourceReference: '[[game.i.m.not.here]]'
+    sourcePath: Assets/Scenes/MainScene.unity
+    sourceProperty: 'earthAsides.Array.data[7]'
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices: []
+    overviewOnly: 0
+    answerBoardLayout: 1
+  - id: game.that.was.not.an.invitation.to.talk
+    chapter: Training und Entdeckungen
+    storyStepId: overview.0
+    title: Das war keine Einladung zum Reden.
+    position: {x: 2184, y: 2632.5}
+    status: 2
+    purpose: 
+    questions: 
+    channel: 1
+    speaker: {fileID: 11400000, guid: 149b2e3da5e479940a2910bf232e4d67, type: 2}
+    textKey: game.that.was.not.an.invitation.to.talk
+    sourceReference: '[[game.that.was.not.an.invitation.to.talk]]'
+    sourcePath: Assets/Scenes/MainScene.unity
+    sourceProperty: 'earthAsides.Array.data[8]'
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices: []
+    overviewOnly: 0
+    answerBoardLayout: 1
+  - id: game.no.i.am.not.commenting.on.this
+    chapter: Training und Entdeckungen
+    storyStepId: overview.0
+    title: Nein. Dazu sage ich nichts.
+    position: {x: 0, y: 2925}
+    status: 2
+    purpose: 
+    questions: 
+    channel: 1
+    speaker: {fileID: 11400000, guid: 149b2e3da5e479940a2910bf232e4d67, type: 2}
+    textKey: game.no.i.am.not.commenting.on.this
+    sourceReference: '[[game.no.i.am.not.commenting.on.this]]'
+    sourcePath: Assets/Scenes/MainScene.unity
+    sourceProperty: 'earthAsides.Array.data[9]'
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices: []
+    overviewOnly: 0
+    answerBoardLayout: 1
+  - id: game.is.that.pilot.still.landing.yes.don.t.ask.oh.the.microphone.is.on
+    chapter: Training und Entdeckungen
+    storyStepId: overview.0
+    title: "\u201ELandet dieser Pilot immer noch?\u201C"
+    position: {x: 728, y: 2925}
+    status: 2
+    purpose: 
+    questions: 
+    channel: 1
+    speaker: {fileID: 11400000, guid: 149b2e3da5e479940a2910bf232e4d67, type: 2}
+    textKey: game.is.that.pilot.still.landing.yes.don.t.ask.oh.the.microphone.is.on
+    sourceReference: '[[game.is.that.pilot.still.landing.yes.don.t.ask.oh.the.microphone.is.on]]'
+    sourcePath: Assets/Scenes/MainScene.unity
+    sourceProperty: 'earthAsides.Array.data[10]'
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices: []
+    overviewOnly: 0
+    answerBoardLayout: 1
+  - id: game.coffee.please.it.s.been.nothing.but.parking.all.day.wait.is.this
+    chapter: Training und Entdeckungen
+    storyStepId: overview.0
+    title: "\u201EKaffee?\u201C"
+    position: {x: 1456, y: 2925}
+    status: 2
+    purpose: 
+    questions: 
+    channel: 1
+    speaker: {fileID: 11400000, guid: 149b2e3da5e479940a2910bf232e4d67, type: 2}
+    textKey: game.coffee.please.it.s.been.nothing.but.parking.all.day.wait.is.this
+    sourceReference: '[[game.coffee.please.it.s.been.nothing.but.parking.all.day.wait.is.this]]'
+    sourcePath: Assets/Scenes/MainScene.unity
+    sourceProperty: 'earthAsides.Array.data[11]'
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices: []
+    overviewOnly: 0
+    answerBoardLayout: 1
+  - id: game.has.anyone.told.them.they.can.leave.i.did.several.times.oh.you.ca
+    chapter: Training und Entdeckungen
+    storyStepId: overview.0
+    title: "\u201EHat ihnen jemand gesagt, dass sie wegfliegen k\xF6nnen?\u201C"
+    position: {x: 2184, y: 2925}
+    status: 2
+    purpose: 
+    questions: 
+    channel: 1
+    speaker: {fileID: 11400000, guid: 149b2e3da5e479940a2910bf232e4d67, type: 2}
+    textKey: game.has.anyone.told.them.they.can.leave.i.did.several.times.oh.you.ca
+    sourceReference: '[[game.has.anyone.told.them.they.can.leave.i.did.several.times.oh.you.ca]]'
+    sourcePath: Assets/Scenes/MainScene.unity
+    sourceProperty: 'earthAsides.Array.data[12]'
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices: []
+    overviewOnly: 0
+    answerBoardLayout: 1
+  - id: game.any.progress.the.parking.situation.is.excellent.right.microphone
+    chapter: Training und Entdeckungen
+    storyStepId: overview.0
+    title: "\u201EFortschritte?\u201C"
+    position: {x: 0, y: 3217.5}
+    status: 2
+    purpose: 
+    questions: 
+    channel: 1
+    speaker: {fileID: 11400000, guid: 149b2e3da5e479940a2910bf232e4d67, type: 2}
+    textKey: game.any.progress.the.parking.situation.is.excellent.right.microphone
+    sourceReference: '[[game.any.progress.the.parking.situation.is.excellent.right.microphone]]'
+    sourcePath: Assets/Scenes/MainScene.unity
+    sourceProperty: 'earthAsides.Array.data[13]'
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices: []
+    overviewOnly: 0
+    answerBoardLayout: 1
+  - id: game.your.radio.is.registered.equipment.issued.acceptance.recorded.att
+    chapter: Funk
+    storyStepId: overview.7
+    title: "Dein Funkger\xE4t ist registriert. Ausr\xFCstung ausgegeben, Annahme\u2026"
+    position: {x: 0, y: 0}
+    status: 2
+    purpose: 
+    questions: 
+    channel: 2
+    speaker: {fileID: 11400000, guid: e1b4e910bb88ddd47a9f1e50c9795e02, type: 2}
+    textKey: game.your.radio.is.registered.equipment.issued.acceptance.recorded.att
+    sourceReference: '[[game.your.radio.is.registered.equipment.issued.acceptance.recorded.att]]'
+    sourcePath: Assets/Scenes/MainScene.unity
+    sourceProperty: pickupMessage
+    legacyAnswerCount: 2
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices:
+    - textKey: game.received.i.ll.take.a.look
+      reactionKey: game.excellent.a.confirmed.receipt.my.favourite.kind.of.adventure
+      next: 
+      conditions: []
+      effects: []
+      continueLegacy: 1
+      legacyAnswer: 0
+      positioned: 0
+      position: {x: 0, y: 0}
+    - textKey: game.i.m.not.your.courier
+      reactionKey: game.noted.i.ll.put.that.under.courier.comments
+      next: 
+      conditions: []
+      effects: []
+      continueLegacy: 1
+      legacyAnswer: 1
+      positioned: 0
+      position: {x: 0, y: 0}
+    overviewOnly: 0
+    answerBoardLayout: 1
+  - id: cargo.dialog.discovery.1
+    chapter: Rhekk
+    storyStepId: overview.7
+    title: "Endlich. Hat die Station diesmal jemanden geschickt, der lesen\u2026"
+    position: {x: 0, y: 0}
+    status: 2
+    purpose: "Bestehender Missionsablauf bleibt beim Abschluss dieses Schritts zust\xE4ndig."
+    questions: 
+    channel: 0
+    speaker: {fileID: 11400000, guid: d734b15132fd12e4a9e95778404149fb, type: 2}
+    textKey: cargo.dialog.discovery.1
+    sourceReference: '[[cargo.dialog.discovery.1]]'
+    sourcePath: Assets/Scenes/MainScene.unity
+    sourceProperty: 'discoveryConversation.Array.data[0]'
+    legacyAnswerCount: 2
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices:
+    - textKey: cargo.answer.who
+      reactionKey: 
+      next: cargo.dialog.discovery.2
+      conditions: []
+      effects: []
+      continueLegacy: 1
+      legacyAnswer: 0
+      positioned: 0
+      position: {x: 0, y: 0}
+    - textKey: cargo.answer.freight
+      reactionKey: 
+      next: cargo.dialog.discovery.2
+      conditions: []
+      effects: []
+      continueLegacy: 1
+      legacyAnswer: 1
+      positioned: 0
+      position: {x: 0, y: 0}
+    overviewOnly: 0
+    answerBoardLayout: 1
+  - id: cargo.dialog.discovery.2
+    chapter: Rhekk
+    storyStepId: overview.7
+    title: "Der Pilot hat mich hier abgestellt. Er wollte zu der Anlage hi\u2026"
+    position: {x: 728, y: 0}
+    status: 2
+    purpose: "Bestehender Missionsablauf bleibt beim Abschluss dieses Schritts zust\xE4ndig."
+    questions: 
+    channel: 0
+    speaker: {fileID: 11400000, guid: d734b15132fd12e4a9e95778404149fb, type: 2}
+    textKey: cargo.dialog.discovery.2
+    sourceReference: '[[cargo.dialog.discovery.2]]'
+    sourcePath: Assets/Scenes/MainScene.unity
+    sourceProperty: 'discoveryConversation.Array.data[1]'
+    legacyAnswerCount: 1
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices:
+    - textKey: cargo.answer.pilot
+      reactionKey: 
+      next: cargo.dialog.discovery.3
+      conditions: []
+      effects: []
+      continueLegacy: 1
+      legacyAnswer: 0
+      positioned: 0
+      position: {x: 0, y: 0}
+    overviewOnly: 0
+    answerBoardLayout: 1
+  - id: cargo.dialog.discovery.3
+    chapter: Rhekk
+    storyStepId: overview.7
+    title: "Dann ist es wirklich ohne ihn gestartet. Ich habe die Triebwer\u2026"
+    position: {x: 1456, y: 0}
+    status: 2
+    purpose: "Bestehender Missionsablauf bleibt beim Abschluss dieses Schritts zust\xE4ndig."
+    questions: 
+    channel: 0
+    speaker: {fileID: 11400000, guid: d734b15132fd12e4a9e95778404149fb, type: 2}
+    textKey: cargo.dialog.discovery.3
+    sourceReference: '[[cargo.dialog.discovery.3]]'
+    sourcePath: Assets/Scenes/MainScene.unity
+    sourceProperty: 'discoveryConversation.Array.data[2]'
+    legacyAnswerCount: 1
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices:
+    - textKey: cargo.answer.ship
+      reactionKey: 
+      next: cargo.dialog.discovery.4
+      conditions: []
+      effects: []
+      continueLegacy: 1
+      legacyAnswer: 0
+      positioned: 0
+      position: {x: 0, y: 0}
+    overviewOnly: 0
+    answerBoardLayout: 1
+  - id: cargo.dialog.discovery.4
+    chapter: Rhekk
+    storyStepId: overview.8
+    title: "Das Stationsdock muss zuerst den Druck ausgleichen. Hier bleib\u2026"
+    position: {x: 2184, y: 0}
+    status: 2
+    purpose: "Bestehender Missionsablauf bleibt beim Abschluss dieses Schritts zust\xE4ndig."
+    questions: 
+    channel: 0
+    speaker: {fileID: 11400000, guid: d734b15132fd12e4a9e95778404149fb, type: 2}
+    textKey: cargo.dialog.discovery.4
+    sourceReference: '[[cargo.dialog.discovery.4]]'
+    sourcePath: Assets/Scenes/MainScene.unity
+    sourceProperty: 'discoveryConversation.Array.data[3]'
+    legacyAnswerCount: 1
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices:
+    - textKey: cargo.answer.transport
+      reactionKey: 
+      next: cargo.dialog.discovery.5
+      conditions: []
+      effects: []
+      continueLegacy: 1
+      legacyAnswer: 0
+      positioned: 0
+      position: {x: 0, y: 0}
+    overviewOnly: 0
+    answerBoardLayout: 1
+  - id: cargo.dialog.discovery.5
+    chapter: Rhekk
+    storyStepId: overview.8
+    title: "Bring mich zur markierten Frachtablage neben den Landepl\xE4tzen \u2026"
+    position: {x: 0, y: 292.5}
+    status: 2
+    purpose: "Bestehender Missionsablauf bleibt beim Abschluss dieses Schritts zust\xE4ndig."
+    questions: 
+    channel: 0
+    speaker: {fileID: 11400000, guid: d734b15132fd12e4a9e95778404149fb, type: 2}
+    textKey: cargo.dialog.discovery.5
+    sourceReference: '[[cargo.dialog.discovery.5]]'
+    sourcePath: Assets/Scenes/MainScene.unity
+    sourceProperty: 'discoveryConversation.Array.data[4]'
+    legacyAnswerCount: 2
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices:
+    - textKey: cargo.answer.help
+      reactionKey: 
+      next: 
+      conditions: []
+      effects: []
+      continueLegacy: 1
+      legacyAnswer: 0
+      positioned: 0
+      position: {x: 0, y: 0}
+    - textKey: cargo.answer.no.promises
+      reactionKey: 
+      next: 
+      conditions: []
+      effects: []
+      continueLegacy: 1
+      legacyAnswer: 1
+      positioned: 0
+      position: {x: 0, y: 0}
+    overviewOnly: 0
+    answerBoardLayout: 1
+  - id: cargo.dialog.release.1
+    chapter: Rhekk
+    storyStepId: overview.9
+    title: Frische Luft. Fester Boden. Eine Reise ohne weitere Bodenproben.
+    position: {x: 728, y: 292.5}
+    status: 2
+    purpose: "Bestehender Missionsablauf bleibt beim Abschluss dieses Schritts zust\xE4ndig."
+    questions: 
+    channel: 0
+    speaker: {fileID: 11400000, guid: d734b15132fd12e4a9e95778404149fb, type: 2}
+    textKey: cargo.dialog.release.1
+    sourceReference: '[[cargo.dialog.release.1]]'
+    sourcePath: Assets/Scenes/MainScene.unity
+    sourceProperty: 'releaseConversation.Array.data[0]'
+    legacyAnswerCount: 2
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices:
+    - textKey: cargo.answer.welcome
+      reactionKey: 
+      next: cargo.dialog.release.2
+      conditions: []
+      effects: []
+      continueLegacy: 1
+      legacyAnswer: 0
+      positioned: 0
+      position: {x: 0, y: 0}
+    - textKey: cargo.answer.complaint
+      reactionKey: 
+      next: cargo.dialog.release.2
+      conditions: []
+      effects: []
+      continueLegacy: 1
+      legacyAnswer: 1
+      positioned: 0
+      position: {x: 0, y: 0}
+    overviewOnly: 0
+    answerBoardLayout: 1
+  - id: cargo.dialog.release.2
+    chapter: Rhekk
+    storyStepId: overview.9
+    title: "Zuerst zur Registrierung. Dort hat jemand mich als Lieferung v\u2026"
+    position: {x: 1456, y: 292.5}
+    status: 2
+    purpose: "Bestehender Missionsablauf bleibt beim Abschluss dieses Schritts zust\xE4ndig."
+    questions: 
+    channel: 0
+    speaker: {fileID: 11400000, guid: d734b15132fd12e4a9e95778404149fb, type: 2}
+    textKey: cargo.dialog.release.2
+    sourceReference: '[[cargo.dialog.release.2]]'
+    sourcePath: Assets/Scenes/MainScene.unity
+    sourceProperty: 'releaseConversation.Array.data[1]'
+    legacyAnswerCount: 1
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices:
+    - textKey: cargo.answer.what.now
+      reactionKey: 
+      next: cargo.dialog.release.3
+      conditions: []
+      effects: []
+      continueLegacy: 1
+      legacyAnswer: 0
+      positioned: 0
+      position: {x: 0, y: 0}
+    overviewOnly: 0
+    answerBoardLayout: 1
+  - id: cargo.dialog.release.3
+    chapter: Rhekk
+    storyStepId: overview.9
+    title: "Du wei\xDFt ja, wo die Registrierung ist. Falls sie mich wieder i\u2026"
+    position: {x: 2184, y: 292.5}
+    status: 2
+    purpose: "Bestehender Missionsablauf bleibt beim Abschluss dieses Schritts zust\xE4ndig."
+    questions: 
+    channel: 0
+    speaker: {fileID: 11400000, guid: d734b15132fd12e4a9e95778404149fb, type: 2}
+    textKey: cargo.dialog.release.3
+    sourceReference: '[[cargo.dialog.release.3]]'
+    sourcePath: Assets/Scenes/MainScene.unity
+    sourceProperty: 'releaseConversation.Array.data[2]'
+    legacyAnswerCount: 1
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices:
+    - textKey: cargo.answer.see.you
+      reactionKey: 
+      next: 
+      conditions: []
+      effects: []
+      continueLegacy: 1
+      legacyAnswer: 0
+      positioned: 0
+      position: {x: 0, y: 0}
+    overviewOnly: 0
+    answerBoardLayout: 1
+  - id: game.there.you.go.beyond.the.parking.spots
+    chapter: Training und Entdeckungen
+    storyStepId: overview.0
+    title: "Da geht es hin. \xDCber die Parkpl\xE4tze hinaus."
+    position: {x: 728, y: 3217.5}
+    status: 2
+    purpose: 
+    questions: 
+    channel: 1
+    speaker: {fileID: 11400000, guid: 149b2e3da5e479940a2910bf232e4d67, type: 2}
+    textKey: game.there.you.go.beyond.the.parking.spots
+    sourceReference: '[[game.there.you.go.beyond.the.parking.spots]]'
+    sourcePath: Assets/Scripts/StoryTextController.cs
+    sourceProperty: 
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices: []
+    overviewOnly: 0
+    answerBoardLayout: 1
+  - id: game.still.exploring.now.i.m.curious
+    chapter: Training und Entdeckungen
+    storyStepId: overview.0
+    title: Du erkundest noch. Jetzt bin ich neugierig.
+    position: {x: 1456, y: 3217.5}
+    status: 2
+    purpose: 
+    questions: 
+    channel: 1
+    speaker: {fileID: 11400000, guid: 149b2e3da5e479940a2910bf232e4d67, type: 2}
+    textKey: game.still.exploring.now.i.m.curious
+    sourceReference: '[[game.still.exploring.now.i.m.curious]]'
+    sourcePath: Assets/Scripts/StoryTextController.cs
+    sourceProperty: 
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices: []
+    overviewOnly: 0
+    answerBoardLayout: 1
+  - id: game.i.wonder.how.far.this.goes
+    chapter: Training und Entdeckungen
+    storyStepId: overview.0
+    title: Wie weit das wohl geht?
+    position: {x: 2184, y: 3217.5}
+    status: 2
+    purpose: 
+    questions: 
+    channel: 1
+    speaker: {fileID: 11400000, guid: 149b2e3da5e479940a2910bf232e4d67, type: 2}
+    textKey: game.i.wonder.how.far.this.goes
+    sourceReference: '[[game.i.wonder.how.far.this.goes]]'
+    sourcePath: Assets/Scripts/StoryTextController.cs
+    sourceProperty: 
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices: []
+    overviewOnly: 0
+    answerBoardLayout: 1
+  - id: game.ah.parking.spots.again
+    chapter: Training und Entdeckungen
+    storyStepId: overview.0
+    title: "Ah. Wieder Parkpl\xE4tze."
+    position: {x: 0, y: 3510}
+    status: 2
+    purpose: 
+    questions: 
+    channel: 1
+    speaker: {fileID: 11400000, guid: 149b2e3da5e479940a2910bf232e4d67, type: 2}
+    textKey: game.ah.parking.spots.again
+    sourceReference: '[[game.ah.parking.spots.again]]'
+    sourcePath: Assets/Scripts/StoryTextController.cs
+    sourceProperty: 
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices: []
+    overviewOnly: 0
+    answerBoardLayout: 1
+  - id: game.a.familiar.view.try.not.to.get.too.comfortable
+    chapter: Training und Entdeckungen
+    storyStepId: overview.0
+    title: Vertrauter Anblick. Mach es dir nicht zu bequem.
+    position: {x: 728, y: 3510}
+    status: 2
+    purpose: 
+    questions: 
+    channel: 1
+    speaker: {fileID: 11400000, guid: 149b2e3da5e479940a2910bf232e4d67, type: 2}
+    textKey: game.a.familiar.view.try.not.to.get.too.comfortable
+    sourceReference: '[[game.a.familiar.view.try.not.to.get.too.comfortable]]'
+    sourcePath: Assets/Scripts/StoryTextController.cs
+    sourceProperty: 
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices: []
+    overviewOnly: 0
+    answerBoardLayout: 1
+  - id: game.back.for.fuel.that.sounds.like.a.plan
+    chapter: Training und Entdeckungen
+    storyStepId: overview.0
+    title: "Zur\xFCck zum Tanken? Das klingt nach einem Plan."
+    position: {x: 1456, y: 3510}
+    status: 2
+    purpose: 
+    questions: 
+    channel: 1
+    speaker: {fileID: 11400000, guid: 149b2e3da5e479940a2910bf232e4d67, type: 2}
+    textKey: game.back.for.fuel.that.sounds.like.a.plan
+    sourceReference: '[[game.back.for.fuel.that.sounds.like.a.plan]]'
+    sourcePath: Assets/Scripts/StoryTextController.cs
+    sourceProperty: 
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices: []
+    overviewOnly: 0
+    answerBoardLayout: 1
+  - id: game.back.to.the.moon.you.know.more.about.it.than.i.do
+    chapter: Training und Entdeckungen
+    storyStepId: overview.0
+    title: "Zur\xFCck zum Mond. Du wei\xDFt mehr dar\xFCber als ich."
+    position: {x: 2184, y: 3510}
+    status: 2
+    purpose: 
+    questions: 
+    channel: 1
+    speaker: {fileID: 11400000, guid: 149b2e3da5e479940a2910bf232e4d67, type: 2}
+    textKey: game.back.to.the.moon.you.know.more.about.it.than.i.do
+    sourceReference: '[[game.back.to.the.moon.you.know.more.about.it.than.i.do]]'
+    sourcePath: Assets/Scripts/StoryTextController.cs
+    sourceProperty: 
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices: []
+    overviewOnly: 0
+    answerBoardLayout: 1
+  - id: game.i.wonder.what.else.is.up.there
+    chapter: Training und Entdeckungen
+    storyStepId: overview.0
+    title: Was da oben wohl noch ist?
+    position: {x: 0, y: 3802.5}
+    status: 2
+    purpose: 
+    questions: 
+    channel: 1
+    speaker: {fileID: 11400000, guid: 149b2e3da5e479940a2910bf232e4d67, type: 2}
+    textKey: game.i.wonder.what.else.is.up.there
+    sourceReference: '[[game.i.wonder.what.else.is.up.there]]'
+    sourcePath: Assets/Scripts/StoryTextController.cs
+    sourceProperty: 
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices: []
+    overviewOnly: 0
+    answerBoardLayout: 1
+  - id: game.still.there.this.wasn.t.in.my.little.landing.game
+    chapter: Training und Entdeckungen
+    storyStepId: overview.0
+    title: Immer noch da. Das war nicht in meinem kleinen Landespiel.
+    position: {x: 728, y: 3802.5}
+    status: 2
+    purpose: 
+    questions: 
+    channel: 1
+    speaker: {fileID: 11400000, guid: 149b2e3da5e479940a2910bf232e4d67, type: 2}
+    textKey: game.still.there.this.wasn.t.in.my.little.landing.game
+    sourceReference: '[[game.still.there.this.wasn.t.in.my.little.landing.game]]'
+    sourcePath: Assets/Scripts/StoryTextController.cs
+    sourceProperty: 
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices: []
+    overviewOnly: 0
+    answerBoardLayout: 1
+  - id: game.company
+    chapter: Training und Entdeckungen
+    storyStepId: overview.0
+    title: Firma
+    position: {x: 1456, y: 3802.5}
+    status: 2
+    purpose: 
+    questions: 
+    channel: 1
+    speaker: {fileID: 11400000, guid: 149b2e3da5e479940a2910bf232e4d67, type: 2}
+    textKey: game.company
+    sourceReference: '[[game.company]]'
+    sourcePath: Assets/Scripts/StoryTextController.cs
+    sourceProperty: 
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices: []
+    overviewOnly: 0
+    answerBoardLayout: 1
+  - id: game.company.transmission
+    chapter: Training und Entdeckungen
+    storyStepId: overview.0
+    title: "Firmen\xFCbertragung"
+    position: {x: 2184, y: 3802.5}
+    status: 2
+    purpose: 
+    questions: 
+    channel: 1
+    speaker: {fileID: 11400000, guid: 149b2e3da5e479940a2910bf232e4d67, type: 2}
+    textKey: game.company.transmission
+    sourceReference: '[[game.company.transmission]]'
+    sourcePath: Assets/Scripts/StoryTextController.cs
+    sourceProperty: 
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices: []
+    overviewOnly: 0
+    answerBoardLayout: 1
+  - id: game.back.on.earth.you.can.refuel.on.a.free.landing.pad
+    chapter: Training und Entdeckungen
+    storyStepId: overview.0
+    title: "Zur\xFCck auf der Erde. Du kannst an einem freien Landeplatz auft\u2026"
+    position: {x: 0, y: 4095}
+    status: 2
+    purpose: 
+    questions: 
+    channel: 1
+    speaker: {fileID: 11400000, guid: 149b2e3da5e479940a2910bf232e4d67, type: 2}
+    textKey: game.back.on.earth.you.can.refuel.on.a.free.landing.pad
+    sourceReference: '[[game.back.on.earth.you.can.refuel.on.a.free.landing.pad]]'
+    sourcePath: Assets/Scripts/StoryTextController.cs
+    sourceProperty: 
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices: []
+    overviewOnly: 0
+    answerBoardLayout: 1
+  - id: game.station
+    chapter: Training und Entdeckungen
+    storyStepId: overview.0
+    title: Station
+    position: {x: 728, y: 4095}
+    status: 2
+    purpose: 
+    questions: 
+    channel: 1
+    speaker: {fileID: 11400000, guid: 149b2e3da5e479940a2910bf232e4d67, type: 2}
+    textKey: game.station
+    sourceReference: '[[game.station]]'
+    sourcePath: Assets/Scripts/StoryTextController.cs
+    sourceProperty: 
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices: []
+    overviewOnly: 0
+    answerBoardLayout: 1
+  - id: game.unknown.sender
+    chapter: Training und Entdeckungen
+    storyStepId: overview.0
+    title: Unbekannter Absender
+    position: {x: 1456, y: 4095}
+    status: 2
+    purpose: 
+    questions: 
+    channel: 1
+    speaker: {fileID: 11400000, guid: 149b2e3da5e479940a2910bf232e4d67, type: 2}
+    textKey: game.unknown.sender
+    sourceReference: '[[game.unknown.sender]]'
+    sourcePath: Assets/Scripts/StoryTextController.cs
+    sourceProperty: 
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices: []
+    overviewOnly: 0
+    answerBoardLayout: 1
+  - id: game.unidentified.transmission
+    chapter: Training und Entdeckungen
+    storyStepId: overview.0
+    title: "Unbekannte \xDCbertragung"
+    position: {x: 2184, y: 4095}
+    status: 2
+    purpose: 
+    questions: 
+    channel: 1
+    speaker: {fileID: 11400000, guid: 149b2e3da5e479940a2910bf232e4d67, type: 2}
+    textKey: game.unidentified.transmission
+    sourceReference: '[[game.unidentified.transmission]]'
+    sourcePath: Assets/Scripts/StoryTextController.cs
+    sourceProperty: 
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices: []
+    overviewOnly: 0
+    answerBoardLayout: 1
+  - id: game.incoming.transmission
+    chapter: Training und Entdeckungen
+    storyStepId: overview.0
+    title: "Eingehende \xDCbertragung"
+    position: {x: 0, y: 4387.5}
+    status: 2
+    purpose: 
+    questions: 
+    channel: 1
+    speaker: {fileID: 11400000, guid: 149b2e3da5e479940a2910bf232e4d67, type: 2}
+    textKey: game.incoming.transmission
+    sourceReference: '[[game.incoming.transmission]]'
+    sourcePath: Assets/Scripts/StoryTextController.cs
+    sourceProperty: 
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices: []
+    overviewOnly: 0
+    answerBoardLayout: 1
+  - id: cargo.dialog.repeat
+    chapter: Rhekk
+    storyStepId: overview.7
+    title: "Seil an die Kapsel. Freies Ende zum Schiff. FESTMACHEN. Einste\u2026"
+    position: {x: 0, y: 585}
+    status: 2
+    purpose: 
+    questions: 
+    channel: 0
+    speaker: {fileID: 11400000, guid: d734b15132fd12e4a9e95778404149fb, type: 2}
+    textKey: cargo.dialog.repeat
+    sourceReference: '[[cargo.dialog.repeat]]'
+    sourcePath: Assets/Scripts/CargoMission.cs
+    sourceProperty: 
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices: []
+    overviewOnly: 0
+    answerBoardLayout: 1
+  - id: cargo.radio.tow.body
+    chapter: Funk
+    storyStepId: overview.8
+    title: "Verbindung hergestellt. Ziel: markierte Frachtablage neben den\u2026"
+    position: {x: 728, y: 0}
+    status: 2
+    purpose: 
+    questions: 
+    channel: 1
+    speaker: {fileID: 11400000, guid: e1b4e910bb88ddd47a9f1e50c9795e02, type: 2}
+    textKey: cargo.radio.tow.body
+    sourceReference: '[[cargo.radio.tow.body]]'
+    sourcePath: Assets/Scripts/CargoMission.cs
+    sourceProperty: 
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices: []
+    overviewOnly: 0
+    answerBoardLayout: 1
+  - id: cargo.radio.delivered.body
+    chapter: Funk
+    storyStepId: overview.9
+    title: "Kapsel steht sicher. Schleppkupplung gel\xF6st."
+    position: {x: 1456, y: 0}
+    status: 2
+    purpose: 
+    questions: 
+    channel: 1
+    speaker: {fileID: 11400000, guid: e1b4e910bb88ddd47a9f1e50c9795e02, type: 2}
+    textKey: cargo.radio.delivered.body
+    sourceReference: '[[cargo.radio.delivered.body]]'
+    sourcePath: Assets/Scripts/CargoMission.cs
+    sourceProperty: 
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices: []
+    overviewOnly: 0
+    answerBoardLayout: 1
+  - id: cargo.radio.complete.body
+    chapter: Funk
+    storyStepId: overview.10
+    title: Rhekk ist bei der Registrierung angekommen.
+    position: {x: 2184, y: 0}
+    status: 2
+    purpose: 
+    questions: 
+    channel: 1
+    speaker: {fileID: 11400000, guid: e1b4e910bb88ddd47a9f1e50c9795e02, type: 2}
+    textKey: cargo.radio.complete.body
+    sourceReference: '[[cargo.radio.complete.body]]'
+    sourcePath: Assets/Scripts/CargoMission.cs
+    sourceProperty: 
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices: []
+    overviewOnly: 0
+    answerBoardLayout: 1
+  - id: cargo.radio.failed.body
+    chapter: Funk
+    storyStepId: overview.8
+    title: "Kapsel zerst\xF6rt oder Schleppschiff verloren. Rettung fehlgesch\u2026"
+    position: {x: 0, y: 292.5}
+    status: 2
+    purpose: 
+    questions: 
+    channel: 1
+    speaker: {fileID: 11400000, guid: e1b4e910bb88ddd47a9f1e50c9795e02, type: 2}
+    textKey: cargo.radio.failed.body
+    sourceReference: '[[cargo.radio.failed.body]]'
+    sourcePath: Assets/Scripts/CargoMission.cs
+    sourceProperty: 
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices: []
+    overviewOnly: 0
+    answerBoardLayout: 1
+  - id: overview.0
+    chapter: Ablauf
+    storyStepId: 
+    title: Landing-Pad-Training
+    position: {x: -4.961027, y: 0.7658334}
+    status: 2
+    purpose: "Bestehender Spielablauf. Zugeh\xF6rige Gespr\xE4che stehen in den jeweiligen
+      Kapiteln. Gameplay-Abnahme separat."
+    questions: 
+    channel: 0
+    speaker: {fileID: 0}
+    textKey: 
+    sourceReference: 
+    sourcePath: Assets/Scenes/MainScene.unity
+    sourceProperty: 
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices:
+    - textKey: 
+      reactionKey: 
+      next: overview.1
+      conditions: []
+      effects: []
+      continueLegacy: 0
+      legacyAnswer: 0
+      positioned: 0
+      position: {x: 0, y: 0}
+    overviewOnly: 1
+    answerBoardLayout: 0
+  - id: overview.1
+    chapter: Ablauf
+    storyStepId: 
+    title: Ins All aufbrechen
+    position: {x: 280, y: 0}
+    status: 2
+    purpose: "Bestehender Spielablauf. Zugeh\xF6rige Gespr\xE4che stehen in den jeweiligen
+      Kapiteln. Gameplay-Abnahme separat."
+    questions: 
+    channel: 0
+    speaker: {fileID: 0}
+    textKey: 
+    sourceReference: 
+    sourcePath: Assets/Scenes/MainScene.unity
+    sourceProperty: 
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices:
+    - textKey: 
+      reactionKey: 
+      next: overview.2
+      conditions: []
+      effects: []
+      continueLegacy: 0
+      legacyAnswer: 0
+      positioned: 0
+      position: {x: 0, y: 0}
+    overviewOnly: 1
+    answerBoardLayout: 0
+  - id: overview.2
+    chapter: Ablauf
+    storyStepId: 
+    title: Mond entdecken und landen
+    position: {x: 561.14844, y: -1.1484627}
+    status: 2
+    purpose: "Bestehender Spielablauf. Zugeh\xF6rige Gespr\xE4che stehen in den jeweiligen
+      Kapiteln. Gameplay-Abnahme separat."
+    questions: 
+    channel: 0
+    speaker: {fileID: 0}
+    textKey: 
+    sourceReference: 
+    sourcePath: Assets/Scenes/MainScene.unity
+    sourceProperty: 
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices:
+    - textKey: 
+      reactionKey: 
+      next: overview.3
+      conditions: []
+      effects: []
+      continueLegacy: 0
+      legacyAnswer: 0
+      positioned: 0
+      position: {x: 0, y: 0}
+    overviewOnly: 1
+    answerBoardLayout: 0
+  - id: overview.3
+    chapter: Ablauf
+    storyStepId: 
+    title: Aussteigen
+    position: {x: 840, y: 0}
+    status: 2
+    purpose: "Bestehender Spielablauf. Zugeh\xF6rige Gespr\xE4che stehen in den jeweiligen
+      Kapiteln. Gameplay-Abnahme separat."
+    questions: 
+    channel: 0
+    speaker: {fileID: 0}
+    textKey: 
+    sourceReference: 
+    sourcePath: Assets/Scenes/MainScene.unity
+    sourceProperty: 
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices:
+    - textKey: 
+      reactionKey: 
+      next: overview.4
+      conditions: []
+      effects: []
+      continueLegacy: 0
+      legacyAnswer: 0
+      positioned: 0
+      position: {x: 0, y: 0}
+    overviewOnly: 1
+    answerBoardLayout: 0
+  - id: overview.4
+    chapter: Ablauf
+    storyStepId: 
+    title: Verlassenes Schiff finden
+    position: {x: 0, y: 150}
+    status: 2
+    purpose: "Bestehender Spielablauf. Zugeh\xF6rige Gespr\xE4che stehen in den jeweiligen
+      Kapiteln. Gameplay-Abnahme separat."
+    questions: 
+    channel: 0
+    speaker: {fileID: 0}
+    textKey: 
+    sourceReference: 
+    sourcePath: Assets/Scenes/MainScene.unity
+    sourceProperty: 
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices:
+    - textKey: 
+      reactionKey: 
+      next: overview.5
+      conditions: []
+      effects: []
+      continueLegacy: 0
+      legacyAnswer: 0
+      positioned: 0
+      position: {x: 0, y: 0}
+    overviewOnly: 1
+    answerBoardLayout: 0
+  - id: overview.5
+    chapter: Ablauf
+    storyStepId: 
+    title: Station erreichen
+    position: {x: 280, y: 150}
+    status: 2
+    purpose: "Bestehender Spielablauf. Zugeh\xF6rige Gespr\xE4che stehen in den jeweiligen
+      Kapiteln. Gameplay-Abnahme separat."
+    questions: 
+    channel: 0
+    speaker: {fileID: 0}
+    textKey: 
+    sourceReference: 
+    sourcePath: Assets/Scenes/MainScene.unity
+    sourceProperty: 
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices:
+    - textKey: 
+      reactionKey: 
+      next: overview.6
+      conditions: []
+      effects: []
+      continueLegacy: 0
+      legacyAnswer: 0
+      positioned: 0
+      position: {x: 0, y: 0}
+    overviewOnly: 1
+    answerBoardLayout: 0
+  - id: overview.6
+    chapter: Ablauf
+    storyStepId: 
+    title: Registrierung und Funk
+    position: {x: 560, y: 150}
+    status: 2
+    purpose: "Bestehender Spielablauf. Zugeh\xF6rige Gespr\xE4che stehen in den jeweiligen
+      Kapiteln. Gameplay-Abnahme separat."
+    questions: 
+    channel: 0
+    speaker: {fileID: 0}
+    textKey: 
+    sourceReference: 
+    sourcePath: Assets/Scenes/MainScene.unity
+    sourceProperty: 
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices:
+    - textKey: 
+      reactionKey: 
+      next: overview.7
+      conditions: []
+      effects: []
+      continueLegacy: 0
+      legacyAnswer: 0
+      positioned: 0
+      position: {x: 0, y: 0}
+    overviewOnly: 1
+    answerBoardLayout: 0
+  - id: overview.7
+    chapter: Ablauf
+    storyStepId: 
+    title: "Rhekk am Au\xDFenposten finden"
+    position: {x: 840, y: 150}
+    status: 2
+    purpose: "Bestehender Spielablauf. Zugeh\xF6rige Gespr\xE4che stehen in den jeweiligen
+      Kapiteln. Gameplay-Abnahme separat."
+    questions: 
+    channel: 0
+    speaker: {fileID: 0}
+    textKey: 
+    sourceReference: 
+    sourcePath: Assets/Scenes/MainScene.unity
+    sourceProperty: 
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices:
+    - textKey: 
+      reactionKey: 
+      next: overview.8
+      conditions: []
+      effects: []
+      continueLegacy: 0
+      legacyAnswer: 0
+      positioned: 0
+      position: {x: 0, y: 0}
+    overviewOnly: 1
+    answerBoardLayout: 0
+  - id: overview.8
+    chapter: Ablauf
+    storyStepId: 
+    title: Kapsel verbinden und abschleppen
+    position: {x: 0, y: 300}
+    status: 2
+    purpose: "Bestehender Spielablauf. Zugeh\xF6rige Gespr\xE4che stehen in den jeweiligen
+      Kapiteln. Gameplay-Abnahme separat."
+    questions: 
+    channel: 0
+    speaker: {fileID: 0}
+    textKey: 
+    sourceReference: 
+    sourcePath: Assets/Scenes/MainScene.unity
+    sourceProperty: 
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices:
+    - textKey: 
+      reactionKey: 
+      next: overview.9
+      conditions: []
+      effects: []
+      continueLegacy: 0
+      legacyAnswer: 0
+      positioned: 0
+      position: {x: 0, y: 0}
+    overviewOnly: 1
+    answerBoardLayout: 0
+  - id: overview.9
+    chapter: Ablauf
+    storyStepId: 
+    title: Sanft absetzen und Rhekk befreien
+    position: {x: 280, y: 300}
+    status: 2
+    purpose: "Bestehender Spielablauf. Zugeh\xF6rige Gespr\xE4che stehen in den jeweiligen
+      Kapiteln. Gameplay-Abnahme separat."
+    questions: 
+    channel: 0
+    speaker: {fileID: 0}
+    textKey: 
+    sourceReference: 
+    sourcePath: Assets/Scenes/MainScene.unity
+    sourceProperty: 
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices:
+    - textKey: 
+      reactionKey: 
+      next: overview.10
+      conditions: []
+      effects: []
+      continueLegacy: 0
+      legacyAnswer: 0
+      positioned: 0
+      position: {x: 0, y: 0}
+    overviewOnly: 1
+    answerBoardLayout: 0
+  - id: overview.10
+    chapter: Ablauf
+    storyStepId: 
+    title: Rhekk geht zur Registrierung
+    position: {x: 560, y: 300}
+    status: 2
+    purpose: "Bestehender Spielablauf. Zugeh\xF6rige Gespr\xE4che stehen in den jeweiligen
+      Kapiteln. Gameplay-Abnahme separat."
+    questions: 
+    channel: 0
+    speaker: {fileID: 0}
+    textKey: 
+    sourceReference: 
+    sourcePath: Assets/Scenes/MainScene.unity
+    sourceProperty: 
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices:
+    - textKey: 
+      reactionKey: 
+      next: overview.11
+      conditions: []
+      effects: []
+      continueLegacy: 0
+      legacyAnswer: 0
+      positioned: 0
+      position: {x: 0, y: 0}
+    overviewOnly: 1
+    answerBoardLayout: 0
+  - id: overview.11
+    chapter: Ablauf
+    storyStepId: 
+    title: Pilotenspur
+    position: {x: 840, y: 300}
+    status: 1
+    purpose: 'Grobe Richtung vereinbart; Storydetails noch offen.
+
+
+      Nach Rhekks
+      Rettung: noch gemeinsam zu planen.'
+    questions: 
+    channel: 0
+    speaker: {fileID: 0}
+    textKey: 
+    sourceReference: 
+    sourcePath: GAME_CONCEPT.md
+    sourceProperty: 
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices:
+    - textKey: 
+      reactionKey: 
+      next: overview.12
+      conditions: []
+      effects: []
+      continueLegacy: 0
+      legacyAnswer: 0
+      positioned: 0
+      position: {x: 0, y: 0}
+    overviewOnly: 1
+    answerBoardLayout: 0
+  - id: overview.12
+    chapter: Ablauf
+    storyStepId: 
+    title: "Neues Raumschiff / Bildschirm-Enth\xFCllung"
+    position: {x: 0, y: 450}
+    status: 1
+    purpose: "Grobe Richtung vereinbart; Storydetails noch offen.\n\nMobile dreht
+      auf Landscape; PC \xF6ffnet den Hochkantbereich auf den ganzen Bildschirm.
+      Neue Flug- und Werkzeugsteuerung."
+    questions: 
+    channel: 0
+    speaker: {fileID: 0}
+    textKey: 
+    sourceReference: 
+    sourcePath: GAME_CONCEPT.md
+    sourceProperty: 
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices:
+    - textKey: 
+      reactionKey: 
+      next: overview.13
+      conditions: []
+      effects: []
+      continueLegacy: 0
+      legacyAnswer: 0
+      positioned: 0
+      position: {x: 0, y: 0}
+    overviewOnly: 1
+    answerBoardLayout: 0
+  - id: overview.13
+    chapter: Ablauf
+    storyStepId: 
+    title: Eigenes Zuhause
+    position: {x: 279, y: 449}
+    status: 1
+    purpose: "Grobe Richtung vereinbart; Storydetails noch offen.\n\nKleine eigene
+      Station beziehungsweise Au\xDFenposten; Storyweg noch offen."
+    questions: 
+    channel: 0
+    speaker: {fileID: 0}
+    textKey: 
+    sourceReference: 
+    sourcePath: GAME_CONCEPT.md
+    sourceProperty: 
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices: []
+    overviewOnly: 1
+    answerBoardLayout: 0

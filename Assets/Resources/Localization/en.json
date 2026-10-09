@@ -1313,6 +1313,50 @@
     {
       "key": "cargo.radio.complete.body",
       "text": "Rhekk has reached registration.\n\nStatus: Person. Capacity for complaints: Fully restored.\n\nThe pilot is still missing. Why the ship left on its own remains unknown."
+    },
+    {
+      "key": "story.character.training-pilot",
+      "text": "Training pilot"
+    },
+    {
+      "key": "story.character.resident-1",
+      "text": "StationPilot"
+    },
+    {
+      "key": "story.character.resident-2",
+      "text": "StationTechnician"
+    },
+    {
+      "key": "story.character.resident-3",
+      "text": "StationSecurity"
+    },
+    {
+      "key": "story.character.resident-8",
+      "text": "ResidentGrey"
+    },
+    {
+      "key": "story.character.resident-4",
+      "text": "StationOperator"
+    },
+    {
+      "key": "story.character.resident-5",
+      "text": "StationScientist"
+    },
+    {
+      "key": "story.character.resident-6",
+      "text": "StationTraveler"
+    },
+    {
+      "key": "story.character.resident-9",
+      "text": "ResidentReptilian"
+    },
+    {
+      "key": "story.character.resident-10",
+      "text": "ResidentInsectoid"
+    },
+    {
+      "key": "story.character.resident-7",
+      "text": "StationOperator"
     }
   ]
 }

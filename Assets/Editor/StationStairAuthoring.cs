@@ -19,7 +19,6 @@ public static class StationStairAuthoring
         public int x, y, width, height;
         public float startX, startY, landingX, landingY, endX, endY;
     }
-    [MenuItem("Tools/Art/Build Station Stairs")]
     public static void Build()
     {
         if (!Application.isBatchMode && !EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo()) return;

@@ -6,7 +6,6 @@ using UnityEngine;
 
 public static class NPCPhysicsAuthoring
 {
-    [MenuItem("Tools/Characters/Configure NPC Physics and Patrols")]
     public static void Build()
     {
         if (!Application.isBatchMode && !EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo()) return;
