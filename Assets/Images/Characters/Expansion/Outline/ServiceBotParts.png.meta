@@ -1,0 +1,667 @@
+fileFormatVersion: 2
+guid: d5cf725722e73e141ae57c37e93fa86e
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -2906023266728066032
+    second: ServiceBotParts_0
+  - first:
+      213: 5812702836723266153
+    second: ServiceBotParts_1
+  - first:
+      213: 8013876770968604413
+    second: ServiceBotParts_2
+  - first:
+      213: 7900567582334401674
+    second: ServiceBotParts_3
+  - first:
+      213: 1246315743027530614
+    second: ServiceBotParts_4
+  - first:
+      213: -8410168163494061440
+    second: ServiceBotParts_5
+  - first:
+      213: -4887097294639813817
+    second: ServiceBotParts_6
+  - first:
+      213: -5870024527287497859
+    second: ServiceBotParts_7
+  - first:
+      213: 1105149698293132305
+    second: ServiceBotParts_8
+  - first:
+      213: -6218455100664048394
+    second: ServiceBotParts_9
+  - first:
+      213: -8122124881472307042
+    second: ServiceBotParts_10
+  - first:
+      213: 8988745460829859090
+    second: ServiceBotParts_11
+  - first:
+      213: -78209346922817079
+    second: ServiceBotParts_12
+  - first:
+      213: -2926230649379158671
+    second: ServiceBotParts_13
+  - first:
+      213: -7726484296799012490
+    second: ServiceBotParts_14
+  - first:
+      213: -8293362241354469081
+    second: ServiceBotParts_15
+  - first:
+      213: 5040127423412351658
+    second: ServiceBotParts_16
+  - first:
+      213: 638385645633902267
+    second: ServiceBotParts_17
+  - first:
+      213: 1736953638744237831
+    second: ServiceBotParts_18
+  - first:
+      213: 5407400588601858357
+    second: ServiceBotParts_19
+  - first:
+      213: 8391943385370959430
+    second: ServiceBotParts_20
+  - first:
+      213: -1563010131295453541
+    second: ServiceBotParts_21
+  - first:
+      213: 7927074146960002225
+    second: ServiceBotParts_22
+  - first:
+      213: -8258189160176639992
+    second: ServiceBotParts_23
+  - first:
+      213: -2304275907996150307
+    second: ServiceBotParts_24
+  - first:
+      213: -69531415979926731
+    second: ServiceBotParts_25
+  - first:
+      213: 6477303238802837810
+    second: ServiceBotParts_26
+  - first:
+      213: 5620794216877282127
+    second: ServiceBotParts_27
+  - first:
+      213: 1888991359702054978
+    second: ServiceBotParts_28
+  - first:
+      213: 7797875401196604618
+    second: ServiceBotParts_29
+  - first:
+      213: -7593577249788525150
+    second: ServiceBotParts_30
+  - first:
+      213: -97906197537949904
+    second: ServiceBotParts_31
+  - first:
+      213: 5962259945941410450
+    second: ServiceBotParts_32
+  - first:
+      213: -8946541930493256611
+    second: ServiceBotParts_33
+  - first:
+      213: -6377991433201228538
+    second: ServiceBotParts_34
+  - first:
+      213: 4197523959222093436
+    second: ServiceBotParts_35
+  - first:
+      213: 1294187855097317079
+    second: ServiceBotParts_36
+  - first:
+      213: 4439402756346042339
+    second: ServiceBotParts_37
+  - first:
+      213: 389000894969683747
+    second: ServiceBotParts_38
+  - first:
+      213: -7873360008101757027
+    second: ServiceBotParts_39
+  - first:
+      213: 3835269369312876205
+    second: ServiceBotParts_40
+  - first:
+      213: -7085070294502663044
+    second: ServiceBotParts_41
+  - first:
+      213: 2538342582369284065
+    second: ServiceBotParts_42
+  - first:
+      213: -5598853013981340094
+    second: ServiceBotParts_43
+  - first:
+      213: 963356718919404763
+    second: ServiceBotParts_44
+  - first:
+      213: -3995187524945138626
+    second: ServiceBotParts_45
+  - first:
+      213: -6627135255243330955
+    second: ServiceBotParts_46
+  - first:
+      213: -4000028963189934038
+    second: ServiceBotParts_47
+  - first:
+      213: 7569297226039014061
+    second: ServiceBotParts_48
+  - first:
+      213: 2933262783366082214
+    second: ServiceBotParts_49
+  - first:
+      213: 309449934863316932
+    second: ServiceBotParts_50
+  - first:
+      213: -5665624375421929603
+    second: ServiceBotParts_51
+  - first:
+      213: 2520483939566993973
+    second: ServiceBotParts_52
+  - first:
+      213: -3721360548121991783
+    second: ServiceBotParts_53
+  - first:
+      213: 5077084003238645351
+    second: ServiceBotParts_54
+  - first:
+      213: -528108893830004930
+    second: ServiceBotParts_55
+  - first:
+      213: -2097818860957450062
+    second: ServiceBotParts_56
+  - first:
+      213: 7033568209037252590
+    second: ServiceBotParts_57
+  - first:
+      213: -4584667647856619439
+    second: ServiceBotParts_58
+  - first:
+      213: 5895371332663940842
+    second: ServiceBotParts_59
+  - first:
+      213: -5456438834000644872
+    second: ServiceBotParts_60
+  - first:
+      213: -8011377306500635548
+    second: ServiceBotParts_61
+  - first:
+      213: -608629983200574767
+    second: ServiceBotParts_62
+  - first:
+      213: -6107271977051516492
+    second: ServiceBotParts_63
+  - first:
+      213: -1079175928024689628
+    second: ServiceBotParts_64
+  - first:
+      213: -6307170519374212252
+    second: ServiceBotParts_65
+  - first:
+      213: 3720611040645864465
+    second: ServiceBotParts_66
+  - first:
+      213: 4534363999688663410
+    second: ServiceBotParts_67
+  - first:
+      213: -6922185489486174436
+    second: ServiceBotParts_68
+  - first:
+      213: 4745390373376817548
+    second: ServiceBotParts_69
+  - first:
+      213: -8626499109720525051
+    second: ServiceBotParts_70
+  - first:
+      213: 3911426459690878116
+    second: ServiceBotParts_71
+  - first:
+      213: 2423332018475644723
+    second: ServiceBotParts_72
+  - first:
+      213: 4641744414081763704
+    second: ServiceBotParts_73
+  - first:
+      213: 5823255541116369144
+    second: ServiceBotParts_74
+  - first:
+      213: 4000691889542245242
+    second: ServiceBotParts_75
+  - first:
+      213: 5430688238023256629
+    second: ServiceBotParts_76
+  - first:
+      213: -8026646050330555559
+    second: ServiceBotParts_77
+  - first:
+      213: 5338750660731905099
+    second: ServiceBotParts_78
+  - first:
+      213: -4078187496871572783
+    second: ServiceBotParts_79
+  - first:
+      213: -1236704311137492121
+    second: ServiceBotParts_80
+  - first:
+      213: -3544029876854611411
+    second: ServiceBotParts_81
+  - first:
+      213: -7598462665306213404
+    second: ServiceBotParts_82
+  - first:
+      213: 6676594844744264646
+    second: ServiceBotParts_83
+  - first:
+      213: 242231336073663796
+    second: ServiceBotParts_84
+  - first:
+      213: -2043837402458169366
+    second: ServiceBotParts_85
+  - first:
+      213: 8145971784615639813
+    second: ServiceBotParts_86
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Helmet
+      rect:
+        serializedVersion: 2
+        x: 58
+        y: 797
+        width: 228
+        height: 303
+      alignment: 9
+      pivot: {x: 0.42, y: 0.08999997}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bacbb661d008dda48ad4745274c1bdc4
+      internalID: -215277651
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Torso
+      rect:
+        serializedVersion: 2
+        x: 377
+        y: 799
+        width: 245
+        height: 299
+      alignment: 9
+      pivot: {x: 0.5, y: 0.06000001}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0a35b13b77375ef4d82b9be913e54ace
+      internalID: 1262993439
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pelvis
+      rect:
+        serializedVersion: 2
+        x: 712
+        y: 794
+        width: 191
+        height: 157
+      alignment: 9
+      pivot: {x: 0.5, y: 0.68000007}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 40081b5c4a5be694f9b8d5fb1953424d
+      internalID: 2145398674
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Backpack
+      rect:
+        serializedVersion: 2
+        x: 1014
+        y: 790
+        width: 177
+        height: 211
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0cd206a3bafefb24180960a5deb579e1
+      internalID: 1231895419
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpperArm
+      rect:
+        serializedVersion: 2
+        x: 110
+        y: 490
+        width: 130
+        height: 242
+      alignment: 9
+      pivot: {x: 0.65, y: 0.82}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7ed3c4228af81094783279885943af72
+      internalID: -962156251
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Forearm
+      rect:
+        serializedVersion: 2
+        x: 455
+        y: 452
+        width: 108
+        height: 263
+      alignment: 9
+      pivot: {x: 0.47999996, y: 0.8399999}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 42540bcd6782db44987b67cbbb812b5f
+      internalID: 831289644
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Hand
+      rect:
+        serializedVersion: 2
+        x: 735
+        y: 443
+        width: 164
+        height: 213
+      alignment: 9
+      pivot: {x: 0.5, y: 0.89000005}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a3278768b78d2b24d8e0c063080ff99b
+      internalID: -1392735976
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Elbow
+      rect:
+        serializedVersion: 2
+        x: 1040
+        y: 508
+        width: 131
+        height: 129
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8a2bd3e6b52221949b0879466464066c
+      internalID: -34355856
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Thigh
+      rect:
+        serializedVersion: 2
+        x: 101
+        y: 106
+        width: 157
+        height: 315
+      alignment: 9
+      pivot: {x: 0.35, y: 0.83000004}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c8767e5dd52888146a18a61effc947af
+      internalID: -756494320
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Shin
+      rect:
+        serializedVersion: 2
+        x: 443
+        y: 108
+        width: 116
+        height: 298
+      alignment: 9
+      pivot: {x: 0.5, y: 0.8300001}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 08d4cdf7ba4565a4c85546628711d9e0
+      internalID: -1021940929
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Boot
+      rect:
+        serializedVersion: 2
+        x: 692
+        y: 118
+        width: 234
+        height: 163
+      alignment: 9
+      pivot: {x: 0.23999989, y: 0.73999995}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ae00cd9d9048f1f428aefe5fb9a77db8
+      internalID: 1271844114
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Knee
+      rect:
+        serializedVersion: 2
+        x: 1042
+        y: 162
+        width: 119
+        height: 118
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 590212417f4fda647826b6fea34262e5
+      internalID: 1456005295
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 95429a7116b3ddb4f90b4fda50f7ebd8
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Backpack: 1231895419
+      Boot: 1271844114
+      Elbow: -34355856
+      Forearm: 831289644
+      Hand: -1392735976
+      Helmet: -215277651
+      Knee: 1456005295
+      Pelvis: 2145398674
+      Shin: -1021940929
+      Thigh: -756494320
+      Torso: 1262993439
+      UpperArm: -962156251
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

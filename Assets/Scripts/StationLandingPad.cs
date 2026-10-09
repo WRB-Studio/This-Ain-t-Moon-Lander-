@@ -4,6 +4,7 @@ using UnityEngine;
 public class StationLandingPad : MonoBehaviour
 {
     public int index;
+    public bool isOutpost;
     public Collider2D Surface => GetComponent<Collider2D>();
     public bool HasParkedShip(LanderController incoming)
     {

@@ -14,7 +14,7 @@ public class StationInterior : MonoBehaviour
     [SerializeField] Transform nextSignalTarget;
     [SerializeField] Collider2D hallFloor;
     [SerializeField] Collider2D registrationFloor;
-    CanvasGroup transitionCurtain;
+    [SerializeField] CanvasGroup transitionCurtain;
     [SerializeField, Min(0.05f)] float fadeDuration = 0.2f;
     [SerializeField] AudioSource maintenanceSound;
     AudioClip maintenanceClip;
@@ -23,6 +23,8 @@ public class StationInterior : MonoBehaviour
     public bool IsInside => CurrentArea != Area.Outside;
     public bool IsTransitioning { get; private set; }
     public Transform NextSignalTarget => nextSignalTarget;
+    public Transform HallArrival => hallArrival;
+    public Transform RegistrationArrival => registrationArrival;
     SpaceStation station;
     Coroutine transition;
 
@@ -39,7 +41,6 @@ public class StationInterior : MonoBehaviour
     }
     void Start()
     {
-        transitionCurtain = StationDoorPrompt.Instance.Curtain;
         if (maintenanceSound)
         {
             const int rate = 22050;
@@ -102,6 +103,14 @@ public class StationInterior : MonoBehaviour
         if (IsTransitioning || !destination || !station.IsAvailable || !GameController.Instance
             || GameController.Instance.Phase != GameController.GamePhase.EVA
             || (StationConversation.Instance && StationConversation.Instance.IsShowing)) return;
+        // The door UI can still be inactive when this interior starts.
+        if (!transitionCurtain && StationDoorPrompt.Instance)
+            transitionCurtain = StationDoorPrompt.Instance.Curtain;
+        if (!transitionCurtain)
+        {
+            Debug.LogError("Station room transition requires the StationDoorPrompt curtain or an assigned Transition Curtain.", this);
+            return;
+        }
         IsTransitioning = true;
         AudioManager.Instance.PlaySound(AudioManager.Instance.sfxCountdownStart, 0.15f, 0.75f);
         StoryTextController.Instance.BlockInputUntilRelease();

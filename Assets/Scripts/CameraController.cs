@@ -115,6 +115,17 @@ public class CameraController : MonoBehaviour
 
         var gm = GravityManager2D.Instance;
 
+        var outpost = AsteroidOutpost.Instance;
+        if (outpost && outpost.IsNear(target.position))
+        {
+            float distance = Vector2.Distance(target.position, outpost.LandingPad.transform.position);
+            float zoom = Mathf.Max(18f, 38f / cam.aspect);
+            float blend = Mathf.InverseLerp(15f, 105f, distance);
+            return Mathf.Lerp(zoom, Mathf.Max(zoom, zeroGMaxZoom), blend);
+        }
+        if (CargoMission.Instance && CargoMission.Instance.Stage == CargoMission.Progress.Towing)
+            return Mathf.Max(zeroGMaxZoom, 18f / Mathf.Min(1f, cam.aspect));
+
         var station = SpaceStation.Instance;
         if (station && station.IsAvailable && target
             && Vector2.Distance(target.position, station.transform.position) <= station.ApproachDistance)

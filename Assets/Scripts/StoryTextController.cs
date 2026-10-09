@@ -261,6 +261,7 @@ public class StoryTextController : MonoBehaviour
         if (PauseMenu.IsPaused) return;
         if (RadioController.Instance && RadioController.Instance.IsOpen) return;
         if (StationConversation.Instance && StationConversation.Instance.IsShowing) return;
+        if (CargoMission.Instance && CargoMission.Instance.IsShowing) return;
         var game = GameController.Instance;
         if (!game || (!game.IsPlaying && game.Phase != GameController.GamePhase.Landed
             && !(operatorDialogue && game.HasResults)))
@@ -274,6 +275,7 @@ public class StoryTextController : MonoBehaviour
         if (game.HasResults && game.Phase == GameController.GamePhase.Landed
             && LanderController.Instance && LanderController.Instance.landerState == LanderController.eLanderState.LandedPad
             && !LanderController.Instance.IsOnStation
+            && !LanderController.Instance.IsOnOutpost
 #if UNITY_EDITOR
             && DebugReturnEnabled
 #endif

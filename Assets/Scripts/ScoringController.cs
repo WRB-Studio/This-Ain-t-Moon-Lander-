@@ -132,7 +132,8 @@ public class ScoringController : MonoBehaviour
         scoredPad = state.scoredPad >= 0 && state.scoredPad < pads.Length
             ? pads[state.scoredPad].GetComponentInChildren<Collider2D>() : null;
         if (state.scoredStationPad >= 0 && SpaceStation.Instance)
-            scoredPad = SpaceStation.Instance.GetPad(state.scoredStationPad).Surface;
+            scoredPad = state.scoredStationPad == 2 && AsteroidOutpost.Instance ? AsteroidOutpost.Instance.LandingPad.Surface
+                : SpaceStation.Instance.GetPad(state.scoredStationPad).Surface;
         runStartTime = Time.time - Mathf.Max(0f, state.elapsed);
         LastTimeSec = state.lastTime; LastWasMoon = state.lastWasMoon;
         LastScore = state.lastScore; LastBaseScore = state.baseScore; LastSpeedScore = state.speedScore;

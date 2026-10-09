@@ -1109,6 +1109,210 @@
     {
       "key": "menu.exit",
       "text": "Spiel beenden"
+    },
+    {
+      "key": "cargo.passenger.name",
+      "text": "Rhekk"
+    },
+    {
+      "key": "cargo.status.find",
+      "text": "Letzte Abholung: Folge dem Tracker zum verlassenen Außenposten."
+    },
+    {
+      "key": "cargo.status.connect",
+      "text": "Rhekk braucht einen Lift. Verbinde das Stahlseil mit der Kapsel."
+    },
+    {
+      "key": "cargo.status.attach",
+      "text": "Seil in der Hand: Geh zum Schiff und drücke FESTMACHEN."
+    },
+    {
+      "key": "cargo.status.tow",
+      "text": "Schleppflug: Kapsel sanft auf der markierten Ablage neben den Stationspads absetzen."
+    },
+    {
+      "key": "cargo.status.open",
+      "text": "Kapsel sicher abgesetzt. Lande, steig aus und öffne sie."
+    },
+    {
+      "key": "cargo.status.walk",
+      "text": "Rhekk geht zur Registrierung. Die Beschwerde reist zu Fuß weiter."
+    },
+    {
+      "key": "cargo.status.complete",
+      "text": "Rhekk ist bei der Registrierung angekommen. Fortsetzung folgt."
+    },
+    {
+      "key": "cargo.status.failed",
+      "text": "MISSION FEHLGESCHLAGEN: Kapsel zerstört. NEU VERSUCHEN setzt die Mission am Außenposten zurück."
+    },
+    {
+      "key": "cargo.action.talk",
+      "text": "REDEN"
+    },
+    {
+      "key": "cargo.action.connect",
+      "text": "VERBINDEN"
+    },
+    {
+      "key": "cargo.action.attach",
+      "text": "FESTMACHEN"
+    },
+    {
+      "key": "cargo.action.open",
+      "text": "KAPSEL ÖFFNEN"
+    },
+    {
+      "key": "cargo.action.retry",
+      "text": "NEU VERSUCHEN"
+    },
+    {
+      "key": "cargo.outpost.title",
+      "text": "Außenposten"
+    },
+    {
+      "key": "cargo.outpost.landed",
+      "text": "Keine Besatzung. Keine Begrüßung. Die Tankanlage läuft noch.\n\nAuftanken, aussteigen und nach dem Tracker sehen."
+    },
+    {
+      "key": "cargo.outpost.pad",
+      "text": "PAD 01"
+    },
+    {
+      "key": "cargo.outpost.sign",
+      "text": "AUSSENPOSTEN K-17"
+    },
+    {
+      "key": "cargo.outpost.closed",
+      "text": "BETRIEB EINGESTELLT"
+    },
+    {
+      "key": "cargo.outpost.fuel",
+      "text": "FUEL / AUTOMATIK"
+    },
+    {
+      "key": "cargo.delivery.sign",
+      "text": "FRACHT ABLAGE"
+    },
+    {
+      "key": "cargo.capsule.label",
+      "text": "PASSAGIERTRANSPORT"
+    },
+    {
+      "key": "cargo.answer.who",
+      "text": "Wer ist da drin?"
+    },
+    {
+      "key": "cargo.answer.freight",
+      "text": "Ich sollte nach einer Lieferung suchen."
+    },
+    {
+      "key": "cargo.answer.pilot",
+      "text": "Was ist mit dem Piloten passiert?"
+    },
+    {
+      "key": "cargo.answer.ship",
+      "text": "Ich habe sein Schiff auf dem Mond gefunden."
+    },
+    {
+      "key": "cargo.answer.transport",
+      "text": "Wie bekomme ich dich hier weg?"
+    },
+    {
+      "key": "cargo.answer.help",
+      "text": "In Ordnung. Ich bringe dich zur Station."
+    },
+    {
+      "key": "cargo.answer.no.promises",
+      "text": "Ich versuche es. Keine Versprechen."
+    },
+    {
+      "key": "cargo.answer.back",
+      "text": "Ich kümmere mich um das Seil."
+    },
+    {
+      "key": "cargo.answer.welcome",
+      "text": "Gern geschehen."
+    },
+    {
+      "key": "cargo.answer.complaint",
+      "text": "Du bist heil angekommen. Das zählt."
+    },
+    {
+      "key": "cargo.answer.what.now",
+      "text": "Und was machst du jetzt?"
+    },
+    {
+      "key": "cargo.answer.see.you",
+      "text": "Wir sehen uns bei der Registrierung."
+    },
+    {
+      "key": "cargo.dialog.discovery.1",
+      "text": "Endlich. Hat die Station diesmal jemanden geschickt, der lesen kann?\n\nIch heiße Rhekk. Auf dem Etikett steht PASSAGIERTRANSPORT. Nicht Paket. Nicht Ersatzteile. Passagier. Ich bin der Unterschied."
+    },
+    {
+      "key": "cargo.dialog.discovery.2",
+      "text": "Der Pilot hat mich hier abgestellt. Er wollte zu der Anlage hinter dem Außenposten. Nur kurz etwas prüfen, sagte er.\n\nFünf Minuten. Ich möchte ausdrücklich festhalten, dass es keine fünf Minuten waren."
+    },
+    {
+      "key": "cargo.dialog.discovery.3",
+      "text": "Dann ist es wirklich ohne ihn gestartet. Ich habe die Triebwerke gehört. Auf meinen Hinweis, dass ich noch hier stehe, hat das Schiff nicht reagiert.\n\nEin ausgesprochen schlechter Zuhörer.\n\nVom Piloten habe ich seitdem nichts gehört."
+    },
+    {
+      "key": "cargo.dialog.discovery.4",
+      "text": "Das Stationsdock muss zuerst den Druck ausgleichen. Hier bleibt die Kapsel zu. Diese Regel mag ich im Moment sogar.\n\nAm Rahmen hängt ein Stahlseil. Verbinde es hier, nimm das freie Ende mit zum Schiff und mach es am unteren Schlepppunkt fest. Dann steigst du ein.\n\nIch wäre gern Handgepäck gewesen."
+    },
+    {
+      "key": "cargo.dialog.discovery.5",
+      "text": "Bring mich zur markierten Frachtablage neben den Landeplätzen der Station. Lass mich langsam herunter. Wenn ich ruhig stehe, löst die Kupplung das Seil automatisch. Danach kannst du selbst landen und mich öffnen.\n\nLangsam heißt langsam. Nicht: Der Boden wird schon bremsen."
+    },
+    {
+      "key": "cargo.dialog.repeat",
+      "text": "Seil an die Kapsel. Freies Ende zum Schiff. FESTMACHEN. Einsteigen. Zur Station fliegen. Sanft absetzen.\n\nIch wiederhole das gern. Ich habe hier sehr wenig andere Termine."
+    },
+    {
+      "key": "cargo.dialog.release.1",
+      "text": "Frische Luft. Fester Boden. Eine Reise ohne weitere Bodenproben.\n\nDein Flugstil hat meinen inneren Organen neue Bekanntschaften ermöglicht.\n\nAber du hast mich hierhergebracht. Danke. Das meine ich tatsächlich."
+    },
+    {
+      "key": "cargo.dialog.release.2",
+      "text": "Zuerst zur Registrierung. Dort hat jemand mich als Lieferung verbucht. Ich möchte meinen Status von Fracht auf Person korrigieren lassen.\n\nDanach reden wir über den Piloten. Und über dieses Schiff, das ohne Piloten startet."
+    },
+    {
+      "key": "cargo.dialog.release.3",
+      "text": "Du weißt ja, wo die Registrierung ist. Falls sie mich wieder in eine Kiste stecken wollen, klopfe ich.\n\nDu erkennst das Geräusch inzwischen."
+    },
+    {
+      "key": "cargo.radio.tow.title",
+      "text": "Passagier im Schlepp"
+    },
+    {
+      "key": "cargo.radio.tow.body",
+      "text": "Verbindung hergestellt. Ziel: markierte Frachtablage neben den Stationspads.\n\nKapsel langsam absetzen und kurz ruhig stehen lassen. Das Seil löst sich automatisch. Anschließend landen und die Kapsel öffnen.\n\nRhekk: „Falls das Formular fragt: Ich fliege nicht freiwillig außen mit.“"
+    },
+    {
+      "key": "cargo.radio.delivered.title",
+      "text": "Passagier abgestellt"
+    },
+    {
+      "key": "cargo.radio.delivered.body",
+      "text": "Kapsel steht sicher. Schleppkupplung gelöst.\n\nLande jetzt selbst und öffne die Kapsel zu Fuß.\n\nRhekk: „Ich bin angekommen. Es wäre schön, wenn das auch für die Tür gilt.“"
+    },
+    {
+      "key": "cargo.radio.failed.title",
+      "text": "Mission fehlgeschlagen"
+    },
+    {
+      "key": "cargo.radio.failed.body",
+      "text": "Kapsel zerstört oder Schleppschiff verloren. Rettung fehlgeschlagen.\n\nMit NEU VERSUCHEN setzt du diese Mission am Außenposten zurück. Dein übriger Fortschritt bleibt erhalten.\n\nDie Buchhaltung möchte den Begriff „sanft“ künftig schriftlich definieren."
+    },
+    {
+      "key": "cargo.radio.complete.title",
+      "text": "Frachtstatus korrigiert"
+    },
+    {
+      "key": "cargo.radio.complete.body",
+      "text": "Rhekk ist bei der Registrierung angekommen.\n\nStatus: Person. Beschwerdebereitschaft: vollständig wiederhergestellt.\n\nDer Pilot bleibt vermisst. Warum das Schiff allein gestartet ist, bleibt offen."
     }
   ]
 }

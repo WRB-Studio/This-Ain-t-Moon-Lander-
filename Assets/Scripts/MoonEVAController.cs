@@ -90,6 +90,7 @@ public class MoonEVAController : MonoBehaviour
             if (!collider || !collider.enabled) continue;
             var candidate = collider.GetComponentInParent<LanderController>();
             if (!candidate || candidate.IsCrashed) continue;
+            if (CargoMission.Instance && !CargoMission.Instance.CanBoard(candidate) && !CargoMission.Instance.HoldingCable) continue;
             float distance = ((Vector2)(candidate.transform.position - astronaut.transform.position)).sqrMagnitude;
             if (distance >= bestDistance) continue;
             nearest = candidate;
@@ -99,7 +100,8 @@ public class MoonEVAController : MonoBehaviour
         stationLanders ??= FindObjectsByType<LanderController>(FindObjectsSortMode.None);
         foreach (var candidate in stationLanders)
         {
-            if (!candidate || !candidate.IsOnStation || candidate.IsCrashed) continue;
+            if (!candidate || !candidate.IsOnServicePad || candidate.IsCrashed) continue;
+            if (CargoMission.Instance && !CargoMission.Instance.CanBoard(candidate) && !CargoMission.Instance.HoldingCable) continue;
             var hull = candidate.GetComponent<Collider2D>();
             if (Vector2.Distance(astronaut.transform.position, hull.ClosestPoint(astronaut.transform.position)) > stationBoardingDistance) continue;
             float distance = ((Vector2)(candidate.transform.position - astronaut.transform.position)).sqrMagnitude;
@@ -109,10 +111,11 @@ public class MoonEVAController : MonoBehaviour
         }
         return nearest;
     }
+    public LanderController NearbyLander => GetNearbyLander();
 
     void LateUpdate()
     {
-        if (astronaut && SpaceStation.Instance && SpaceStation.Instance.IsAvailable) RefreshAction();
+        if (astronaut) RefreshAction();
     }
 
     public void RefreshAction()
@@ -121,9 +124,10 @@ public class MoonEVAController : MonoBehaviour
         bool entering = astronaut != null;
         if (buttonText) buttonText.SetLocalizedText(entering ? "[[game.enter.lander]]" : "[[game.exit.lander]]");
         bool canExit = lander && ((lander.landerState == LanderController.eLanderState.LandedMoon && lander.IsTouchingMoon)
-            || (lander.IsOnStation && lander.IsTouchingPad)) && GameController.Instance.Phase == GameController.GamePhase.Landed;
+            || (lander.IsOnServicePad && lander.IsTouchingPad)) && GameController.Instance.Phase == GameController.GamePhase.Landed;
+        bool holdingCable = CargoMission.Instance && CargoMission.Instance.HoldingCable;
         btnExit.gameObject.SetActive(!GameController.Instance.HasResults
-            && (entering ? GetNearbyLander() != null : canExit));
+            && (entering ? !holdingCable && GetNearbyLander() != null : canExit));
         if (scoreExitButton) scoreExitButton.gameObject.SetActive(GameController.Instance.HasResults && canExit && !entering);
     }
 
@@ -132,7 +136,7 @@ public class MoonEVAController : MonoBehaviour
         if ((GameController.Instance.HasResults && (!scoreExitButton || !scoreExitButton.gameObject.activeInHierarchy))
             || astronaut || !lander || GameController.Instance.Phase != GameController.GamePhase.Landed
             || !((lander.landerState == LanderController.eLanderState.LandedMoon && lander.IsTouchingMoon)
-                || (lander.IsOnStation && lander.IsTouchingPad))) return;
+                || (lander.IsOnServicePad && lander.IsTouchingPad))) return;
         var renderer = lander.GetComponent<SpriteRenderer>();
         float halfWidth = renderer.sprite.bounds.extents.x * Mathf.Abs(lander.transform.lossyScale.x);
         float side = Random.value < 0.5f ? -1f : 1f;
@@ -142,6 +146,11 @@ public class MoonEVAController : MonoBehaviour
             if (side == 0f) side = 1f;
         }
         Vector3 spawn = lander.transform.position + lander.transform.right * side * (halfWidth * 1.5f + 0.5f);
+        if (lander.IsOnOutpost && AsteroidOutpost.Instance.CargoSpawn)
+        {
+            side = Mathf.Sign(AsteroidOutpost.Instance.CargoSpawn.position.x - lander.transform.position.x);
+            spawn = lander.transform.position + lander.transform.right * side * (halfWidth * 1.5f + 0.5f);
+        }
         nearbyLanders.Clear();
         stationLanders = null;
         astronaut = Instantiate(astronautPrefab, spawn, lander.transform.rotation, astronautParent);
@@ -152,7 +161,8 @@ public class MoonEVAController : MonoBehaviour
 
     public void EnterLander(LanderController newLander)
     {
-        if (!astronaut || !newLander || newLander.IsCrashed) return;
+        if (!astronaut || !newLander || newLander.IsCrashed
+            || (CargoMission.Instance && !CargoMission.Instance.CanBoard(newLander))) return;
         var previousAstronaut = astronaut;
         astronaut = null;
         nearbyLanders.Clear();

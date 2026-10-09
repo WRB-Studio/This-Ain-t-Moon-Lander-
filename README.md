@@ -23,6 +23,8 @@
 - **Master the landing:** Gravity, landing-pad placement and scoring reward control and planning.
 - **Persistent story prototype:** Story and local save support are included.
 - **Station radio:** Registration issues a portable radio with saved messages, optional video portraits, short replies and selectable signal tracking.
+- **First rescue mission:** Follow a cargo tracker to an abandoned asteroid outpost, meet Rhekk and tow his passenger capsule back to the station. [Mission and editing guide](Documentation/CargoMission.md).
+- **Expanded art library:** Three modular multi-deck stations, five future spacecraft, four rigged robot/animal residents and consistent black-and-white outpost/asteroid art, original landers and a sharp geometric moon. [Assets and editing guide](Documentation/SpaceArtExpansion.md).
 - **Pause and settings:** Pause with Escape or the HUD button, adjust music/effects and switch all game texts between German and English. [Localization guide](Documentation/Localization.md).
 
 ## Technical details

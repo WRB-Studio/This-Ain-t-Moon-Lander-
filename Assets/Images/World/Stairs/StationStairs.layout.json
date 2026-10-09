@@ -1,0 +1,56 @@
+{
+  "stairs": [
+    {
+      "name": "ExteriorLong",
+      "x": 70,
+      "y": 45,
+      "width": 687,
+      "height": 426,
+      "startX": 155,
+      "startY": 405,
+      "landingX": 575,
+      "landingY": 154,
+      "endX": 744,
+      "endY": 154
+    },
+    {
+      "name": "ExteriorShort",
+      "x": 907,
+      "y": 114,
+      "width": 536,
+      "height": 357,
+      "startX": 955,
+      "startY": 403,
+      "landingX": 1250,
+      "landingY": 214,
+      "endX": 1430,
+      "endY": 214
+    },
+    {
+      "name": "InteriorCompact",
+      "x": 107,
+      "y": 653,
+      "width": 541,
+      "height": 285,
+      "startX": 185,
+      "startY": 860,
+      "landingX": 478,
+      "landingY": 659,
+      "endX": 623,
+      "endY": 659
+    },
+    {
+      "name": "InteriorService",
+      "x": 828,
+      "y": 552,
+      "width": 642,
+      "height": 382,
+      "startX": 885,
+      "startY": 852,
+      "landingX": 1290,
+      "landingY": 643,
+      "endX": 1445,
+      "endY": 643
+    }
+  ]
+}

@@ -467,7 +467,7 @@ public class LanderUI : MonoBehaviour
         if (landed)
         {
             bool station = lander.IsOnStation;
-            landingPanel.title.SetLocalizedText(station ? "[[game.station.landing]]" : isMoon ? "[[game.moon.landing]]" : "[[game.landed.title]]");
+            landingPanel.title.SetLocalizedText(lander.IsOnOutpost ? "[[cargo.outpost.title]]" : station ? "[[game.station.landing]]" : isMoon ? "[[game.moon.landing]]" : "[[game.landed.title]]");
             landingPanel.message.SetLocalizedText(message);
             landingPanel.totalScore.SetLocalizedText(xp);
             landingPanel.score.gameObject.SetActive(showScore);
@@ -655,6 +655,7 @@ public class LanderUI : MonoBehaviour
         if ((StationInterior.Instance && StationInterior.Instance.IsTransitioning)
             || (StationConversation.Instance && StationConversation.Instance.IsShowing)) return false;
         if (StoryTextController.Instance && StoryTextController.Instance.BlocksGameplayInput) return false;
+        if (CargoMission.Instance && CargoMission.Instance.IsShowing) return false;
         if (RadioController.Instance && RadioController.Instance.IsOpen) return false;
         if (PauseMenu.IsPaused) return false;
         for (int i = 0; i < Input.touchCount; i++)

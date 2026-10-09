@@ -5,7 +5,7 @@ using UnityEngine;
 [Serializable]
 public class SaveGame
 {
-    public const int CurrentVersion = 5;
+    public const int CurrentVersion = 7;
     public int version = CurrentVersion;
     public float volMusic = 0.8f;
     public float volSfx = 1f;

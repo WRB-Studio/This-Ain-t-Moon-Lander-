@@ -1,0 +1,39 @@
+{
+  "assets": [
+    {
+      "name": "Courier",
+      "x": 172,
+      "y": 96,
+      "width": 331,
+      "height": 289
+    },
+    {
+      "name": "Surveyor",
+      "x": 708,
+      "y": 141,
+      "width": 393,
+      "height": 240
+    },
+    {
+      "name": "CargoTug",
+      "x": 116,
+      "y": 498,
+      "width": 457,
+      "height": 239
+    },
+    {
+      "name": "Interceptor",
+      "x": 722,
+      "y": 482,
+      "width": 370,
+      "height": 260
+    },
+    {
+      "name": "RescueShuttle",
+      "x": 125,
+      "y": 875,
+      "width": 438,
+      "height": 265
+    }
+  ]
+}

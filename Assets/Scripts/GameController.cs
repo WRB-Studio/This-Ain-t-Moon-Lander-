@@ -27,8 +27,8 @@ public class GameController : MonoBehaviour
         && (!LanderController.Instance.IsOnStation || SaveLoadManager.Instance.Data.GetFlag("story.registrationComplete"))
         && LanderController.Instance.landerState == LanderController.eLanderState.LandedPad
         && LanderController.Instance.IsTouchingPad;
-    public bool CanStartNextLevel => HasResults && CanRefill && !LanderController.Instance.IsOnStation;
-    public bool CanChooseLander => HasResults && (!LanderController.Instance.IsOnStation || Phase == GamePhase.Crashed)
+    public bool CanStartNextLevel => HasResults && CanRefill && !LanderController.Instance.IsOnServicePad;
+    public bool CanChooseLander => HasResults && (!LanderController.Instance.IsOnServicePad || Phase == GamePhase.Crashed)
         && (!IsExploring || Phase == GamePhase.Crashed
         || (CanRefill && SaveLoadManager.Instance.Data.GetFlag("story.companyLanderReturned")));
     public Transform ControlledTarget { get; private set; }
@@ -69,6 +69,7 @@ public class GameController : MonoBehaviour
     {
         IsExploring = false;
         GenerateWorld();
+        if (CargoMission.Instance) CargoMission.Instance.Initialize(null);
         ScoringController.Instance.BeginLevel();
         StartArcadeRound();
         worldReady = true;
@@ -89,6 +90,7 @@ public class GameController : MonoBehaviour
 
     void StartArcadeRound()
     {
+        if (CargoMission.Instance) CargoMission.Instance.OnRunRestart();
         if (StationConversation.Instance) StationConversation.Instance.Close();
         if (StationInterior.Instance) StationInterior.Instance.ResetToOutside();
         IsRefilling = false;
@@ -139,6 +141,18 @@ public class GameController : MonoBehaviour
     public void HandleLanding(Collision2D collision, bool moon)
     {
         Phase = GamePhase.Landed;
+        if (LanderController.Instance.IsOnOutpost)
+        {
+            IsExploring = true;
+            resultsHaveScore = false;
+            HasResults = true;
+            ResultStoryMessage = "[[cargo.outpost.landed]]";
+            LanderController.Instance.controlsEnabled = false;
+            LanderUI.Instance.ShowResults(LanderController.Instance.landerState);
+            MoonEVAController.Instance.RefreshAction();
+            SaveLoadManager.Instance.Save();
+            return;
+        }
         if (moon)
         {
             IsExploring = true;
@@ -216,12 +230,12 @@ public class GameController : MonoBehaviour
         Phase = GamePhase.Landed;
         LanderUI.Instance.HideGameOver();
         lander.landerState = lander.StationPad ? LanderController.eLanderState.LandedPad : LanderController.eLanderState.LandedMoon;
-        bool stationServices = lander.StationPad && SaveLoadManager.Instance.Data.GetFlag("story.registrationComplete");
+        bool stationServices = lander.IsOnServicePad && (lander.IsOnOutpost || SaveLoadManager.Instance.Data.GetFlag("story.registrationComplete"));
         if (stationServices)
         {
             HasResults = true;
             resultsHaveScore = false;
-            ResultStoryMessage = "[[game.docked.refuel.or.continue.your.flight]]";
+            ResultStoryMessage = lander.IsOnOutpost ? "[[cargo.outpost.landed]]" : "[[game.docked.refuel.or.continue.your.flight]]";
             lander.Park();
         }
         else lander.ResumeFlight();
@@ -236,6 +250,7 @@ public class GameController : MonoBehaviour
         ResultStoryMessage = null;
         IsRefilling = false;
         Phase = GamePhase.Crashed;
+        if (CargoMission.Instance) CargoMission.Instance.Fail();
         HasResults = true;
         resultsHaveScore = false;
         MoonEVAController.Instance.RefreshAction();
@@ -303,6 +318,7 @@ public class GameController : MonoBehaviour
         world.moonPosition = moon.position; world.moonRotation = moon.eulerAngles.z; world.moonScale = moon.localScale;
         for (int i = 0; i < pads.Length; i++) world.pads[i] = pads[i].transform.position;
         for (int i = 0; i < ships.Length; i++) world.ships[i] = ships[i].CaptureState();
+        if (CargoMission.Instance) world.cargoMission = CargoMission.Instance.Capture(ships);
         var astronaut = MoonEVAController.Instance.astronaut;
         if (astronaut)
         {
@@ -333,6 +349,7 @@ public class GameController : MonoBehaviour
         var moon = GravityManager2D.Instance.transform;
         moon.position = world.moonPosition; moon.rotation = Quaternion.Euler(0f, 0f, world.moonRotation); moon.localScale = world.moonScale;
         if (world.hasStationLayout && SpaceStation.Instance) SpaceStation.Instance.RestoreOffset(world.stationOffset);
+        if (AsteroidOutpost.Instance) AsteroidOutpost.Instance.SyncLayout();
         var oldPads = FindObjectsByType<LandingPadPlacer>(FindObjectsSortMode.None);
         var pads = new LandingPadPlacer[world.pads.Length];
         for (int i = 0; i < pads.Length; i++)
@@ -384,6 +401,7 @@ public class GameController : MonoBehaviour
         }
         MoonEVAController.Instance.RefreshAction();
         if (!HasResults && LanderController.Instance.deadZoneTriggered) LanderUI.Instance.ShowHideDeadZoneWarning(true);
+        if (CargoMission.Instance) CargoMission.Instance.Initialize(world.cargoMission, ships);
         if (world.stationResidents != null)
             foreach (var resident in FindObjectsByType<StationResident>(FindObjectsInactive.Include, FindObjectsSortMode.None))
                 foreach (var saved in world.stationResidents) if (saved.id == resident.Id) { resident.RestoreState(saved); break; }

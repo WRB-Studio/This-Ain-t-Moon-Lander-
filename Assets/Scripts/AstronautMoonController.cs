@@ -4,19 +4,29 @@ using UnityEngine;
 public class AstronautMoonController : MonoBehaviour
 {
     [Header("Anim")]
+    [Tooltip("Kehrt die Blickrichtung der Grafik um.")]
     [SerializeField] bool invertFlip = false;
+    [Tooltip("Ab dieser Geschwindigkeit startet die Laufanimation.")]
     [SerializeField] float moveEpsilon = 0.0001f;
 
     [Header("Moon Hop (visual only)")]
     Transform visualRoot;      // Sprite/Child, nicht das Rigidbody-Objekt
+    [Tooltip("Höhe des sichtbaren Mond-Hüpfens. Ändert keine Physik.")]
     [SerializeField] float hopAmp = 0.03f;      // Weltunits, klein!
+    [Tooltip("Tempo des sichtbaren Mond-Hüpfens. Höher = schneller.")]
     [SerializeField] float hopFreq = 6f;        // Hz
     Vector3 visualBaseLocalPos;
 
     [Header("Movement")]
+    [Tooltip("Basis-Gehgeschwindigkeit für Station und Mond, in Einheiten pro Sekunde.")]
     [SerializeField] float maxMoveSpeed = 6f;
+    [Tooltip("Geschwindigkeitsfaktor auf Stationen und Außenposten. 0.75 = 75 %.")]
+    [SerializeField, Range(0.1f, 1f)] float stationSpeedMultiplier = 0.75f;
+    [Tooltip("Geschwindigkeitsfaktor auf dem Mond. 0.75 = 75 %.")]
     [SerializeField, Range(0.1f, 1f)] float moonSpeedMultiplier = 0.75f;
+    [Tooltip("Tempo der Ausrichtung zum Boden. Höher = schneller.")]
     [SerializeField] float rotateSmooth = 12f;
+    [Tooltip("Ignoriert kleine seitliche Eingaben. Höher = stärkere Eingabe nötig.")]
     [Range(0f, 1f)][SerializeField] float inputDeadZone = 0.15f;
 
     Animator anim;
@@ -67,6 +77,8 @@ public class AstronautMoonController : MonoBehaviour
 
         Vector2 radialIn = toCenter.normalized;
         Vector2 stationGravity = SpaceStation.Instance ? SpaceStation.Instance.GetGravity(rb.position) : Vector2.zero;
+        if (stationGravity.sqrMagnitude == 0f && AsteroidOutpost.Instance)
+            stationGravity = AsteroidOutpost.Instance.GetGravity(rb.position);
         bool onStation = stationGravity.sqrMagnitude > 0f;
         if (onStation) radialIn = Vector2.down;
         Vector2 radialOut = -radialIn;
@@ -76,7 +88,7 @@ public class AstronautMoonController : MonoBehaviour
         ApplyUprightRotation(radialOut);
 
         float targetTangent = CalcTargetTangentSpeed(tangent);
-        if (!onStation) targetTangent *= moonSpeedMultiplier;
+        targetTangent *= onStation ? stationSpeedMultiplier : moonSpeedMultiplier;
         ApplyTangentialVelocity(radialIn, tangent, targetTangent);
 
         UpdateAnimAndFlip(targetTangent, onStation);
@@ -150,6 +162,7 @@ public class AstronautMoonController : MonoBehaviour
 
         if (characterVisual)
         {
+            characterVisual.SetMoonHop(hopAmp, hopFreq);
             characterVisual.SetWalking(isWalking, Mathf.Abs(targetTangent), !onStation);
             characterVisual.FaceLeft(lastFlip);
             return;

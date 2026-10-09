@@ -28,6 +28,7 @@ public class StationDoorPrompt : MonoBehaviour
             && (!StationConversation.Instance || !StationConversation.Instance.IsShowing)
             && (!StationInterior.Instance || !StationInterior.Instance.IsTransitioning)
             && !StoryTextController.Instance.BlocksGameplayInput;
+        allowed &= !CargoMission.Instance || (!CargoMission.Instance.IsShowing && !CargoMission.Instance.HoldingCable);
         if (allowed)
             foreach (var interaction in interactions)
                 if (interaction && interaction.IsNear(game.ControlledTarget.position)

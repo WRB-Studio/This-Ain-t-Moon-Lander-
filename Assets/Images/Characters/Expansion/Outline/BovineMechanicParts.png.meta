@@ -1,0 +1,520 @@
+fileFormatVersion: 2
+guid: 110c10949fd37a1418b508ed1a860c71
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -1127849370510756453
+    second: BovineMechanicParts_0
+  - first:
+      213: 2240615255937486471
+    second: BovineMechanicParts_1
+  - first:
+      213: 861027275400562577
+    second: BovineMechanicParts_2
+  - first:
+      213: -3850112449202169910
+    second: BovineMechanicParts_3
+  - first:
+      213: -5550375430158243046
+    second: BovineMechanicParts_4
+  - first:
+      213: 7483060872241327328
+    second: BovineMechanicParts_5
+  - first:
+      213: 9136392790530153682
+    second: BovineMechanicParts_6
+  - first:
+      213: -8773594441299967058
+    second: BovineMechanicParts_7
+  - first:
+      213: 4967992402752184745
+    second: BovineMechanicParts_8
+  - first:
+      213: -7925261730537461581
+    second: BovineMechanicParts_9
+  - first:
+      213: 58442599601380298
+    second: BovineMechanicParts_10
+  - first:
+      213: 8524578905252565119
+    second: BovineMechanicParts_11
+  - first:
+      213: -1842820850093154640
+    second: BovineMechanicParts_12
+  - first:
+      213: 5121717623437385772
+    second: BovineMechanicParts_13
+  - first:
+      213: 7735361417991898113
+    second: BovineMechanicParts_14
+  - first:
+      213: 3640044280152603108
+    second: BovineMechanicParts_15
+  - first:
+      213: -9154455168206509859
+    second: BovineMechanicParts_16
+  - first:
+      213: 4451100959437377471
+    second: BovineMechanicParts_17
+  - first:
+      213: 8865547391907296313
+    second: BovineMechanicParts_18
+  - first:
+      213: -211732053926348927
+    second: BovineMechanicParts_19
+  - first:
+      213: -6741294014656358356
+    second: BovineMechanicParts_20
+  - first:
+      213: -5284724782740980627
+    second: BovineMechanicParts_21
+  - first:
+      213: -2695430356165710332
+    second: BovineMechanicParts_22
+  - first:
+      213: -4791738513049189221
+    second: BovineMechanicParts_23
+  - first:
+      213: 1698878327281434150
+    second: BovineMechanicParts_24
+  - first:
+      213: 7174826080971724831
+    second: BovineMechanicParts_25
+  - first:
+      213: -9025444048309215092
+    second: BovineMechanicParts_26
+  - first:
+      213: 4145111437355233706
+    second: BovineMechanicParts_27
+  - first:
+      213: -3400295801762077272
+    second: BovineMechanicParts_28
+  - first:
+      213: 3480394257613501138
+    second: BovineMechanicParts_29
+  - first:
+      213: -203458207551203022
+    second: BovineMechanicParts_30
+  - first:
+      213: 4379295719573545754
+    second: BovineMechanicParts_31
+  - first:
+      213: -5394468456651956347
+    second: BovineMechanicParts_32
+  - first:
+      213: -2146192647141798390
+    second: BovineMechanicParts_33
+  - first:
+      213: -2271496022345615901
+    second: BovineMechanicParts_34
+  - first:
+      213: -693663099070133698
+    second: BovineMechanicParts_35
+  - first:
+      213: 8057610165117633498
+    second: BovineMechanicParts_36
+  - first:
+      213: 3479697270472696065
+    second: BovineMechanicParts_37
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Helmet
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 807
+        width: 269
+        height: 315
+      alignment: 9
+      pivot: {x: 0.42, y: 0.09000002}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 36fdab8dd3da42b4fbf3c8f592b2ac9f
+      internalID: 1515343040
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Torso
+      rect:
+        serializedVersion: 2
+        x: 370
+        y: 790
+        width: 276
+        height: 322
+      alignment: 9
+      pivot: {x: 0.5, y: 0.06000002}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7e78fac7d01d5c447a58f338a5b01a99
+      internalID: 56532895
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pelvis
+      rect:
+        serializedVersion: 2
+        x: 725
+        y: 789
+        width: 214
+        height: 188
+      alignment: 9
+      pivot: {x: 0.5, y: 0.68}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5dfca9c76a9498343ba8b9ab9d2265b3
+      internalID: -311517055
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Backpack
+      rect:
+        serializedVersion: 2
+        x: 1022
+        y: 800
+        width: 178
+        height: 237
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 77c32131e1250484880e4b863c3bcaba
+      internalID: 601963910
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpperArm
+      rect:
+        serializedVersion: 2
+        x: 91
+        y: 512
+        width: 150
+        height: 232
+      alignment: 9
+      pivot: {x: 0.65, y: 0.81999993}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f69b3d5b2323a7a4bb125045331f7f4d
+      internalID: -1825319523
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Forearm
+      rect:
+        serializedVersion: 2
+        x: 454
+        y: 451
+        width: 116
+        height: 274
+      alignment: 9
+      pivot: {x: 0.47999993, y: 0.8399999}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a44f9d91f0f559648af6f89253b574a3
+      internalID: 820528888
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Hand
+      rect:
+        serializedVersion: 2
+        x: 755
+        y: 448
+        width: 155
+        height: 207
+      alignment: 9
+      pivot: {x: 0.5, y: 0.8899999}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9b35f03612deec441971351f1cb013fd
+      internalID: -1145084064
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Elbow
+      rect:
+        serializedVersion: 2
+        x: 1042
+        y: 512
+        width: 132
+        height: 131
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 836487ead7e8aea43a387000f48bcf05
+      internalID: 664164373
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Thigh
+      rect:
+        serializedVersion: 2
+        x: 103
+        y: 96
+        width: 182
+        height: 335
+      alignment: 9
+      pivot: {x: 0.35, y: 0.83}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e2bf8446abb8c5a4698c649e7777c803
+      internalID: 236592405
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Shin
+      rect:
+        serializedVersion: 2
+        x: 445
+        y: 98
+        width: 126
+        height: 315
+      alignment: 9
+      pivot: {x: 0.5, y: 0.83000004}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: eba60f8aa608b494da053e9119d968c0
+      internalID: -1540537300
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Boot
+      rect:
+        serializedVersion: 2
+        x: 691
+        y: 96
+        width: 252
+        height: 175
+      alignment: 9
+      pivot: {x: 0.23999992, y: 0.74}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bce3cb9ee1005b24d962e0d1d73e4545
+      internalID: 2052523005
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Knee
+      rect:
+        serializedVersion: 2
+        x: 1043
+        y: 152
+        width: 129
+        height: 127
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ada00fafeee04154ba893fa39b158677
+      internalID: 2088553986
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: f9eebfd340a1ad94abb734f0c6f1dbf9
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Backpack: 601963910
+      Boot: 2052523005
+      Elbow: 664164373
+      Forearm: 820528888
+      Hand: -1145084064
+      Helmet: 1515343040
+      Knee: 2088553986
+      Pelvis: -311517055
+      Shin: -1540537300
+      Thigh: 236592405
+      Torso: 56532895
+      UpperArm: -1825319523
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

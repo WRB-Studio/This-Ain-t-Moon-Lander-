@@ -1,0 +1,666 @@
+fileFormatVersion: 2
+guid: 3a710b8b01405ac47992954c77406589
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 5509163357098483836
+    second: ArchitectureKit_0
+  - first:
+      213: -4026027878780449467
+    second: ArchitectureKit_1
+  - first:
+      213: 8144378181000468655
+    second: ArchitectureKit_2
+  - first:
+      213: -4716959316630905465
+    second: ArchitectureKit_3
+  - first:
+      213: -8434850526063735929
+    second: ArchitectureKit_4
+  - first:
+      213: -993382607974830555
+    second: ArchitectureKit_5
+  - first:
+      213: 7639229916356955389
+    second: ArchitectureKit_6
+  - first:
+      213: -6716478051509247173
+    second: ArchitectureKit_7
+  - first:
+      213: 1335234473148468091
+    second: ArchitectureKit_8
+  - first:
+      213: -3326244385838275216
+    second: ArchitectureKit_9
+  - first:
+      213: -3176478405833883287
+    second: ArchitectureKit_10
+  - first:
+      213: -5343149937238953080
+    second: ArchitectureKit_11
+  - first:
+      213: 2566200316097346347
+    second: ArchitectureKit_12
+  - first:
+      213: -4011154258642575166
+    second: ArchitectureKit_13
+  - first:
+      213: 6050577659757279901
+    second: ArchitectureKit_14
+  - first:
+      213: 2916638351424513535
+    second: ArchitectureKit_15
+  - first:
+      213: -1813038817045291271
+    second: ArchitectureKit_16
+  - first:
+      213: 140297511275162822
+    second: ArchitectureKit_17
+  - first:
+      213: 2530878586486126664
+    second: ArchitectureKit_18
+  - first:
+      213: 5245486670282747492
+    second: ArchitectureKit_19
+  - first:
+      213: 2084245782925411027
+    second: ArchitectureKit_20
+  - first:
+      213: -3560576764664878426
+    second: ArchitectureKit_21
+  - first:
+      213: 6908313094053814660
+    second: ArchitectureKit_22
+  - first:
+      213: -4587051420490598013
+    second: ArchitectureKit_23
+  - first:
+      213: 8264765471665648961
+    second: ArchitectureKit_24
+  - first:
+      213: -7623751342328685681
+    second: ArchitectureKit_25
+  - first:
+      213: 7791383971819605799
+    second: ArchitectureKit_26
+  - first:
+      213: 3452330976042753368
+    second: ArchitectureKit_27
+  - first:
+      213: -5327818953751055707
+    second: ArchitectureKit_28
+  - first:
+      213: -5361000330493200021
+    second: ArchitectureKit_29
+  - first:
+      213: -2928268127474898002
+    second: ArchitectureKit_30
+  - first:
+      213: -2379865074742204167
+    second: ArchitectureKit_31
+  - first:
+      213: 1613266084642900068
+    second: ArchitectureKit_32
+  - first:
+      213: -2473044007084901848
+    second: ArchitectureKit_33
+  - first:
+      213: -2219107076741099579
+    second: ArchitectureKit_34
+  - first:
+      213: -6574025882717004550
+    second: ArchitectureKit_35
+  - first:
+      213: -641026932455551455
+    second: ArchitectureKit_36
+  - first:
+      213: 7017655554354680778
+    second: ArchitectureKit_37
+  - first:
+      213: 4689028084755412860
+    second: ArchitectureKit_38
+  - first:
+      213: 3033527907163388602
+    second: ArchitectureKit_39
+  - first:
+      213: -6269096843666542377
+    second: ArchitectureKit_40
+  - first:
+      213: -4360342760260970393
+    second: ArchitectureKit_41
+  - first:
+      213: 4972751101245169467
+    second: ArchitectureKit_42
+  - first:
+      213: -4209845688412865800
+    second: ArchitectureKit_43
+  - first:
+      213: 3798354439918421491
+    second: ArchitectureKit_44
+  - first:
+      213: -3984895282385548285
+    second: ArchitectureKit_45
+  - first:
+      213: -1518964262139895197
+    second: ArchitectureKit_46
+  - first:
+      213: -8257102717839010617
+    second: ArchitectureKit_47
+  - first:
+      213: -8177724039196223149
+    second: ArchitectureKit_48
+  - first:
+      213: -467190292759590621
+    second: ArchitectureKit_49
+  - first:
+      213: 3029730853637680925
+    second: ArchitectureKit_50
+  - first:
+      213: -2531344473410969349
+    second: ArchitectureKit_51
+  - first:
+      213: 1535361871375399880
+    second: ArchitectureKit_52
+  - first:
+      213: -1763958521018868422
+    second: ArchitectureKit_53
+  - first:
+      213: -9111485679990229478
+    second: ArchitectureKit_54
+  - first:
+      213: 1396096635551728105
+    second: ArchitectureKit_55
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 4096
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 4096
+    resizeAlgorithm: 0
+    textureFormat: 4
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 1
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Workshop
+      rect:
+        serializedVersion: 2
+        x: 14
+        y: 896
+        width: 354
+        height: 223
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2ac900ae4b636054f8cfb319cdc3ca00
+      internalID: 508814137
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Habitat
+      rect:
+        serializedVersion: 2
+        x: 377
+        y: 896
+        width: 301
+        height: 294
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e8ff1d317466cb0408d59c506939148f
+      internalID: -2111932017
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CommsTower
+      rect:
+        serializedVersion: 2
+        x: 737
+        y: 896
+        width: 143
+        height: 343
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 35b2c9883c25aec4ea3e9593b15bfb7f
+      internalID: -1975443239
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ResearchDome
+      rect:
+        serializedVersion: 2
+        x: 939
+        y: 896
+        width: 299
+        height: 275
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8744fe702d70d6d44ae6913f322850e6
+      internalID: 844826253
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FacadeBay
+      rect:
+        serializedVersion: 2
+        x: 22
+        y: 587
+        width: 328
+        height: 272
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b748ef82290b12e4a98bdc26daaa590d
+      internalID: 1157681434
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Atrium
+      rect:
+        serializedVersion: 2
+        x: 383
+        y: 593
+        width: 278
+        height: 262
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: df40f5c81c9999c4b9876e7962bdd9b9
+      internalID: 871760225
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Corridor
+      rect:
+        serializedVersion: 2
+        x: 686
+        y: 624
+        width: 356
+        height: 148
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2798de5bb95b8ed4b954404b0c825977
+      internalID: 419617166
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LiftShaft
+      rect:
+        serializedVersion: 2
+        x: 1069
+        y: 584
+        width: 131
+        height: 294
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6fe4287c0d4d1b34fa566bcd42248491
+      internalID: 304645761
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Airlock
+      rect:
+        serializedVersion: 2
+        x: 40
+        y: 354
+        width: 226
+        height: 184
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 791ea63c88a667041be3b082f994e095
+      internalID: 400370785
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Railing
+      rect:
+        serializedVersion: 2
+        x: 301
+        y: 354
+        width: 304
+        height: 80
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a82d902963ae76f41acbdf68c273934f
+      internalID: 795314925
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Deck
+      rect:
+        serializedVersion: 2
+        x: 631
+        y: 347
+        width: 431
+        height: 81
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7ec557e3194e8bd47b04e546aea4e3f6
+      internalID: -873141381
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Truss
+      rect:
+        serializedVersion: 2
+        x: 1025
+        y: 330
+        width: 211
+        height: 218
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b065a1906ce3721498b36fd403a89da5
+      internalID: -936211908
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FuelTanks
+      rect:
+        serializedVersion: 2
+        x: 25
+        y: 32
+        width: 280
+        height: 272
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b240bf1060aa48848a564eaea16974d0
+      internalID: -1075542525
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Antenna
+      rect:
+        serializedVersion: 2
+        x: 369
+        y: 32
+        width: 159
+        height: 292
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c18907a6c3c12374f9d28f71999cbc1b
+      internalID: 460226138
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CargoShelter
+      rect:
+        serializedVersion: 2
+        x: 587
+        y: 35
+        width: 317
+        height: 226
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 09afbfd32f9d7a24cb8d9169848d90ed
+      internalID: -1875814778
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Debris
+      rect:
+        serializedVersion: 2
+        x: 932
+        y: 32
+        width: 305
+        height: 160
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f90388da27c377f48a2684f06c10c2a0
+      internalID: -861043001
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: b95510ce4618d4f4fb0e123a8ac69671
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Airlock: 400370785
+      Antenna: 460226138
+      Atrium: 871760225
+      CargoShelter: -1875814778
+      CommsTower: -1975443239
+      Corridor: 419617166
+      Debris: -861043001
+      Deck: -873141381
+      FacadeBay: 1157681434
+      FuelTanks: -1075542525
+      Habitat: -2111932017
+      LiftShaft: 304645761
+      Railing: 795314925
+      ResearchDome: 844826253
+      Truss: -936211908
+      Workshop: 508814137
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

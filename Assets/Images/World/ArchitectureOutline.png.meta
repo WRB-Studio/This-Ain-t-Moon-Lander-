@@ -1,0 +1,1131 @@
+fileFormatVersion: 2
+guid: 63f5909a48c24ac4ea9dc7a16de41589
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -3454802813396329088
+    second: ArchitectureOutline_0
+  - first:
+      213: 4765680554379790867
+    second: ArchitectureOutline_1
+  - first:
+      213: 2050244170498230373
+    second: ArchitectureOutline_2
+  - first:
+      213: -3956041213169425227
+    second: ArchitectureOutline_3
+  - first:
+      213: -5464318749823944691
+    second: ArchitectureOutline_4
+  - first:
+      213: 8343414091249663534
+    second: ArchitectureOutline_5
+  - first:
+      213: -4712319099749844720
+    second: ArchitectureOutline_6
+  - first:
+      213: 6805444157044201341
+    second: ArchitectureOutline_7
+  - first:
+      213: -7447219642024435062
+    second: ArchitectureOutline_8
+  - first:
+      213: 4475595849318003542
+    second: ArchitectureOutline_9
+  - first:
+      213: -5485483038895004386
+    second: ArchitectureOutline_10
+  - first:
+      213: -6280146178966494391
+    second: ArchitectureOutline_11
+  - first:
+      213: 7702090487062358648
+    second: ArchitectureOutline_12
+  - first:
+      213: -614740958317450220
+    second: ArchitectureOutline_13
+  - first:
+      213: -2910346014803747972
+    second: ArchitectureOutline_14
+  - first:
+      213: 6814827101189573073
+    second: ArchitectureOutline_15
+  - first:
+      213: -5600857614629696719
+    second: ArchitectureOutline_16
+  - first:
+      213: -756419494544888689
+    second: ArchitectureOutline_17
+  - first:
+      213: -4828993712890418332
+    second: ArchitectureOutline_18
+  - first:
+      213: -5355775517186093580
+    second: ArchitectureOutline_19
+  - first:
+      213: -3391075528652703314
+    second: ArchitectureOutline_20
+  - first:
+      213: 9013795243336286037
+    second: ArchitectureOutline_21
+  - first:
+      213: 6322248961294376435
+    second: ArchitectureOutline_22
+  - first:
+      213: -7569180477703403467
+    second: ArchitectureOutline_23
+  - first:
+      213: -3352471864357930179
+    second: ArchitectureOutline_24
+  - first:
+      213: 5065417506734020729
+    second: ArchitectureOutline_25
+  - first:
+      213: 662617248085263455
+    second: ArchitectureOutline_26
+  - first:
+      213: -4057869038400866684
+    second: ArchitectureOutline_27
+  - first:
+      213: -2085024043553886834
+    second: ArchitectureOutline_28
+  - first:
+      213: -5555259478742882648
+    second: ArchitectureOutline_29
+  - first:
+      213: -3419120970502850052
+    second: ArchitectureOutline_30
+  - first:
+      213: 7136874249373827036
+    second: ArchitectureOutline_31
+  - first:
+      213: -792052930460468558
+    second: ArchitectureOutline_32
+  - first:
+      213: 4253615402953988347
+    second: ArchitectureOutline_33
+  - first:
+      213: 6486214853212684349
+    second: ArchitectureOutline_34
+  - first:
+      213: -5562708504486744699
+    second: ArchitectureOutline_35
+  - first:
+      213: -8326321828662373502
+    second: ArchitectureOutline_36
+  - first:
+      213: -914450012806339213
+    second: ArchitectureOutline_37
+  - first:
+      213: -2743028738084779155
+    second: ArchitectureOutline_38
+  - first:
+      213: -2584550426553927606
+    second: ArchitectureOutline_39
+  - first:
+      213: -5817809753206899265
+    second: ArchitectureOutline_40
+  - first:
+      213: -2491222312334473680
+    second: ArchitectureOutline_41
+  - first:
+      213: -2307180739542402919
+    second: ArchitectureOutline_42
+  - first:
+      213: -3772335919380099377
+    second: ArchitectureOutline_43
+  - first:
+      213: 1500611317282948283
+    second: ArchitectureOutline_44
+  - first:
+      213: 4092250508508839263
+    second: ArchitectureOutline_45
+  - first:
+      213: -7908456822172250940
+    second: ArchitectureOutline_46
+  - first:
+      213: -6712530314148897123
+    second: ArchitectureOutline_47
+  - first:
+      213: -3277684920240430359
+    second: ArchitectureOutline_48
+  - first:
+      213: 4318204868819247538
+    second: ArchitectureOutline_49
+  - first:
+      213: -8328140393941443260
+    second: ArchitectureOutline_50
+  - first:
+      213: -641300079269077655
+    second: ArchitectureOutline_51
+  - first:
+      213: -8468662542941184270
+    second: ArchitectureOutline_52
+  - first:
+      213: 9044768791732865503
+    second: ArchitectureOutline_53
+  - first:
+      213: 5735355170993532936
+    second: ArchitectureOutline_54
+  - first:
+      213: -4806526390272116170
+    second: ArchitectureOutline_55
+  - first:
+      213: 6454813658557573647
+    second: ArchitectureOutline_56
+  - first:
+      213: 1427419107286362292
+    second: ArchitectureOutline_57
+  - first:
+      213: 5623362030590060615
+    second: ArchitectureOutline_58
+  - first:
+      213: -3604738259771448761
+    second: ArchitectureOutline_59
+  - first:
+      213: 2333133569184272757
+    second: ArchitectureOutline_60
+  - first:
+      213: -2922326658666495731
+    second: ArchitectureOutline_61
+  - first:
+      213: 1776984274999443417
+    second: ArchitectureOutline_62
+  - first:
+      213: 2904248910332386120
+    second: ArchitectureOutline_63
+  - first:
+      213: 7227858218485409849
+    second: ArchitectureOutline_64
+  - first:
+      213: -2282363434530393924
+    second: ArchitectureOutline_65
+  - first:
+      213: -6583405858946830938
+    second: ArchitectureOutline_66
+  - first:
+      213: 3432235828163501500
+    second: ArchitectureOutline_67
+  - first:
+      213: -5251337053334113208
+    second: ArchitectureOutline_68
+  - first:
+      213: 4931399835206353118
+    second: ArchitectureOutline_69
+  - first:
+      213: -3120559127173023709
+    second: ArchitectureOutline_70
+  - first:
+      213: 7406318454238866279
+    second: ArchitectureOutline_71
+  - first:
+      213: 595720657233461604
+    second: ArchitectureOutline_72
+  - first:
+      213: -8393086563989393434
+    second: ArchitectureOutline_73
+  - first:
+      213: 5651623137224952734
+    second: ArchitectureOutline_74
+  - first:
+      213: 7053795906472030170
+    second: ArchitectureOutline_75
+  - first:
+      213: 4090989912005338744
+    second: ArchitectureOutline_76
+  - first:
+      213: 8783134737056120597
+    second: ArchitectureOutline_77
+  - first:
+      213: -1781215885791965539
+    second: ArchitectureOutline_78
+  - first:
+      213: 5717487951629867566
+    second: ArchitectureOutline_79
+  - first:
+      213: 5164278084923881920
+    second: ArchitectureOutline_80
+  - first:
+      213: -7494025650936964715
+    second: ArchitectureOutline_81
+  - first:
+      213: -716436956069673999
+    second: ArchitectureOutline_82
+  - first:
+      213: -3179019221330016249
+    second: ArchitectureOutline_83
+  - first:
+      213: -3620253240520890065
+    second: ArchitectureOutline_84
+  - first:
+      213: 4684343313089618797
+    second: ArchitectureOutline_85
+  - first:
+      213: 5998837296801559924
+    second: ArchitectureOutline_86
+  - first:
+      213: 814956369893711718
+    second: ArchitectureOutline_87
+  - first:
+      213: -8583510308002285298
+    second: ArchitectureOutline_88
+  - first:
+      213: -7511913910470682537
+    second: ArchitectureOutline_89
+  - first:
+      213: -8237494803879226545
+    second: ArchitectureOutline_90
+  - first:
+      213: -5293522855183701812
+    second: ArchitectureOutline_91
+  - first:
+      213: -2960516825712743941
+    second: ArchitectureOutline_92
+  - first:
+      213: -5443858569173830221
+    second: ArchitectureOutline_93
+  - first:
+      213: 3760022665685649411
+    second: ArchitectureOutline_94
+  - first:
+      213: -6995188925012285143
+    second: ArchitectureOutline_95
+  - first:
+      213: 505896042630244277
+    second: ArchitectureOutline_96
+  - first:
+      213: -3249260380371309676
+    second: ArchitectureOutline_97
+  - first:
+      213: -1787912631399574319
+    second: ArchitectureOutline_98
+  - first:
+      213: -4315053937297569447
+    second: ArchitectureOutline_99
+  - first:
+      213: -3539647469748720811
+    second: ArchitectureOutline_100
+  - first:
+      213: 2931503499842946837
+    second: ArchitectureOutline_101
+  - first:
+      213: 8460691682959857463
+    second: ArchitectureOutline_102
+  - first:
+      213: -6958947063318262653
+    second: ArchitectureOutline_103
+  - first:
+      213: -1481440566325509925
+    second: ArchitectureOutline_104
+  - first:
+      213: 7070353929258585260
+    second: ArchitectureOutline_105
+  - first:
+      213: 1994715675513868160
+    second: ArchitectureOutline_106
+  - first:
+      213: -1501625177887791076
+    second: ArchitectureOutline_107
+  - first:
+      213: 5692106980264900035
+    second: ArchitectureOutline_108
+  - first:
+      213: -2501623310950779077
+    second: ArchitectureOutline_109
+  - first:
+      213: -1124510365897117312
+    second: ArchitectureOutline_110
+  - first:
+      213: -2728893957193930809
+    second: ArchitectureOutline_111
+  - first:
+      213: -3279331800803805770
+    second: ArchitectureOutline_112
+  - first:
+      213: -276086219411529976
+    second: ArchitectureOutline_113
+  - first:
+      213: -6756493261744574780
+    second: ArchitectureOutline_114
+  - first:
+      213: 5956078066353150966
+    second: ArchitectureOutline_115
+  - first:
+      213: 6830296260007441460
+    second: ArchitectureOutline_116
+  - first:
+      213: 946397641495202377
+    second: ArchitectureOutline_117
+  - first:
+      213: -1100425509352773326
+    second: ArchitectureOutline_118
+  - first:
+      213: -3796764639996426282
+    second: ArchitectureOutline_119
+  - first:
+      213: 4927871562868374232
+    second: ArchitectureOutline_120
+  - first:
+      213: 6587360804536247646
+    second: ArchitectureOutline_121
+  - first:
+      213: -3095360498913976343
+    second: ArchitectureOutline_122
+  - first:
+      213: 6148918615979741253
+    second: ArchitectureOutline_123
+  - first:
+      213: -3023126216740507145
+    second: ArchitectureOutline_124
+  - first:
+      213: 2088534048126770744
+    second: ArchitectureOutline_125
+  - first:
+      213: 4664929911443444874
+    second: ArchitectureOutline_126
+  - first:
+      213: -889679322389697537
+    second: ArchitectureOutline_127
+  - first:
+      213: -7176395201142660098
+    second: ArchitectureOutline_128
+  - first:
+      213: 47504313496323537
+    second: ArchitectureOutline_129
+  - first:
+      213: 509701377753990114
+    second: ArchitectureOutline_130
+  - first:
+      213: 8179056168832781264
+    second: ArchitectureOutline_131
+  - first:
+      213: 561479788657982010
+    second: ArchitectureOutline_132
+  - first:
+      213: -2569095546543991765
+    second: ArchitectureOutline_133
+  - first:
+      213: -7325816525334397505
+    second: ArchitectureOutline_134
+  - first:
+      213: 3523094856621589578
+    second: ArchitectureOutline_135
+  - first:
+      213: 5242086475516320125
+    second: ArchitectureOutline_136
+  - first:
+      213: 4435618850382165880
+    second: ArchitectureOutline_137
+  - first:
+      213: 9011338365927827085
+    second: ArchitectureOutline_138
+  - first:
+      213: -8236840291557152619
+    second: ArchitectureOutline_139
+  - first:
+      213: 4094536199388384922
+    second: ArchitectureOutline_140
+  - first:
+      213: -5145565855545241187
+    second: ArchitectureOutline_141
+  - first:
+      213: -239547253920640232
+    second: ArchitectureOutline_142
+  - first:
+      213: -1979487469310067375
+    second: ArchitectureOutline_143
+  - first:
+      213: 649751094537869511
+    second: ArchitectureOutline_144
+  - first:
+      213: -637341775444406027
+    second: ArchitectureOutline_145
+  - first:
+      213: 8075153124292363933
+    second: ArchitectureOutline_146
+  - first:
+      213: 4706154018280974137
+    second: ArchitectureOutline_147
+  - first:
+      213: -7217283945728638282
+    second: ArchitectureOutline_148
+  - first:
+      213: 5087736109969604456
+    second: ArchitectureOutline_149
+  - first:
+      213: 8971619395385640926
+    second: ArchitectureOutline_150
+  - first:
+      213: 4875010309451370044
+    second: ArchitectureOutline_151
+  - first:
+      213: 3913968066239715160
+    second: ArchitectureOutline_152
+  - first:
+      213: -8243229802782232453
+    second: ArchitectureOutline_153
+  - first:
+      213: 4187477337892617215
+    second: ArchitectureOutline_154
+  - first:
+      213: -720991299733781978
+    second: ArchitectureOutline_155
+  - first:
+      213: -9075880318695503996
+    second: ArchitectureOutline_156
+  - first:
+      213: -4815368542326101325
+    second: ArchitectureOutline_157
+  - first:
+      213: 4072821714643549244
+    second: ArchitectureOutline_158
+  - first:
+      213: -2465535142642103840
+    second: ArchitectureOutline_159
+  - first:
+      213: 4835106429336855288
+    second: ArchitectureOutline_160
+  - first:
+      213: 9129510000096059486
+    second: ArchitectureOutline_161
+  - first:
+      213: 8895828585858855989
+    second: ArchitectureOutline_162
+  - first:
+      213: -2558726723064438809
+    second: ArchitectureOutline_163
+  - first:
+      213: 8395167539119463782
+    second: ArchitectureOutline_164
+  - first:
+      213: -7212067419709754402
+    second: ArchitectureOutline_165
+  - first:
+      213: 969127786254519978
+    second: ArchitectureOutline_166
+  - first:
+      213: -5437199467209122279
+    second: ArchitectureOutline_167
+  - first:
+      213: 6531801708679107544
+    second: ArchitectureOutline_168
+  - first:
+      213: -92030051818641404
+    second: ArchitectureOutline_169
+  - first:
+      213: -2011617415633856581
+    second: ArchitectureOutline_170
+  - first:
+      213: -2851393654671204941
+    second: ArchitectureOutline_171
+  - first:
+      213: -9107861755401835897
+    second: ArchitectureOutline_172
+  - first:
+      213: -8483168116479109825
+    second: ArchitectureOutline_173
+  - first:
+      213: 5646826524312742145
+    second: ArchitectureOutline_174
+  - first:
+      213: -6597641244611897103
+    second: ArchitectureOutline_175
+  - first:
+      213: -889699959379322191
+    second: ArchitectureOutline_176
+  - first:
+      213: -5084292245963908165
+    second: ArchitectureOutline_177
+  - first:
+      213: -8276029035080670898
+    second: ArchitectureOutline_178
+  - first:
+      213: -7820935866202532809
+    second: ArchitectureOutline_179
+  - first:
+      213: -6386340227718964065
+    second: ArchitectureOutline_180
+  - first:
+      213: -8211453708184662730
+    second: ArchitectureOutline_181
+  - first:
+      213: -1543023258837432625
+    second: ArchitectureOutline_182
+  - first:
+      213: -1844328907574245282
+    second: ArchitectureOutline_183
+  - first:
+      213: -5118995309472415326
+    second: ArchitectureOutline_184
+  - first:
+      213: 4765702955292099811
+    second: ArchitectureOutline_185
+  - first:
+      213: 7576714546048078326
+    second: ArchitectureOutline_186
+  - first:
+      213: 301004883410640395
+    second: ArchitectureOutline_187
+  - first:
+      213: -1230457977918442774
+    second: ArchitectureOutline_188
+  - first:
+      213: 5061017561689813389
+    second: ArchitectureOutline_189
+  - first:
+      213: -1122551218731920740
+    second: ArchitectureOutline_190
+  - first:
+      213: -4695722128746533908
+    second: ArchitectureOutline_191
+  - first:
+      213: -9221230471679219767
+    second: ArchitectureOutline_192
+  - first:
+      213: 1701497010033153679
+    second: ArchitectureOutline_193
+  - first:
+      213: 6585969101230140620
+    second: ArchitectureOutline_194
+  - first:
+      213: -8762203611965431006
+    second: ArchitectureOutline_195
+  - first:
+      213: -7449232583701123150
+    second: ArchitectureOutline_196
+  - first:
+      213: 8818814984248004732
+    second: ArchitectureOutline_197
+  - first:
+      213: 9221210448232823014
+    second: ArchitectureOutline_198
+  - first:
+      213: -2055526722684499862
+    second: ArchitectureOutline_199
+  - first:
+      213: 3483454477763288431
+    second: ArchitectureOutline_200
+  - first:
+      213: -4968306955888323390
+    second: ArchitectureOutline_201
+  - first:
+      213: 9129605905922810384
+    second: ArchitectureOutline_202
+  - first:
+      213: -8495445889351148133
+    second: ArchitectureOutline_203
+  - first:
+      213: -5201370707318485273
+    second: ArchitectureOutline_204
+  - first:
+      213: 7708343704793012175
+    second: ArchitectureOutline_205
+  - first:
+      213: -8913069016352781294
+    second: ArchitectureOutline_206
+  - first:
+      213: -3309037936597998614
+    second: ArchitectureOutline_207
+  - first:
+      213: 4055876202653958141
+    second: ArchitectureOutline_208
+  - first:
+      213: -3673303040070323301
+    second: ArchitectureOutline_209
+  - first:
+      213: 6858077687484376024
+    second: ArchitectureOutline_210
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 4096
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 4096
+    resizeAlgorithm: 0
+    textureFormat: 4
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 1
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Workshop
+      rect:
+        serializedVersion: 2
+        x: 23
+        y: 920
+        width: 268
+        height: 107
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 07fe27468c871e64e9d8a30b27e22d5e
+      internalID: -128353092
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Habitat
+      rect:
+        serializedVersion: 2
+        x: 338
+        y: 920
+        width: 266
+        height: 187
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 536b52cee01987942bb3ab8d230fd16a
+      internalID: -1507220801
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CommsTower
+      rect:
+        serializedVersion: 2
+        x: 682
+        y: 920
+        width: 207
+        height: 289
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d0635aeddbcc8b644b5ea01a58bb7d58
+      internalID: -125944843
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ResearchDome
+      rect:
+        serializedVersion: 2
+        x: 956
+        y: 922
+        width: 277
+        height: 147
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9c9f32fed8b4f3545b4a2579835b06be
+      internalID: -864338127
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FacadeBay
+      rect:
+        serializedVersion: 2
+        x: 28
+        y: 629
+        width: 262
+        height: 133
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 507c232864ce16745afce658e9ce4fee
+      internalID: -499966600
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Atrium
+      rect:
+        serializedVersion: 2
+        x: 342
+        y: 629
+        width: 261
+        height: 202
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3d5f1c5073670df44bd17a840dbf2297
+      internalID: -1252753932
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Corridor
+      rect:
+        serializedVersion: 2
+        x: 646
+        y: 629
+        width: 280
+        height: 97
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: eb19cabf11a5bed4fa9c4c7252ac1628
+      internalID: -1591723471
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LiftShaft
+      rect:
+        serializedVersion: 2
+        x: 1012
+        y: 628
+        width: 170
+        height: 231
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9df3f87a10e19d045af4f09e34e6ab73
+      internalID: 1115910686
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Airlock
+      rect:
+        serializedVersion: 2
+        x: 41
+        y: 349
+        width: 219
+        height: 122
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0cc833fe4b32f624a84e558a02a3910f
+      internalID: 786190774
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Railing
+      rect:
+        serializedVersion: 2
+        x: 320
+        y: 361
+        width: 259
+        height: 69
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e8baaa54aefa88e42ab3c5cf11e1ba63
+      internalID: 1997363239
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Deck
+      rect:
+        serializedVersion: 2
+        x: 619
+        y: 351
+        width: 332
+        height: 60
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dd5f4640219fa0c4a9ff544b61e379d7
+      internalID: 2121471655
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Truss
+      rect:
+        serializedVersion: 2
+        x: 1002
+        y: 349
+        width: 201
+        height: 154
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1f57dec6bb6331546940068526bbba1c
+      internalID: -1999536998
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FuelTanks
+      rect:
+        serializedVersion: 2
+        x: 29
+        y: 53
+        width: 247
+        height: 169
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7731d3b4beacb704e8962f0b9d7cbf53
+      internalID: 1128599887
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Antenna
+      rect:
+        serializedVersion: 2
+        x: 387
+        y: 58
+        width: 148
+        height: 203
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e993a8d4c178df44599074ee5602e540
+      internalID: -1412309762
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CargoShelter
+      rect:
+        serializedVersion: 2
+        x: 651
+        y: 60
+        width: 248
+        height: 159
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: eaf61904141086440b3fdcc9a930de99
+      internalID: 29620165
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Debris
+      rect:
+        serializedVersion: 2
+        x: 955
+        y: 56
+        width: 277
+        height: 115
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2983a357a8340b84eb29ec4dcd5a4d61
+      internalID: 312469402
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: fa379a40e4bef9542b9c8e7127a70bd0
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Airlock: 786190774
+      Antenna: -1412309762
+      Atrium: -1252753932
+      CargoShelter: 29620165
+      CommsTower: -125944843
+      Corridor: -1591723471
+      Debris: 312469402
+      Deck: 2121471655
+      FacadeBay: -499966600
+      FuelTanks: 1128599887
+      Habitat: -1507220801
+      LiftShaft: 1115910686
+      Railing: 1997363239
+      ResearchDome: -864338127
+      Truss: -1999536998
+      Workshop: -128353092
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

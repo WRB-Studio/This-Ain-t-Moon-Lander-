@@ -12,6 +12,9 @@ GameObject:
   m_Layer: 0
   m_Name: CorridorWallModule
   m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!4 &620000001
 Transform:
@@ -24,11 +27,13 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 620000011}
   - {fileID: 620000021}
   - {fileID: 620000031}
   m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &620000010
 GameObject:
   m_ObjectHideFlags: 0
@@ -42,6 +47,9 @@ GameObject:
   m_Layer: 0
   m_Name: WallArtwork
   m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!4 &620000011
 Transform:
@@ -54,8 +62,10 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 3.525, z: 0}
   m_LocalScale: {x: 1, y: 0.88125, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 620000001}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &620000012
 SpriteRenderer:
   serializedVersion: 2
@@ -126,9 +136,12 @@ GameObject:
   - component: {fileID: 620000021}
   - component: {fileID: 620000022}
   - component: {fileID: 620000023}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Floor
   m_TagString: Landscape
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!4 &620000021
 Transform:
@@ -141,8 +154,10 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 620000001}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!61 &620000022
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -318,9 +333,12 @@ GameObject:
   - component: {fileID: 620000031}
   - component: {fileID: 620000032}
   - component: {fileID: 620000033}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Ceiling
   m_TagString: Landscape
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!4 &620000031
 Transform:
@@ -333,8 +351,10 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 7.05, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 620000001}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!61 &620000032
 BoxCollider2D:
   m_ObjectHideFlags: 0

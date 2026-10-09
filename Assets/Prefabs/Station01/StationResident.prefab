@@ -10,7 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 5866181376250272127}
   - component: {fileID: 7691481397100755460}
-  m_Layer: 0
+  - component: {fileID: 5411381240452976774}
+  - component: {fileID: 5522941508564360736}
+  - component: {fileID: 796307782047248146}
+  m_Layer: 9
   m_Name: StationResident
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -44,9 +47,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0f539c642e2447499c7d6d66dfd503b9, type: 3}
-  m_Name:
-  m_EditorClassIdentifier:
+  m_Name: 
+  m_EditorClassIdentifier: 
   residentId: 1
+  patrolMode: 0
+  waypoints: []
+  waypointTraversal: 0
+  arrivalDistance: 0.2
+  pauseDuration: {x: 0.8, y: 2.8}
   minX: -3
   maxX: 3
   floorY: 0.45
@@ -60,6 +68,84 @@ MonoBehaviour:
   commentDuration: 7
   commentHideDistance: 5
   commentCooldown: 10
+--- !u!50 &5411381240452976774
+Rigidbody2D:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9212667240452271289}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 1
+  m_SleepingMode: 1
+  m_CollisionDetection: 1
+  m_Constraints: 4
+--- !u!70 &5522941508564360736
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9212667240452271289}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: -0.08996624}
+  m_Size: {x: 0.35968703, y: 2.4199324}
+  m_Direction: 0
+--- !u!114 &796307782047248146
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9212667240452271289}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41ff9823eb733e945b6e8368e62885c4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NPCMotor2D
+  fallbackGravity: 3.5
+  groundProbeDistance: 0.12
 --- !u!1001 &580000010
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -96,6 +182,24 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 2248758207413744100}
   m_SourcePrefab: {fileID: 100100000, guid: d70b2a0294a742d1bd59cb391b6fd39d, type: 3}
+--- !u!1 &57383817 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 570000003, guid: d70b2a0294a742d1bd59cb391b6fd39d, type: 3}
+  m_PrefabInstance: {fileID: 580000010}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2248758207413744100
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 57383817}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 933f5654dd184ec7825d27a182bdb5d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LocalizedText
+  source: '[[game.station]]'
 --- !u!224 &57383819 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 570000001, guid: d70b2a0294a742d1bd59cb391b6fd39d, type: 3}
@@ -110,7 +214,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
 --- !u!1001 &6058421461638458139
 PrefabInstance:
@@ -174,21 +278,3 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8933945707085659134, guid: 0c9e44866a23929458476d6840f99c0a, type: 3}
   m_PrefabInstance: {fileID: 6058421461638458139}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &57383817 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 570000003, guid: d70b2a0294a742d1bd59cb391b6fd39d, type: 3}
-  m_PrefabInstance: {fileID: 580000010}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &2248758207413744100
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 57383817}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 933f5654dd184ec7825d27a182bdb5d8, type: 3}
-  m_Name:
-  m_EditorClassIdentifier: Assembly-CSharp::LocalizedText
-  source: '[[game.station]]'

@@ -1,0 +1,88 @@
+{
+  "assets": [
+    {
+      "name": "Lander01",
+      "x": 57,
+      "y": 43,
+      "width": 294,
+      "height": 235
+    },
+    {
+      "name": "Lander02",
+      "x": 472,
+      "y": 67,
+      "width": 310,
+      "height": 211
+    },
+    {
+      "name": "Lander03",
+      "x": 837,
+      "y": 109,
+      "width": 380,
+      "height": 169
+    },
+    {
+      "name": "Lander04",
+      "x": 37,
+      "y": 424,
+      "width": 373,
+      "height": 154
+    },
+    {
+      "name": "Lander05",
+      "x": 468,
+      "y": 406,
+      "width": 318,
+      "height": 174
+    },
+    {
+      "name": "Lander06",
+      "x": 871,
+      "y": 327,
+      "width": 312,
+      "height": 268
+    },
+    {
+      "name": "Lander07",
+      "x": 48,
+      "y": 708,
+      "width": 341,
+      "height": 171
+    },
+    {
+      "name": "Courier",
+      "x": 523,
+      "y": 627,
+      "width": 209,
+      "height": 273
+    },
+    {
+      "name": "Surveyor",
+      "x": 875,
+      "y": 642,
+      "width": 315,
+      "height": 253
+    },
+    {
+      "name": "CargoTug",
+      "x": 46,
+      "y": 1005,
+      "width": 367,
+      "height": 173
+    },
+    {
+      "name": "Interceptor",
+      "x": 504,
+      "y": 940,
+      "width": 248,
+      "height": 238
+    },
+    {
+      "name": "RescueShuttle",
+      "x": 861,
+      "y": 970,
+      "width": 329,
+      "height": 208
+    }
+  ]
+}

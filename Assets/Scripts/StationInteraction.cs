@@ -16,6 +16,7 @@ public class StationInteraction : MonoBehaviour
         var game = GameController.Instance;
         if (PauseMenu.IsPaused || !CanUse || !game || game.Phase != GameController.GamePhase.EVA || !game.ControlledTarget
             || !IsNear(game.ControlledTarget.position) || !StationInterior.Instance) return;
+        if (CargoMission.Instance && (CargoMission.Instance.IsShowing || CargoMission.Instance.HoldingCable)) return;
         switch (action)
         {
             case Action.OutsideEntrance: SpaceStation.Instance.RequestEntry(); break;

@@ -1,0 +1,508 @@
+fileFormatVersion: 2
+guid: 9268741145d50984da40b559df984974
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -2906023266728066032
+    second: ServiceBotParts_0
+  - first:
+      213: 5812702836723266153
+    second: ServiceBotParts_1
+  - first:
+      213: 8013876770968604413
+    second: ServiceBotParts_2
+  - first:
+      213: 7900567582334401674
+    second: ServiceBotParts_3
+  - first:
+      213: 1246315743027530614
+    second: ServiceBotParts_4
+  - first:
+      213: -8410168163494061440
+    second: ServiceBotParts_5
+  - first:
+      213: -4887097294639813817
+    second: ServiceBotParts_6
+  - first:
+      213: -5870024527287497859
+    second: ServiceBotParts_7
+  - first:
+      213: 1105149698293132305
+    second: ServiceBotParts_8
+  - first:
+      213: -6218455100664048394
+    second: ServiceBotParts_9
+  - first:
+      213: -8122124881472307042
+    second: ServiceBotParts_10
+  - first:
+      213: 8988745460829859090
+    second: ServiceBotParts_11
+  - first:
+      213: -78209346922817079
+    second: ServiceBotParts_12
+  - first:
+      213: -2926230649379158671
+    second: ServiceBotParts_13
+  - first:
+      213: -7726484296799012490
+    second: ServiceBotParts_14
+  - first:
+      213: -8293362241354469081
+    second: ServiceBotParts_15
+  - first:
+      213: 5040127423412351658
+    second: ServiceBotParts_16
+  - first:
+      213: 638385645633902267
+    second: ServiceBotParts_17
+  - first:
+      213: 1736953638744237831
+    second: ServiceBotParts_18
+  - first:
+      213: 5407400588601858357
+    second: ServiceBotParts_19
+  - first:
+      213: 8391943385370959430
+    second: ServiceBotParts_20
+  - first:
+      213: -1563010131295453541
+    second: ServiceBotParts_21
+  - first:
+      213: 7927074146960002225
+    second: ServiceBotParts_22
+  - first:
+      213: -8258189160176639992
+    second: ServiceBotParts_23
+  - first:
+      213: -2304275907996150307
+    second: ServiceBotParts_24
+  - first:
+      213: -69531415979926731
+    second: ServiceBotParts_25
+  - first:
+      213: 6477303238802837810
+    second: ServiceBotParts_26
+  - first:
+      213: 5620794216877282127
+    second: ServiceBotParts_27
+  - first:
+      213: 1888991359702054978
+    second: ServiceBotParts_28
+  - first:
+      213: 7797875401196604618
+    second: ServiceBotParts_29
+  - first:
+      213: -7593577249788525150
+    second: ServiceBotParts_30
+  - first:
+      213: -97906197537949904
+    second: ServiceBotParts_31
+  - first:
+      213: 5962259945941410450
+    second: ServiceBotParts_32
+  - first:
+      213: -8946541930493256611
+    second: ServiceBotParts_33
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Helmet
+      rect:
+        serializedVersion: 2
+        x: 52
+        y: 798
+        width: 260
+        height: 299
+      alignment: 9
+      pivot: {x: 0.42, y: 0.09000001}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0fde51ead969a34468ee6af22416f70e
+      internalID: -2043169983
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Torso
+      rect:
+        serializedVersion: 2
+        x: 380
+        y: 788
+        width: 240
+        height: 315
+      alignment: 9
+      pivot: {x: 0.5, y: 0.05999998}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5b981fe22b796d64382ecea15a121877
+      internalID: -1673102735
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pelvis
+      rect:
+        serializedVersion: 2
+        x: 698
+        y: 786
+        width: 219
+        height: 166
+      alignment: 9
+      pivot: {x: 0.5, y: 0.68}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9928668b75e85bd45a685596d728d400
+      internalID: 1223596798
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Backpack
+      rect:
+        serializedVersion: 2
+        x: 1014
+        y: 787
+        width: 188
+        height: 235
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4d59f60262ec3bc40b6bac88ab28a83c
+      internalID: -664965384
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpperArm
+      rect:
+        serializedVersion: 2
+        x: 104
+        y: 474
+        width: 151
+        height: 263
+      alignment: 9
+      pivot: {x: 0.65, y: 0.8199999}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8460416eb8b2cdf4ba44a37acf5f68bd
+      internalID: -1592440832
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Forearm
+      rect:
+        serializedVersion: 2
+        x: 448
+        y: 441
+        width: 122
+        height: 284
+      alignment: 9
+      pivot: {x: 0.48, y: 0.84}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1eab716860eecc84199791cc5db1bf97
+      internalID: -1641815757
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Hand
+      rect:
+        serializedVersion: 2
+        x: 735
+        y: 438
+        width: 159
+        height: 210
+      alignment: 9
+      pivot: {x: 0.5, y: 0.8900001}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3a52f4c44fd0daa4498ec37b2f9b41dd
+      internalID: -438816811
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Elbow
+      rect:
+        serializedVersion: 2
+        x: 1040
+        y: 505
+        width: 136
+        height: 133
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 94a18872038f864489e187325e867af4
+      internalID: 1801202400
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Thigh
+      rect:
+        serializedVersion: 2
+        x: 99
+        y: 103
+        width: 175
+        height: 310
+      alignment: 9
+      pivot: {x: 0.35, y: 0.83}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6d047d866faa138458b479715d3af4e5
+      internalID: 2116540796
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Shin
+      rect:
+        serializedVersion: 2
+        x: 442
+        y: 104
+        width: 124
+        height: 289
+      alignment: 9
+      pivot: {x: 0.5, y: 0.83}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 122ec459b9d8cad478dbb839b14488bf
+      internalID: -995967490
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Boot
+      rect:
+        serializedVersion: 2
+        x: 690
+        y: 107
+        width: 244
+        height: 166
+      alignment: 9
+      pivot: {x: 0.24, y: 0.7399998}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 245371891a61d704ca3ff167e775c624
+      internalID: -677836919
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Knee
+      rect:
+        serializedVersion: 2
+        x: 1041
+        y: 160
+        width: 138
+        height: 133
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f75c5b51463448a4ebd107c2c3047ca9
+      internalID: -718534611
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: af7f8e81ac2ff01438d2eadbb620a1ac
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Backpack: -664965384
+      Boot: -677836919
+      Elbow: 1801202400
+      Forearm: -1641815757
+      Hand: -438816811
+      Helmet: -2043169983
+      Knee: -718534611
+      Pelvis: 1223596798
+      Shin: -995967490
+      Thigh: 2116540796
+      Torso: -1673102735
+      UpperArm: -1592440832
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

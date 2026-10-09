@@ -42,6 +42,7 @@ public class StationConversation : MonoBehaviour
         if (PauseMenu.IsPaused || IsShowing || (RadioController.Instance && RadioController.Instance.IsOpen)
             || !dialog || steps == null || steps.Length == 0 || !GameController.Instance.IsPlaying || StoryTextController.Instance.BlocksGameplayInput
             || !StationInterior.Instance || StationInterior.Instance.CurrentArea != StationInterior.Area.Registration) return;
+        if (CargoMission.Instance && CargoMission.Instance.IsShowing) return;
         StoryTextController.Instance.Restart();
         repeat = SaveLoadManager.Instance.Data.GetFlag("story.registrationComplete");
         IsShowing = true;
@@ -96,6 +97,7 @@ public class StationConversation : MonoBehaviour
                 ship.currentFuel = ship.fuelMax;
             }
             if (RadioController.Instance) RadioController.Instance.ReceivePickup();
+            if (CargoMission.Instance) CargoMission.Instance.PrepareExpedition(ship);
             Close();
         }
         else ShowPage();

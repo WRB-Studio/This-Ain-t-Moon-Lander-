@@ -1,0 +1,116 @@
+{
+  "assets": [
+    {
+      "name": "Workshop",
+      "x": 23,
+      "y": 227,
+      "width": 268,
+      "height": 107
+    },
+    {
+      "name": "Habitat",
+      "x": 338,
+      "y": 147,
+      "width": 266,
+      "height": 187
+    },
+    {
+      "name": "CommsTower",
+      "x": 682,
+      "y": 45,
+      "width": 207,
+      "height": 289
+    },
+    {
+      "name": "ResearchDome",
+      "x": 956,
+      "y": 185,
+      "width": 277,
+      "height": 147
+    },
+    {
+      "name": "FacadeBay",
+      "x": 28,
+      "y": 492,
+      "width": 262,
+      "height": 133
+    },
+    {
+      "name": "Atrium",
+      "x": 342,
+      "y": 423,
+      "width": 261,
+      "height": 202
+    },
+    {
+      "name": "Corridor",
+      "x": 646,
+      "y": 528,
+      "width": 280,
+      "height": 97
+    },
+    {
+      "name": "LiftShaft",
+      "x": 1012,
+      "y": 395,
+      "width": 170,
+      "height": 231
+    },
+    {
+      "name": "Airlock",
+      "x": 41,
+      "y": 783,
+      "width": 219,
+      "height": 122
+    },
+    {
+      "name": "Railing",
+      "x": 320,
+      "y": 824,
+      "width": 259,
+      "height": 69
+    },
+    {
+      "name": "Deck",
+      "x": 619,
+      "y": 843,
+      "width": 332,
+      "height": 60
+    },
+    {
+      "name": "Truss",
+      "x": 1002,
+      "y": 751,
+      "width": 201,
+      "height": 154
+    },
+    {
+      "name": "FuelTanks",
+      "x": 29,
+      "y": 1032,
+      "width": 247,
+      "height": 169
+    },
+    {
+      "name": "Antenna",
+      "x": 387,
+      "y": 993,
+      "width": 148,
+      "height": 203
+    },
+    {
+      "name": "CargoShelter",
+      "x": 651,
+      "y": 1035,
+      "width": 248,
+      "height": 159
+    },
+    {
+      "name": "Debris",
+      "x": 955,
+      "y": 1083,
+      "width": 277,
+      "height": 115
+    }
+  ]
+}

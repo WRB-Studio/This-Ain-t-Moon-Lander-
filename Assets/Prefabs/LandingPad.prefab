@@ -103,7 +103,7 @@ GameObject:
   - component: {fileID: 7182910934351086467}
   - component: {fileID: 202160473781997651}
   - component: {fileID: 3370646476540192604}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: LandingPad
   m_TagString: LandingPad
   m_Icon: {fileID: 0}
@@ -242,8 +242,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 19d9f4d1c04644a4790d26044087aad1, type: 3}
-  m_Name:
-  m_EditorClassIdentifier:
+  m_Name: 
+  m_EditorClassIdentifier: 
   leftLeg: {fileID: 5487440547383653253}
   rightLeg: {fileID: 3633399609520316724}
   groundOffset: 1

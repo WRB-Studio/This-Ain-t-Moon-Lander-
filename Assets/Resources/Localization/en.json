@@ -1109,6 +1109,210 @@
     {
       "key": "menu.exit",
       "text": "Exit game"
+    },
+    {
+      "key": "cargo.passenger.name",
+      "text": "Rhekk"
+    },
+    {
+      "key": "cargo.status.find",
+      "text": "Last pickup: Follow the tracker to the abandoned outpost."
+    },
+    {
+      "key": "cargo.status.connect",
+      "text": "Rhekk needs a lift. Connect the steel cable to the capsule."
+    },
+    {
+      "key": "cargo.status.attach",
+      "text": "Cable in hand: Walk to your ship and press ATTACH."
+    },
+    {
+      "key": "cargo.status.tow",
+      "text": "Towing: Gently lower the capsule onto the marked delivery area beside the station pads."
+    },
+    {
+      "key": "cargo.status.open",
+      "text": "Capsule safely delivered. Land, leave your ship and open it."
+    },
+    {
+      "key": "cargo.status.walk",
+      "text": "Rhekk is heading to registration. The complaint continues on foot."
+    },
+    {
+      "key": "cargo.status.complete",
+      "text": "Rhekk has reached registration. To be continued."
+    },
+    {
+      "key": "cargo.status.failed",
+      "text": "MISSION FAILED: Capsule destroyed. RETRY resets the mission at the outpost."
+    },
+    {
+      "key": "cargo.action.talk",
+      "text": "TALK"
+    },
+    {
+      "key": "cargo.action.connect",
+      "text": "CONNECT"
+    },
+    {
+      "key": "cargo.action.attach",
+      "text": "ATTACH"
+    },
+    {
+      "key": "cargo.action.open",
+      "text": "OPEN CAPSULE"
+    },
+    {
+      "key": "cargo.action.retry",
+      "text": "RETRY"
+    },
+    {
+      "key": "cargo.outpost.title",
+      "text": "Outpost"
+    },
+    {
+      "key": "cargo.outpost.landed",
+      "text": "No crew. No welcome. The fuel system still works.\n\nRefuel, step outside and investigate the tracker."
+    },
+    {
+      "key": "cargo.outpost.pad",
+      "text": "PAD 01"
+    },
+    {
+      "key": "cargo.outpost.sign",
+      "text": "OUTPOST K-17"
+    },
+    {
+      "key": "cargo.outpost.closed",
+      "text": "OPERATIONS SUSPENDED"
+    },
+    {
+      "key": "cargo.outpost.fuel",
+      "text": "FUEL / AUTOMATIC"
+    },
+    {
+      "key": "cargo.delivery.sign",
+      "text": "CARGO DELIVERY"
+    },
+    {
+      "key": "cargo.capsule.label",
+      "text": "PASSENGER TRANSPORT"
+    },
+    {
+      "key": "cargo.answer.who",
+      "text": "Who is in there?"
+    },
+    {
+      "key": "cargo.answer.freight",
+      "text": "I was told to look for a delivery."
+    },
+    {
+      "key": "cargo.answer.pilot",
+      "text": "What happened to the pilot?"
+    },
+    {
+      "key": "cargo.answer.ship",
+      "text": "I found his ship on the Moon."
+    },
+    {
+      "key": "cargo.answer.transport",
+      "text": "How do I get you out of here?"
+    },
+    {
+      "key": "cargo.answer.help",
+      "text": "All right. I will take you to the station."
+    },
+    {
+      "key": "cargo.answer.no.promises",
+      "text": "I will try. No promises."
+    },
+    {
+      "key": "cargo.answer.back",
+      "text": "I will sort out the cable."
+    },
+    {
+      "key": "cargo.answer.welcome",
+      "text": "You are welcome."
+    },
+    {
+      "key": "cargo.answer.complaint",
+      "text": "You arrived in one piece. That counts."
+    },
+    {
+      "key": "cargo.answer.what.now",
+      "text": "What will you do now?"
+    },
+    {
+      "key": "cargo.answer.see.you",
+      "text": "See you at registration."
+    },
+    {
+      "key": "cargo.dialog.discovery.1",
+      "text": "Finally. Did the station send someone who can read this time?\n\nMy name is Rhekk. The label says PASSENGER TRANSPORT. Not parcel. Not spare parts. Passenger. I am the difference."
+    },
+    {
+      "key": "cargo.dialog.discovery.2",
+      "text": "The pilot left me here. He wanted to investigate the installation beyond the outpost. Just a quick look, he said.\n\nFive minutes. I would like to state for the record that it has not been five minutes."
+    },
+    {
+      "key": "cargo.dialog.discovery.3",
+      "text": "Then it really did leave without him. I heard the engines. The ship did not respond when I pointed out that I was still here.\n\nA remarkably poor listener.\n\nI have heard nothing from the pilot since."
+    },
+    {
+      "key": "cargo.dialog.discovery.4",
+      "text": "The station dock has to equalise the pressure first. The capsule stays sealed here. For once, I approve of a regulation.\n\nThere is a steel cable on the frame. Connect it here, carry the free end to your ship and attach it to the lower towing point. Then board your ship.\n\nI would have preferred carry-on luggage."
+    },
+    {
+      "key": "cargo.dialog.discovery.5",
+      "text": "Take me to the marked delivery area beside the station landing pads. Lower me slowly. Once I am standing still, the coupling releases the cable automatically. Then you can land and open the capsule.\n\nSlowly means slowly. Not: The ground will do the braking."
+    },
+    {
+      "key": "cargo.dialog.repeat",
+      "text": "Cable to capsule. Free end to ship. ATTACH. Board. Fly to the station. Lower gently.\n\nI am happy to repeat that. My schedule here is unusually clear."
+    },
+    {
+      "key": "cargo.dialog.release.1",
+      "text": "Fresh air. Solid ground. A journey without further geological samples.\n\nYour flying style introduced my internal organs to one another.\n\nBut you brought me here. Thank you. I actually mean that."
+    },
+    {
+      "key": "cargo.dialog.release.2",
+      "text": "Registration first. Someone filed me as a delivery. I would like my status corrected from cargo to person.\n\nAfter that, we can talk about the pilot. And this ship that takes off without one."
+    },
+    {
+      "key": "cargo.dialog.release.3",
+      "text": "You know where registration is. If they try to put me in another box, I will knock.\n\nYou should recognise the sound by now."
+    },
+    {
+      "key": "cargo.radio.tow.title",
+      "text": "Passenger in tow"
+    },
+    {
+      "key": "cargo.radio.tow.body",
+      "text": "Connection established. Destination: marked cargo delivery area beside the station pads.\n\nLower the capsule gently and let it settle briefly. The cable disconnects automatically. Then land and open the capsule.\n\nRhekk: \"If the form asks: Riding on the outside was not my idea.\""
+    },
+    {
+      "key": "cargo.radio.delivered.title",
+      "text": "Passenger delivered"
+    },
+    {
+      "key": "cargo.radio.delivered.body",
+      "text": "Capsule safely settled. Tow coupling released.\n\nLand your ship and open the capsule on foot.\n\nRhekk: \"I have arrived. It would be nice if the door agreed.\""
+    },
+    {
+      "key": "cargo.radio.failed.title",
+      "text": "Mission failed"
+    },
+    {
+      "key": "cargo.radio.failed.body",
+      "text": "Capsule destroyed or towing ship lost. Rescue failed.\n\nRETRY resets this mission at the outpost. Your other progress is retained.\n\nAccounting would like a written definition of \"gently\"."
+    },
+    {
+      "key": "cargo.radio.complete.title",
+      "text": "Cargo status corrected"
+    },
+    {
+      "key": "cargo.radio.complete.body",
+      "text": "Rhekk has reached registration.\n\nStatus: Person. Capacity for complaints: Fully restored.\n\nThe pilot is still missing. Why the ship left on its own remains unknown."
     }
   ]
 }

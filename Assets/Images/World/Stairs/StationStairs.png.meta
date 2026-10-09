@@ -1,0 +1,261 @@
+fileFormatVersion: 2
+guid: 53f68ca4da852594cbf12ffae4ded5e8
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 8887418348957673522
+    second: StationStairs_0
+  - first:
+      213: 5282231299851088515
+    second: StationStairs_1
+  - first:
+      213: 200555326821547497
+    second: StationStairs_2
+  - first:
+      213: 4910775331402580013
+    second: StationStairs_3
+  - first:
+      213: 5041332720325786069
+    second: StationStairs_4
+  - first:
+      213: -3449356989116941789
+    second: StationStairs_5
+  - first:
+      213: -5412591548194615485
+    second: StationStairs_6
+  - first:
+      213: 1664914049261696638
+    second: StationStairs_7
+  - first:
+      213: -2187568921074036531
+    second: StationStairs_8
+  - first:
+      213: -6730845854455549127
+    second: StationStairs_9
+  - first:
+      213: 2771948444448160530
+    second: StationStairs_10
+  - first:
+      213: 8618757157276080512
+    second: StationStairs_11
+  - first:
+      213: -8743421573387757148
+    second: StationStairs_12
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 80
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: ExteriorLong
+      rect:
+        serializedVersion: 2
+        x: 70
+        y: 553
+        width: 687
+        height: 426
+      alignment: 9
+      pivot: {x: 0.123726346, y: 0.15492958}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bf254ac94a093b541bd205f7eae5c074
+      internalID: -2092238408
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ExteriorShort
+      rect:
+        serializedVersion: 2
+        x: 907
+        y: 553
+        width: 536
+        height: 357
+      alignment: 9
+      pivot: {x: 0.08955224, y: 0.1904762}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c0c29e8649c693c40be07e0b9d258d44
+      internalID: 1192633377
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: InteriorCompact
+      rect:
+        serializedVersion: 2
+        x: 107
+        y: 86
+        width: 541
+        height: 285
+      alignment: 9
+      pivot: {x: 0.14417745, y: 0.2736842}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3e7d62511e832024380dcd5cb20c786c
+      internalID: 1748989154
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: InteriorService
+      rect:
+        serializedVersion: 2
+        x: 828
+        y: 90
+        width: 642
+        height: 382
+      alignment: 9
+      pivot: {x: 0.088785045, y: 0.21465969}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0a77fb90579563d4e92de111458ece07
+      internalID: -145981993
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 93d04911ba523c74896afb60c5585143
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      ExteriorLong: -2092238408
+      ExteriorShort: 1192633377
+      InteriorCompact: 1748989154
+      InteriorService: -145981993
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

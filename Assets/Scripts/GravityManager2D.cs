@@ -36,7 +36,8 @@ public class GravityManager2D : MonoBehaviour
         Vector2 toMoon = (Vector2)transform.position - position;
         return baseGravity * (1f - GetZeroBlend(position))
             + toMoon.normalized * (moonGravityStrength * GetMoonBlend(position))
-            + (SpaceStation.Instance ? SpaceStation.Instance.GetGravity(position) : Vector2.zero);
+            + (SpaceStation.Instance ? SpaceStation.Instance.GetGravity(position) : Vector2.zero)
+            + (AsteroidOutpost.Instance ? AsteroidOutpost.Instance.GetGravity(position) : Vector2.zero);
     }
 
     public float GetRotationAssist(Transform body, Vector2 gravity)

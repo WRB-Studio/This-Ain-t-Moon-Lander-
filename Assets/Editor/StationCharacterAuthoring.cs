@@ -64,9 +64,9 @@ public static class StationCharacterAuthoring
         AssetDatabase.CreateFolder(parent, Path.GetFileName(path));
     }
 
-    static Dictionary<string, Sprite> ImportParts(Character character)
+    static Dictionary<string, Sprite> ImportParts(Character character, string imageFolder = ImageFolder)
     {
-        string path = $"{ImageFolder}/{character.name}Parts.png";
+        string path = $"{imageFolder}/{character.name}Parts.png";
         var importer = (TextureImporter)AssetImporter.GetAtPath(path);
         importer.textureType = TextureImporterType.Sprite;
         importer.textureShape = TextureImporterShape.Texture2D;
@@ -101,7 +101,7 @@ public static class StationCharacterAuthoring
         return AssetDatabase.LoadAllAssetsAtPath(path).OfType<Sprite>().ToDictionary(s => s.name);
     }
 
-    static GameObject MakeVisual(Character character, Dictionary<string, Sprite> sprites)
+    static GameObject MakeVisual(Character character, Dictionary<string, Sprite> sprites, string visualFolder = VisualFolder)
     {
         var root = (GameObject)PrefabUtility.InstantiatePrefab(AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/Characters/BipedRig.prefab"));
         root.name = "Station" + character.name + "Visual";
@@ -130,7 +130,7 @@ public static class StationCharacterAuthoring
         var group = root.GetComponent<SortingGroup>();
         group.sortingOrder = -1;
         PrefabUtility.RecordPrefabInstancePropertyModifications(group);
-        var asset = PrefabUtility.SaveAsPrefabAsset(root, $"{VisualFolder}/Station{character.name}Visual.prefab");
+        var asset = PrefabUtility.SaveAsPrefabAsset(root, $"{visualFolder}/Station{character.name}Visual.prefab");
         UnityEngine.Object.DestroyImmediate(root);
         return asset;
 
@@ -171,7 +171,7 @@ public static class StationCharacterAuthoring
         finally { PrefabUtility.UnloadPrefabContents(root); }
     }
 
-    static GameObject MakeResident(string name, GameObject visualPrefab)
+    static GameObject MakeResident(string name, GameObject visualPrefab, string residentFolder = ResidentFolder)
     {
         var root = (GameObject)PrefabUtility.InstantiatePrefab(AssetDatabase.LoadAssetAtPath<GameObject>(BaseResidentPath));
         root.name = "Station" + name;
@@ -191,7 +191,7 @@ public static class StationCharacterAuthoring
             PrefabUtility.RecordPrefabInstancePropertyModifications(targetRenderer);
             PrefabUtility.RecordPrefabInstancePropertyModifications(targetArt);
         }
-        var asset = PrefabUtility.SaveAsPrefabAsset(root, $"{ResidentFolder}/Station{name}.prefab");
+        var asset = PrefabUtility.SaveAsPrefabAsset(root, $"{residentFolder}/Station{name}.prefab");
         UnityEngine.Object.DestroyImmediate(root);
         return asset;
     }
@@ -220,6 +220,34 @@ public static class StationCharacterAuthoring
             PrefabUtility.SaveAsPrefabAsset(root, path);
         }
         finally { PrefabUtility.UnloadPrefabContents(root); }
+    }
+
+    public static void BuildExpansion()
+    {
+        const string images = "Assets/Images/Characters/Expansion/Outline";
+        const string visuals = "Assets/Prefabs/Characters/Expansion/Visuals";
+        const string residents = "Assets/Prefabs/Characters/Expansion/Residents";
+        EnsureFolder(visuals);
+        EnsureFolder(residents);
+        var library = JsonUtility.FromJson<Library>(File.ReadAllText(images + "/Characters.layout.json"));
+        for (int i = 0; i < library.characters.Length; i++)
+        {
+            var character = library.characters[i];
+            var visual = MakeVisual(character, ImportParts(character, images), visuals);
+            var resident = MakeResident(character.name, visual, residents);
+            string path = AssetDatabase.GetAssetPath(resident);
+            var root = PrefabUtility.LoadPrefabContents(path);
+            var data = new SerializedObject(root.GetComponent<StationResident>());
+            data.FindProperty("residentId").intValue = 11 + i;
+            data.FindProperty("floorY").floatValue = 0.03f;
+            data.FindProperty("comments").ClearArray();
+            data.ApplyModifiedPropertiesWithoutUndo();
+            float scale = character.name == "ServiceBot" ? 0.7f : character.name == "WorkBot" ? 1.15f : 1f;
+            root.transform.localScale = Vector3.one * scale;
+            PrefabUtility.SaveAsPrefabAsset(root, path);
+            PrefabUtility.UnloadPrefabContents(root);
+        }
+        Debug.Log("Character expansion authored: ServiceBot, WorkBot, FoxCourier and BovineMechanic on the shared biped rig.");
     }
 
     static void MakePreviewScene(Character[] characters, Dictionary<string, GameObject> prefabs)

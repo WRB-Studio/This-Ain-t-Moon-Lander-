@@ -2,9 +2,17 @@ using TMPro;
 using UnityEngine;
 using System.Collections.Generic;
 
+[RequireComponent(typeof(NPCMotor2D))]
 public class StationResident : MonoBehaviour
 {
+    public enum PatrolMode { MinMaxX, Waypoints }
+    public enum WaypointTraversal { PingPong, Loop }
     [SerializeField] int residentId;
+    [SerializeField] PatrolMode patrolMode;
+    [SerializeField] Transform[] waypoints;
+    [SerializeField] WaypointTraversal waypointTraversal;
+    [SerializeField, Min(0.01f)] float arrivalDistance = 0.2f;
+    [SerializeField] Vector2 pauseDuration = new(0.8f, 2.8f);
     [SerializeField] float minX = -3f;
     [SerializeField] float maxX = 3f;
     [SerializeField] float floorY = 0.45f;
@@ -20,6 +28,10 @@ public class StationResident : MonoBehaviour
     Animator animator;
     SpriteRenderer sprite;
     CharacterVisual characterVisual;
+    NPCMotor2D motor;
+    int waypointIndex;
+    int waypointDirection = 1;
+    bool placed;
     bool movingRight = true;
     bool walkingToEntrance;
     bool entered;
@@ -37,6 +49,7 @@ public class StationResident : MonoBehaviour
         if (!animator) animator = GetComponentInChildren<Animator>(true);
         if (!sprite) sprite = GetComponentInChildren<SpriteRenderer>(true);
         if (!characterVisual) characterVisual = GetComponentInChildren<CharacterVisual>(true);
+        if (!motor) motor = GetComponent<NPCMotor2D>();
     }
     void OnEnable()
     {
@@ -45,42 +58,41 @@ public class StationResident : MonoBehaviour
             && SaveLoadManager.Instance.Data.GetFlag("story.stationGuideEntered")) entered = true;
         if (entered) { gameObject.SetActive(false); return; }
         if (!activeResidents.Contains(this)) activeResidents.Add(this);
-        float bottomOffset = VisualBounds.min.y - transform.position.y;
-        Vector3 position = transform.localPosition;
-        float parentScale = transform.parent ? Mathf.Max(0.0001f, transform.parent.lossyScale.y) : 1f;
-        position.y = floorY - bottomOffset / parentScale;
-        transform.localPosition = position;
+        if (!placed && patrolMode == PatrolMode.MinMaxX) PlaceOnInitialFloor();
+        placed = true;
         if (bubbleText) bubbleText.gameObject.SetActive(false);
     }
     void Update()
     {
         var game = GameController.Instance;
         var station = SpaceStation.Instance;
-        if (!game || !station || !station.IsAvailable || entered) return;
-        bool nearPlayer = game.IsPlaying && game.Phase == GameController.GamePhase.EVA && game.ControlledTarget
+        if (entered) { motor.Stop(); return; }
+        bool nearPlayer = game && station && station.IsAvailable && game.IsPlaying && game.Phase == GameController.GamePhase.EVA && game.ControlledTarget
             && Vector2.Distance(game.ControlledTarget.position, transform.position) <= approachDistance;
         if (entersStationOnApproach && nearPlayer && (!StationInterior.Instance || !StationInterior.Instance.IsInside))
             walkingToEntrance = true;
-        float goal = walkingToEntrance ? transform.parent.InverseTransformPoint(station.Entrance.position).x : movingRight ? maxX : minX;
+        Vector3 target;
+        bool validTarget = GetTarget(out target);
         pause = Mathf.Max(0f, pause - Time.deltaTime);
-        Vector3 local = transform.localPosition;
-        float previousX = local.x;
-        Vector3 previousWorldPosition = transform.position;
-        if (pause <= 0f) local.x = Mathf.MoveTowards(local.x, goal, walkSpeed * Time.deltaTime);
-        transform.localPosition = local;
-        bool moving = Mathf.Abs(local.x - previousX) > 0.00001f;
+        float delta = target.x - motor.Body.position.x;
+        float parentScale = transform.parent ? Mathf.Abs(transform.parent.lossyScale.x) : 1f;
+        float speed = validTarget && pause <= 0f && Mathf.Abs(delta) > 0.025f ? Mathf.Sign(delta) * walkSpeed * parentScale : 0f;
+        motor.Walk(speed);
+        bool moving = motor.IsGrounded && Mathf.Abs(motor.Body.linearVelocity.x) > 0.02f;
         if (characterVisual)
         {
-            float worldSpeed = Vector3.Distance(transform.position, previousWorldPosition) / Mathf.Max(0.0001f, Time.deltaTime);
+            float worldSpeed = moving ? motor.Body.linearVelocity.magnitude : 0f;
             characterVisual.SetWalking(moving, worldSpeed);
-            if (moving) characterVisual.FaceLeft(local.x < previousX);
+            if (moving) characterVisual.FaceLeft(motor.Body.linearVelocity.x < 0f);
         }
         else
         {
             if (animator) animator.SetBool(Walking, moving);
-            if (moving && sprite) sprite.flipX = local.x < previousX;
+            if (moving && sprite) sprite.flipX = motor.Body.linearVelocity.x < 0f;
         }
-        if (Mathf.Abs(local.x - goal) < 0.03f && pause <= 0f)
+        bool arrived = validTarget && Mathf.Abs(delta) <= arrivalDistance
+            && (walkingToEntrance || patrolMode == PatrolMode.MinMaxX || Mathf.Abs(motor.FeetPosition.y - target.y) <= arrivalDistance);
+        if (arrived && pause <= 0f)
         {
             if (walkingToEntrance)
             {
@@ -90,10 +102,53 @@ public class StationResident : MonoBehaviour
                 SaveLoadManager.Instance.Save();
                 return;
             }
-            movingRight = !movingRight;
-            pause = Random.Range(0.8f, 2.8f);
+            if (patrolMode == PatrolMode.Waypoints) AdvanceWaypoint();
+            else movingRight = !movingRight;
+            pause = Random.Range(Mathf.Max(0f, pauseDuration.x), Mathf.Max(pauseDuration.x, pauseDuration.y));
+            motor.Stop();
         }
         UpdateComment(game);
+    }
+    bool GetTarget(out Vector3 target)
+    {
+        target = transform.position;
+        if (walkingToEntrance && SpaceStation.Instance && SpaceStation.Instance.Entrance)
+        {
+            target = SpaceStation.Instance.Entrance.position; return true;
+        }
+        if (patrolMode == PatrolMode.MinMaxX)
+        {
+            float x = movingRight ? Mathf.Max(minX, maxX) : Mathf.Min(minX, maxX);
+            target = transform.parent ? transform.parent.TransformPoint(new Vector3(x, floorY, 0f)) : new Vector3(x, floorY, 0f);
+            return true;
+        }
+        if (waypoints == null || waypoints.Length == 0) return false;
+        waypointIndex = Mathf.Clamp(waypointIndex, 0, waypoints.Length - 1);
+        for (int i = 0; i < waypoints.Length; i++)
+        {
+            if (waypoints[waypointIndex]) { target = waypoints[waypointIndex].position; return true; }
+            AdvanceWaypoint();
+        }
+        return false;
+    }
+    void AdvanceWaypoint()
+    {
+        if (waypoints == null || waypoints.Length <= 1) { waypointIndex = 0; return; }
+        if (waypointTraversal == WaypointTraversal.Loop) waypointIndex = (waypointIndex + 1) % waypoints.Length;
+        else
+        {
+            if (waypointIndex >= waypoints.Length - 1) waypointDirection = -1;
+            else if (waypointIndex <= 0) waypointDirection = 1;
+            waypointIndex += waypointDirection;
+        }
+    }
+    void PlaceOnInitialFloor()
+    {
+        float bottomOffset = motor.FootOffset;
+        Vector3 position = transform.localPosition;
+        float parentScale = transform.parent ? Mathf.Max(0.0001f, Mathf.Abs(transform.parent.lossyScale.y)) : 1f;
+        position.y = floorY - bottomOffset / parentScale + 0.02f;
+        motor.Teleport(transform.parent ? transform.parent.TransformPoint(position) : position);
     }
     void UpdateComment(GameController game)
     {
@@ -103,7 +158,7 @@ public class StationResident : MonoBehaviour
         bubblePosition.x = bounds.center.x;
         bubblePosition.y = bounds.max.y + 0.7f;
         bubbleText.transform.parent.position = bubblePosition;
-        bool canComment = game.IsPlaying && game.Phase == GameController.GamePhase.EVA && game.ControlledTarget
+        bool canComment = game && game.IsPlaying && game.Phase == GameController.GamePhase.EVA && game.ControlledTarget
             && (!StationConversation.Instance || !StationConversation.Instance.IsShowing)
             && (!StationInterior.Instance || !StationInterior.Instance.IsTransitioning)
             && Vector2.Distance(game.ControlledTarget.position, transform.position) <= commentDistance;
@@ -121,17 +176,23 @@ public class StationResident : MonoBehaviour
             bubbleUntil = Time.time + commentDuration;
             nextComment = bubbleUntil + commentCooldown;
         }
-        bool keepVisible = game.IsPlaying && game.Phase == GameController.GamePhase.EVA && game.ControlledTarget
+        bool keepVisible = game && game.IsPlaying && game.Phase == GameController.GamePhase.EVA && game.ControlledTarget
             && (!StationConversation.Instance || !StationConversation.Instance.IsShowing)
             && (!StationInterior.Instance || !StationInterior.Instance.IsTransitioning)
             && Vector2.Distance(game.ControlledTarget.position, transform.position) <= commentHideDistance;
         bubbleText.gameObject.SetActive(keepVisible && Time.time < bubbleUntil);
     }
-    public ResidentSave CaptureState() => new()
+    public ResidentSave CaptureState()
     {
+        Cache();
+        return new ResidentSave
+        {
         id = residentId, x = transform.localPosition.x, pause = pause,
-        movingRight = movingRight, walkingToEntrance = walkingToEntrance, entered = entered
-    };
+        movingRight = movingRight, walkingToEntrance = walkingToEntrance, entered = entered,
+        hasPhysicsState = true, position = transform.parent ? transform.parent.InverseTransformPoint(motor.Body.position) : (Vector3)motor.Body.position,
+        velocity = motor.Body.linearVelocity, waypointIndex = waypointIndex, waypointDirection = waypointDirection
+        };
+    }
     public void RestoreState(ResidentSave state)
     {
         if (state.id != residentId) return;
@@ -139,9 +200,12 @@ public class StationResident : MonoBehaviour
         walkingToEntrance = state.walkingToEntrance;
         entered = state.entered;
         pause = state.pause;
-        Vector3 position = transform.localPosition;
-        position.x = state.x;
-        transform.localPosition = position;
+        Cache(); placed = true;
+        waypointIndex = state.waypointIndex;
+        waypointDirection = state.waypointDirection == -1 ? -1 : 1;
+        Vector3 position = state.hasPhysicsState ? state.position : new Vector3(state.x, transform.localPosition.y, transform.localPosition.z);
+        motor.Teleport(transform.parent ? transform.parent.TransformPoint(position) : position, state.hasPhysicsState ? state.velocity : Vector2.zero);
+        if (!state.hasPhysicsState && patrolMode == PatrolMode.MinMaxX) PlaceOnInitialFloor();
         gameObject.SetActive(!entered);
     }
     public int Id => residentId;
@@ -161,6 +225,21 @@ public class StationResident : MonoBehaviour
         Gizmos.color = Color.yellow;
         Vector3 floor = new(transform.localPosition.x, floorY, z);
         Gizmos.DrawWireSphere(floor, 0.12f);
+        if (patrolMode == PatrolMode.Waypoints && waypoints != null)
+        {
+            Gizmos.matrix = Matrix4x4.identity;
+            Gizmos.color = Color.green;
+            Transform previous = null;
+            foreach (var point in waypoints)
+            {
+                if (!point) continue;
+                Gizmos.DrawWireSphere(point.position, 0.18f);
+                if (previous) Gizmos.DrawLine(previous.position, point.position);
+                previous = point;
+            }
+            if (waypointTraversal == WaypointTraversal.Loop && previous && waypoints.Length > 1 && waypoints[0])
+                Gizmos.DrawLine(previous.position, waypoints[0].position);
+        }
 #if UNITY_EDITOR
         Vector3 WorldPoint(Vector3 point) => transform.parent ? transform.parent.TransformPoint(point) : point;
         UnityEditor.Handles.Label(WorldPoint(left + Vector3.up * 0.4f), $"Min X: {minX:0.##}");
@@ -174,17 +253,20 @@ public class StationResident : MonoBehaviour
     {
         activeResidents.Remove(this);
         if (bubbleText) bubbleText.gameObject.SetActive(false);
+        if (motor) motor.Stop();
     }
 #if UNITY_EDITOR
     public void DebugReset()
     {
         entered = walkingToEntrance = false;
         movingRight = true;
+        waypointIndex = 0; waypointDirection = 1;
         pause = nextComment = bubbleUntil = 0f;
         var position = transform.localPosition;
         position.x = minX;
         transform.localPosition = position;
         gameObject.SetActive(true);
+        PlaceOnInitialFloor();
     }
 #endif
 }

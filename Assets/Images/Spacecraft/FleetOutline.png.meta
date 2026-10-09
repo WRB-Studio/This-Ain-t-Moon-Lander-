@@ -1,0 +1,461 @@
+fileFormatVersion: 2
+guid: 8db2867334a623544b113ce4d52a1561
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -1728164881793107034
+    second: FleetOutline_0
+  - first:
+      213: -3153453987153683959
+    second: FleetOutline_1
+  - first:
+      213: -4823650786897497436
+    second: FleetOutline_2
+  - first:
+      213: 3292196252710714909
+    second: FleetOutline_3
+  - first:
+      213: 74137973735739506
+    second: FleetOutline_4
+  - first:
+      213: -7566062303951820403
+    second: FleetOutline_5
+  - first:
+      213: 1798502809076746802
+    second: FleetOutline_6
+  - first:
+      213: 9086463020985375284
+    second: FleetOutline_7
+  - first:
+      213: 7372973205032591951
+    second: FleetOutline_8
+  - first:
+      213: 1092775225926814492
+    second: FleetOutline_9
+  - first:
+      213: 6272641218889427484
+    second: FleetOutline_10
+  - first:
+      213: -6612823019919627548
+    second: FleetOutline_11
+  - first:
+      213: -9220018001010930902
+    second: FleetOutline_12
+  - first:
+      213: -7421829953697704810
+    second: FleetOutline_13
+  - first:
+      213: 6354171066568027965
+    second: FleetOutline_14
+  - first:
+      213: 5405639892196957865
+    second: FleetOutline_15
+  - first:
+      213: -4918098079442931512
+    second: FleetOutline_16
+  - first:
+      213: -8081086682838755102
+    second: FleetOutline_17
+  - first:
+      213: -1443322833137803261
+    second: FleetOutline_18
+  - first:
+      213: -6432055997398672733
+    second: FleetOutline_19
+  - first:
+      213: -4569654573282044662
+    second: FleetOutline_20
+  - first:
+      213: -989837317827397606
+    second: FleetOutline_21
+  - first:
+      213: -3571588214887315477
+    second: FleetOutline_22
+  - first:
+      213: 9149166829627935090
+    second: FleetOutline_23
+  - first:
+      213: 3641833123513343696
+    second: FleetOutline_24
+  - first:
+      213: 5062452252667902428
+    second: FleetOutline_25
+  - first:
+      213: 108943323359909521
+    second: FleetOutline_26
+  - first:
+      213: 2642456487109957538
+    second: FleetOutline_27
+  - first:
+      213: -3083103563645141356
+    second: FleetOutline_28
+  - first:
+      213: 6957831401226688625
+    second: FleetOutline_29
+  - first:
+      213: 3591938049716081689
+    second: FleetOutline_30
+  - first:
+      213: -5974252784308425049
+    second: FleetOutline_31
+  - first:
+      213: 3860213368945610473
+    second: FleetOutline_32
+  - first:
+      213: 2604390173651982169
+    second: FleetOutline_33
+  - first:
+      213: -6584211570064310042
+    second: FleetOutline_34
+  - first:
+      213: -7479291264257879817
+    second: FleetOutline_35
+  - first:
+      213: 7005318952956462854
+    second: FleetOutline_36
+  - first:
+      213: -3784076915811156594
+    second: FleetOutline_37
+  - first:
+      213: 1025002143582875060
+    second: FleetOutline_38
+  - first:
+      213: 3174786368153922831
+    second: FleetOutline_39
+  - first:
+      213: 3413318582461138069
+    second: FleetOutline_40
+  - first:
+      213: 4453276501599028694
+    second: FleetOutline_41
+  - first:
+      213: -7230079506976592110
+    second: FleetOutline_42
+  - first:
+      213: 2737536425094615032
+    second: FleetOutline_43
+  - first:
+      213: -2053337559143443822
+    second: FleetOutline_44
+  - first:
+      213: -2677499467291106315
+    second: FleetOutline_45
+  - first:
+      213: -7858918417015206028
+    second: FleetOutline_46
+  - first:
+      213: -7140110500752840475
+    second: FleetOutline_47
+  - first:
+      213: 4035860128561216221
+    second: FleetOutline_48
+  - first:
+      213: -5667866328888798678
+    second: FleetOutline_49
+  - first:
+      213: -6454903697892451959
+    second: FleetOutline_50
+  - first:
+      213: -2426752120163389642
+    second: FleetOutline_51
+  - first:
+      213: -5190686932646812525
+    second: FleetOutline_52
+  - first:
+      213: -7019466639484211947
+    second: FleetOutline_53
+  - first:
+      213: -4719451700909969198
+    second: FleetOutline_54
+  - first:
+      213: -3402794425319300056
+    second: FleetOutline_55
+  - first:
+      213: 8535068991017239482
+    second: FleetOutline_56
+  - first:
+      213: 7426723590719449534
+    second: FleetOutline_57
+  - first:
+      213: -6434399229260138355
+    second: FleetOutline_58
+  - first:
+      213: 2722004512702023705
+    second: FleetOutline_59
+  - first:
+      213: -1541266659919924163
+    second: FleetOutline_60
+  - first:
+      213: 169966968838302184
+    second: FleetOutline_61
+  - first:
+      213: -8671605646222913140
+    second: FleetOutline_62
+  - first:
+      213: -6832678582810995101
+    second: FleetOutline_63
+  - first:
+      213: -1535527982741300788
+    second: FleetOutline_64
+  - first:
+      213: 1460134161453617599
+    second: FleetOutline_65
+  - first:
+      213: 8853938576904929922
+    second: FleetOutline_66
+  - first:
+      213: 5336333841641840828
+    second: FleetOutline_67
+  - first:
+      213: -2133702788570399147
+    second: FleetOutline_68
+  - first:
+      213: -1357438927798611661
+    second: FleetOutline_69
+  - first:
+      213: 2519120317143181899
+    second: FleetOutline_70
+  - first:
+      213: 2784755299768494776
+    second: FleetOutline_71
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 4096
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 4096
+    resizeAlgorithm: 0
+    textureFormat: 4
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 1
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Courier
+      rect:
+        serializedVersion: 2
+        x: 172
+        y: 869
+        width: 331
+        height: 289
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cef6362b721dea240839219fd4511138
+      internalID: -718876066
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Surveyor
+      rect:
+        serializedVersion: 2
+        x: 708
+        y: 873
+        width: 393
+        height: 240
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fc6bd31616976364084ed4dd934a654f
+      internalID: 2068770315
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CargoTug
+      rect:
+        serializedVersion: 2
+        x: 116
+        y: 517
+        width: 457
+        height: 239
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 88ac44591be99dc40bafc84deec860b7
+      internalID: 2068290143
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Interceptor
+      rect:
+        serializedVersion: 2
+        x: 722
+        y: 512
+        width: 370
+        height: 260
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1b7fc396d5c4f0e4e950ce972c72e12d
+      internalID: -67303196
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RescueShuttle
+      rect:
+        serializedVersion: 2
+        x: 125
+        y: 114
+        width: 438
+        height: 265
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 25cbd907f6660254099b8185144fee3f
+      internalID: -423740004
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: cdf39a39bcf3c194d870422f62f3582c
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      CargoTug: 2068290143
+      Courier: -718876066
+      Interceptor: -67303196
+      RescueShuttle: -423740004
+      Surveyor: 2068770315
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

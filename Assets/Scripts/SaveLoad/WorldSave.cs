@@ -27,6 +27,7 @@ public class WorldSave
     public string resultStoryMessage;
     public ActorSave astronaut;
     public ScoreSave scoring;
+    public CargoMissionSave cargoMission;
 
     public bool IsValid()
     {
@@ -37,19 +38,22 @@ public class WorldSave
             || !Finite(landingZone) || !Finite(landingHalfWidth) || !Finite(moonPosition) || !Finite(moonScale)
             || !Finite(moonRotation) || !Finite(scoring.elapsed) || !Finite(scoring.lastTime) || !Finite(storyElapsed) || !Finite(refillStartFuel)
             || scoring.scoredPad < -1 || scoring.scoredPad >= pads.Length
-            || scoring.scoredStationPad < -1 || scoring.scoredStationPad > 1
+            || scoring.scoredStationPad < -1 || scoring.scoredStationPad > 2
             || stationArea < 0 || stationArea > 2
             || (hasStationLayout && !Finite(stationOffset))) return false;
+        if (cargoMission != null && !cargoMission.IsValid(ships.Length)) return false;
         if (stationResidents != null)
             foreach (var resident in stationResidents)
-                if (resident == null || resident.id < 1 || !Finite(resident.x) || !Finite(resident.pause)) return false;
+                if (resident == null || resident.id < 1 || !Finite(resident.x) || !Finite(resident.pause)
+                    || (resident.hasPhysicsState && (!Finite(resident.position) || !Finite(resident.velocity)
+                        || resident.waypointIndex < 0 || (resident.waypointDirection != 1 && resident.waypointDirection != -1)))) return false;
         for (int i = 0; i < terrain.Length; i++)
             if (!Finite(terrain[i]) || (i > 0 && terrain[i].x <= terrain[i - 1].x)) return false;
         foreach (var pad in pads) if (!Finite(pad)) return false;
         foreach (var ship in ships)
             if (ship == null || !ship.IsValid() || !Finite(ship.fuel) || !Finite(ship.fuelMax)
                 || !Finite(ship.targetRotation) || !Finite(ship.gravity) || !Finite(ship.fuelEmptyTimer) || !Finite(ship.deadZoneTimer)
-                || ship.stationPad < -1 || ship.stationPad > 1
+                || ship.stationPad < -1 || ship.stationPad > 2
                 || !Enum.IsDefined(typeof(LanderController.eLanderState), ship.state)
                 || !Enum.IsDefined(typeof(RigidbodyType2D), ship.bodyType)) return false;
         return phase != GameController.GamePhase.EVA || (astronaut != null && astronaut.IsValid());
@@ -120,4 +124,23 @@ public class ResidentSave
     public int id;
     public float x, pause;
     public bool movingRight, walkingToEntrance, entered;
+    public bool hasPhysicsState;
+    public Vector3 position;
+    public Vector2 velocity;
+    public int waypointIndex, waypointDirection;
+}
+
+[Serializable]
+public class CargoMissionSave
+{
+    public CargoMission.Progress stage;
+    public ActorSave capsule;
+    public int towShip = -1;
+    public int walkArea;
+    public float cableLength;
+    public Vector3 passengerPosition;
+    public bool IsValid(int shipCount) => Enum.IsDefined(typeof(CargoMission.Progress), stage)
+        && capsule != null && capsule.IsValid() && WorldSave.Finite(passengerPosition) && WorldSave.Finite(cableLength) && cableLength >= 0f
+        && walkArea >= 0 && walkArea <= 3 && towShip >= -1 && towShip < shipCount
+        && (stage != CargoMission.Progress.Towing || towShip >= 0);
 }

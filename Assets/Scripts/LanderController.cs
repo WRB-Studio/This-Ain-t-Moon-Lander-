@@ -105,7 +105,9 @@ public class LanderController : MonoBehaviour
         && (Time.time - lastPadContact < 0.2f || (rb.bodyType == RigidbodyType2D.Static
             && StationPad.Surface.Distance(hull).distance <= 0.1f))));
     public StationLandingPad StationPad { get; private set; }
-    public bool IsOnStation => StationPad && (landerState == eLanderState.LandedPad || IsCrashed);
+    public bool IsOnServicePad => StationPad && (landerState == eLanderState.LandedPad || IsCrashed);
+    public bool IsOnStation => IsOnServicePad && !StationPad.isOutpost;
+    public bool IsOnOutpost => IsOnServicePad && StationPad.isOutpost;
     public float FuelFraction => fuelMax > 0f ? Mathf.Clamp01(currentFuel / fuelMax) : 0f;
     public bool IsParkedOnPad => !isActive && landerState == eLanderState.LandedPad;
     public float GravityAngle => currentGravity.sqrMagnitude > 0.0001f
@@ -565,7 +567,8 @@ public class LanderController : MonoBehaviour
         Init();
         isActive = active;
         landerState = state.state;
-        StationPad = SpaceStation.Instance ? SpaceStation.Instance.GetPad(state.stationPad) : null;
+        StationPad = state.stationPad == 2 && AsteroidOutpost.Instance ? AsteroidOutpost.Instance.LandingPad
+            : SpaceStation.Instance ? SpaceStation.Instance.GetPad(state.stationPad) : null;
         if (StationPad && landerState == eLanderState.LandedPad) lastPadContact = Time.time;
         controlsEnabled = active && state.controlsEnabled && !IsCrashed;
         fuelMax = Mathf.Max(0.01f, state.fuelMax);

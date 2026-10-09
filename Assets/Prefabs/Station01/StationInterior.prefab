@@ -46,8 +46,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fda5f998df824d5bb32b7a162cbd732c, type: 3}
-  m_Name:
-  m_EditorClassIdentifier:
+  m_Name: 
+  m_EditorClassIdentifier: 
   hall: {fileID: 560001000}
   registration: {fileID: 560002000}
   hallArrival: {fileID: 560001501}
@@ -69,8 +69,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f7597317b9ae410682ef6789c469ba43, type: 3}
-  m_Name:
-  m_EditorClassIdentifier:
+  m_Name: 
+  m_EditorClassIdentifier: 
   speaker: '[[game.registration]]'
   steps:
   - message: '[[game.the.replacement.pilot.take.a.seat.or.stand.the.chair.is.being.rep]]'
@@ -111,9 +111,9 @@ MonoBehaviour:
   - message: '[[game.the.coordinates.are.in.a.message.on.your.new.radio.open.radio.and]]'
     answers:
     - text: '[[game.i.ll.take.a.look]]'
-      reaction:
+      reaction: 
     - text: '[[game.no.promises]]'
-      reaction:
+      reaction: 
     givesRadio: 0
   repeatMessage: '[[game.the.pickup.coordinates.are.still.on.your.radio.open.radio.to.read]]'
   goodbyeAnswer: '[[game.thanks.i.will.take.a.look]]'
@@ -166,7 +166,7 @@ GameObject:
   m_Component:
   - component: {fileID: 560001101}
   - component: {fileID: 560001102}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Floor
   m_TagString: Landscape
   m_Icon: {fileID: 0}
@@ -244,7 +244,7 @@ GameObject:
   m_Component:
   - component: {fileID: 560001111}
   - component: {fileID: 560001112}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: LeftWall
   m_TagString: Landscape
   m_Icon: {fileID: 0}
@@ -322,7 +322,7 @@ GameObject:
   m_Component:
   - component: {fileID: 560001121}
   - component: {fileID: 560001122}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: RightWall
   m_TagString: Landscape
   m_Icon: {fileID: 0}
@@ -721,7 +721,7 @@ GameObject:
   m_Component:
   - component: {fileID: 560002101}
   - component: {fileID: 560002102}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Floor
   m_TagString: Landscape
   m_Icon: {fileID: 0}
@@ -799,7 +799,7 @@ GameObject:
   m_Component:
   - component: {fileID: 560002111}
   - component: {fileID: 560002112}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: LeftWall
   m_TagString: Landscape
   m_Icon: {fileID: 0}
@@ -877,7 +877,7 @@ GameObject:
   m_Component:
   - component: {fileID: 560002121}
   - component: {fileID: 560002122}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: RightWall
   m_TagString: Landscape
   m_Icon: {fileID: 0}
@@ -1109,8 +1109,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f32e05897a7844e796d690ee020b2c22, type: 3}
-  m_Name:
-  m_EditorClassIdentifier:
+  m_Name: 
+  m_EditorClassIdentifier: 
   action: 4
   buttonLabel: '[[game.talk]]'
   distance: 2.4
@@ -1565,6 +1565,24 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 590000001, guid: 094e67c10d554023ac38773d279572b5, type: 3}
   m_PrefabInstance: {fileID: 600000001}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &554724104 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 47394057, guid: 094e67c10d554023ac38773d279572b5, type: 3}
+  m_PrefabInstance: {fileID: 600000001}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &7764893130755261833
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 554724104}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 933f5654dd184ec7825d27a182bdb5d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LocalizedText
+  source: '[[game.crew.quarters]]'
 --- !u!1001 &600000011
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1658,6 +1676,24 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 590000001, guid: 094e67c10d554023ac38773d279572b5, type: 3}
   m_PrefabInstance: {fileID: 600000011}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &554724098 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 47394057, guid: 094e67c10d554023ac38773d279572b5, type: 3}
+  m_PrefabInstance: {fileID: 600000011}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &193747913531756416
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 554724098}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 933f5654dd184ec7825d27a182bdb5d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LocalizedText
+  source: '[[game.registration.sign]]'
 --- !u!1001 &600000021
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1751,6 +1787,24 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 590000001, guid: 094e67c10d554023ac38773d279572b5, type: 3}
   m_PrefabInstance: {fileID: 600000021}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &554724124 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 47394057, guid: 094e67c10d554023ac38773d279572b5, type: 3}
+  m_PrefabInstance: {fileID: 600000021}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1349937295206763138
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 554724124}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 933f5654dd184ec7825d27a182bdb5d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LocalizedText
+  source: '[[game.exterior.deck]]'
 --- !u!1001 &600000031
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1844,6 +1898,24 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 590000001, guid: 094e67c10d554023ac38773d279572b5, type: 3}
   m_PrefabInstance: {fileID: 600000031}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &554724118 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 47394057, guid: 094e67c10d554023ac38773d279572b5, type: 3}
+  m_PrefabInstance: {fileID: 600000031}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &6182344178984741104
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 554724118}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 933f5654dd184ec7825d27a182bdb5d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LocalizedText
+  source: '[[game.maintenance]]'
 --- !u!1001 &600000041
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1937,6 +2009,24 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 590000001, guid: 094e67c10d554023ac38773d279572b5, type: 3}
   m_PrefabInstance: {fileID: 600000041}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &554724128 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 47394057, guid: 094e67c10d554023ac38773d279572b5, type: 3}
+  m_PrefabInstance: {fileID: 600000041}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &3956027631177102255
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 554724128}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 933f5654dd184ec7825d27a182bdb5d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LocalizedText
+  source: '[[game.storage]]'
 --- !u!1001 &600000101
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1963,7 +2053,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1371857031817832832, guid: e77d577946abaa84c94491ff58a664ca, type: 3}
       propertyPath: bubbleText
-      value:
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 1371857031817832832, guid: e77d577946abaa84c94491ff58a664ca, type: 3}
       propertyPath: residentId
@@ -2030,6 +2120,24 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2944419324217019131, guid: e77d577946abaa84c94491ff58a664ca, type: 3}
   m_PrefabInstance: {fileID: 600000101}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &8769758790170988136 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8769758790703843341, guid: e77d577946abaa84c94491ff58a664ca, type: 3}
+  m_PrefabInstance: {fileID: 600000101}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1784491421795771390
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8769758790170988136}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 933f5654dd184ec7825d27a182bdb5d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LocalizedText
+  source: '[[game.station]]'
 --- !u!1001 &600000111
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2056,7 +2164,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 611416423897078357, guid: f210019ff75f70f41b9ecc58e512c0a8, type: 3}
       propertyPath: bubbleText
-      value:
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 611416423897078357, guid: f210019ff75f70f41b9ecc58e512c0a8, type: 3}
       propertyPath: residentId
@@ -2123,6 +2231,24 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3722597320964340014, guid: f210019ff75f70f41b9ecc58e512c0a8, type: 3}
   m_PrefabInstance: {fileID: 600000111}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &7116125480497348023 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7116125479956200408, guid: f210019ff75f70f41b9ecc58e512c0a8, type: 3}
+  m_PrefabInstance: {fileID: 600000111}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &6280943356682799221
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7116125480497348023}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 933f5654dd184ec7825d27a182bdb5d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LocalizedText
+  source: '[[game.station]]'
 --- !u!1001 &600000121
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2161,7 +2287,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5400565836377533407, guid: e6ae4634582201d4abf389fb5a4d8f59, type: 3}
       propertyPath: bubbleText
-      value:
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 5400565836377533407, guid: e6ae4634582201d4abf389fb5a4d8f59, type: 3}
       propertyPath: residentId
@@ -2211,6 +2337,24 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 8891010147431054238}
   m_SourcePrefab: {fileID: 100100000, guid: e6ae4634582201d4abf389fb5a4d8f59, type: 3}
+--- !u!1 &2328092278519450667 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2328092278003337810, guid: e6ae4634582201d4abf389fb5a4d8f59, type: 3}
+  m_PrefabInstance: {fileID: 600000121}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &8891010147431054238
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2328092278519450667}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 933f5654dd184ec7825d27a182bdb5d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LocalizedText
+  source: '[[game.station]]'
 --- !u!4 &8153722552946527965 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8153722552430839972, guid: e6ae4634582201d4abf389fb5a4d8f59, type: 3}
@@ -2305,6 +2449,24 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 590000001, guid: 094e67c10d554023ac38773d279572b5, type: 3}
   m_PrefabInstance: {fileID: 600000301}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &554723876 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 47394057, guid: 094e67c10d554023ac38773d279572b5, type: 3}
+  m_PrefabInstance: {fileID: 600000301}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &8165848594374876278
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 554723876}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 933f5654dd184ec7825d27a182bdb5d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LocalizedText
+  source: '[[game.concourse]]'
 --- !u!1001 &600000311
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2335,7 +2497,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1371857031817832832, guid: e77d577946abaa84c94491ff58a664ca, type: 3}
       propertyPath: bubbleText
-      value:
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 1371857031817832832, guid: e77d577946abaa84c94491ff58a664ca, type: 3}
       propertyPath: residentId
@@ -4101,6 +4263,24 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6104906837683175108, guid: 5cbbea8e60e064044a9e46182fe3ebd7, type: 3}
   m_PrefabInstance: {fileID: 5295894382515981578}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &5525612642576380216 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 418870559249939506, guid: 5cbbea8e60e064044a9e46182fe3ebd7, type: 3}
+  m_PrefabInstance: {fileID: 5295894382515981578}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &3099794092975647032
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5525612642576380216}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 933f5654dd184ec7825d27a182bdb5d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LocalizedText
+  source: '[[game.station]]'
 --- !u!1001 &5345921732566478181
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4493,6 +4673,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9136963228027655416, guid: f83e82db0870d3440b26fcb488e4c702, type: 3}
+      propertyPath: m_Size.x
+      value: 0.32719707
+      objectReference: {fileID: 0}
+    - target: {fileID: 9136963228027655416, guid: f83e82db0870d3440b26fcb488e4c702, type: 3}
+      propertyPath: m_Size.y
+      value: 2.509346
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -4506,6 +4694,24 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7133896761511302055, guid: f83e82db0870d3440b26fcb488e4c702, type: 3}
   m_PrefabInstance: {fileID: 6626823987117579905}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &7610899620534538192 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3632273698434814289, guid: f83e82db0870d3440b26fcb488e4c702, type: 3}
+  m_PrefabInstance: {fileID: 6626823987117579905}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &6345215007360400954
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7610899620534538192}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 933f5654dd184ec7825d27a182bdb5d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LocalizedText
+  source: '[[game.station]]'
 --- !u!1001 &7658445814619047707
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4674,201 +4880,3 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 640000001, guid: 110651347de945fc9c59b23a736f684d, type: 3}
   m_PrefabInstance: {fileID: 7698960701091589848}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &554724104 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 47394057, guid: 094e67c10d554023ac38773d279572b5, type: 3}
-  m_PrefabInstance: {fileID: 600000001}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &7764893130755261833
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 554724104}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 933f5654dd184ec7825d27a182bdb5d8, type: 3}
-  m_Name:
-  m_EditorClassIdentifier: Assembly-CSharp::LocalizedText
-  source: '[[game.crew.quarters]]'
---- !u!1 &554724098 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 47394057, guid: 094e67c10d554023ac38773d279572b5, type: 3}
-  m_PrefabInstance: {fileID: 600000011}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &193747913531756416
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 554724098}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 933f5654dd184ec7825d27a182bdb5d8, type: 3}
-  m_Name:
-  m_EditorClassIdentifier: Assembly-CSharp::LocalizedText
-  source: '[[game.registration.sign]]'
---- !u!1 &554724124 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 47394057, guid: 094e67c10d554023ac38773d279572b5, type: 3}
-  m_PrefabInstance: {fileID: 600000021}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1349937295206763138
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 554724124}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 933f5654dd184ec7825d27a182bdb5d8, type: 3}
-  m_Name:
-  m_EditorClassIdentifier: Assembly-CSharp::LocalizedText
-  source: '[[game.exterior.deck]]'
---- !u!1 &554724118 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 47394057, guid: 094e67c10d554023ac38773d279572b5, type: 3}
-  m_PrefabInstance: {fileID: 600000031}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &6182344178984741104
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 554724118}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 933f5654dd184ec7825d27a182bdb5d8, type: 3}
-  m_Name:
-  m_EditorClassIdentifier: Assembly-CSharp::LocalizedText
-  source: '[[game.maintenance]]'
---- !u!1 &554724128 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 47394057, guid: 094e67c10d554023ac38773d279572b5, type: 3}
-  m_PrefabInstance: {fileID: 600000041}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &3956027631177102255
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 554724128}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 933f5654dd184ec7825d27a182bdb5d8, type: 3}
-  m_Name:
-  m_EditorClassIdentifier: Assembly-CSharp::LocalizedText
-  source: '[[game.storage]]'
---- !u!1 &8769758790170988136 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8769758790703843341, guid: e77d577946abaa84c94491ff58a664ca, type: 3}
-  m_PrefabInstance: {fileID: 600000101}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1784491421795771390
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8769758790170988136}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 933f5654dd184ec7825d27a182bdb5d8, type: 3}
-  m_Name:
-  m_EditorClassIdentifier: Assembly-CSharp::LocalizedText
-  source: '[[game.station]]'
---- !u!1 &7116125480497348023 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7116125479956200408, guid: f210019ff75f70f41b9ecc58e512c0a8, type: 3}
-  m_PrefabInstance: {fileID: 600000111}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &6280943356682799221
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7116125480497348023}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 933f5654dd184ec7825d27a182bdb5d8, type: 3}
-  m_Name:
-  m_EditorClassIdentifier: Assembly-CSharp::LocalizedText
-  source: '[[game.station]]'
---- !u!1 &2328092278519450667 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2328092278003337810, guid: e6ae4634582201d4abf389fb5a4d8f59, type: 3}
-  m_PrefabInstance: {fileID: 600000121}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &8891010147431054238
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2328092278519450667}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 933f5654dd184ec7825d27a182bdb5d8, type: 3}
-  m_Name:
-  m_EditorClassIdentifier: Assembly-CSharp::LocalizedText
-  source: '[[game.station]]'
---- !u!1 &554723876 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 47394057, guid: 094e67c10d554023ac38773d279572b5, type: 3}
-  m_PrefabInstance: {fileID: 600000301}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &8165848594374876278
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 554723876}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 933f5654dd184ec7825d27a182bdb5d8, type: 3}
-  m_Name:
-  m_EditorClassIdentifier: Assembly-CSharp::LocalizedText
-  source: '[[game.concourse]]'
---- !u!1 &5525612642576380216 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 418870559249939506, guid: 5cbbea8e60e064044a9e46182fe3ebd7, type: 3}
-  m_PrefabInstance: {fileID: 5295894382515981578}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &3099794092975647032
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5525612642576380216}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 933f5654dd184ec7825d27a182bdb5d8, type: 3}
-  m_Name:
-  m_EditorClassIdentifier: Assembly-CSharp::LocalizedText
-  source: '[[game.station]]'
---- !u!1 &7610899620534538192 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3632273698434814289, guid: f83e82db0870d3440b26fcb488e4c702, type: 3}
-  m_PrefabInstance: {fileID: 6626823987117579905}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &6345215007360400954
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7610899620534538192}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 933f5654dd184ec7825d27a182bdb5d8, type: 3}
-  m_Name:
-  m_EditorClassIdentifier: Assembly-CSharp::LocalizedText
-  source: '[[game.station]]'

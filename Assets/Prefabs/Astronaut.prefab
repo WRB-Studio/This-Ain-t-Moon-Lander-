@@ -49,10 +49,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   invertFlip: 0
   moveEpsilon: 0.0001
-  hopAmp: 0.5
-  hopFreq: 5
-  maxMoveSpeed: 2
-  moonSpeedMultiplier: 0.75
+  hopAmp: 1
+  hopFreq: 2.75
+  maxMoveSpeed: 1.5
+  stationSpeedMultiplier: 0.75
+  moonSpeedMultiplier: 0.6
   rotateSmooth: 12
   inputDeadZone: 0.6
 --- !u!50 &217283479221188408

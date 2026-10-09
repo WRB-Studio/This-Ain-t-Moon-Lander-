@@ -92,6 +92,7 @@ public class RadioController : MonoBehaviour
         bool available = IsOwned && (GameController.Instance.IsPlaying
             || GameController.Instance.Phase == GameController.GamePhase.Landed)
             && !(StationConversation.Instance && StationConversation.Instance.IsShowing)
+            && !(CargoMission.Instance && CargoMission.Instance.IsShowing)
             && !(StoryTextController.Instance && ((StoryTextController.Instance.BlocksGameplayInput && !IsOpen)
                 || StoryTextController.Instance.HasPendingDialogue))
             && !(StationInterior.Instance && StationInterior.Instance.IsTransitioning);
@@ -116,7 +117,8 @@ public class RadioController : MonoBehaviour
     public void ReceivePickup()
     {
         var message = JsonUtility.FromJson<RadioMessage>(JsonUtility.ToJson(pickupMessage));
-        message.coordinates = StationInterior.Instance && StationInterior.Instance.NextSignalTarget
+        message.coordinates = CargoMission.Instance ? CargoMission.Instance.SignalTarget.position
+            : StationInterior.Instance && StationInterior.Instance.NextSignalTarget
             ? StationInterior.Instance.NextSignalTarget.position : Vector3.zero;
         Receive(message);
     }
@@ -137,6 +139,7 @@ public class RadioController : MonoBehaviour
 
     public void Open()
     {
+        if (CargoMission.Instance && CargoMission.Instance.IsShowing) return;
         if (PauseMenu.IsPaused || !IsOwned || IsOpen || !GameController.Instance
             || !(GameController.Instance.IsPlaying || GameController.Instance.Phase == GameController.GamePhase.Landed)
             || (StoryTextController.Instance && (StoryTextController.Instance.BlocksGameplayInput
@@ -254,6 +257,8 @@ public class RadioController : MonoBehaviour
 
     Vector3 Destination(RadioMessage message)
     {
+        if (message.signal == "pickup" && CargoMission.Instance) return CargoMission.Instance.SignalTarget.position;
+        if (message.signal == "station.delivery" && CargoMission.Instance) return CargoMission.Instance.DeliverySurface.bounds.center;
         if (message.signal == "station" && SpaceStation.Instance) return SpaceStation.Instance.transform.position;
         if (message.signal == "pickup" && StationInterior.Instance && StationInterior.Instance.NextSignalTarget)
             return StationInterior.Instance.NextSignalTarget.position;

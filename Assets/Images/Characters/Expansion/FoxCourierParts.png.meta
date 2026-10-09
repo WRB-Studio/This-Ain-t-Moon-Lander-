@@ -1,0 +1,604 @@
+fileFormatVersion: 2
+guid: 70136338754fb3042a574b061893e703
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 1044389914668731392
+    second: FoxCourierParts_0
+  - first:
+      213: -7846791047050711241
+    second: FoxCourierParts_1
+  - first:
+      213: 1006608907008586575
+    second: FoxCourierParts_2
+  - first:
+      213: 2783228073576124831
+    second: FoxCourierParts_3
+  - first:
+      213: 6116217288840314346
+    second: FoxCourierParts_4
+  - first:
+      213: 4141384251923452427
+    second: FoxCourierParts_5
+  - first:
+      213: -2546359658301032706
+    second: FoxCourierParts_6
+  - first:
+      213: -1345871961818254666
+    second: FoxCourierParts_7
+  - first:
+      213: -4935700246713012902
+    second: FoxCourierParts_8
+  - first:
+      213: 9066842221181361787
+    second: FoxCourierParts_9
+  - first:
+      213: 7257852057048665575
+    second: FoxCourierParts_10
+  - first:
+      213: 8337305698442076586
+    second: FoxCourierParts_11
+  - first:
+      213: -4597021713674335595
+    second: FoxCourierParts_12
+  - first:
+      213: -800203239227826528
+    second: FoxCourierParts_13
+  - first:
+      213: 5260609551376180883
+    second: FoxCourierParts_14
+  - first:
+      213: 4287863617119422501
+    second: FoxCourierParts_15
+  - first:
+      213: -565231172833610103
+    second: FoxCourierParts_16
+  - first:
+      213: 6757277748287288619
+    second: FoxCourierParts_17
+  - first:
+      213: -8350030025075842827
+    second: FoxCourierParts_18
+  - first:
+      213: -3830782580970184808
+    second: FoxCourierParts_19
+  - first:
+      213: 8304688372992605837
+    second: FoxCourierParts_20
+  - first:
+      213: 6331226871221771810
+    second: FoxCourierParts_21
+  - first:
+      213: 1554266985711810240
+    second: FoxCourierParts_22
+  - first:
+      213: 6711121483174432489
+    second: FoxCourierParts_23
+  - first:
+      213: -3235311505018460708
+    second: FoxCourierParts_24
+  - first:
+      213: -2798259077455501894
+    second: FoxCourierParts_25
+  - first:
+      213: 7635364538318562370
+    second: FoxCourierParts_26
+  - first:
+      213: -687935832034271920
+    second: FoxCourierParts_27
+  - first:
+      213: -1336175902336944471
+    second: FoxCourierParts_28
+  - first:
+      213: -7034434785983066877
+    second: FoxCourierParts_29
+  - first:
+      213: 331490348062473708
+    second: FoxCourierParts_30
+  - first:
+      213: 1522688063997777941
+    second: FoxCourierParts_31
+  - first:
+      213: -6419544850673498571
+    second: FoxCourierParts_32
+  - first:
+      213: -1449302511614918464
+    second: FoxCourierParts_33
+  - first:
+      213: -3088132403999837400
+    second: FoxCourierParts_34
+  - first:
+      213: -8749221647533525228
+    second: FoxCourierParts_35
+  - first:
+      213: 1093480040637291513
+    second: FoxCourierParts_36
+  - first:
+      213: -542957151534313881
+    second: FoxCourierParts_37
+  - first:
+      213: -6095717137711042454
+    second: FoxCourierParts_38
+  - first:
+      213: -6241675429175736371
+    second: FoxCourierParts_39
+  - first:
+      213: -8441368755468232421
+    second: FoxCourierParts_40
+  - first:
+      213: 6679445693513322849
+    second: FoxCourierParts_41
+  - first:
+      213: -715342411453194729
+    second: FoxCourierParts_42
+  - first:
+      213: 6330551406153584034
+    second: FoxCourierParts_43
+  - first:
+      213: 8597901820250743748
+    second: FoxCourierParts_44
+  - first:
+      213: 7880084274719263903
+    second: FoxCourierParts_45
+  - first:
+      213: -2381174780516809615
+    second: FoxCourierParts_46
+  - first:
+      213: -8292378241864490420
+    second: FoxCourierParts_47
+  - first:
+      213: -1555891519952546933
+    second: FoxCourierParts_48
+  - first:
+      213: -2371248616602790447
+    second: FoxCourierParts_49
+  - first:
+      213: -7633730333823209454
+    second: FoxCourierParts_50
+  - first:
+      213: 5520331363490724441
+    second: FoxCourierParts_51
+  - first:
+      213: 8049222503984257342
+    second: FoxCourierParts_52
+  - first:
+      213: 3601712294066843329
+    second: FoxCourierParts_53
+  - first:
+      213: -1608176873798684987
+    second: FoxCourierParts_54
+  - first:
+      213: 1780465665769533331
+    second: FoxCourierParts_55
+  - first:
+      213: -6535012460187850283
+    second: FoxCourierParts_56
+  - first:
+      213: -2809428431022298008
+    second: FoxCourierParts_57
+  - first:
+      213: 6663898041411257800
+    second: FoxCourierParts_58
+  - first:
+      213: 3425491334186800794
+    second: FoxCourierParts_59
+  - first:
+      213: 4596010437097121129
+    second: FoxCourierParts_60
+  - first:
+      213: 3685867611215078753
+    second: FoxCourierParts_61
+  - first:
+      213: -2800048429726868288
+    second: FoxCourierParts_62
+  - first:
+      213: -7506920725801790816
+    second: FoxCourierParts_63
+  - first:
+      213: 635496180745304646
+    second: FoxCourierParts_64
+  - first:
+      213: -5872314401761160384
+    second: FoxCourierParts_65
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Helmet
+      rect:
+        serializedVersion: 2
+        x: 44
+        y: 793
+        width: 288
+        height: 338
+      alignment: 9
+      pivot: {x: 0.42000002, y: 0.09000004}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0fe59c89fad67ce4bbe9142ecfbad746
+      internalID: 1537841908
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Torso
+      rect:
+        serializedVersion: 2
+        x: 390
+        y: 788
+        width: 237
+        height: 293
+      alignment: 9
+      pivot: {x: 0.5, y: 0.059999954}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b9760d455569659469096558320c1565
+      internalID: 2033792807
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pelvis
+      rect:
+        serializedVersion: 2
+        x: 696
+        y: 788
+        width: 202
+        height: 163
+      alignment: 9
+      pivot: {x: 0.5, y: 0.68}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e8a06da2400fbfd41b5cebb7b9269a59
+      internalID: 859532260
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Backpack
+      rect:
+        serializedVersion: 2
+        x: 1016
+        y: 786
+        width: 166
+        height: 209
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d0ec0e0c712cf4a4398110229115d0f0
+      internalID: 665565608
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UpperArm
+      rect:
+        serializedVersion: 2
+        x: 108
+        y: 515
+        width: 132
+        height: 228
+      alignment: 9
+      pivot: {x: 0.65000004, y: 0.8200001}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0958f7fab58e15e44ae83490c277e6ef
+      internalID: 64791299
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Forearm
+      rect:
+        serializedVersion: 2
+        x: 444
+        y: 457
+        width: 121
+        height: 266
+      alignment: 9
+      pivot: {x: 0.4799999, y: 0.84000003}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: aaa9c372a8be1004abfdf359b98546dd
+      internalID: 578873233
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Hand
+      rect:
+        serializedVersion: 2
+        x: 738
+        y: 457
+        width: 141
+        height: 206
+      alignment: 9
+      pivot: {x: 0.5, y: 0.8900001}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 758116685a936df458712b0329246de3
+      internalID: 737010885
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Elbow
+      rect:
+        serializedVersion: 2
+        x: 1028
+        y: 524
+        width: 136
+        height: 136
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 680018e1092593843a7fcf0e571808c5
+      internalID: -753109804
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Thigh
+      rect:
+        serializedVersion: 2
+        x: 107
+        y: 102
+        width: 172
+        height: 335
+      alignment: 9
+      pivot: {x: 0.35, y: 0.83}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ffd3f7fcc19ba3f43ae330aa89907475
+      internalID: 707505176
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Shin
+      rect:
+        serializedVersion: 2
+        x: 440
+        y: 110
+        width: 120
+        height: 303
+      alignment: 9
+      pivot: {x: 0.5, y: 0.83}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2c1e96271d18a0f4bab3537ac3be3cae
+      internalID: 567976808
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Boot
+      rect:
+        serializedVersion: 2
+        x: 694
+        y: 113
+        width: 238
+        height: 169
+      alignment: 9
+      pivot: {x: 0.23999998, y: 0.74}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 58d7ed9a6117d5f43b000bbf64247e25
+      internalID: 319020606
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Knee
+      rect:
+        serializedVersion: 2
+        x: 1035
+        y: 165
+        width: 130
+        height: 128
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 333f25f4309dc354b9974495fd553f2b
+      internalID: -317968308
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 8c02fcd8ef38fda48874c410a8f81ce9
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Backpack: 665565608
+      Boot: 319020606
+      Elbow: -753109804
+      Forearm: 578873233
+      Hand: 737010885
+      Helmet: 1537841908
+      Knee: -317968308
+      Pelvis: 859532260
+      Shin: 567976808
+      Thigh: 707505176
+      Torso: 2033792807
+      UpperArm: 64791299
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
