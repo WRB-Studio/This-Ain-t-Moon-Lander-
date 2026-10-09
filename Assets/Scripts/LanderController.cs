@@ -10,6 +10,7 @@ public class LanderController : MonoBehaviour
     public int unlockCost = 1000;
     public bool isSecretLander = false;
     public bool isActive = false;
+    [HideInInspector] public bool sandboxControlled;
 
     [HideInInspector] public bool controlsEnabled;
     public bool IsTractorHeld { get; private set; }
@@ -120,6 +121,7 @@ public class LanderController : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
         gravityScale = rb.gravityScale;
         rb.gravityScale = 0f;
+        if (sandboxControlled) return;
         if (isActive)
         {
             if (Instance && Instance != this)
@@ -294,17 +296,46 @@ public class LanderController : MonoBehaviour
         rb.linearVelocity = LimitFallVelocity(rb.linearVelocity, currentGravity * gravityScale,
             Mathf.Abs(maxFallSpeed), Time.fixedDeltaTime);
         Vector2 pointer = default;
-        isThrusting = currentFuel > 0f && LanderUI.Instance.TryGetGameplayPointer(out pointer);
+        bool thrustRequested = currentFuel > 0f && LanderUI.Instance.TryGetGameplayPointer(out pointer);
+        ApplyFlightInput(thrustRequested, pointer, gravity.GetRotationAssist(transform, currentGravity));
+    }
+
+    void ApplyFlightInput(bool thrustRequested, Vector2 pointer, float rotationAssist)
+    {
+        isThrusting = currentFuel > 0f && thrustRequested;
         if (isThrusting)
         {
             ApplyThrust(pointer);
             currentFuel = Mathf.Max(0f, currentFuel - fuelBurnPerSec * Time.fixedDeltaTime);
         }
         else steer01 = 0f;
-        targetRotation += gravity.GetRotationAssist(transform, currentGravity) * Time.fixedDeltaTime;
+        targetRotation += rotationAssist * Time.fixedDeltaTime;
         float rotationBlend = 1f - Mathf.Pow(1f - Mathf.Clamp01(rotationSmooth), Time.fixedDeltaTime / 0.02f);
         rb.MoveRotation(Mathf.LerpAngle(rb.rotation, targetRotation, rotationBlend));
         HandleThrustSound(isThrusting);
+    }
+
+    public void ResetSandboxFlight(float rotation)
+    {
+        if (!sandboxControlled) return;
+        if (!rb) rb = GetComponent<Rigidbody2D>();
+        targetRotation = rotation; steer01 = 0f;
+        currentGravity = ShipDockingPad.GetGravity(rb.position);
+    }
+
+    public bool StepSandboxFlight(Vector2 screenPointer, bool thrustRequested, Vector2 gravity, float sandboxGravityScale, float fuel, bool spaceTuning)
+    {
+        if (!sandboxControlled) return false;
+        if (!rb) rb = GetComponent<Rigidbody2D>();
+        gameCamera = Camera.main; currentFuel = fuel;
+        CacheFlightSettings();
+        currentGravity = Vector2.Lerp(currentGravity, gravity, 1f - Mathf.Exp(-6f * Time.fixedDeltaTime));
+        ApplySpaceTuning(spaceTuning ? 1f : 0f);
+        Vector2 acceleration = currentGravity * sandboxGravityScale;
+        rb.AddForce(acceleration * rb.mass, ForceMode2D.Force);
+        rb.linearVelocity = LimitFallVelocity(rb.linearVelocity, acceleration, Mathf.Abs(maxFallSpeed), Time.fixedDeltaTime);
+        ApplyFlightInput(thrustRequested, screenPointer, 0f);
+        return isThrusting;
     }
 
     static Vector2 LimitFallVelocity(Vector2 velocity, Vector2 acceleration, float limit, float deltaTime)

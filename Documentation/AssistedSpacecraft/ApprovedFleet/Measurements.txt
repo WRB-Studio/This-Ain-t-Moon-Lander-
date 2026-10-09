@@ -1,0 +1,7 @@
+Courier: height=7,50, width=5,18, footplate spans detected=2, forwardAngle=90. Flight tuning preserved.
+Scout: height=9,00, width=3,93, footplate spans detected=2, forwardAngle=90. Flight tuning preserved.
+CargoTug: height=8,50, width=12,74, footplate spans detected=2, forwardAngle=90. Flight tuning preserved.
+Freighter: height=14,00, width=7,62, footplate spans detected=2, forwardAngle=90. Flight tuning preserved.
+Rescue: height=10,00, width=5,97, footplate spans detected=2, forwardAngle=90. Flight tuning preserved.
+Maintenance: height=8,50, width=4,91, footplate spans detected=2, forwardAngle=90. Flight tuning preserved.
+Interceptor: height=6,50, width=4,88, footplate spans detected=2, forwardAngle=90. Flight tuning preserved.

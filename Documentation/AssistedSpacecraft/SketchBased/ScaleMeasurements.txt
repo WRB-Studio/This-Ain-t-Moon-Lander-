@@ -1,0 +1,1 @@
+Frachter: 14,00 hoch, 7,62 breit. Astronaut: 1,03 hoch. Original-Lander-Collider: 1,59 hoch (Sprite-Rechteck enthält transparente Ränder). Pad: 22 breit. Kameragröße Spielansicht: 22; Detail: 10.5. Nur statisch gerendert, keine Physiksimulation.
