@@ -4,7 +4,7 @@
   "entries": [
     {
       "key": "game.a.full.tank.i.ll.have.a.word.with.accounting.the.missing.pilot.ca",
-      "text": "Ein voller Tank? Ich rede mal mit der Buchhaltung. Der vermisste Pilot kann warten."
+      "text": "Immerhin hat jemand getankt."
     },
     {
       "key": "game.all.right.i.ll.take.it",
@@ -12,7 +12,7 @@
     },
     {
       "key": "game.am.i.supposed.to.fix.this.now",
-      "text": "Soll ich das jetzt in Ordnung bringen?"
+      "text": "Soll ich nachsehen?"
     },
     {
       "key": "game.another.one",
@@ -28,7 +28,7 @@
     },
     {
       "key": "game.any.progress.the.parking.situation.is.excellent.right.microphone",
-      "text": "„Fortschritte?“\n„Die Parkplatzsituation ist ausgezeichnet.“\nRichtig. Mikrofon aus."
+      "text": "Parkplatzsituation ausgezeichnet.\nDer Rest des Himmels wartet noch."
     },
     {
       "key": "game.as.if.i.d.let.you.fly.that.thing.to.the.moon.again",
@@ -40,11 +40,11 @@
     },
     {
       "key": "game.back.in.one.piece.with.the.company.lander.excellent.work.by.show",
-      "text": "In einem Stück zurück. Mit dem Firmenschiff.\nAusgezeichnet.\n\nMit „etwas Eigeninitiative“ meinte ich keinen\nungenehmigten Mondausflug auf Firmenkosten.\n\nImmerhin. Das Schiff ist zurück.\nIch halte den Bericht angemessen vage."
+      "text": "Firmenschiff zurück, Bericht gerettet.\nDen Mondparkplatz lassen wir besser unerwähnt."
     },
     {
       "key": "game.before.we.get.to.the.coordinates.take.this.radio.messages.optiona",
-      "text": "Bevor wir zu den Koordinaten kommen: Nimm dieses Funkgerät.\n\nNachrichten, optionales Bild und Signalortung. Es speichert sogar alte Nachrichten.\n\nNimm es bitte. Unser letzter Pilot war schwer zu erreichen."
+      "text": "Nimm dieses Funkgerät für Nachrichten und Signalortung."
     },
     {
       "key": "game.bring.it.down.preferably.in.one.piece",
@@ -56,7 +56,7 @@
     },
     {
       "key": "game.coffee.please.it.s.been.nothing.but.parking.all.day.wait.is.this",
-      "text": "„Kaffee?“\n„Bitte. Den ganzen Tag nur Parkplätze.“\nMoment. Wird das noch übertragen?"
+      "text": "Kaffee wäre jetzt ein Fortschritt."
     },
     {
       "key": "game.concourse",
@@ -76,15 +76,15 @@
     },
     {
       "key": "game.did.you.bring.the.delivery.we.were.expecting.that.ship.yesterday",
-      "text": "Hast du die Lieferung dabei?\nWir haben das Schiff gestern erwartet."
+      "text": "Hast du die vermisste Lieferung dabei?"
     },
     {
       "key": "game.docking.confirmed.you.can.step.outside",
-      "text": "Andocken bestätigt.\nDu kannst aussteigen."
+      "text": "Angedockt.\nSteig aus und geh zur Registrierung."
     },
     {
       "key": "game.done.no.heroic.speeches.required",
-      "text": "Erledigt. Keine Heldenrede erforderlich."
+      "text": "Gesendet."
     },
     {
       "key": "game.door",
@@ -100,11 +100,11 @@
     },
     {
       "key": "game.excellent.a.confirmed.receipt.my.favourite.kind.of.adventure",
-      "text": "Ausgezeichnet. Eine bestätigte Empfangsbestätigung. Meine liebste Art von Abenteuer."
+      "text": "Empfang bestätigt – mein Lieblingsabenteuer."
     },
     {
       "key": "game.excellent.one.radio.issued.try.to.return.with.the.same.number.of",
-      "text": "Ausgezeichnet. Ein Funkgerät ausgegeben. Komm möglichst mit derselben Anzahl zurück."
+      "text": "Bitte nicht ebenfalls verlieren."
     },
     {
       "key": "game.exit.lander",
@@ -120,15 +120,15 @@
     },
     {
       "key": "game.finally.the.company.lander.parked.on.the.moon.with.a.full.tank.i",
-      "text": "Endlich. Das Firmenschiff.\n\nMit vollem Tank auf dem Mond geparkt.\nIch rede mal mit der Buchhaltung.\n\nBring es in einem Stück zur Erde zurück.\nDie Versicherung deckt\n„auf dem Mond vergessen“ nicht ab."
+      "text": "Das Firmenschiff hat noch einen vollen Tank.\nBring es zur Erde zurück – die Versicherung mag keine Mondparkplätze."
     },
     {
       "key": "game.good.third.level.you.understand.how.a.landing.pad.works.i.was.hop",
-      "text": "Gut. Drittes Level.\nDu weißt, wie ein Landeplatz funktioniert.\n\nNach der Einführung hatte ich auf etwas\nmehr Eigeninitiative gehofft.\nAber gut. Noch ein Landeplatz.\n\nLass dich beim Einparken nicht stören."
+      "text": "Du kannst inzwischen landen.\nIch dachte früher auch, das wäre alles."
     },
     {
       "key": "game.has.anyone.told.them.they.can.leave.i.did.several.times.oh.you.ca",
-      "text": "„Hat ihnen jemand gesagt, dass sie wegfliegen können?“\n„Ich. Mehrmals.“\nOh. Du kannst uns hören."
+      "text": "Du darfst übrigens weiterfliegen.\nDas steht nur nicht auf dem Pad."
     },
     {
       "key": "game.here.is.a.little.message.for.you",
@@ -156,11 +156,11 @@
     },
     {
       "key": "game.i.specifically.told.you.that.you.can.fly.up",
-      "text": "Ich habe dir ausdrücklich gesagt, dass du nach oben fliegen kannst."
+      "text": "Nach oben ist übrigens auch eine Flugrichtung."
     },
     {
       "key": "game.i.would.sigh.but.this.is.text",
-      "text": "Ich würde seufzen, aber das hier ist Text."
+      "text": "Ich spare mir den Seufzer."
     },
     {
       "key": "game.if.it.rattles.it.was.doing.that.before",
@@ -184,11 +184,11 @@
     },
     {
       "key": "game.incoming.transmission.you.re.late.wait.you.re.not.our.pilot.where",
-      "text": "EINGEHENDE ÜBERTRAGUNG\n\nDu bist spät dran.\n\n...Moment. Du bist nicht unser Pilot.\nWoher hast du das Schiff?"
+      "text": "Du bist nicht unser Pilot.\nWoher hast du sein Schiff?"
     },
     {
       "key": "game.is.that.pilot.still.landing.yes.don.t.ask.oh.the.microphone.is.on",
-      "text": "„Landet dieser Pilot immer noch?“\n„Ja. Frag nicht.“\nOh. Das Mikrofon ist an."
+      "text": "Immer noch beim Landen?\nGut, ich lasse das Mikrofon an."
     },
     {
       "key": "game.it.was.parked.on.the.moon",
@@ -200,7 +200,7 @@
     },
     {
       "key": "game.land.if.you.must.i.am.past.negotiating",
-      "text": "Lande, wenn es sein muss. Ich verhandele nicht mehr."
+      "text": "Noch eine Landung? Ich halte mich raus."
     },
     {
       "key": "game.land.safely.on.the.marked.pad",
@@ -244,7 +244,7 @@
     },
     {
       "key": "game.nine.levels.i.gave.you.a.sky.a.spacecraft.thrusters.and.you.keep",
-      "text": "NEUN LEVEL!\nIch habe dir einen Himmel gegeben!\nEin Raumschiff! Triebwerke!\nUnd du schaltest einen Parkplatz\nnach dem anderen frei!\n\nTANK VOLL. NACH OBEN. WEITERFLIEGEN.\nIch weiß nicht, wie ich das\nnoch deutlicher machen soll!\n\nWeißt du was? Mach, was du willst.\nLande noch hundertmal.\nGib den Landeplätzen Namen. Ich bin raus."
+      "text": "Neun Landungen – das reicht als Übung.\nTank voll, nach oben und weiterfliegen: Der Himmel ist kein Deckel."
     },
     {
       "key": "game.no.promises",
@@ -260,11 +260,11 @@
     },
     {
       "key": "game.noted.i.ll.put.that.under.courier.comments",
-      "text": "Notiert. Das kommt unter „Anmerkungen des Kuriers“."
+      "text": "Notiert unter »Kurierkommentare«."
     },
     {
       "key": "game.of.course.nobody.told.you.communication.is.more.of.a.decorative.c",
-      "text": "Natürlich hat dir niemand etwas gesagt. Kommunikation ist bei dieser Firma eher Dekoration."
+      "text": "Kommunikation ist hier eher Dekoration."
     },
     {
       "key": "game.of.course",
@@ -272,19 +272,19 @@
     },
     {
       "key": "game.of.course.i.ll.record.accepted.reluctantly.here.you.go.refusing.e",
-      "text": "Natürlich. Ich notiere „widerwillig angenommen“. Hier bitte. Für die Ablehnung von Ausrüstung brauchst du ein Funkgerät, um die Ablehnung einzureichen."
+      "text": "Ich notiere: widerwillig angenommen."
     },
     {
       "key": "game.oh.you.re.actually.trying.something.else.and.gravity.has.stopped",
-      "text": "Oh. Du probierst tatsächlich etwas anderes.\n\nUnd die Schwerkraft macht nicht mehr mit.\nDas hatte ich nicht eingeplant."
+      "text": "Keine Schwerkraft mehr.\nAb hier hilft dir Einparken wenig."
     },
     {
       "key": "game.oh.so.that.is.the.moon.minor.naming.issue",
-      "text": "Oh.\nDAS ist also der Mond.\nKleines Problem mit dem Namen."
+      "text": "Da ist der echte Mond.\nDen Namen unten würde ich nicht zu ernst nehmen."
     },
     {
       "key": "game.on.the.moon.well.at.least.we.know.where.our.pilot.parked",
-      "text": "Auf dem Mond. Na gut. Zumindest wissen wir, wo unser Pilot geparkt hat."
+      "text": "Ein ungewöhnlicher Parkplatz."
     },
     {
       "key": "game.outpost.radio",
@@ -348,7 +348,7 @@
     },
     {
       "key": "game.sixth.level.you.are.seriously.collecting.parking.spots.fine.let.m",
-      "text": "Sechstes Level.\nDu sammelst wirklich\nParkplätze.\n\nGut. Dann ganz deutlich:\nTank auffüllen. Nach oben fliegen.\nUnd nicht aufhören, nur weil\nder Landeplatz aus dem Bild verschwindet.\n\nDer Bildschirmrand ist keine Wand.\nIch dachte wirklich, du würdest\ndas irgendwann selbst ausprobieren."
+      "text": "Tank auffüllen und nach oben fliegen.\nDer Bildschirmrand ist keine Wand."
     },
     {
       "key": "game.slow.your.descent.before.touching.down",
@@ -356,7 +356,7 @@
     },
     {
       "key": "game.someone.with.that.lander.you.meet.half.the.requirements",
-      "text": "Jemanden mit diesem Schiff. Du erfüllst die Hälfte der Anforderungen."
+      "text": "Jemanden mit diesem Schiff."
     },
     {
       "key": "game.station",
@@ -372,7 +372,7 @@
     },
     {
       "key": "game.supposed.to.no.you.just.happen.to.have.the.ship.and.very.little.s",
-      "text": "Sollen? Nein. Du hast nur zufällig das Schiff und sehr wenig Aufsicht."
+      "text": "Du hast das Schiff – das genügt vorerst."
     },
     {
       "key": "game.sure",
@@ -392,15 +392,15 @@
     },
     {
       "key": "game.that.s.inconvenient.people.are.usually.our.best.source.of.excuses",
-      "text": "Das ist ungünstig. Menschen sind normalerweise unsere beste Quelle für Ausreden."
+      "text": "Dann fehlen uns auch die Ausreden."
     },
     {
       "key": "game.the.cargo.compartment.was.opened.after.that.the.log.goes.quiet.i",
-      "text": "Der Frachtraum wurde geöffnet.\nDanach schweigt das Logbuch.\n\nIch habe den letzten bestätigten Abholort."
+      "text": "Das Log endet nach dem Öffnen des Frachtraums am letzten Abholort."
     },
     {
       "key": "game.the.coordinates.are.in.a.message.on.your.new.radio.open.radio.and",
-      "text": "Die Koordinaten findest du in einer Nachricht auf deinem neuen Funkgerät.\n\nÖffne FUNK und wähle „Signal orten“, wenn du bereit bist.\n\nDie Wartung hat deinen Tank aufgefüllt.\n\nVorerst notiere ich: „Schiff zurück. Rest unklar.“\n\nDas hält erstaunlich gut stand."
+      "text": "Tank voll – öffne FUNK und wähle »Signal orten« für den Abholort."
     },
     {
       "key": "game.the.corridor.is.free.the.paperwork.is.not",
@@ -416,11 +416,11 @@
     },
     {
       "key": "game.the.pickup.coordinates.are.still.on.your.radio.open.radio.to.read",
-      "text": "Die Abholkoordinaten sind noch auf deinem Funkgerät.\n\nÖffne FUNK, um die Nachricht zu lesen oder das Signal zu orten.\n\nSieh nach, flieg heim oder genieße den Flur. Ich habe genug Formulare zur Gesellschaft."
+      "text": "Der Abholort steht im FUNK.\nMit »Signal orten« findest du den Weg."
     },
     {
       "key": "game.the.replacement.pilot.take.a.seat.or.stand.the.chair.is.being.rep",
-      "text": "Der Ersatzpilot?\nSetz dich. Oder bleib stehen. Der Stuhl wird repariert."
+      "text": "Der Ersatzpilot?\nDer Stuhl ist noch in Reparatur."
     },
     {
       "key": "game.the.scenery.changes.your.ambition.does.not",
@@ -428,7 +428,7 @@
     },
     {
       "key": "game.then.you.re.the.replacement.finder.close.enough",
-      "text": "Dann bist du der Ersatzfinder. Nahe genug dran."
+      "text": "Dann eben Ersatzfinder."
     },
     {
       "key": "game.there.was.nobody.there.to.ask",
@@ -436,7 +436,7 @@
     },
     {
       "key": "game.there.you.are.welcome.to.the.station.we.were.expecting.that.lande",
-      "text": "Da bist du ja. Willkommen auf der Station.\nWir haben dieses Schiff erwartet.\n\nNimm einen der beiden Landeplätze.\nHalte es bitte aufrecht.\nUnser Wartungsteam hatte\neinen sehr langen Tag."
+      "text": "Wir haben dieses Schiff erwartet.\nLande auf einem der beiden Pads – möglichst aufrecht."
     },
     {
       "key": "game.those.parcels.have.been.waiting.longer.than.i.have",
@@ -460,7 +460,7 @@
     },
     {
       "key": "game.wait.where.are.you.now.i.know.i.said.i.was.leaving.but.gravity.ha",
-      "text": "Moment. Wo bist du jetzt?\n\nIch weiß. Ich wollte gehen.\nAber die Schwerkraft macht nicht mehr mit.\nDas war kein Teil meines kleinen Landespiels."
+      "text": "Du bist doch weitergeflogen.\nHier oben lässt sogar die Schwerkraft los."
     },
     {
       "key": "game.we.expected.the.ship.yesterday",
@@ -484,15 +484,15 @@
     },
     {
       "key": "game.you.actually.landed.on.the.moon.i.hadn.t.planned.that.far.ahead",
-      "text": "Du bist tatsächlich auf dem Mond gelandet.\nSo weit hatte ich nicht geplant."
+      "text": "Auf dem echten Mond gelandet.\nSchon interessanter als der Parkplatz unten."
     },
     {
       "key": "game.you.are.remarkably.good.at.missing.the.point",
-      "text": "Du bist erstaunlich gut darin, am Ziel vorbeizudenken."
+      "text": "Die Landung sitzt – jetzt fehlt nur noch die Neugier."
     },
     {
       "key": "game.you.can.get.out.apparently.this.spacecraft.came.with.legs",
-      "text": "Du kannst aussteigen?\nOffenbar hatte dieses Raumschiff Beine dabei."
+      "text": "Du kannst aussteigen.\nDas Schiff kommt offenbar mit Beinen."
     },
     {
       "key": "game.you.could.explore.or.polish.your.parking.record",
@@ -516,7 +516,7 @@
     },
     {
       "key": "game.your.radio.is.registered.equipment.issued.acceptance.recorded.att",
-      "text": "Dein Funkgerät ist registriert. Ausrüstung ausgegeben, Annahme vermerkt.\n\nAnbei die letzten bestätigten Abholkoordinaten. Dort wurde der Frachtraum geöffnet. Danach schweigt das Logbuch.\n\nDein Schiff ist aufgetankt. Sieh es dir an, wenn du möchtest.\n\nAktenstatus: „Schiff zurück. Rest unklar.“"
+      "text": "Letzter Abholort markiert; seitdem fehlen Pilot und Lieferung.\nTank voll – wähle »Signal orten«, wenn du nachsehen willst."
     },
     {
       "key": "game.your.radio.is.registered.last.confirmed.pickup.coordinates.attach",
@@ -1140,7 +1140,7 @@
     },
     {
       "key": "cargo.status.complete",
-      "text": "Rhekk ist bei der Registrierung angekommen. Fortsetzung folgt."
+      "text": "Rhekk wartet bei der Registrierung. Der Pilot bleibt vermisst."
     },
     {
       "key": "cargo.status.failed",
@@ -1172,7 +1172,7 @@
     },
     {
       "key": "cargo.outpost.landed",
-      "text": "Keine Besatzung. Keine Begrüßung. Die Tankanlage läuft noch.\n\nAuftanken, aussteigen und nach dem Tracker sehen."
+      "text": "Verlassen, aber die Tankanlage läuft noch.\nTank auf und folge dem Tracker zu Fuß."
     },
     {
       "key": "cargo.outpost.pad",
@@ -1200,31 +1200,31 @@
     },
     {
       "key": "cargo.answer.who",
-      "text": "Wer ist da drin?"
+      "text": "Wie bist du hier gelandet?"
     },
     {
       "key": "cargo.answer.freight",
-      "text": "Ich sollte nach einer Lieferung suchen."
+      "text": "Ich suche die vermisste Lieferung."
     },
     {
       "key": "cargo.answer.pilot",
-      "text": "Was ist mit dem Piloten passiert?"
+      "text": "Wo ist der Pilot jetzt?"
     },
     {
       "key": "cargo.answer.ship",
-      "text": "Ich habe sein Schiff auf dem Mond gefunden."
+      "text": "Ich habe sein Schiff vom Mond – wie bringe ich dich weg?"
     },
     {
       "key": "cargo.answer.transport",
-      "text": "Wie bekomme ich dich hier weg?"
+      "text": "Wo setze ich dich an der Station ab?"
     },
     {
       "key": "cargo.answer.help",
-      "text": "In Ordnung. Ich bringe dich zur Station."
+      "text": "Alles klar, ich hole das Seil."
     },
     {
       "key": "cargo.answer.no.promises",
-      "text": "Ich versuche es. Keine Versprechen."
+      "text": "Ich versuche es."
     },
     {
       "key": "cargo.answer.back",
@@ -1240,47 +1240,47 @@
     },
     {
       "key": "cargo.answer.what.now",
-      "text": "Und was machst du jetzt?"
+      "text": "Wir treffen uns bei der Registrierung."
     },
     {
       "key": "cargo.answer.see.you",
-      "text": "Wir sehen uns bei der Registrierung."
+      "text": "Bis gleich."
     },
     {
       "key": "cargo.dialog.discovery.1",
-      "text": "Endlich. Hat die Station diesmal jemanden geschickt, der lesen kann?\n\nIch heiße Rhekk. Auf dem Etikett steht PASSAGIERTRANSPORT. Nicht Paket. Nicht Ersatzteile. Passagier. Ich bin der Unterschied."
+      "text": "Ich bin Rhekk – Passagier, kein Paket.\nDie Beschriftung war offenbar zu subtil."
     },
     {
       "key": "cargo.dialog.discovery.2",
-      "text": "Der Pilot hat mich hier abgestellt. Er wollte zu der Anlage hinter dem Außenposten. Nur kurz etwas prüfen, sagte er.\n\nFünf Minuten. Ich möchte ausdrücklich festhalten, dass es keine fünf Minuten waren."
+      "text": "Der Pilot wollte kurz zur Anlage hinter dem Außenposten.\nSeine fünf Minuten dauern erstaunlich lange."
     },
     {
       "key": "cargo.dialog.discovery.3",
-      "text": "Dann ist es wirklich ohne ihn gestartet. Ich habe die Triebwerke gehört. Auf meinen Hinweis, dass ich noch hier stehe, hat das Schiff nicht reagiert.\n\nEin ausgesprochen schlechter Zuhörer.\n\nVom Piloten habe ich seitdem nichts gehört."
+      "text": "Das Schiff ist ohne ihn gestartet.\nSeitdem habe ich vom Piloten nichts gehört."
     },
     {
       "key": "cargo.dialog.discovery.4",
-      "text": "Das Stationsdock muss zuerst den Druck ausgleichen. Hier bleibt die Kapsel zu. Diese Regel mag ich im Moment sogar.\n\nAm Rahmen hängt ein Stahlseil. Verbinde es hier, nimm das freie Ende mit zum Schiff und mach es am unteren Schlepppunkt fest. Dann steigst du ein.\n\nIch wäre gern Handgepäck gewesen."
+      "text": "Die Kapsel bleibt zu, bis das Stationsdock den Druck ausgleicht.\nVERBINDEN drücken, das freie Stahlseilende zum Schiff tragen und unten FESTMACHEN."
     },
     {
       "key": "cargo.dialog.discovery.5",
-      "text": "Bring mich zur markierten Frachtablage neben den Landeplätzen der Station. Lass mich langsam herunter. Wenn ich ruhig stehe, löst die Kupplung das Seil automatisch. Danach kannst du selbst landen und mich öffnen.\n\nLangsam heißt langsam. Nicht: Der Boden wird schon bremsen."
+      "text": "Setz mich langsam auf der markierten Ablage neben den Stationspads ab; sobald ich ruhig stehe, löst sich das Seil.\nDann landest du und öffnest die Kapsel."
     },
     {
       "key": "cargo.dialog.repeat",
-      "text": "Seil an die Kapsel. Freies Ende zum Schiff. FESTMACHEN. Einsteigen. Zur Station fliegen. Sanft absetzen.\n\nIch wiederhole das gern. Ich habe hier sehr wenig andere Termine."
+      "text": "VERBINDEN, Seil zum Schiff tragen, unten FESTMACHEN und einsteigen.\nAn der Station sanft absetzen, warten, dann selbst landen und die Kapsel öffnen."
     },
     {
       "key": "cargo.dialog.release.1",
-      "text": "Frische Luft. Fester Boden. Eine Reise ohne weitere Bodenproben.\n\nDein Flugstil hat meinen inneren Organen neue Bekanntschaften ermöglicht.\n\nAber du hast mich hierhergebracht. Danke. Das meine ich tatsächlich."
+      "text": "Danke, dass du mich hergebracht hast.\nMeine Organe hätten einen ruhigeren Flug bevorzugt."
     },
     {
       "key": "cargo.dialog.release.2",
-      "text": "Zuerst zur Registrierung. Dort hat jemand mich als Lieferung verbucht. Ich möchte meinen Status von Fracht auf Person korrigieren lassen.\n\nDanach reden wir über den Piloten. Und über dieses Schiff, das ohne Piloten startet."
+      "text": "Ich gehe zur Registrierung: meinen Status von Fracht auf Person ändern.\nDanach reden wir über den Piloten und das Schiff, das ohne ihn startet."
     },
     {
       "key": "cargo.dialog.release.3",
-      "text": "Du weißt ja, wo die Registrierung ist. Falls sie mich wieder in eine Kiste stecken wollen, klopfe ich.\n\nDu erkennst das Geräusch inzwischen."
+      "text": "Falls sie mich wieder einpacken, klopfe ich.\nDu kennst das Geräusch."
     },
     {
       "key": "cargo.radio.tow.title",
@@ -1288,7 +1288,7 @@
     },
     {
       "key": "cargo.radio.tow.body",
-      "text": "Verbindung hergestellt. Ziel: markierte Frachtablage neben den Stationspads.\n\nKapsel langsam absetzen und kurz ruhig stehen lassen. Das Seil löst sich automatisch. Anschließend landen und die Kapsel öffnen.\n\nRhekk: „Falls das Formular fragt: Ich fliege nicht freiwillig außen mit.“"
+      "text": "Setz die Kapsel sanft auf der markierten Ablage neben den Stationspads ab und warte, bis sich das Seil löst.\nDanach selbst landen und die Kapsel öffnen."
     },
     {
       "key": "cargo.radio.delivered.title",
@@ -1296,7 +1296,7 @@
     },
     {
       "key": "cargo.radio.delivered.body",
-      "text": "Kapsel steht sicher. Schleppkupplung gelöst.\n\nLande jetzt selbst und öffne die Kapsel zu Fuß.\n\nRhekk: „Ich bin angekommen. Es wäre schön, wenn das auch für die Tür gilt.“"
+      "text": "Kapsel sicher abgesetzt, Seil gelöst.\nLande selbst und öffne sie zu Fuß."
     },
     {
       "key": "cargo.radio.failed.title",
@@ -1304,7 +1304,7 @@
     },
     {
       "key": "cargo.radio.failed.body",
-      "text": "Kapsel zerstört oder Schleppschiff verloren. Rettung fehlgeschlagen.\n\nMit NEU VERSUCHEN setzt du diese Mission am Außenposten zurück. Dein übriger Fortschritt bleibt erhalten.\n\nDie Buchhaltung möchte den Begriff „sanft“ künftig schriftlich definieren."
+      "text": "Kapsel oder Schleppschiff verloren: Rettung fehlgeschlagen.\nNEU VERSUCHEN startet diese Mission am Außenposten neu; übriger Fortschritt bleibt erhalten."
     },
     {
       "key": "cargo.radio.complete.title",
@@ -1312,7 +1312,7 @@
     },
     {
       "key": "cargo.radio.complete.body",
-      "text": "Rhekk ist bei der Registrierung angekommen.\n\nStatus: Person. Beschwerdebereitschaft: vollständig wiederhergestellt.\n\nDer Pilot bleibt vermisst. Warum das Schiff allein gestartet ist, bleibt offen."
+      "text": "Rhekk wartet bei der Registrierung; der Pilot bleibt vermisst.\nStatus: Person, weiterhin beschwerdebereit."
     },
     {
       "key": "story.character.training-pilot",
@@ -1357,6 +1357,10 @@
     {
       "key": "story.character.resident-7",
       "text": "StationOperator"
+    },
+    {
+      "key": "story.event.training.silence",
+      "text": "..."
     }
   ]
 }

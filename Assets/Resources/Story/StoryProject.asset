@@ -13,9 +13,12 @@ MonoBehaviour:
   m_Name: StoryProject
   m_EditorClassIdentifier: Assembly-CSharp::StoryProject
   chapters:
+  - Training
+  - Mond
   - Ablauf
   dialogueGroups:
-  - Training und Entdeckungen
+  - Training
+  - Mond
   - Registrierung
   - Rhekk
   - Funk
@@ -26,7 +29,7 @@ MonoBehaviour:
     chapter: Registrierung
     storyStepId: overview.6
     title: Der Ersatzpilot?
-    position: {x: 3.782476, y: -569.5536}
+    position: {x: 0, y: 0}
     status: 2
     purpose: "Bestehender Missionsablauf bleibt beim Abschluss dieses Schritts zust\xE4ndig."
     questions: 
@@ -52,8 +55,8 @@ MonoBehaviour:
       effects: []
       continueLegacy: 1
       legacyAnswer: 0
-      positioned: 0
-      position: {x: 0, y: 0}
+      positioned: 1
+      position: {x: 320, y: 0}
     - textKey: game.who.were.you.expecting
       reactionKey: game.someone.with.that.lander.you.meet.half.the.requirements
       next: game.where.did.you.get.the.ship
@@ -61,15 +64,34 @@ MonoBehaviour:
       effects: []
       continueLegacy: 1
       legacyAnswer: 1
-      positioned: 0
-      position: {x: 0, y: 0}
+      positioned: 1
+      position: {x: 320, y: 120}
     overviewOnly: 0
     answerBoardLayout: 1
+    eventInfo:
+      enabled: 0
+      kind: 0
+      eventId: 
+      pool: 
+      fromLevel: 1
+      toLevel: 9
+      random: 0
+      once: 0
+      probability: 1
+      requiredFlag: 
+      blockedFlag: 
+      presentation: 
+      description: 
+    eventPositioned: 0
+    eventPosition: {x: 0, y: 0}
+    triggerOnly: 0
+    eventBindingEdited: 0
+    eventTriggerId: 
   - id: game.where.did.you.get.the.ship
     chapter: Registrierung
     storyStepId: overview.6
     title: Woher hast du das Schiff?
-    position: {x: 762.0423, y: -297.87003}
+    position: {x: 760, y: 0}
     status: 2
     purpose: "Bestehender Missionsablauf bleibt beim Abschluss dieses Schritts zust\xE4ndig."
     questions: 
@@ -95,8 +117,8 @@ MonoBehaviour:
       effects: []
       continueLegacy: 1
       legacyAnswer: 0
-      positioned: 0
-      position: {x: 0, y: 0}
+      positioned: 1
+      position: {x: 320, y: 0}
     - textKey: game.the.moon.full.tank.no.pilot
       reactionKey: game.a.full.tank.i.ll.have.a.word.with.accounting.the.missing.pilot.ca
       next: game.did.you.bring.the.delivery.we.were.expecting.that.ship.yesterday
@@ -104,15 +126,34 @@ MonoBehaviour:
       effects: []
       continueLegacy: 1
       legacyAnswer: 1
-      positioned: 0
-      position: {x: 0, y: 0}
+      positioned: 1
+      position: {x: 320, y: 120}
     overviewOnly: 0
     answerBoardLayout: 1
+    eventInfo:
+      enabled: 0
+      kind: 0
+      eventId: 
+      pool: 
+      fromLevel: 1
+      toLevel: 9
+      random: 0
+      once: 0
+      probability: 1
+      requiredFlag: 
+      blockedFlag: 
+      presentation: 
+      description: 
+    eventPositioned: 0
+    eventPosition: {x: 0, y: 0}
+    triggerOnly: 0
+    eventBindingEdited: 0
+    eventTriggerId: 
   - id: game.did.you.bring.the.delivery.we.were.expecting.that.ship.yesterday
     chapter: Registrierung
     storyStepId: overview.6
-    title: Hast du die Lieferung dabei?
-    position: {x: 1490.0421, y: -166.93811}
+    title: Hast du die vermisste Lieferung dabei?
+    position: {x: 1520, y: 0}
     status: 2
     purpose: "Bestehender Missionsablauf bleibt beim Abschluss dieses Schritts zust\xE4ndig."
     questions: 
@@ -138,8 +179,8 @@ MonoBehaviour:
       effects: []
       continueLegacy: 1
       legacyAnswer: 0
-      positioned: 0
-      position: {x: 0, y: 0}
+      positioned: 1
+      position: {x: 320, y: 0}
     - textKey: game.there.was.nobody.there.to.ask
       reactionKey: game.that.s.inconvenient.people.are.usually.our.best.source.of.excuses
       next: game.before.we.get.to.the.coordinates.take.this.radio.messages.optiona
@@ -147,15 +188,34 @@ MonoBehaviour:
       effects: []
       continueLegacy: 1
       legacyAnswer: 1
-      positioned: 0
-      position: {x: 0, y: 0}
+      positioned: 1
+      position: {x: 320, y: 120}
     overviewOnly: 0
     answerBoardLayout: 1
+    eventInfo:
+      enabled: 0
+      kind: 0
+      eventId: 
+      pool: 
+      fromLevel: 1
+      toLevel: 9
+      random: 0
+      once: 0
+      probability: 1
+      requiredFlag: 
+      blockedFlag: 
+      presentation: 
+      description: 
+    eventPositioned: 0
+    eventPosition: {x: 0, y: 0}
+    triggerOnly: 0
+    eventBindingEdited: 0
+    eventTriggerId: 
   - id: game.before.we.get.to.the.coordinates.take.this.radio.messages.optiona
     chapter: Registrierung
     storyStepId: overview.6
-    title: "Bevor wir zu den Koordinaten kommen: Nimm dieses Funkger\xE4t."
-    position: {x: 2365.5588, y: -22.913078}
+    title: "Nimm dieses Funkger\xE4t f\xFCr Nachrichten und Signalortung."
+    position: {x: 2280, y: 0}
     status: 2
     purpose: "Bestehender Ablauf: Funkger\xE4t ausgeben, unabh\xE4ngig von der Antwort."
     questions: 
@@ -181,8 +241,8 @@ MonoBehaviour:
       effects: []
       continueLegacy: 1
       legacyAnswer: 0
-      positioned: 0
-      position: {x: 0, y: 0}
+      positioned: 1
+      position: {x: 320, y: 0}
     - textKey: game.no.thanks.i.don.t.need.a.radio
       reactionKey: game.of.course.i.ll.record.accepted.reluctantly.here.you.go.refusing.e
       next: game.the.cargo.compartment.was.opened.after.that.the.log.goes.quiet.i
@@ -190,15 +250,34 @@ MonoBehaviour:
       effects: []
       continueLegacy: 1
       legacyAnswer: 1
-      positioned: 0
-      position: {x: 0, y: 0}
+      positioned: 1
+      position: {x: 320, y: 120}
     overviewOnly: 0
     answerBoardLayout: 1
+    eventInfo:
+      enabled: 0
+      kind: 0
+      eventId: 
+      pool: 
+      fromLevel: 1
+      toLevel: 9
+      random: 0
+      once: 0
+      probability: 1
+      requiredFlag: 
+      blockedFlag: 
+      presentation: 
+      description: 
+    eventPositioned: 0
+    eventPosition: {x: 0, y: 0}
+    triggerOnly: 0
+    eventBindingEdited: 0
+    eventTriggerId: 
   - id: game.the.cargo.compartment.was.opened.after.that.the.log.goes.quiet.i
     chapter: Registrierung
     storyStepId: overview.6
-    title: "Der Frachtraum wurde ge\xF6ffnet."
-    position: {x: 147.51657, y: 613.2831}
+    title: "Das Log endet nach dem \xD6ffnen des Frachtraums am letzten Abhol\u2026"
+    position: {x: 3040, y: 0}
     status: 2
     purpose: "Bestehender Missionsablauf bleibt beim Abschluss dieses Schritts zust\xE4ndig."
     questions: 
@@ -224,8 +303,8 @@ MonoBehaviour:
       effects: []
       continueLegacy: 1
       legacyAnswer: 0
-      positioned: 0
-      position: {x: 0, y: 0}
+      positioned: 1
+      position: {x: 320, y: 0}
     - textKey: game.am.i.supposed.to.fix.this.now
       reactionKey: game.supposed.to.no.you.just.happen.to.have.the.ship.and.very.little.s
       next: game.the.coordinates.are.in.a.message.on.your.new.radio.open.radio.and
@@ -233,15 +312,35 @@ MonoBehaviour:
       effects: []
       continueLegacy: 1
       legacyAnswer: 1
-      positioned: 0
-      position: {x: 0, y: 0}
+      positioned: 1
+      position: {x: 320, y: 120}
     overviewOnly: 0
     answerBoardLayout: 1
+    eventInfo:
+      enabled: 0
+      kind: 0
+      eventId: 
+      pool: 
+      fromLevel: 1
+      toLevel: 9
+      random: 0
+      once: 0
+      probability: 1
+      requiredFlag: 
+      blockedFlag: 
+      presentation: 
+      description: 
+    eventPositioned: 0
+    eventPosition: {x: 0, y: 0}
+    triggerOnly: 0
+    eventBindingEdited: 0
+    eventTriggerId: 
   - id: game.the.coordinates.are.in.a.message.on.your.new.radio.open.radio.and
     chapter: Registrierung
     storyStepId: overview.6
-    title: "Die Koordinaten findest du in einer Nachricht auf deinem neuen\u2026"
-    position: {x: 1170.5497, y: 678.749}
+    title: "Tank voll \u2013 \xF6ffne FUNK und w\xE4hle \xBBSignal orten\xAB f\xFCr
+      den Abholort."
+    position: {x: 3800, y: 0}
     status: 2
     purpose: "Bestehender Missionsablauf bleibt beim Abschluss dieses Schritts zust\xE4ndig."
     questions: 
@@ -267,8 +366,8 @@ MonoBehaviour:
       effects: []
       continueLegacy: 1
       legacyAnswer: 0
-      positioned: 0
-      position: {x: 0, y: 0}
+      positioned: 1
+      position: {x: 320, y: 0}
     - textKey: game.no.promises
       reactionKey: 
       next: 
@@ -276,15 +375,34 @@ MonoBehaviour:
       effects: []
       continueLegacy: 1
       legacyAnswer: 1
-      positioned: 0
-      position: {x: 0, y: 0}
+      positioned: 1
+      position: {x: 320, y: 120}
     overviewOnly: 0
     answerBoardLayout: 1
+    eventInfo:
+      enabled: 0
+      kind: 0
+      eventId: 
+      pool: 
+      fromLevel: 1
+      toLevel: 9
+      random: 0
+      once: 0
+      probability: 1
+      requiredFlag: 
+      blockedFlag: 
+      presentation: 
+      description: 
+    eventPositioned: 0
+    eventPosition: {x: 0, y: 0}
+    triggerOnly: 0
+    eventBindingEdited: 0
+    eventTriggerId: 
   - id: game.the.pickup.coordinates.are.still.on.your.radio.open.radio.to.read
     chapter: Registrierung
     storyStepId: overview.6
-    title: "Die Abholkoordinaten sind noch auf deinem Funkger\xE4t."
-    position: {x: 1909.897, y: 790.04114}
+    title: Der Abholort steht im FUNK.
+    position: {x: 0, y: 340}
     status: 2
     purpose: 
     questions: 
@@ -310,10 +428,29 @@ MonoBehaviour:
       effects: []
       continueLegacy: 1
       legacyAnswer: 0
-      positioned: 0
-      position: {x: 0, y: 0}
+      positioned: 1
+      position: {x: 320, y: 0}
     overviewOnly: 0
     answerBoardLayout: 1
+    eventInfo:
+      enabled: 0
+      kind: 0
+      eventId: 
+      pool: 
+      fromLevel: 1
+      toLevel: 9
+      random: 0
+      once: 0
+      probability: 1
+      requiredFlag: 
+      blockedFlag: 
+      presentation: 
+      description: 
+    eventPositioned: 0
+    eventPosition: {x: 0, y: 0}
+    triggerOnly: 0
+    eventBindingEdited: 0
+    eventTriggerId: 
   - id: game.the.lander.is.back.finally
     chapter: Stationsbewohner
     storyStepId: overview.5
@@ -339,11 +476,30 @@ MonoBehaviour:
     choices: []
     overviewOnly: 0
     answerBoardLayout: 1
+    eventInfo:
+      enabled: 0
+      kind: 0
+      eventId: 
+      pool: 
+      fromLevel: 1
+      toLevel: 9
+      random: 0
+      once: 0
+      probability: 1
+      requiredFlag: 
+      blockedFlag: 
+      presentation: 
+      description: 
+    eventPositioned: 0
+    eventPosition: {x: 0, y: 0}
+    triggerOnly: 0
+    eventBindingEdited: 0
+    eventTriggerId: 
   - id: game.registration.is.inside.i.was.heading.there.anyway
     chapter: Stationsbewohner
     storyStepId: overview.5
     title: Die Registrierung ist drinnen. Ich wollte ohnehin dorthin.
-    position: {x: 728, y: 0}
+    position: {x: 0, y: 280}
     status: 2
     purpose: 
     questions: 
@@ -364,11 +520,30 @@ MonoBehaviour:
     choices: []
     overviewOnly: 0
     answerBoardLayout: 1
+    eventInfo:
+      enabled: 0
+      kind: 0
+      eventId: 
+      pool: 
+      fromLevel: 1
+      toLevel: 9
+      random: 0
+      once: 0
+      probability: 1
+      requiredFlag: 
+      blockedFlag: 
+      presentation: 
+      description: 
+    eventPositioned: 0
+    eventPosition: {x: 0, y: 0}
+    triggerOnly: 0
+    eventBindingEdited: 0
+    eventTriggerId: 
   - id: game.if.it.rattles.it.was.doing.that.before
     chapter: Stationsbewohner
     storyStepId: overview.5
     title: Wenn es klappert, hat es das vorher schon getan.
-    position: {x: 1456, y: 0}
+    position: {x: 0, y: 560}
     status: 2
     purpose: 
     questions: 
@@ -389,11 +564,30 @@ MonoBehaviour:
     choices: []
     overviewOnly: 0
     answerBoardLayout: 1
+    eventInfo:
+      enabled: 0
+      kind: 0
+      eventId: 
+      pool: 
+      fromLevel: 1
+      toLevel: 9
+      random: 0
+      once: 0
+      probability: 1
+      requiredFlag: 
+      blockedFlag: 
+      presentation: 
+      description: 
+    eventPositioned: 0
+    eventPosition: {x: 0, y: 0}
+    triggerOnly: 0
+    eventBindingEdited: 0
+    eventTriggerId: 
   - id: game.please.keep.the.landing.pads.clear
     chapter: Stationsbewohner
     storyStepId: overview.5
     title: "Bitte die Landepl\xE4tze freihalten."
-    position: {x: 2184, y: 0}
+    position: {x: 0, y: 840}
     status: 2
     purpose: 
     questions: 
@@ -414,11 +608,30 @@ MonoBehaviour:
     choices: []
     overviewOnly: 0
     answerBoardLayout: 1
+    eventInfo:
+      enabled: 0
+      kind: 0
+      eventId: 
+      pool: 
+      fromLevel: 1
+      toLevel: 9
+      random: 0
+      once: 0
+      probability: 1
+      requiredFlag: 
+      blockedFlag: 
+      presentation: 
+      description: 
+    eventPositioned: 0
+    eventPosition: {x: 0, y: 0}
+    triggerOnly: 0
+    eventBindingEdited: 0
+    eventTriggerId: 
   - id: game.you.look.different.on.the.duty.roster
     chapter: Stationsbewohner
     storyStepId: overview.5
     title: Auf dem Dienstplan siehst du anders aus.
-    position: {x: 0, y: 292.5}
+    position: {x: 0, y: 1120}
     status: 2
     purpose: 
     questions: 
@@ -439,11 +652,30 @@ MonoBehaviour:
     choices: []
     overviewOnly: 0
     answerBoardLayout: 1
+    eventInfo:
+      enabled: 0
+      kind: 0
+      eventId: 
+      pool: 
+      fromLevel: 1
+      toLevel: 9
+      random: 0
+      once: 0
+      probability: 1
+      requiredFlag: 
+      blockedFlag: 
+      presentation: 
+      description: 
+    eventPositioned: 0
+    eventPosition: {x: 0, y: 0}
+    triggerOnly: 0
+    eventBindingEdited: 0
+    eventTriggerId: 
   - id: game.we.expected.the.ship.yesterday
     chapter: Stationsbewohner
     storyStepId: overview.5
     title: Wir haben das Schiff gestern erwartet.
-    position: {x: 728, y: 292.5}
+    position: {x: 0, y: 1400}
     status: 2
     purpose: 
     questions: 
@@ -464,11 +696,30 @@ MonoBehaviour:
     choices: []
     overviewOnly: 0
     answerBoardLayout: 1
+    eventInfo:
+      enabled: 0
+      kind: 0
+      eventId: 
+      pool: 
+      fromLevel: 1
+      toLevel: 9
+      random: 0
+      once: 0
+      probability: 1
+      requiredFlag: 
+      blockedFlag: 
+      presentation: 
+      description: 
+    eventPositioned: 0
+    eventPosition: {x: 0, y: 0}
+    triggerOnly: 0
+    eventBindingEdited: 0
+    eventTriggerId: 
   - id: game.new.here.registration.is.over.there
     chapter: Stationsbewohner
     storyStepId: overview.5
     title: "Neu hier? Die Registrierung ist dort dr\xFCben."
-    position: {x: 1456, y: 292.5}
+    position: {x: 0, y: 1680}
     status: 2
     purpose: 
     questions: 
@@ -489,11 +740,30 @@ MonoBehaviour:
     choices: []
     overviewOnly: 0
     answerBoardLayout: 1
+    eventInfo:
+      enabled: 0
+      kind: 0
+      eventId: 
+      pool: 
+      fromLevel: 1
+      toLevel: 9
+      random: 0
+      once: 0
+      probability: 1
+      requiredFlag: 
+      blockedFlag: 
+      presentation: 
+      description: 
+    eventPositioned: 0
+    eventPosition: {x: 0, y: 0}
+    triggerOnly: 0
+    eventBindingEdited: 0
+    eventTriggerId: 
   - id: game.the.corridor.is.free.the.paperwork.is.not
     chapter: Stationsbewohner
     storyStepId: overview.5
     title: Der Flur ist frei. Der Papierkram nicht.
-    position: {x: 2184, y: 292.5}
+    position: {x: 0, y: 1960}
     status: 2
     purpose: 
     questions: 
@@ -514,11 +784,30 @@ MonoBehaviour:
     choices: []
     overviewOnly: 0
     answerBoardLayout: 1
+    eventInfo:
+      enabled: 0
+      kind: 0
+      eventId: 
+      pool: 
+      fromLevel: 1
+      toLevel: 9
+      random: 0
+      once: 0
+      probability: 1
+      requiredFlag: 
+      blockedFlag: 
+      presentation: 
+      description: 
+    eventPositioned: 0
+    eventPosition: {x: 0, y: 0}
+    triggerOnly: 0
+    eventBindingEdited: 0
+    eventTriggerId: 
   - id: game.if.this.is.about.the.delivery.please.do.not.give.it.to.me
     chapter: Stationsbewohner
     storyStepId: overview.5
     title: 'Falls es um die Lieferung geht: Gib sie bitte nicht mir.'
-    position: {x: 0, y: 585}
+    position: {x: 0, y: 2240}
     status: 2
     purpose: 
     questions: 
@@ -539,11 +828,30 @@ MonoBehaviour:
     choices: []
     overviewOnly: 0
     answerBoardLayout: 1
+    eventInfo:
+      enabled: 0
+      kind: 0
+      eventId: 
+      pool: 
+      fromLevel: 1
+      toLevel: 9
+      random: 0
+      once: 0
+      probability: 1
+      requiredFlag: 
+      blockedFlag: 
+      presentation: 
+      description: 
+    eventPositioned: 0
+    eventPosition: {x: 0, y: 0}
+    triggerOnly: 0
+    eventBindingEdited: 0
+    eventTriggerId: 
   - id: game.maintenance.is.closed.officially
     chapter: Stationsbewohner
     storyStepId: overview.5
     title: Die Wartung ist geschlossen. Offiziell.
-    position: {x: 728, y: 585}
+    position: {x: 0, y: 2520}
     status: 2
     purpose: 
     questions: 
@@ -564,11 +872,30 @@ MonoBehaviour:
     choices: []
     overviewOnly: 0
     answerBoardLayout: 1
+    eventInfo:
+      enabled: 0
+      kind: 0
+      eventId: 
+      pool: 
+      fromLevel: 1
+      toLevel: 9
+      random: 0
+      once: 0
+      probability: 1
+      requiredFlag: 
+      blockedFlag: 
+      presentation: 
+      description: 
+    eventPositioned: 0
+    eventPosition: {x: 0, y: 0}
+    triggerOnly: 0
+    eventBindingEdited: 0
+    eventTriggerId: 
   - id: game.those.parcels.have.been.waiting.longer.than.i.have
     chapter: Stationsbewohner
     storyStepId: overview.5
     title: "Diese Pakete warten schon l\xE4nger als ich."
-    position: {x: 1456, y: 585}
+    position: {x: 0, y: 2800}
     status: 2
     purpose: 
     questions: 
@@ -589,11 +916,30 @@ MonoBehaviour:
     choices: []
     overviewOnly: 0
     answerBoardLayout: 1
+    eventInfo:
+      enabled: 0
+      kind: 0
+      eventId: 
+      pool: 
+      fromLevel: 1
+      toLevel: 9
+      random: 0
+      once: 0
+      probability: 1
+      requiredFlag: 
+      blockedFlag: 
+      presentation: 
+      description: 
+    eventPositioned: 0
+    eventPosition: {x: 0, y: 0}
+    triggerOnly: 0
+    eventBindingEdited: 0
+    eventTriggerId: 
   - id: game.storage.says.it.is.not.their.problem
     chapter: Stationsbewohner
     storyStepId: overview.5
     title: Das Lager sagt, es sei nicht sein Problem.
-    position: {x: 2184, y: 585}
+    position: {x: 0, y: 3080}
     status: 2
     purpose: 
     questions: 
@@ -614,11 +960,30 @@ MonoBehaviour:
     choices: []
     overviewOnly: 0
     answerBoardLayout: 1
+    eventInfo:
+      enabled: 0
+      kind: 0
+      eventId: 
+      pool: 
+      fromLevel: 1
+      toLevel: 9
+      random: 0
+      once: 0
+      probability: 1
+      requiredFlag: 
+      blockedFlag: 
+      presentation: 
+      description: 
+    eventPositioned: 0
+    eventPosition: {x: 0, y: 0}
+    triggerOnly: 0
+    eventBindingEdited: 0
+    eventTriggerId: 
   - id: game.oh.you.re.actually.trying.something.else.and.gravity.has.stopped
-    chapter: Training und Entdeckungen
+    chapter: Training
     storyStepId: overview.1
-    title: "Oh. Du probierst tats\xE4chlich etwas anderes."
-    position: {x: 0, y: 0}
+    title: Keine Schwerkraft mehr.
+    position: {x: 700, y: 2880}
     status: 2
     purpose: 
     questions: 
@@ -639,11 +1004,32 @@ MonoBehaviour:
     choices: []
     overviewOnly: 0
     answerBoardLayout: 1
+    eventInfo:
+      enabled: 1
+      kind: 2
+      eventId: ZeroG
+      pool: discovery-ZeroG
+      fromLevel: 1
+      toLevel: 9
+      random: 0
+      once: 1
+      probability: 1
+      requiredFlag: 
+      blockedFlag: story.ack.ZeroG
+      presentation: SlowMotion
+      description: "Erste Entdeckung: ZeroG. Unbest\xE4tigte Meldungen k\xF6nnen
+        nach einer Unterbrechung erneut erscheinen; tats\xE4chliche N\xE4he, Flugphase
+        und Anzeigetiming pr\xFCft das Spiel."
+    eventPositioned: 1
+    eventPosition: {x: 20, y: 3480}
+    triggerOnly: 0
+    eventBindingEdited: 0
+    eventTriggerId: trigger.2.discovery-ZeroG
   - id: game.oh.so.that.is.the.moon.minor.naming.issue
-    chapter: Training und Entdeckungen
+    chapter: Mond
     storyStepId: overview.2
-    title: Oh.
-    position: {x: 728, y: 0}
+    title: Da ist der echte Mond.
+    position: {x: 400, y: 0}
     status: 2
     purpose: 
     questions: 
@@ -664,11 +1050,32 @@ MonoBehaviour:
     choices: []
     overviewOnly: 0
     answerBoardLayout: 1
+    eventInfo:
+      enabled: 1
+      kind: 2
+      eventId: Moon
+      pool: discovery-Moon
+      fromLevel: 1
+      toLevel: 9
+      random: 0
+      once: 1
+      probability: 1
+      requiredFlag: 
+      blockedFlag: story.ack.Moon
+      presentation: SlowMotion
+      description: "Erste Entdeckung: Moon. Unbest\xE4tigte Meldungen k\xF6nnen nach
+        einer Unterbrechung erneut erscheinen; tats\xE4chliche N\xE4he, Flugphase
+        und Anzeigetiming pr\xFCft das Spiel."
+    eventPositioned: 0
+    eventPosition: {x: 0, y: 0}
+    triggerOnly: 0
+    eventBindingEdited: 0
+    eventTriggerId: trigger.2.discovery-Moon
   - id: game.you.actually.landed.on.the.moon.i.hadn.t.planned.that.far.ahead
-    chapter: Training und Entdeckungen
+    chapter: Mond
     storyStepId: overview.2
-    title: "Du bist tats\xE4chlich auf dem Mond gelandet."
-    position: {x: 1456, y: 0}
+    title: Auf dem echten Mond gelandet.
+    position: {x: 400, y: 280}
     status: 2
     purpose: 
     questions: 
@@ -689,11 +1096,32 @@ MonoBehaviour:
     choices: []
     overviewOnly: 0
     answerBoardLayout: 1
+    eventInfo:
+      enabled: 1
+      kind: 2
+      eventId: MoonLanding
+      pool: discovery-MoonLanding
+      fromLevel: 1
+      toLevel: 9
+      random: 0
+      once: 1
+      probability: 1
+      requiredFlag: 
+      blockedFlag: story.ack.MoonLanding
+      presentation: LandingResults
+      description: "Erste Entdeckung: MoonLanding. Unbest\xE4tigte Meldungen k\xF6nnen
+        nach einer Unterbrechung erneut erscheinen; tats\xE4chliche N\xE4he, Flugphase
+        und Anzeigetiming pr\xFCft das Spiel."
+    eventPositioned: 0
+    eventPosition: {x: 0, y: 0}
+    triggerOnly: 0
+    eventBindingEdited: 0
+    eventTriggerId: trigger.2.discovery-MoonLanding
   - id: game.you.can.get.out.apparently.this.spacecraft.came.with.legs
-    chapter: Training und Entdeckungen
+    chapter: Mond
     storyStepId: overview.3
-    title: Du kannst aussteigen?
-    position: {x: 2184, y: 0}
+    title: Du kannst aussteigen.
+    position: {x: 400, y: 560}
     status: 2
     purpose: 
     questions: 
@@ -714,11 +1142,32 @@ MonoBehaviour:
     choices: []
     overviewOnly: 0
     answerBoardLayout: 1
+    eventInfo:
+      enabled: 1
+      kind: 2
+      eventId: EVA
+      pool: discovery-EVA
+      fromLevel: 1
+      toLevel: 9
+      random: 0
+      once: 1
+      probability: 1
+      requiredFlag: 
+      blockedFlag: story.ack.EVA
+      presentation: Overlay
+      description: "Erste Entdeckung: EVA. Unbest\xE4tigte Meldungen k\xF6nnen nach
+        einer Unterbrechung erneut erscheinen; tats\xE4chliche N\xE4he, Flugphase
+        und Anzeigetiming pr\xFCft das Spiel."
+    eventPositioned: 0
+    eventPosition: {x: 0, y: 0}
+    triggerOnly: 0
+    eventBindingEdited: 0
+    eventTriggerId: trigger.2.discovery-EVA
   - id: game.finally.the.company.lander.parked.on.the.moon.with.a.full.tank.i
-    chapter: Training und Entdeckungen
+    chapter: Mond
     storyStepId: overview.4
-    title: Endlich. Das Firmenschiff.
-    position: {x: 0, y: 287.9125}
+    title: Das Firmenschiff hat noch einen vollen Tank.
+    position: {x: 400, y: 840}
     status: 2
     purpose: 
     questions: 
@@ -739,11 +1188,32 @@ MonoBehaviour:
     choices: []
     overviewOnly: 0
     answerBoardLayout: 1
+    eventInfo:
+      enabled: 1
+      kind: 2
+      eventId: AbandonedShip
+      pool: discovery-AbandonedShip
+      fromLevel: 1
+      toLevel: 9
+      random: 0
+      once: 1
+      probability: 1
+      requiredFlag: 
+      blockedFlag: story.ack.AbandonedShip
+      presentation: Immediate
+      description: "Erste Entdeckung: AbandonedShip. Unbest\xE4tigte Meldungen k\xF6nnen
+        nach einer Unterbrechung erneut erscheinen; tats\xE4chliche N\xE4he, Flugphase
+        und Anzeigetiming pr\xFCft das Spiel."
+    eventPositioned: 0
+    eventPosition: {x: 0, y: 0}
+    triggerOnly: 0
+    eventBindingEdited: 0
+    eventTriggerId: trigger.2.discovery-AbandonedShip
   - id: game.incoming.transmission.you.re.late.wait.you.re.not.our.pilot.where
-    chapter: Training und Entdeckungen
+    chapter: Funk
     storyStepId: overview.5
-    title: "EINGEHENDE \xDCBERTRAGUNG"
-    position: {x: 728, y: 292.5}
+    title: Du bist nicht unser Pilot.
+    position: {x: 400, y: 0}
     status: 2
     purpose: 
     questions: 
@@ -764,11 +1234,32 @@ MonoBehaviour:
     choices: []
     overviewOnly: 0
     answerBoardLayout: 1
+    eventInfo:
+      enabled: 1
+      kind: 2
+      eventId: UFO
+      pool: discovery-UFO
+      fromLevel: 1
+      toLevel: 9
+      random: 0
+      once: 1
+      probability: 1
+      requiredFlag: 
+      blockedFlag: story.ack.UFO
+      presentation: Immediate
+      description: "Erste Entdeckung: UFO. Unbest\xE4tigte Meldungen k\xF6nnen nach
+        einer Unterbrechung erneut erscheinen; tats\xE4chliche N\xE4he, Flugphase
+        und Anzeigetiming pr\xFCft das Spiel."
+    eventPositioned: 0
+    eventPosition: {x: 0, y: 0}
+    triggerOnly: 0
+    eventBindingEdited: 0
+    eventTriggerId: trigger.2.discovery-UFO
   - id: game.there.you.are.welcome.to.the.station.we.were.expecting.that.lande
-    chapter: Training und Entdeckungen
+    chapter: Funk
     storyStepId: overview.5
-    title: Da bist du ja. Willkommen auf der Station.
-    position: {x: 1456, y: 292.5}
+    title: Wir haben dieses Schiff erwartet.
+    position: {x: 400, y: 280}
     status: 2
     purpose: 
     questions: 
@@ -789,11 +1280,32 @@ MonoBehaviour:
     choices: []
     overviewOnly: 0
     answerBoardLayout: 1
+    eventInfo:
+      enabled: 1
+      kind: 2
+      eventId: Station
+      pool: discovery-Station
+      fromLevel: 1
+      toLevel: 9
+      random: 0
+      once: 1
+      probability: 1
+      requiredFlag: 
+      blockedFlag: story.ack.Station
+      presentation: Paused
+      description: "Erste Entdeckung: Station. Unbest\xE4tigte Meldungen k\xF6nnen
+        nach einer Unterbrechung erneut erscheinen; tats\xE4chliche N\xE4he, Flugphase
+        und Anzeigetiming pr\xFCft das Spiel."
+    eventPositioned: 0
+    eventPosition: {x: 0, y: 0}
+    triggerOnly: 0
+    eventBindingEdited: 0
+    eventTriggerId: trigger.2.discovery-Station
   - id: game.docking.confirmed.you.can.step.outside
-    chapter: Training und Entdeckungen
+    chapter: Funk
     storyStepId: overview.5
-    title: "Andocken best\xE4tigt."
-    position: {x: 2184, y: 292.5}
+    title: Angedockt.
+    position: {x: 400, y: 560}
     status: 2
     purpose: 
     questions: 
@@ -814,11 +1326,32 @@ MonoBehaviour:
     choices: []
     overviewOnly: 0
     answerBoardLayout: 1
+    eventInfo:
+      enabled: 1
+      kind: 2
+      eventId: StationLanding
+      pool: discovery-StationLanding
+      fromLevel: 1
+      toLevel: 9
+      random: 0
+      once: 1
+      probability: 1
+      requiredFlag: 
+      blockedFlag: story.ack.StationLanding
+      presentation: LandingResults
+      description: "Erste Entdeckung: StationLanding. Unbest\xE4tigte Meldungen k\xF6nnen
+        nach einer Unterbrechung erneut erscheinen; tats\xE4chliche N\xE4he, Flugphase
+        und Anzeigetiming pr\xFCft das Spiel."
+    eventPositioned: 0
+    eventPosition: {x: 0, y: 0}
+    triggerOnly: 0
+    eventBindingEdited: 0
+    eventTriggerId: trigger.2.discovery-StationLanding
   - id: game.wait.where.are.you.now.i.know.i.said.i.was.leaving.but.gravity.ha
-    chapter: Training und Entdeckungen
+    chapter: Training
     storyStepId: overview.0
-    title: Moment. Wo bist du jetzt?
-    position: {x: 0, y: 585}
+    title: Du bist doch weitergeflogen.
+    position: {x: 700, y: 4060}
     status: 2
     purpose: 
     questions: 
@@ -839,11 +1372,31 @@ MonoBehaviour:
     choices: []
     overviewOnly: 0
     answerBoardLayout: 1
+    eventInfo:
+      enabled: 1
+      kind: 7
+      eventId: ZeroG
+      pool: zeroGAfterDepartureMessage
+      fromLevel: 1
+      toLevel: 9
+      random: 0
+      once: 1
+      probability: 1
+      requiredFlag: story.earth.9
+      blockedFlag: story.ack.ZeroG
+      presentation: "Spielabh\xE4ngige Meldung"
+      description: "Alternative erste Schwerelosigkeitsmeldung nach best\xE4tigter
+        Level-9-\xDCbertragung."
+    eventPositioned: 1
+    eventPosition: {x: 20, y: 5040}
+    triggerOnly: 0
+    eventBindingEdited: 0
+    eventTriggerId: trigger.7.zeroGAfterDepartureMessage
   - id: game.back.in.one.piece.with.the.company.lander.excellent.work.by.show
-    chapter: Training und Entdeckungen
+    chapter: Training
     storyStepId: overview.0
-    title: "In einem St\xFCck zur\xFCck. Mit dem Firmenschiff."
-    position: {x: 728, y: 585}
+    title: "Firmenschiff zur\xFCck, Bericht gerettet."
+    position: {x: 1600, y: 3740}
     status: 2
     purpose: 
     questions: 
@@ -864,11 +1417,31 @@ MonoBehaviour:
     choices: []
     overviewOnly: 0
     answerBoardLayout: 1
+    eventInfo:
+      enabled: 1
+      kind: 6
+      eventId: earth-return
+      pool: earthReturnMessage
+      fromLevel: 1
+      toLevel: 9
+      random: 0
+      once: 1
+      probability: 1
+      requiredFlag: story.companyLanderReturned
+      blockedFlag: story.ack.CompanyReturn
+      presentation: "Spielabh\xE4ngige Meldung"
+      description: "Nach R\xFCckkehr des gefundenen Firmenschiffs zur Erde; Anzeige
+        bei den Landeergebnissen beziehungsweise als best\xE4tigbares Gespr\xE4ch."
+    eventPositioned: 1
+    eventPosition: {x: 20, y: 4780}
+    triggerOnly: 0
+    eventBindingEdited: 0
+    eventTriggerId: trigger.6.earthReturnMessage
   - id: game.you.know.where.the.real.moon.is.back.for.fuel.or.just.fond.of.thi
-    chapter: Training und Entdeckungen
+    chapter: Training
     storyStepId: overview.0
     title: "Du wei\xDFt, wo der echte Mond ist."
-    position: {x: 1456, y: 585}
+    position: {x: 700, y: 3740}
     status: 2
     purpose: 
     questions: 
@@ -889,11 +1462,31 @@ MonoBehaviour:
     choices: []
     overviewOnly: 0
     answerBoardLayout: 1
+    eventInfo:
+      enabled: 1
+      kind: 5
+      eventId: known-moon
+      pool: moonKnownEarthMessage
+      fromLevel: 1
+      toLevel: 9
+      random: 0
+      once: 0
+      probability: 1
+      requiredFlag: discovery.Moon
+      blockedFlag: 
+      presentation: "Spielabh\xE4ngige Meldung"
+      description: "Ersetzt normale Trainingsstart-Kommentare, wenn der Mond bereits
+        bekannt ist; Level\xFCbertragungen und Level 10+ haben Vorrang."
+    eventPositioned: 1
+    eventPosition: {x: 20, y: 4520}
+    triggerOnly: 0
+    eventBindingEdited: 0
+    eventTriggerId: trigger.5.moonKnownEarthMessage
   - id: game.land.safely.on.the.marked.pad
-    chapter: Training und Entdeckungen
+    chapter: Training
     storyStepId: overview.0
     title: Lande sicher auf dem markierten Landeplatz.
-    position: {x: 2184, y: 585}
+    position: {x: 420, y: 0}
     status: 2
     purpose: 
     questions: 
@@ -914,11 +1507,32 @@ MonoBehaviour:
     choices: []
     overviewOnly: 0
     answerBoardLayout: 1
+    eventInfo:
+      enabled: 1
+      kind: 0
+      eventId: level-start
+      pool: earth-level-1
+      fromLevel: 1
+      toLevel: 1
+      random: 1
+      once: 0
+      probability: 1
+      requiredFlag: 
+      blockedFlag: discovery.Moon
+      presentation: Kurzer Hinweis
+      description: "Zufallskommentar beim Trainingsstart; h\xF6chste passende Levelgruppe.
+        \xDCbertragungen in Level 3/6/9 haben Vorrang, bei bekanntem Mond wird dieser
+        Kommentar ersetzt."
+    eventPositioned: 1
+    eventPosition: {x: 20, y: 0}
+    triggerOnly: 0
+    eventBindingEdited: 0
+    eventTriggerId: trigger.0.earth-level-1
   - id: game.slow.your.descent.before.touching.down
-    chapter: Training und Entdeckungen
+    chapter: Training
     storyStepId: overview.0
     title: Bremse vor dem Aufsetzen deinen Sinkflug ab.
-    position: {x: 0, y: 877.5}
+    position: {x: 420, y: 160}
     status: 2
     purpose: 
     questions: 
@@ -939,11 +1553,32 @@ MonoBehaviour:
     choices: []
     overviewOnly: 0
     answerBoardLayout: 1
+    eventInfo:
+      enabled: 1
+      kind: 0
+      eventId: level-start
+      pool: earth-level-1
+      fromLevel: 1
+      toLevel: 1
+      random: 1
+      once: 0
+      probability: 1
+      requiredFlag: 
+      blockedFlag: discovery.Moon
+      presentation: Kurzer Hinweis
+      description: "Zufallskommentar beim Trainingsstart; h\xF6chste passende Levelgruppe.
+        \xDCbertragungen in Level 3/6/9 haben Vorrang, bei bekanntem Mond wird dieser
+        Kommentar ersetzt."
+    eventPositioned: 1
+    eventPosition: {x: 720, y: 0}
+    triggerOnly: 0
+    eventBindingEdited: 0
+    eventTriggerId: trigger.0.earth-level-1
   - id: game.keep.the.spacecraft.upright.aim.for.the.pad
-    chapter: Training und Entdeckungen
+    chapter: Training
     storyStepId: overview.0
     title: Halte das Schiff aufrecht. Ziele auf den Landeplatz.
-    position: {x: 728, y: 877.5}
+    position: {x: 420, y: 320}
     status: 2
     purpose: 
     questions: 
@@ -964,11 +1599,32 @@ MonoBehaviour:
     choices: []
     overviewOnly: 0
     answerBoardLayout: 1
+    eventInfo:
+      enabled: 1
+      kind: 0
+      eventId: level-start
+      pool: earth-level-1
+      fromLevel: 1
+      toLevel: 1
+      random: 1
+      once: 0
+      probability: 1
+      requiredFlag: 
+      blockedFlag: discovery.Moon
+      presentation: Kurzer Hinweis
+      description: "Zufallskommentar beim Trainingsstart; h\xF6chste passende Levelgruppe.
+        \xDCbertragungen in Level 3/6/9 haben Vorrang, bei bekanntem Mond wird dieser
+        Kommentar ersetzt."
+    eventPositioned: 1
+    eventPosition: {x: 1420, y: 0}
+    triggerOnly: 0
+    eventBindingEdited: 0
+    eventTriggerId: trigger.0.earth-level-1
   - id: game.another.pad.same.procedure
-    chapter: Training und Entdeckungen
+    chapter: Training
     storyStepId: overview.0
     title: Noch ein Landeplatz. Gleiches Verfahren.
-    position: {x: 1456, y: 877.5}
+    position: {x: 1160, y: 0}
     status: 2
     purpose: 
     questions: 
@@ -989,11 +1645,32 @@ MonoBehaviour:
     choices: []
     overviewOnly: 0
     answerBoardLayout: 1
+    eventInfo:
+      enabled: 1
+      kind: 0
+      eventId: level-start
+      pool: earth-level-2
+      fromLevel: 2
+      toLevel: 2
+      random: 1
+      once: 0
+      probability: 1
+      requiredFlag: 
+      blockedFlag: discovery.Moon
+      presentation: Kurzer Hinweis
+      description: "Zufallskommentar beim Trainingsstart; h\xF6chste passende Levelgruppe.
+        \xDCbertragungen in Level 3/6/9 haben Vorrang, bei bekanntem Mond wird dieser
+        Kommentar ersetzt."
+    eventPositioned: 1
+    eventPosition: {x: 20, y: 260}
+    triggerOnly: 0
+    eventBindingEdited: 0
+    eventTriggerId: trigger.0.earth-level-2
   - id: game.bring.it.down.preferably.in.one.piece
-    chapter: Training und Entdeckungen
+    chapter: Training
     storyStepId: overview.0
     title: "Bring es runter. M\xF6glichst in einem St\xFCck."
-    position: {x: 2184, y: 877.5}
+    position: {x: 1160, y: 160}
     status: 2
     purpose: 
     questions: 
@@ -1014,11 +1691,32 @@ MonoBehaviour:
     choices: []
     overviewOnly: 0
     answerBoardLayout: 1
+    eventInfo:
+      enabled: 1
+      kind: 0
+      eventId: level-start
+      pool: earth-level-2
+      fromLevel: 2
+      toLevel: 2
+      random: 1
+      once: 0
+      probability: 1
+      requiredFlag: 
+      blockedFlag: discovery.Moon
+      presentation: Kurzer Hinweis
+      description: "Zufallskommentar beim Trainingsstart; h\xF6chste passende Levelgruppe.
+        \xDCbertragungen in Level 3/6/9 haben Vorrang, bei bekanntem Mond wird dieser
+        Kommentar ersetzt."
+    eventPositioned: 1
+    eventPosition: {x: 720, y: 260}
+    triggerOnly: 0
+    eventBindingEdited: 0
+    eventTriggerId: trigger.0.earth-level-2
   - id: game.try.landing.near.the.middle.this.time
-    chapter: Training und Entdeckungen
+    chapter: Training
     storyStepId: overview.0
     title: "Lande diesmal m\xF6glichst in der Mitte."
-    position: {x: 0, y: 1170}
+    position: {x: 1160, y: 320}
     status: 2
     purpose: 
     questions: 
@@ -1039,11 +1737,32 @@ MonoBehaviour:
     choices: []
     overviewOnly: 0
     answerBoardLayout: 1
+    eventInfo:
+      enabled: 1
+      kind: 0
+      eventId: level-start
+      pool: earth-level-2
+      fromLevel: 2
+      toLevel: 2
+      random: 1
+      once: 0
+      probability: 1
+      requiredFlag: 
+      blockedFlag: discovery.Moon
+      presentation: Kurzer Hinweis
+      description: "Zufallskommentar beim Trainingsstart; h\xF6chste passende Levelgruppe.
+        \xDCbertragungen in Level 3/6/9 haben Vorrang, bei bekanntem Mond wird dieser
+        Kommentar ersetzt."
+    eventPositioned: 1
+    eventPosition: {x: 1420, y: 260}
+    triggerOnly: 0
+    eventBindingEdited: 0
+    eventTriggerId: trigger.0.earth-level-2
   - id: game.yes.another.landing.how.adventurous
-    chapter: Training und Entdeckungen
+    chapter: Training
     storyStepId: overview.0
     title: Ja. Noch eine Landung. Wie abenteuerlich.
-    position: {x: 728, y: 1170}
+    position: {x: 420, y: 500}
     status: 2
     purpose: 
     questions: 
@@ -1064,11 +1783,32 @@ MonoBehaviour:
     choices: []
     overviewOnly: 0
     answerBoardLayout: 1
+    eventInfo:
+      enabled: 1
+      kind: 0
+      eventId: level-start
+      pool: earth-level-4
+      fromLevel: 4
+      toLevel: 4
+      random: 1
+      once: 0
+      probability: 1
+      requiredFlag: 
+      blockedFlag: discovery.Moon
+      presentation: Kurzer Hinweis
+      description: "Zufallskommentar beim Trainingsstart; h\xF6chste passende Levelgruppe.
+        \xDCbertragungen in Level 3/6/9 haben Vorrang, bei bekanntem Mond wird dieser
+        Kommentar ersetzt."
+    eventPositioned: 1
+    eventPosition: {x: 20, y: 780}
+    triggerOnly: 0
+    eventBindingEdited: 0
+    eventTriggerId: trigger.0.earth-level-4
   - id: game.another.parking.spot.awaits.your.grand.entrance
-    chapter: Training und Entdeckungen
+    chapter: Training
     storyStepId: overview.0
     title: "Ein weiterer Parkplatz wartet auf deinen gro\xDFen Auftritt."
-    position: {x: 1456, y: 1170}
+    position: {x: 420, y: 660}
     status: 2
     purpose: 
     questions: 
@@ -1089,11 +1829,32 @@ MonoBehaviour:
     choices: []
     overviewOnly: 0
     answerBoardLayout: 1
+    eventInfo:
+      enabled: 1
+      kind: 0
+      eventId: level-start
+      pool: earth-level-4
+      fromLevel: 4
+      toLevel: 4
+      random: 1
+      once: 0
+      probability: 1
+      requiredFlag: 
+      blockedFlag: discovery.Moon
+      presentation: Kurzer Hinweis
+      description: "Zufallskommentar beim Trainingsstart; h\xF6chste passende Levelgruppe.
+        \xDCbertragungen in Level 3/6/9 haben Vorrang, bei bekanntem Mond wird dieser
+        Kommentar ersetzt."
+    eventPositioned: 1
+    eventPosition: {x: 720, y: 780}
+    triggerOnly: 0
+    eventBindingEdited: 0
+    eventTriggerId: trigger.0.earth-level-4
   - id: game.you.seem.very.committed.to.the.obvious.task
-    chapter: Training und Entdeckungen
+    chapter: Training
     storyStepId: overview.0
     title: Du widmest dich sehr konsequent der offensichtlichen Aufgabe.
-    position: {x: 2184, y: 1170}
+    position: {x: 420, y: 820}
     status: 2
     purpose: 
     questions: 
@@ -1114,11 +1875,32 @@ MonoBehaviour:
     choices: []
     overviewOnly: 0
     answerBoardLayout: 1
+    eventInfo:
+      enabled: 1
+      kind: 0
+      eventId: level-start
+      pool: earth-level-4
+      fromLevel: 4
+      toLevel: 4
+      random: 1
+      once: 0
+      probability: 1
+      requiredFlag: 
+      blockedFlag: discovery.Moon
+      presentation: Kurzer Hinweis
+      description: "Zufallskommentar beim Trainingsstart; h\xF6chste passende Levelgruppe.
+        \xDCbertragungen in Level 3/6/9 haben Vorrang, bei bekanntem Mond wird dieser
+        Kommentar ersetzt."
+    eventPositioned: 1
+    eventPosition: {x: 1420, y: 780}
+    triggerOnly: 0
+    eventBindingEdited: 0
+    eventTriggerId: trigger.0.earth-level-4
   - id: game.you.have.really.made.landing.your.whole.thing
-    chapter: Training und Entdeckungen
+    chapter: Training
     storyStepId: overview.0
     title: Landungen sind wirklich dein Lebensinhalt geworden.
-    position: {x: 0, y: 1462.5}
+    position: {x: 1160, y: 500}
     status: 2
     purpose: 
     questions: 
@@ -1139,11 +1921,32 @@ MonoBehaviour:
     choices: []
     overviewOnly: 0
     answerBoardLayout: 1
+    eventInfo:
+      enabled: 1
+      kind: 0
+      eventId: level-start
+      pool: earth-level-5
+      fromLevel: 5
+      toLevel: 5
+      random: 1
+      once: 0
+      probability: 1
+      requiredFlag: 
+      blockedFlag: discovery.Moon
+      presentation: Kurzer Hinweis
+      description: "Zufallskommentar beim Trainingsstart; h\xF6chste passende Levelgruppe.
+        \xDCbertragungen in Level 3/6/9 haben Vorrang, bei bekanntem Mond wird dieser
+        Kommentar ersetzt."
+    eventPositioned: 1
+    eventPosition: {x: 20, y: 1040}
+    triggerOnly: 0
+    eventBindingEdited: 0
+    eventTriggerId: trigger.0.earth-level-5
   - id: game.i.briefly.hoped.you.would.surprise.me
-    chapter: Training und Entdeckungen
+    chapter: Training
     storyStepId: overview.0
     title: "Kurz hatte ich gehofft, du w\xFCrdest mich \xFCberraschen."
-    position: {x: 728, y: 1462.5}
+    position: {x: 1160, y: 660}
     status: 2
     purpose: 
     questions: 
@@ -1164,11 +1967,32 @@ MonoBehaviour:
     choices: []
     overviewOnly: 0
     answerBoardLayout: 1
+    eventInfo:
+      enabled: 1
+      kind: 0
+      eventId: level-start
+      pool: earth-level-5
+      fromLevel: 5
+      toLevel: 5
+      random: 1
+      once: 0
+      probability: 1
+      requiredFlag: 
+      blockedFlag: discovery.Moon
+      presentation: Kurzer Hinweis
+      description: "Zufallskommentar beim Trainingsstart; h\xF6chste passende Levelgruppe.
+        \xDCbertragungen in Level 3/6/9 haben Vorrang, bei bekanntem Mond wird dieser
+        Kommentar ersetzt."
+    eventPositioned: 1
+    eventPosition: {x: 720, y: 1040}
+    triggerOnly: 0
+    eventBindingEdited: 0
+    eventTriggerId: trigger.0.earth-level-5
   - id: game.the.scenery.changes.your.ambition.does.not
-    chapter: Training und Entdeckungen
+    chapter: Training
     storyStepId: overview.0
     title: "Die Landschaft \xE4ndert sich. Dein Ehrgeiz nicht."
-    position: {x: 1456, y: 1462.5}
+    position: {x: 1160, y: 820}
     status: 2
     purpose: 
     questions: 
@@ -1189,11 +2013,32 @@ MonoBehaviour:
     choices: []
     overviewOnly: 0
     answerBoardLayout: 1
+    eventInfo:
+      enabled: 1
+      kind: 0
+      eventId: level-start
+      pool: earth-level-5
+      fromLevel: 5
+      toLevel: 5
+      random: 1
+      once: 0
+      probability: 1
+      requiredFlag: 
+      blockedFlag: discovery.Moon
+      presentation: Kurzer Hinweis
+      description: "Zufallskommentar beim Trainingsstart; h\xF6chste passende Levelgruppe.
+        \xDCbertragungen in Level 3/6/9 haben Vorrang, bei bekanntem Mond wird dieser
+        Kommentar ersetzt."
+    eventPositioned: 1
+    eventPosition: {x: 1420, y: 1040}
+    triggerOnly: 0
+    eventBindingEdited: 0
+    eventTriggerId: trigger.0.earth-level-5
   - id: game.i.am.no.longer.counting.enthusiastically
-    chapter: Training und Entdeckungen
+    chapter: Training
     storyStepId: overview.0
     title: "Ich z\xE4hle inzwischen ohne Begeisterung mit."
-    position: {x: 2184, y: 1462.5}
+    position: {x: 420, y: 1000}
     status: 2
     purpose: 
     questions: 
@@ -1214,11 +2059,32 @@ MonoBehaviour:
     choices: []
     overviewOnly: 0
     answerBoardLayout: 1
+    eventInfo:
+      enabled: 1
+      kind: 0
+      eventId: level-start
+      pool: earth-level-7
+      fromLevel: 7
+      toLevel: 7
+      random: 1
+      once: 0
+      probability: 1
+      requiredFlag: 
+      blockedFlag: discovery.Moon
+      presentation: Kurzer Hinweis
+      description: "Zufallskommentar beim Trainingsstart; h\xF6chste passende Levelgruppe.
+        \xDCbertragungen in Level 3/6/9 haben Vorrang, bei bekanntem Mond wird dieser
+        Kommentar ersetzt."
+    eventPositioned: 1
+    eventPosition: {x: 20, y: 1560}
+    triggerOnly: 0
+    eventBindingEdited: 0
+    eventTriggerId: trigger.0.earth-level-7
   - id: game.you.could.explore.or.polish.your.parking.record
-    chapter: Training und Entdeckungen
+    chapter: Training
     storyStepId: overview.0
     title: "Du k\xF6nntest auf Entdeckung gehen. Oder deinen Parkrekord verbe\u2026"
-    position: {x: 0, y: 1755}
+    position: {x: 420, y: 1160}
     status: 2
     purpose: 
     questions: 
@@ -1239,11 +2105,32 @@ MonoBehaviour:
     choices: []
     overviewOnly: 0
     answerBoardLayout: 1
+    eventInfo:
+      enabled: 1
+      kind: 0
+      eventId: level-start
+      pool: earth-level-7
+      fromLevel: 7
+      toLevel: 7
+      random: 1
+      once: 0
+      probability: 1
+      requiredFlag: 
+      blockedFlag: discovery.Moon
+      presentation: Kurzer Hinweis
+      description: "Zufallskommentar beim Trainingsstart; h\xF6chste passende Levelgruppe.
+        \xDCbertragungen in Level 3/6/9 haben Vorrang, bei bekanntem Mond wird dieser
+        Kommentar ersetzt."
+    eventPositioned: 1
+    eventPosition: {x: 720, y: 1560}
+    triggerOnly: 0
+    eventBindingEdited: 0
+    eventTriggerId: trigger.0.earth-level-7
   - id: game.i.specifically.told.you.that.you.can.fly.up
-    chapter: Training und Entdeckungen
+    chapter: Training
     storyStepId: overview.0
-    title: "Ich habe dir ausdr\xFCcklich gesagt, dass du nach oben fliegen ka\u2026"
-    position: {x: 728, y: 1755}
+    title: "Nach oben ist \xFCbrigens auch eine Flugrichtung."
+    position: {x: 420, y: 1320}
     status: 2
     purpose: 
     questions: 
@@ -1264,11 +2151,32 @@ MonoBehaviour:
     choices: []
     overviewOnly: 0
     answerBoardLayout: 1
+    eventInfo:
+      enabled: 1
+      kind: 0
+      eventId: level-start
+      pool: earth-level-7
+      fromLevel: 7
+      toLevel: 7
+      random: 1
+      once: 0
+      probability: 1
+      requiredFlag: 
+      blockedFlag: discovery.Moon
+      presentation: Kurzer Hinweis
+      description: "Zufallskommentar beim Trainingsstart; h\xF6chste passende Levelgruppe.
+        \xDCbertragungen in Level 3/6/9 haben Vorrang, bei bekanntem Mond wird dieser
+        Kommentar ersetzt."
+    eventPositioned: 1
+    eventPosition: {x: 1420, y: 1560}
+    triggerOnly: 0
+    eventBindingEdited: 0
+    eventTriggerId: trigger.0.earth-level-7
   - id: game.you.are.remarkably.good.at.missing.the.point
-    chapter: Training und Entdeckungen
+    chapter: Training
     storyStepId: overview.0
-    title: Du bist erstaunlich gut darin, am Ziel vorbeizudenken.
-    position: {x: 1456, y: 1755}
+    title: "Die Landung sitzt \u2013 jetzt fehlt nur noch die Neugier."
+    position: {x: 1160, y: 1000}
     status: 2
     purpose: 
     questions: 
@@ -1289,11 +2197,32 @@ MonoBehaviour:
     choices: []
     overviewOnly: 0
     answerBoardLayout: 1
+    eventInfo:
+      enabled: 1
+      kind: 0
+      eventId: level-start
+      pool: earth-level-8
+      fromLevel: 8
+      toLevel: 8
+      random: 1
+      once: 0
+      probability: 1
+      requiredFlag: 
+      blockedFlag: discovery.Moon
+      presentation: Kurzer Hinweis
+      description: "Zufallskommentar beim Trainingsstart; h\xF6chste passende Levelgruppe.
+        \xDCbertragungen in Level 3/6/9 haben Vorrang, bei bekanntem Mond wird dieser
+        Kommentar ersetzt."
+    eventPositioned: 1
+    eventPosition: {x: 20, y: 1820}
+    triggerOnly: 0
+    eventBindingEdited: 0
+    eventTriggerId: trigger.0.earth-level-8
   - id: game.i.would.sigh.but.this.is.text
-    chapter: Training und Entdeckungen
+    chapter: Training
     storyStepId: overview.0
-    title: "Ich w\xFCrde seufzen, aber das hier ist Text."
-    position: {x: 2184, y: 1755}
+    title: Ich spare mir den Seufzer.
+    position: {x: 1160, y: 1160}
     status: 2
     purpose: 
     questions: 
@@ -1314,11 +2243,32 @@ MonoBehaviour:
     choices: []
     overviewOnly: 0
     answerBoardLayout: 1
+    eventInfo:
+      enabled: 1
+      kind: 0
+      eventId: level-start
+      pool: earth-level-8
+      fromLevel: 8
+      toLevel: 8
+      random: 1
+      once: 0
+      probability: 1
+      requiredFlag: 
+      blockedFlag: discovery.Moon
+      presentation: Kurzer Hinweis
+      description: "Zufallskommentar beim Trainingsstart; h\xF6chste passende Levelgruppe.
+        \xDCbertragungen in Level 3/6/9 haben Vorrang, bei bekanntem Mond wird dieser
+        Kommentar ersetzt."
+    eventPositioned: 1
+    eventPosition: {x: 720, y: 1820}
+    triggerOnly: 0
+    eventBindingEdited: 0
+    eventTriggerId: trigger.0.earth-level-8
   - id: game.land.if.you.must.i.am.past.negotiating
-    chapter: Training und Entdeckungen
+    chapter: Training
     storyStepId: overview.0
-    title: Lande, wenn es sein muss. Ich verhandele nicht mehr.
-    position: {x: 0, y: 2047.5}
+    title: Noch eine Landung? Ich halte mich raus.
+    position: {x: 1160, y: 1320}
     status: 2
     purpose: 
     questions: 
@@ -1339,11 +2289,32 @@ MonoBehaviour:
     choices: []
     overviewOnly: 0
     answerBoardLayout: 1
+    eventInfo:
+      enabled: 1
+      kind: 0
+      eventId: level-start
+      pool: earth-level-8
+      fromLevel: 8
+      toLevel: 8
+      random: 1
+      once: 0
+      probability: 1
+      requiredFlag: 
+      blockedFlag: discovery.Moon
+      presentation: Kurzer Hinweis
+      description: "Zufallskommentar beim Trainingsstart; h\xF6chste passende Levelgruppe.
+        \xDCbertragungen in Level 3/6/9 haben Vorrang, bei bekanntem Mond wird dieser
+        Kommentar ersetzt."
+    eventPositioned: 1
+    eventPosition: {x: 1420, y: 1820}
+    triggerOnly: 0
+    eventBindingEdited: 0
+    eventTriggerId: trigger.0.earth-level-8
   - id: game.good.third.level.you.understand.how.a.landing.pad.works.i.was.hop
-    chapter: Training und Entdeckungen
+    chapter: Training
     storyStepId: overview.0
-    title: Gut. Drittes Level.
-    position: {x: 728, y: 2047.5}
+    title: Du kannst inzwischen landen.
+    position: {x: 1960, y: 160}
     status: 2
     purpose: 
     questions: 
@@ -1364,11 +2335,32 @@ MonoBehaviour:
     choices: []
     overviewOnly: 0
     answerBoardLayout: 1
+    eventInfo:
+      enabled: 1
+      kind: 1
+      eventId: training-level-3
+      pool: transmission-3
+      fromLevel: 3
+      toLevel: 3
+      random: 0
+      once: 1
+      probability: 1
+      requiredFlag: 
+      blockedFlag: story.earth.3
+      presentation: "Best\xE4tigbare \xDCbertragung / Funk"
+      description: "Beim Erreichen dieses Trainingslevels, nicht erst nach dessen
+        Abschluss; nur solange Schwerelosigkeit noch nicht entdeckt wurde. Nach Best\xE4tigung
+        wird story.earth.3 gespeichert."
+    eventPositioned: 1
+    eventPosition: {x: 20, y: 520}
+    triggerOnly: 0
+    eventBindingEdited: 0
+    eventTriggerId: trigger.1.transmission-3
   - id: game.sixth.level.you.are.seriously.collecting.parking.spots.fine.let.m
-    chapter: Training und Entdeckungen
+    chapter: Training
     storyStepId: overview.0
-    title: Sechstes Level.
-    position: {x: 1456, y: 2047.5}
+    title: "Tank auff\xFCllen und nach oben fliegen."
+    position: {x: 1960, y: 660}
     status: 2
     purpose: 
     questions: 
@@ -1389,11 +2381,32 @@ MonoBehaviour:
     choices: []
     overviewOnly: 0
     answerBoardLayout: 1
+    eventInfo:
+      enabled: 1
+      kind: 1
+      eventId: training-level-6
+      pool: transmission-6
+      fromLevel: 6
+      toLevel: 6
+      random: 0
+      once: 1
+      probability: 1
+      requiredFlag: 
+      blockedFlag: story.earth.6
+      presentation: "Best\xE4tigbare \xDCbertragung / Funk"
+      description: "Beim Erreichen dieses Trainingslevels, nicht erst nach dessen
+        Abschluss; nur solange Schwerelosigkeit noch nicht entdeckt wurde. Nach Best\xE4tigung
+        wird story.earth.6 gespeichert."
+    eventPositioned: 1
+    eventPosition: {x: 20, y: 1300}
+    triggerOnly: 0
+    eventBindingEdited: 0
+    eventTriggerId: trigger.1.transmission-6
   - id: game.nine.levels.i.gave.you.a.sky.a.spacecraft.thrusters.and.you.keep
-    chapter: Training und Entdeckungen
+    chapter: Training
     storyStepId: overview.0
-    title: NEUN LEVEL!
-    position: {x: 2184, y: 2047.5}
+    title: "Neun Landungen \u2013 das reicht als \xDCbung."
+    position: {x: 1960, y: 1160}
     status: 2
     purpose: 
     questions: 
@@ -1414,11 +2427,32 @@ MonoBehaviour:
     choices: []
     overviewOnly: 0
     answerBoardLayout: 1
+    eventInfo:
+      enabled: 1
+      kind: 1
+      eventId: training-level-9
+      pool: transmission-9
+      fromLevel: 9
+      toLevel: 9
+      random: 0
+      once: 1
+      probability: 1
+      requiredFlag: 
+      blockedFlag: story.earth.9
+      presentation: "Best\xE4tigbare \xDCbertragung / Funk"
+      description: "Beim Erreichen dieses Trainingslevels, nicht erst nach dessen
+        Abschluss; nur solange Schwerelosigkeit noch nicht entdeckt wurde. Nach Best\xE4tigung
+        wird story.earth.9 gespeichert."
+    eventPositioned: 1
+    eventPosition: {x: 20, y: 2080}
+    triggerOnly: 0
+    eventBindingEdited: 0
+    eventTriggerId: trigger.1.transmission-9
   - id: game.uh.huh
-    chapter: Training und Entdeckungen
+    chapter: Training
     storyStepId: overview.0
     title: Mhm.
-    position: {x: 0, y: 2340}
+    position: {x: 1040, y: 1700}
     status: 2
     purpose: 
     questions: 
@@ -1439,11 +2473,31 @@ MonoBehaviour:
     choices: []
     overviewOnly: 0
     answerBoardLayout: 1
+    eventInfo:
+      enabled: 1
+      kind: 4
+      eventId: late-training
+      pool: earth-asides
+      fromLevel: 10
+      toLevel: 0
+      random: 1
+      once: 0
+      probability: 0.25
+      requiredFlag: 
+      blockedFlag: 
+      presentation: Kurzer Hinweis
+      description: Ab Level 10 maximal ein Zufallsversuch je neuem Level; keine direkte
+        Wiederholung des letzten Kommentars.
+    eventPositioned: 1
+    eventPosition: {x: 1420, y: 2500}
+    triggerOnly: 0
+    eventBindingEdited: 0
+    eventTriggerId: trigger.4.earth-asides
   - id: game.sure
-    chapter: Training und Entdeckungen
+    chapter: Training
     storyStepId: overview.0
     title: Klar.
-    position: {x: 728, y: 2340}
+    position: {x: 1340, y: 1700}
     status: 2
     purpose: 
     questions: 
@@ -1464,11 +2518,31 @@ MonoBehaviour:
     choices: []
     overviewOnly: 0
     answerBoardLayout: 1
+    eventInfo:
+      enabled: 1
+      kind: 4
+      eventId: late-training
+      pool: earth-asides
+      fromLevel: 10
+      toLevel: 0
+      random: 1
+      once: 0
+      probability: 0.25
+      requiredFlag: 
+      blockedFlag: 
+      presentation: Kurzer Hinweis
+      description: Ab Level 10 maximal ein Zufallsversuch je neuem Level; keine direkte
+        Wiederholung des letzten Kommentars.
+    eventPositioned: 1
+    eventPosition: {x: 20, y: 2660}
+    triggerOnly: 0
+    eventBindingEdited: 0
+    eventTriggerId: trigger.4.earth-asides
   - id: game.of.course
-    chapter: Training und Entdeckungen
+    chapter: Training
     storyStepId: overview.0
     title: "Nat\xFCrlich."
-    position: {x: 1456, y: 2340}
+    position: {x: 740, y: 1860}
     status: 2
     purpose: 
     questions: 
@@ -1489,11 +2563,31 @@ MonoBehaviour:
     choices: []
     overviewOnly: 0
     answerBoardLayout: 1
+    eventInfo:
+      enabled: 1
+      kind: 4
+      eventId: late-training
+      pool: earth-asides
+      fromLevel: 10
+      toLevel: 0
+      random: 1
+      once: 0
+      probability: 0.25
+      requiredFlag: 
+      blockedFlag: 
+      presentation: Kurzer Hinweis
+      description: Ab Level 10 maximal ein Zufallsversuch je neuem Level; keine direkte
+        Wiederholung des letzten Kommentars.
+    eventPositioned: 1
+    eventPosition: {x: 720, y: 2660}
+    triggerOnly: 0
+    eventBindingEdited: 0
+    eventTriggerId: trigger.4.earth-asides
   - id: game.how.surprising
-    chapter: Training und Entdeckungen
+    chapter: Training
     storyStepId: overview.0
     title: "Wie \xFCberraschend."
-    position: {x: 2184, y: 2340}
+    position: {x: 1040, y: 1860}
     status: 2
     purpose: 
     questions: 
@@ -1514,11 +2608,31 @@ MonoBehaviour:
     choices: []
     overviewOnly: 0
     answerBoardLayout: 1
+    eventInfo:
+      enabled: 1
+      kind: 4
+      eventId: late-training
+      pool: earth-asides
+      fromLevel: 10
+      toLevel: 0
+      random: 1
+      once: 0
+      probability: 0.25
+      requiredFlag: 
+      blockedFlag: 
+      presentation: Kurzer Hinweis
+      description: Ab Level 10 maximal ein Zufallsversuch je neuem Level; keine direkte
+        Wiederholung des letzten Kommentars.
+    eventPositioned: 1
+    eventPosition: {x: 1420, y: 2660}
+    triggerOnly: 0
+    eventBindingEdited: 0
+    eventTriggerId: trigger.4.earth-asides
   - id: game.another.one
-    chapter: Training und Entdeckungen
+    chapter: Training
     storyStepId: overview.0
     title: Noch einer.
-    position: {x: 0, y: 2632.5}
+    position: {x: 1340, y: 1860}
     status: 2
     purpose: 
     questions: 
@@ -1539,11 +2653,31 @@ MonoBehaviour:
     choices: []
     overviewOnly: 0
     answerBoardLayout: 1
+    eventInfo:
+      enabled: 1
+      kind: 4
+      eventId: late-training
+      pool: earth-asides
+      fromLevel: 10
+      toLevel: 0
+      random: 1
+      once: 0
+      probability: 0.25
+      requiredFlag: 
+      blockedFlag: 
+      presentation: Kurzer Hinweis
+      description: Ab Level 10 maximal ein Zufallsversuch je neuem Level; keine direkte
+        Wiederholung des letzten Kommentars.
+    eventPositioned: 1
+    eventPosition: {x: 20, y: 2820}
+    triggerOnly: 0
+    eventBindingEdited: 0
+    eventTriggerId: trigger.4.earth-asides
   - id: game.you.ve.got.this
-    chapter: Training und Entdeckungen
+    chapter: Training
     storyStepId: overview.0
     title: Du schaffst das.
-    position: {x: 728, y: 2632.5}
+    position: {x: 740, y: 2020}
     status: 2
     purpose: 
     questions: 
@@ -1564,11 +2698,31 @@ MonoBehaviour:
     choices: []
     overviewOnly: 0
     answerBoardLayout: 1
+    eventInfo:
+      enabled: 1
+      kind: 4
+      eventId: late-training
+      pool: earth-asides
+      fromLevel: 10
+      toLevel: 0
+      random: 1
+      once: 0
+      probability: 0.25
+      requiredFlag: 
+      blockedFlag: 
+      presentation: Kurzer Hinweis
+      description: Ab Level 10 maximal ein Zufallsversuch je neuem Level; keine direkte
+        Wiederholung des letzten Kommentars.
+    eventPositioned: 1
+    eventPosition: {x: 720, y: 2820}
+    triggerOnly: 0
+    eventBindingEdited: 0
+    eventTriggerId: trigger.4.earth-asides
   - id: game.i.m.not.here
-    chapter: Training und Entdeckungen
+    chapter: Training
     storyStepId: overview.0
     title: Ich bin nicht da.
-    position: {x: 1456, y: 2632.5}
+    position: {x: 1040, y: 2020}
     status: 2
     purpose: 
     questions: 
@@ -1589,11 +2743,31 @@ MonoBehaviour:
     choices: []
     overviewOnly: 0
     answerBoardLayout: 1
+    eventInfo:
+      enabled: 1
+      kind: 4
+      eventId: late-training
+      pool: earth-asides
+      fromLevel: 10
+      toLevel: 0
+      random: 1
+      once: 0
+      probability: 0.25
+      requiredFlag: 
+      blockedFlag: 
+      presentation: Kurzer Hinweis
+      description: Ab Level 10 maximal ein Zufallsversuch je neuem Level; keine direkte
+        Wiederholung des letzten Kommentars.
+    eventPositioned: 1
+    eventPosition: {x: 1420, y: 2820}
+    triggerOnly: 0
+    eventBindingEdited: 0
+    eventTriggerId: trigger.4.earth-asides
   - id: game.that.was.not.an.invitation.to.talk
-    chapter: Training und Entdeckungen
+    chapter: Training
     storyStepId: overview.0
     title: Das war keine Einladung zum Reden.
-    position: {x: 2184, y: 2632.5}
+    position: {x: 1340, y: 2020}
     status: 2
     purpose: 
     questions: 
@@ -1614,11 +2788,31 @@ MonoBehaviour:
     choices: []
     overviewOnly: 0
     answerBoardLayout: 1
+    eventInfo:
+      enabled: 1
+      kind: 4
+      eventId: late-training
+      pool: earth-asides
+      fromLevel: 10
+      toLevel: 0
+      random: 1
+      once: 0
+      probability: 0.25
+      requiredFlag: 
+      blockedFlag: 
+      presentation: Kurzer Hinweis
+      description: Ab Level 10 maximal ein Zufallsversuch je neuem Level; keine direkte
+        Wiederholung des letzten Kommentars.
+    eventPositioned: 1
+    eventPosition: {x: 20, y: 2980}
+    triggerOnly: 0
+    eventBindingEdited: 0
+    eventTriggerId: trigger.4.earth-asides
   - id: game.no.i.am.not.commenting.on.this
-    chapter: Training und Entdeckungen
+    chapter: Training
     storyStepId: overview.0
     title: Nein. Dazu sage ich nichts.
-    position: {x: 0, y: 2925}
+    position: {x: 740, y: 2180}
     status: 2
     purpose: 
     questions: 
@@ -1639,11 +2833,31 @@ MonoBehaviour:
     choices: []
     overviewOnly: 0
     answerBoardLayout: 1
+    eventInfo:
+      enabled: 1
+      kind: 4
+      eventId: late-training
+      pool: earth-asides
+      fromLevel: 10
+      toLevel: 0
+      random: 1
+      once: 0
+      probability: 0.25
+      requiredFlag: 
+      blockedFlag: 
+      presentation: Kurzer Hinweis
+      description: Ab Level 10 maximal ein Zufallsversuch je neuem Level; keine direkte
+        Wiederholung des letzten Kommentars.
+    eventPositioned: 1
+    eventPosition: {x: 720, y: 2980}
+    triggerOnly: 0
+    eventBindingEdited: 0
+    eventTriggerId: trigger.4.earth-asides
   - id: game.is.that.pilot.still.landing.yes.don.t.ask.oh.the.microphone.is.on
-    chapter: Training und Entdeckungen
+    chapter: Training
     storyStepId: overview.0
-    title: "\u201ELandet dieser Pilot immer noch?\u201C"
-    position: {x: 728, y: 2925}
+    title: Immer noch beim Landen?
+    position: {x: 1040, y: 2180}
     status: 2
     purpose: 
     questions: 
@@ -1664,11 +2878,31 @@ MonoBehaviour:
     choices: []
     overviewOnly: 0
     answerBoardLayout: 1
+    eventInfo:
+      enabled: 1
+      kind: 4
+      eventId: late-training
+      pool: earth-asides
+      fromLevel: 10
+      toLevel: 0
+      random: 1
+      once: 0
+      probability: 0.25
+      requiredFlag: 
+      blockedFlag: 
+      presentation: Kurzer Hinweis
+      description: Ab Level 10 maximal ein Zufallsversuch je neuem Level; keine direkte
+        Wiederholung des letzten Kommentars.
+    eventPositioned: 1
+    eventPosition: {x: 720, y: 2340}
+    triggerOnly: 0
+    eventBindingEdited: 0
+    eventTriggerId: trigger.4.earth-asides
   - id: game.coffee.please.it.s.been.nothing.but.parking.all.day.wait.is.this
-    chapter: Training und Entdeckungen
+    chapter: Training
     storyStepId: overview.0
-    title: "\u201EKaffee?\u201C"
-    position: {x: 1456, y: 2925}
+    title: "Kaffee w\xE4re jetzt ein Fortschritt."
+    position: {x: 1340, y: 2180}
     status: 2
     purpose: 
     questions: 
@@ -1689,11 +2923,31 @@ MonoBehaviour:
     choices: []
     overviewOnly: 0
     answerBoardLayout: 1
+    eventInfo:
+      enabled: 1
+      kind: 4
+      eventId: late-training
+      pool: earth-asides
+      fromLevel: 10
+      toLevel: 0
+      random: 1
+      once: 0
+      probability: 0.25
+      requiredFlag: 
+      blockedFlag: 
+      presentation: Kurzer Hinweis
+      description: Ab Level 10 maximal ein Zufallsversuch je neuem Level; keine direkte
+        Wiederholung des letzten Kommentars.
+    eventPositioned: 1
+    eventPosition: {x: 1420, y: 2340}
+    triggerOnly: 0
+    eventBindingEdited: 0
+    eventTriggerId: trigger.4.earth-asides
   - id: game.has.anyone.told.them.they.can.leave.i.did.several.times.oh.you.ca
-    chapter: Training und Entdeckungen
+    chapter: Training
     storyStepId: overview.0
-    title: "\u201EHat ihnen jemand gesagt, dass sie wegfliegen k\xF6nnen?\u201C"
-    position: {x: 2184, y: 2925}
+    title: "Du darfst \xFCbrigens weiterfliegen."
+    position: {x: 740, y: 2340}
     status: 2
     purpose: 
     questions: 
@@ -1714,11 +2968,31 @@ MonoBehaviour:
     choices: []
     overviewOnly: 0
     answerBoardLayout: 1
+    eventInfo:
+      enabled: 1
+      kind: 4
+      eventId: late-training
+      pool: earth-asides
+      fromLevel: 10
+      toLevel: 0
+      random: 1
+      once: 0
+      probability: 0.25
+      requiredFlag: 
+      blockedFlag: 
+      presentation: Kurzer Hinweis
+      description: Ab Level 10 maximal ein Zufallsversuch je neuem Level; keine direkte
+        Wiederholung des letzten Kommentars.
+    eventPositioned: 1
+    eventPosition: {x: 20, y: 2500}
+    triggerOnly: 0
+    eventBindingEdited: 0
+    eventTriggerId: trigger.4.earth-asides
   - id: game.any.progress.the.parking.situation.is.excellent.right.microphone
-    chapter: Training und Entdeckungen
+    chapter: Training
     storyStepId: overview.0
-    title: "\u201EFortschritte?\u201C"
-    position: {x: 0, y: 3217.5}
+    title: Parkplatzsituation ausgezeichnet.
+    position: {x: 1040, y: 2340}
     status: 2
     purpose: 
     questions: 
@@ -1739,11 +3013,31 @@ MonoBehaviour:
     choices: []
     overviewOnly: 0
     answerBoardLayout: 1
+    eventInfo:
+      enabled: 1
+      kind: 4
+      eventId: late-training
+      pool: earth-asides
+      fromLevel: 10
+      toLevel: 0
+      random: 1
+      once: 0
+      probability: 0.25
+      requiredFlag: 
+      blockedFlag: 
+      presentation: Kurzer Hinweis
+      description: Ab Level 10 maximal ein Zufallsversuch je neuem Level; keine direkte
+        Wiederholung des letzten Kommentars.
+    eventPositioned: 1
+    eventPosition: {x: 720, y: 2500}
+    triggerOnly: 0
+    eventBindingEdited: 0
+    eventTriggerId: trigger.4.earth-asides
   - id: game.your.radio.is.registered.equipment.issued.acceptance.recorded.att
     chapter: Funk
     storyStepId: overview.7
-    title: "Dein Funkger\xE4t ist registriert. Ausr\xFCstung ausgegeben, Annahme\u2026"
-    position: {x: 0, y: 0}
+    title: Letzter Abholort markiert; seitdem fehlen Pilot und Lieferung.
+    position: {x: 0, y: 1000}
     status: 2
     purpose: 
     questions: 
@@ -1769,8 +3063,8 @@ MonoBehaviour:
       effects: []
       continueLegacy: 1
       legacyAnswer: 0
-      positioned: 0
-      position: {x: 0, y: 0}
+      positioned: 1
+      position: {x: 320, y: 0}
     - textKey: game.i.m.not.your.courier
       reactionKey: game.noted.i.ll.put.that.under.courier.comments
       next: 
@@ -1778,14 +3072,33 @@ MonoBehaviour:
       effects: []
       continueLegacy: 1
       legacyAnswer: 1
-      positioned: 0
-      position: {x: 0, y: 0}
+      positioned: 1
+      position: {x: 320, y: 120}
     overviewOnly: 0
     answerBoardLayout: 1
+    eventInfo:
+      enabled: 0
+      kind: 0
+      eventId: 
+      pool: 
+      fromLevel: 1
+      toLevel: 9
+      random: 0
+      once: 0
+      probability: 1
+      requiredFlag: 
+      blockedFlag: 
+      presentation: 
+      description: 
+    eventPositioned: 0
+    eventPosition: {x: 0, y: 0}
+    triggerOnly: 0
+    eventBindingEdited: 0
+    eventTriggerId: 
   - id: cargo.dialog.discovery.1
     chapter: Rhekk
     storyStepId: overview.7
-    title: "Endlich. Hat die Station diesmal jemanden geschickt, der lesen\u2026"
+    title: "Ich bin Rhekk \u2013 Passagier, kein Paket."
     position: {x: 0, y: 0}
     status: 2
     purpose: "Bestehender Missionsablauf bleibt beim Abschluss dieses Schritts zust\xE4ndig."
@@ -1812,8 +3125,8 @@ MonoBehaviour:
       effects: []
       continueLegacy: 1
       legacyAnswer: 0
-      positioned: 0
-      position: {x: 0, y: 0}
+      positioned: 1
+      position: {x: 320, y: 0}
     - textKey: cargo.answer.freight
       reactionKey: 
       next: cargo.dialog.discovery.2
@@ -1821,15 +3134,34 @@ MonoBehaviour:
       effects: []
       continueLegacy: 1
       legacyAnswer: 1
-      positioned: 0
-      position: {x: 0, y: 0}
+      positioned: 1
+      position: {x: 320, y: 120}
     overviewOnly: 0
     answerBoardLayout: 1
+    eventInfo:
+      enabled: 0
+      kind: 0
+      eventId: 
+      pool: 
+      fromLevel: 1
+      toLevel: 9
+      random: 0
+      once: 0
+      probability: 1
+      requiredFlag: 
+      blockedFlag: 
+      presentation: 
+      description: 
+    eventPositioned: 0
+    eventPosition: {x: 0, y: 0}
+    triggerOnly: 0
+    eventBindingEdited: 0
+    eventTriggerId: 
   - id: cargo.dialog.discovery.2
     chapter: Rhekk
     storyStepId: overview.7
-    title: "Der Pilot hat mich hier abgestellt. Er wollte zu der Anlage hi\u2026"
-    position: {x: 728, y: 0}
+    title: "Der Pilot wollte kurz zur Anlage hinter dem Au\xDFenposten."
+    position: {x: 760, y: 0}
     status: 2
     purpose: "Bestehender Missionsablauf bleibt beim Abschluss dieses Schritts zust\xE4ndig."
     questions: 
@@ -1855,15 +3187,34 @@ MonoBehaviour:
       effects: []
       continueLegacy: 1
       legacyAnswer: 0
-      positioned: 0
-      position: {x: 0, y: 0}
+      positioned: 1
+      position: {x: 320, y: 0}
     overviewOnly: 0
     answerBoardLayout: 1
+    eventInfo:
+      enabled: 0
+      kind: 0
+      eventId: 
+      pool: 
+      fromLevel: 1
+      toLevel: 9
+      random: 0
+      once: 0
+      probability: 1
+      requiredFlag: 
+      blockedFlag: 
+      presentation: 
+      description: 
+    eventPositioned: 0
+    eventPosition: {x: 0, y: 0}
+    triggerOnly: 0
+    eventBindingEdited: 0
+    eventTriggerId: 
   - id: cargo.dialog.discovery.3
     chapter: Rhekk
     storyStepId: overview.7
-    title: "Dann ist es wirklich ohne ihn gestartet. Ich habe die Triebwer\u2026"
-    position: {x: 1456, y: 0}
+    title: Das Schiff ist ohne ihn gestartet.
+    position: {x: 1520, y: 0}
     status: 2
     purpose: "Bestehender Missionsablauf bleibt beim Abschluss dieses Schritts zust\xE4ndig."
     questions: 
@@ -1889,15 +3240,34 @@ MonoBehaviour:
       effects: []
       continueLegacy: 1
       legacyAnswer: 0
-      positioned: 0
-      position: {x: 0, y: 0}
+      positioned: 1
+      position: {x: 320, y: 0}
     overviewOnly: 0
     answerBoardLayout: 1
+    eventInfo:
+      enabled: 0
+      kind: 0
+      eventId: 
+      pool: 
+      fromLevel: 1
+      toLevel: 9
+      random: 0
+      once: 0
+      probability: 1
+      requiredFlag: 
+      blockedFlag: 
+      presentation: 
+      description: 
+    eventPositioned: 0
+    eventPosition: {x: 0, y: 0}
+    triggerOnly: 0
+    eventBindingEdited: 0
+    eventTriggerId: 
   - id: cargo.dialog.discovery.4
     chapter: Rhekk
     storyStepId: overview.8
-    title: "Das Stationsdock muss zuerst den Druck ausgleichen. Hier bleib\u2026"
-    position: {x: 2184, y: 0}
+    title: Die Kapsel bleibt zu, bis das Stationsdock den Druck ausgleicht.
+    position: {x: 2280, y: 0}
     status: 2
     purpose: "Bestehender Missionsablauf bleibt beim Abschluss dieses Schritts zust\xE4ndig."
     questions: 
@@ -1923,15 +3293,34 @@ MonoBehaviour:
       effects: []
       continueLegacy: 1
       legacyAnswer: 0
-      positioned: 0
-      position: {x: 0, y: 0}
+      positioned: 1
+      position: {x: 320, y: 0}
     overviewOnly: 0
     answerBoardLayout: 1
+    eventInfo:
+      enabled: 0
+      kind: 0
+      eventId: 
+      pool: 
+      fromLevel: 1
+      toLevel: 9
+      random: 0
+      once: 0
+      probability: 1
+      requiredFlag: 
+      blockedFlag: 
+      presentation: 
+      description: 
+    eventPositioned: 0
+    eventPosition: {x: 0, y: 0}
+    triggerOnly: 0
+    eventBindingEdited: 0
+    eventTriggerId: 
   - id: cargo.dialog.discovery.5
     chapter: Rhekk
     storyStepId: overview.8
-    title: "Bring mich zur markierten Frachtablage neben den Landepl\xE4tzen \u2026"
-    position: {x: 0, y: 292.5}
+    title: "Setz mich langsam auf der markierten Ablage neben den Stations\u2026"
+    position: {x: 3040, y: 0}
     status: 2
     purpose: "Bestehender Missionsablauf bleibt beim Abschluss dieses Schritts zust\xE4ndig."
     questions: 
@@ -1957,8 +3346,8 @@ MonoBehaviour:
       effects: []
       continueLegacy: 1
       legacyAnswer: 0
-      positioned: 0
-      position: {x: 0, y: 0}
+      positioned: 1
+      position: {x: 320, y: 0}
     - textKey: cargo.answer.no.promises
       reactionKey: 
       next: 
@@ -1966,15 +3355,34 @@ MonoBehaviour:
       effects: []
       continueLegacy: 1
       legacyAnswer: 1
-      positioned: 0
-      position: {x: 0, y: 0}
+      positioned: 1
+      position: {x: 320, y: 120}
     overviewOnly: 0
     answerBoardLayout: 1
+    eventInfo:
+      enabled: 0
+      kind: 0
+      eventId: 
+      pool: 
+      fromLevel: 1
+      toLevel: 9
+      random: 0
+      once: 0
+      probability: 1
+      requiredFlag: 
+      blockedFlag: 
+      presentation: 
+      description: 
+    eventPositioned: 0
+    eventPosition: {x: 0, y: 0}
+    triggerOnly: 0
+    eventBindingEdited: 0
+    eventTriggerId: 
   - id: cargo.dialog.release.1
     chapter: Rhekk
     storyStepId: overview.9
-    title: Frische Luft. Fester Boden. Eine Reise ohne weitere Bodenproben.
-    position: {x: 728, y: 292.5}
+    title: Danke, dass du mich hergebracht hast.
+    position: {x: 0, y: 340}
     status: 2
     purpose: "Bestehender Missionsablauf bleibt beim Abschluss dieses Schritts zust\xE4ndig."
     questions: 
@@ -2000,8 +3408,8 @@ MonoBehaviour:
       effects: []
       continueLegacy: 1
       legacyAnswer: 0
-      positioned: 0
-      position: {x: 0, y: 0}
+      positioned: 1
+      position: {x: 320, y: 0}
     - textKey: cargo.answer.complaint
       reactionKey: 
       next: cargo.dialog.release.2
@@ -2009,15 +3417,34 @@ MonoBehaviour:
       effects: []
       continueLegacy: 1
       legacyAnswer: 1
-      positioned: 0
-      position: {x: 0, y: 0}
+      positioned: 1
+      position: {x: 320, y: 120}
     overviewOnly: 0
     answerBoardLayout: 1
+    eventInfo:
+      enabled: 0
+      kind: 0
+      eventId: 
+      pool: 
+      fromLevel: 1
+      toLevel: 9
+      random: 0
+      once: 0
+      probability: 1
+      requiredFlag: 
+      blockedFlag: 
+      presentation: 
+      description: 
+    eventPositioned: 0
+    eventPosition: {x: 0, y: 0}
+    triggerOnly: 0
+    eventBindingEdited: 0
+    eventTriggerId: 
   - id: cargo.dialog.release.2
     chapter: Rhekk
     storyStepId: overview.9
-    title: "Zuerst zur Registrierung. Dort hat jemand mich als Lieferung v\u2026"
-    position: {x: 1456, y: 292.5}
+    title: "Ich gehe zur Registrierung: meinen Status von Fracht auf Perso\u2026"
+    position: {x: 760, y: 280}
     status: 2
     purpose: "Bestehender Missionsablauf bleibt beim Abschluss dieses Schritts zust\xE4ndig."
     questions: 
@@ -2043,15 +3470,34 @@ MonoBehaviour:
       effects: []
       continueLegacy: 1
       legacyAnswer: 0
-      positioned: 0
-      position: {x: 0, y: 0}
+      positioned: 1
+      position: {x: 320, y: 0}
     overviewOnly: 0
     answerBoardLayout: 1
+    eventInfo:
+      enabled: 0
+      kind: 0
+      eventId: 
+      pool: 
+      fromLevel: 1
+      toLevel: 9
+      random: 0
+      once: 0
+      probability: 1
+      requiredFlag: 
+      blockedFlag: 
+      presentation: 
+      description: 
+    eventPositioned: 0
+    eventPosition: {x: 0, y: 0}
+    triggerOnly: 0
+    eventBindingEdited: 0
+    eventTriggerId: 
   - id: cargo.dialog.release.3
     chapter: Rhekk
     storyStepId: overview.9
-    title: "Du wei\xDFt ja, wo die Registrierung ist. Falls sie mich wieder i\u2026"
-    position: {x: 2184, y: 292.5}
+    title: Falls sie mich wieder einpacken, klopfe ich.
+    position: {x: 1520, y: 280}
     status: 2
     purpose: "Bestehender Missionsablauf bleibt beim Abschluss dieses Schritts zust\xE4ndig."
     questions: 
@@ -2077,15 +3523,34 @@ MonoBehaviour:
       effects: []
       continueLegacy: 1
       legacyAnswer: 0
-      positioned: 0
-      position: {x: 0, y: 0}
+      positioned: 1
+      position: {x: 320, y: 0}
     overviewOnly: 0
     answerBoardLayout: 1
+    eventInfo:
+      enabled: 0
+      kind: 0
+      eventId: 
+      pool: 
+      fromLevel: 1
+      toLevel: 9
+      random: 0
+      once: 0
+      probability: 1
+      requiredFlag: 
+      blockedFlag: 
+      presentation: 
+      description: 
+    eventPositioned: 0
+    eventPosition: {x: 0, y: 0}
+    triggerOnly: 0
+    eventBindingEdited: 0
+    eventTriggerId: 
   - id: game.there.you.go.beyond.the.parking.spots
-    chapter: Training und Entdeckungen
+    chapter: Training
     storyStepId: overview.0
     title: "Da geht es hin. \xDCber die Parkpl\xE4tze hinaus."
-    position: {x: 728, y: 3217.5}
+    position: {x: 1600, y: 2700}
     status: 2
     purpose: 
     questions: 
@@ -2106,11 +3571,31 @@ MonoBehaviour:
     choices: []
     overviewOnly: 0
     answerBoardLayout: 1
+    eventInfo:
+      enabled: 1
+      kind: 3
+      eventId: AtmosphereExit
+      pool: flight-AtmosphereExit
+      fromLevel: 1
+      toLevel: 0
+      random: 1
+      once: 0
+      probability: 0.25
+      requiredFlag: story.ack.ZeroG
+      blockedFlag: story.earth.9
+      presentation: Kurzer Hinweis
+      description: "Flugzustand AtmosphereExit; ein Kommentar pro Flugversuch, mit
+        Startverz\xF6gerung und Cooldown. Nach der ersten Entdeckung, nicht als Dialogfolge."
+    eventPositioned: 1
+    eventPosition: {x: 20, y: 4000}
+    triggerOnly: 0
+    eventBindingEdited: 0
+    eventTriggerId: trigger.3.flight-AtmosphereExit
   - id: game.still.exploring.now.i.m.curious
-    chapter: Training und Entdeckungen
+    chapter: Training
     storyStepId: overview.0
     title: Du erkundest noch. Jetzt bin ich neugierig.
-    position: {x: 1456, y: 3217.5}
+    position: {x: 1600, y: 2860}
     status: 2
     purpose: 
     questions: 
@@ -2131,11 +3616,31 @@ MonoBehaviour:
     choices: []
     overviewOnly: 0
     answerBoardLayout: 1
+    eventInfo:
+      enabled: 1
+      kind: 3
+      eventId: AtmosphereExit
+      pool: flight-AtmosphereExit
+      fromLevel: 1
+      toLevel: 0
+      random: 1
+      once: 0
+      probability: 0.25
+      requiredFlag: story.ack.ZeroG
+      blockedFlag: story.earth.9
+      presentation: Kurzer Hinweis
+      description: "Flugzustand AtmosphereExit; ein Kommentar pro Flugversuch, mit
+        Startverz\xF6gerung und Cooldown. Nach der ersten Entdeckung, nicht als Dialogfolge."
+    eventPositioned: 1
+    eventPosition: {x: 720, y: 4000}
+    triggerOnly: 0
+    eventBindingEdited: 0
+    eventTriggerId: trigger.3.flight-AtmosphereExit
   - id: game.i.wonder.how.far.this.goes
-    chapter: Training und Entdeckungen
+    chapter: Training
     storyStepId: overview.0
     title: Wie weit das wohl geht?
-    position: {x: 2184, y: 3217.5}
+    position: {x: 1600, y: 3020}
     status: 2
     purpose: 
     questions: 
@@ -2156,11 +3661,31 @@ MonoBehaviour:
     choices: []
     overviewOnly: 0
     answerBoardLayout: 1
+    eventInfo:
+      enabled: 1
+      kind: 3
+      eventId: AtmosphereExit
+      pool: flight-AtmosphereExit
+      fromLevel: 1
+      toLevel: 0
+      random: 1
+      once: 0
+      probability: 0.25
+      requiredFlag: story.ack.ZeroG
+      blockedFlag: story.earth.9
+      presentation: Kurzer Hinweis
+      description: "Flugzustand AtmosphereExit; ein Kommentar pro Flugversuch, mit
+        Startverz\xF6gerung und Cooldown. Nach der ersten Entdeckung, nicht als Dialogfolge."
+    eventPositioned: 1
+    eventPosition: {x: 1420, y: 4000}
+    triggerOnly: 0
+    eventBindingEdited: 0
+    eventTriggerId: trigger.3.flight-AtmosphereExit
   - id: game.ah.parking.spots.again
-    chapter: Training und Entdeckungen
+    chapter: Training
     storyStepId: overview.0
     title: "Ah. Wieder Parkpl\xE4tze."
-    position: {x: 0, y: 3510}
+    position: {x: 700, y: 3120}
     status: 2
     purpose: 
     questions: 
@@ -2181,11 +3706,31 @@ MonoBehaviour:
     choices: []
     overviewOnly: 0
     answerBoardLayout: 1
+    eventInfo:
+      enabled: 1
+      kind: 3
+      eventId: BackToPlanet
+      pool: flight-BackToPlanet
+      fromLevel: 3
+      toLevel: 0
+      random: 1
+      once: 0
+      probability: 0.25
+      requiredFlag: 
+      blockedFlag: story.earth.9
+      presentation: Kurzer Hinweis
+      description: "Flugzustand BackToPlanet; ein Kommentar pro Flugversuch, mit
+        Startverz\xF6gerung und Cooldown. Nach der ersten Entdeckung, nicht als Dialogfolge."
+    eventPositioned: 1
+    eventPosition: {x: 20, y: 4260}
+    triggerOnly: 0
+    eventBindingEdited: 0
+    eventTriggerId: trigger.3.flight-BackToPlanet
   - id: game.a.familiar.view.try.not.to.get.too.comfortable
-    chapter: Training und Entdeckungen
+    chapter: Training
     storyStepId: overview.0
     title: Vertrauter Anblick. Mach es dir nicht zu bequem.
-    position: {x: 728, y: 3510}
+    position: {x: 700, y: 3280}
     status: 2
     purpose: 
     questions: 
@@ -2206,11 +3751,31 @@ MonoBehaviour:
     choices: []
     overviewOnly: 0
     answerBoardLayout: 1
+    eventInfo:
+      enabled: 1
+      kind: 3
+      eventId: BackToPlanet
+      pool: flight-BackToPlanet
+      fromLevel: 3
+      toLevel: 0
+      random: 1
+      once: 0
+      probability: 0.25
+      requiredFlag: 
+      blockedFlag: story.earth.9
+      presentation: Kurzer Hinweis
+      description: "Flugzustand BackToPlanet; ein Kommentar pro Flugversuch, mit
+        Startverz\xF6gerung und Cooldown. Nach der ersten Entdeckung, nicht als Dialogfolge."
+    eventPositioned: 1
+    eventPosition: {x: 720, y: 4260}
+    triggerOnly: 0
+    eventBindingEdited: 0
+    eventTriggerId: trigger.3.flight-BackToPlanet
   - id: game.back.for.fuel.that.sounds.like.a.plan
-    chapter: Training und Entdeckungen
+    chapter: Training
     storyStepId: overview.0
     title: "Zur\xFCck zum Tanken? Das klingt nach einem Plan."
-    position: {x: 1456, y: 3510}
+    position: {x: 700, y: 3440}
     status: 2
     purpose: 
     questions: 
@@ -2231,11 +3796,31 @@ MonoBehaviour:
     choices: []
     overviewOnly: 0
     answerBoardLayout: 1
+    eventInfo:
+      enabled: 1
+      kind: 3
+      eventId: BackToPlanet
+      pool: flight-BackToPlanet
+      fromLevel: 3
+      toLevel: 0
+      random: 1
+      once: 0
+      probability: 0.25
+      requiredFlag: 
+      blockedFlag: story.earth.9
+      presentation: Kurzer Hinweis
+      description: "Flugzustand BackToPlanet; ein Kommentar pro Flugversuch, mit
+        Startverz\xF6gerung und Cooldown. Nach der ersten Entdeckung, nicht als Dialogfolge."
+    eventPositioned: 1
+    eventPosition: {x: 1420, y: 4260}
+    triggerOnly: 0
+    eventBindingEdited: 0
+    eventTriggerId: trigger.3.flight-BackToPlanet
   - id: game.back.to.the.moon.you.know.more.about.it.than.i.do
-    chapter: Training und Entdeckungen
-    storyStepId: overview.0
+    chapter: Mond
+    storyStepId: overview.2
     title: "Zur\xFCck zum Mond. Du wei\xDFt mehr dar\xFCber als ich."
-    position: {x: 2184, y: 3510}
+    position: {x: 400, y: 1120}
     status: 2
     purpose: 
     questions: 
@@ -2256,11 +3841,31 @@ MonoBehaviour:
     choices: []
     overviewOnly: 0
     answerBoardLayout: 1
+    eventInfo:
+      enabled: 1
+      kind: 3
+      eventId: NearToMoon
+      pool: flight-NearToMoon
+      fromLevel: 1
+      toLevel: 0
+      random: 1
+      once: 0
+      probability: 0.25
+      requiredFlag: story.ack.Moon
+      blockedFlag: story.earth.9
+      presentation: Kurzer Hinweis
+      description: "Flugzustand NearToMoon; ein Kommentar pro Flugversuch, mit Startverz\xF6gerung
+        und Cooldown. Nach der ersten Entdeckung, nicht als Dialogfolge."
+    eventPositioned: 0
+    eventPosition: {x: 0, y: 0}
+    triggerOnly: 0
+    eventBindingEdited: 0
+    eventTriggerId: trigger.3.flight-NearToMoon
   - id: game.i.wonder.what.else.is.up.there
-    chapter: Training und Entdeckungen
-    storyStepId: overview.0
+    chapter: Mond
+    storyStepId: overview.2
     title: Was da oben wohl noch ist?
-    position: {x: 0, y: 3802.5}
+    position: {x: 400, y: 1280}
     status: 2
     purpose: 
     questions: 
@@ -2281,11 +3886,31 @@ MonoBehaviour:
     choices: []
     overviewOnly: 0
     answerBoardLayout: 1
+    eventInfo:
+      enabled: 1
+      kind: 3
+      eventId: NearToMoon
+      pool: flight-NearToMoon
+      fromLevel: 1
+      toLevel: 0
+      random: 1
+      once: 0
+      probability: 0.25
+      requiredFlag: story.ack.Moon
+      blockedFlag: story.earth.9
+      presentation: Kurzer Hinweis
+      description: "Flugzustand NearToMoon; ein Kommentar pro Flugversuch, mit Startverz\xF6gerung
+        und Cooldown. Nach der ersten Entdeckung, nicht als Dialogfolge."
+    eventPositioned: 0
+    eventPosition: {x: 0, y: 0}
+    triggerOnly: 0
+    eventBindingEdited: 0
+    eventTriggerId: trigger.3.flight-NearToMoon
   - id: game.still.there.this.wasn.t.in.my.little.landing.game
-    chapter: Training und Entdeckungen
-    storyStepId: overview.0
+    chapter: Mond
+    storyStepId: overview.2
     title: Immer noch da. Das war nicht in meinem kleinen Landespiel.
-    position: {x: 728, y: 3802.5}
+    position: {x: 400, y: 1440}
     status: 2
     purpose: 
     questions: 
@@ -2306,11 +3931,31 @@ MonoBehaviour:
     choices: []
     overviewOnly: 0
     answerBoardLayout: 1
+    eventInfo:
+      enabled: 1
+      kind: 3
+      eventId: NearToMoon
+      pool: flight-NearToMoon
+      fromLevel: 1
+      toLevel: 0
+      random: 1
+      once: 0
+      probability: 0.25
+      requiredFlag: story.ack.Moon
+      blockedFlag: story.earth.9
+      presentation: Kurzer Hinweis
+      description: "Flugzustand NearToMoon; ein Kommentar pro Flugversuch, mit Startverz\xF6gerung
+        und Cooldown. Nach der ersten Entdeckung, nicht als Dialogfolge."
+    eventPositioned: 0
+    eventPosition: {x: 0, y: 0}
+    triggerOnly: 0
+    eventBindingEdited: 0
+    eventTriggerId: trigger.3.flight-NearToMoon
   - id: game.company
-    chapter: Training und Entdeckungen
+    chapter: Training
     storyStepId: overview.0
     title: Firma
-    position: {x: 1456, y: 3802.5}
+    position: {x: 300, y: 4400}
     status: 2
     purpose: 
     questions: 
@@ -2331,11 +3976,30 @@ MonoBehaviour:
     choices: []
     overviewOnly: 0
     answerBoardLayout: 1
+    eventInfo:
+      enabled: 0
+      kind: 0
+      eventId: 
+      pool: 
+      fromLevel: 1
+      toLevel: 9
+      random: 0
+      once: 0
+      probability: 1
+      requiredFlag: 
+      blockedFlag: 
+      presentation: 
+      description: 
+    eventPositioned: 0
+    eventPosition: {x: 0, y: 0}
+    triggerOnly: 0
+    eventBindingEdited: 0
+    eventTriggerId: 
   - id: game.company.transmission
-    chapter: Training und Entdeckungen
+    chapter: Training
     storyStepId: overview.0
     title: "Firmen\xFCbertragung"
-    position: {x: 2184, y: 3802.5}
+    position: {x: 660, y: 4400}
     status: 2
     purpose: 
     questions: 
@@ -2356,11 +4020,30 @@ MonoBehaviour:
     choices: []
     overviewOnly: 0
     answerBoardLayout: 1
+    eventInfo:
+      enabled: 0
+      kind: 0
+      eventId: 
+      pool: 
+      fromLevel: 1
+      toLevel: 9
+      random: 0
+      once: 0
+      probability: 1
+      requiredFlag: 
+      blockedFlag: 
+      presentation: 
+      description: 
+    eventPositioned: 0
+    eventPosition: {x: 0, y: 0}
+    triggerOnly: 0
+    eventBindingEdited: 0
+    eventTriggerId: 
   - id: game.back.on.earth.you.can.refuel.on.a.free.landing.pad
-    chapter: Training und Entdeckungen
+    chapter: Training
     storyStepId: overview.0
     title: "Zur\xFCck auf der Erde. Du kannst an einem freien Landeplatz auft\u2026"
-    position: {x: 0, y: 4095}
+    position: {x: 1600, y: 3280}
     status: 2
     purpose: 
     questions: 
@@ -2381,11 +4064,31 @@ MonoBehaviour:
     choices: []
     overviewOnly: 0
     answerBoardLayout: 1
+    eventInfo:
+      enabled: 1
+      kind: 3
+      eventId: BackToPlanet
+      pool: early-earth-return
+      fromLevel: 1
+      toLevel: 2
+      random: 0
+      once: 0
+      probability: 0.25
+      requiredFlag: 
+      blockedFlag: story.earth.9
+      presentation: Kurzer Hinweis
+      description: "R\xFCckkehr zur Erde in Level 1/2: ersetzt den Zufallstext durch
+        den Auftankhinweis, falls die Kommentar-Chance greift."
+    eventPositioned: 1
+    eventPosition: {x: 20, y: 3740}
+    triggerOnly: 0
+    eventBindingEdited: 0
+    eventTriggerId: trigger.3.early-earth-return
   - id: game.station
-    chapter: Training und Entdeckungen
+    chapter: Training
     storyStepId: overview.0
     title: Station
-    position: {x: 728, y: 4095}
+    position: {x: 1000, y: 4400}
     status: 2
     purpose: 
     questions: 
@@ -2406,11 +4109,30 @@ MonoBehaviour:
     choices: []
     overviewOnly: 0
     answerBoardLayout: 1
+    eventInfo:
+      enabled: 0
+      kind: 0
+      eventId: 
+      pool: 
+      fromLevel: 1
+      toLevel: 9
+      random: 0
+      once: 0
+      probability: 1
+      requiredFlag: 
+      blockedFlag: 
+      presentation: 
+      description: 
+    eventPositioned: 0
+    eventPosition: {x: 0, y: 0}
+    triggerOnly: 0
+    eventBindingEdited: 0
+    eventTriggerId: 
   - id: game.unknown.sender
-    chapter: Training und Entdeckungen
+    chapter: Training
     storyStepId: overview.0
     title: Unbekannter Absender
-    position: {x: 1456, y: 4095}
+    position: {x: 1320, y: 4400}
     status: 2
     purpose: 
     questions: 
@@ -2431,11 +4153,30 @@ MonoBehaviour:
     choices: []
     overviewOnly: 0
     answerBoardLayout: 1
+    eventInfo:
+      enabled: 0
+      kind: 0
+      eventId: 
+      pool: 
+      fromLevel: 1
+      toLevel: 9
+      random: 0
+      once: 0
+      probability: 1
+      requiredFlag: 
+      blockedFlag: 
+      presentation: 
+      description: 
+    eventPositioned: 0
+    eventPosition: {x: 0, y: 0}
+    triggerOnly: 0
+    eventBindingEdited: 0
+    eventTriggerId: 
   - id: game.unidentified.transmission
-    chapter: Training und Entdeckungen
+    chapter: Training
     storyStepId: overview.0
     title: "Unbekannte \xDCbertragung"
-    position: {x: 2184, y: 4095}
+    position: {x: 1640, y: 4400}
     status: 2
     purpose: 
     questions: 
@@ -2456,11 +4197,30 @@ MonoBehaviour:
     choices: []
     overviewOnly: 0
     answerBoardLayout: 1
+    eventInfo:
+      enabled: 0
+      kind: 0
+      eventId: 
+      pool: 
+      fromLevel: 1
+      toLevel: 9
+      random: 0
+      once: 0
+      probability: 1
+      requiredFlag: 
+      blockedFlag: 
+      presentation: 
+      description: 
+    eventPositioned: 0
+    eventPosition: {x: 0, y: 0}
+    triggerOnly: 0
+    eventBindingEdited: 0
+    eventTriggerId: 
   - id: game.incoming.transmission
-    chapter: Training und Entdeckungen
+    chapter: Training
     storyStepId: overview.0
     title: "Eingehende \xDCbertragung"
-    position: {x: 0, y: 4387.5}
+    position: {x: 1940, y: 4400}
     status: 2
     purpose: 
     questions: 
@@ -2481,11 +4241,30 @@ MonoBehaviour:
     choices: []
     overviewOnly: 0
     answerBoardLayout: 1
+    eventInfo:
+      enabled: 0
+      kind: 0
+      eventId: 
+      pool: 
+      fromLevel: 1
+      toLevel: 9
+      random: 0
+      once: 0
+      probability: 1
+      requiredFlag: 
+      blockedFlag: 
+      presentation: 
+      description: 
+    eventPositioned: 0
+    eventPosition: {x: 0, y: 0}
+    triggerOnly: 0
+    eventBindingEdited: 0
+    eventTriggerId: 
   - id: cargo.dialog.repeat
     chapter: Rhekk
     storyStepId: overview.7
-    title: "Seil an die Kapsel. Freies Ende zum Schiff. FESTMACHEN. Einste\u2026"
-    position: {x: 0, y: 585}
+    title: "VERBINDEN, Seil zum Schiff tragen, unten FESTMACHEN und einste\u2026"
+    position: {x: 0, y: 680}
     status: 2
     purpose: 
     questions: 
@@ -2506,11 +4285,30 @@ MonoBehaviour:
     choices: []
     overviewOnly: 0
     answerBoardLayout: 1
+    eventInfo:
+      enabled: 0
+      kind: 0
+      eventId: 
+      pool: 
+      fromLevel: 1
+      toLevel: 9
+      random: 0
+      once: 0
+      probability: 1
+      requiredFlag: 
+      blockedFlag: 
+      presentation: 
+      description: 
+    eventPositioned: 0
+    eventPosition: {x: 0, y: 0}
+    triggerOnly: 0
+    eventBindingEdited: 0
+    eventTriggerId: 
   - id: cargo.radio.tow.body
     chapter: Funk
     storyStepId: overview.8
-    title: "Verbindung hergestellt. Ziel: markierte Frachtablage neben den\u2026"
-    position: {x: 728, y: 0}
+    title: "Setz die Kapsel sanft auf der markierten Ablage neben den Stat\u2026"
+    position: {x: 0, y: 1340}
     status: 2
     purpose: 
     questions: 
@@ -2531,11 +4329,30 @@ MonoBehaviour:
     choices: []
     overviewOnly: 0
     answerBoardLayout: 1
+    eventInfo:
+      enabled: 0
+      kind: 0
+      eventId: 
+      pool: 
+      fromLevel: 1
+      toLevel: 9
+      random: 0
+      once: 0
+      probability: 1
+      requiredFlag: 
+      blockedFlag: 
+      presentation: 
+      description: 
+    eventPositioned: 0
+    eventPosition: {x: 0, y: 0}
+    triggerOnly: 0
+    eventBindingEdited: 0
+    eventTriggerId: 
   - id: cargo.radio.delivered.body
     chapter: Funk
     storyStepId: overview.9
-    title: "Kapsel steht sicher. Schleppkupplung gel\xF6st."
-    position: {x: 1456, y: 0}
+    title: "Kapsel sicher abgesetzt, Seil gel\xF6st."
+    position: {x: 0, y: 1620}
     status: 2
     purpose: 
     questions: 
@@ -2556,11 +4373,30 @@ MonoBehaviour:
     choices: []
     overviewOnly: 0
     answerBoardLayout: 1
+    eventInfo:
+      enabled: 0
+      kind: 0
+      eventId: 
+      pool: 
+      fromLevel: 1
+      toLevel: 9
+      random: 0
+      once: 0
+      probability: 1
+      requiredFlag: 
+      blockedFlag: 
+      presentation: 
+      description: 
+    eventPositioned: 0
+    eventPosition: {x: 0, y: 0}
+    triggerOnly: 0
+    eventBindingEdited: 0
+    eventTriggerId: 
   - id: cargo.radio.complete.body
     chapter: Funk
     storyStepId: overview.10
-    title: Rhekk ist bei der Registrierung angekommen.
-    position: {x: 2184, y: 0}
+    title: Rhekk wartet bei der Registrierung; der Pilot bleibt vermisst.
+    position: {x: 0, y: 1900}
     status: 2
     purpose: 
     questions: 
@@ -2581,11 +4417,30 @@ MonoBehaviour:
     choices: []
     overviewOnly: 0
     answerBoardLayout: 1
+    eventInfo:
+      enabled: 0
+      kind: 0
+      eventId: 
+      pool: 
+      fromLevel: 1
+      toLevel: 9
+      random: 0
+      once: 0
+      probability: 1
+      requiredFlag: 
+      blockedFlag: 
+      presentation: 
+      description: 
+    eventPositioned: 0
+    eventPosition: {x: 0, y: 0}
+    triggerOnly: 0
+    eventBindingEdited: 0
+    eventTriggerId: 
   - id: cargo.radio.failed.body
     chapter: Funk
     storyStepId: overview.8
-    title: "Kapsel zerst\xF6rt oder Schleppschiff verloren. Rettung fehlgesch\u2026"
-    position: {x: 0, y: 292.5}
+    title: 'Kapsel oder Schleppschiff verloren: Rettung fehlgeschlagen.'
+    position: {x: 0, y: 2180}
     status: 2
     purpose: 
     questions: 
@@ -2606,11 +4461,30 @@ MonoBehaviour:
     choices: []
     overviewOnly: 0
     answerBoardLayout: 1
+    eventInfo:
+      enabled: 0
+      kind: 0
+      eventId: 
+      pool: 
+      fromLevel: 1
+      toLevel: 9
+      random: 0
+      once: 0
+      probability: 1
+      requiredFlag: 
+      blockedFlag: 
+      presentation: 
+      description: 
+    eventPositioned: 0
+    eventPosition: {x: 0, y: 0}
+    triggerOnly: 0
+    eventBindingEdited: 0
+    eventTriggerId: 
   - id: overview.0
-    chapter: Ablauf
+    chapter: Training
     storyStepId: 
     title: Landing-Pad-Training
-    position: {x: -4.961027, y: 0.7658334}
+    position: {x: -0, y: 0}
     status: 2
     purpose: "Bestehender Spielablauf. Zugeh\xF6rige Gespr\xE4che stehen in den jeweiligen
       Kapiteln. Gameplay-Abnahme separat."
@@ -2641,8 +4515,27 @@ MonoBehaviour:
       position: {x: 0, y: 0}
     overviewOnly: 1
     answerBoardLayout: 0
+    eventInfo:
+      enabled: 0
+      kind: 0
+      eventId: 
+      pool: 
+      fromLevel: 1
+      toLevel: 9
+      random: 0
+      once: 0
+      probability: 1
+      requiredFlag: 
+      blockedFlag: 
+      presentation: 
+      description: 
+    eventPositioned: 0
+    eventPosition: {x: 0, y: 0}
+    triggerOnly: 0
+    eventBindingEdited: 0
+    eventTriggerId: 
   - id: overview.1
-    chapter: Ablauf
+    chapter: Training
     storyStepId: 
     title: Ins All aufbrechen
     position: {x: 280, y: 0}
@@ -2676,11 +4569,30 @@ MonoBehaviour:
       position: {x: 0, y: 0}
     overviewOnly: 1
     answerBoardLayout: 0
+    eventInfo:
+      enabled: 0
+      kind: 0
+      eventId: 
+      pool: 
+      fromLevel: 1
+      toLevel: 9
+      random: 0
+      once: 0
+      probability: 1
+      requiredFlag: 
+      blockedFlag: 
+      presentation: 
+      description: 
+    eventPositioned: 0
+    eventPosition: {x: 0, y: 0}
+    triggerOnly: 0
+    eventBindingEdited: 0
+    eventTriggerId: 
   - id: overview.2
-    chapter: Ablauf
+    chapter: Mond
     storyStepId: 
     title: Mond entdecken und landen
-    position: {x: 561.14844, y: -1.1484627}
+    position: {x: 0, y: 0}
     status: 2
     purpose: "Bestehender Spielablauf. Zugeh\xF6rige Gespr\xE4che stehen in den jeweiligen
       Kapiteln. Gameplay-Abnahme separat."
@@ -2711,11 +4623,30 @@ MonoBehaviour:
       position: {x: 0, y: 0}
     overviewOnly: 1
     answerBoardLayout: 0
+    eventInfo:
+      enabled: 0
+      kind: 0
+      eventId: 
+      pool: 
+      fromLevel: 1
+      toLevel: 9
+      random: 0
+      once: 0
+      probability: 1
+      requiredFlag: 
+      blockedFlag: 
+      presentation: 
+      description: 
+    eventPositioned: 0
+    eventPosition: {x: 0, y: 0}
+    triggerOnly: 0
+    eventBindingEdited: 0
+    eventTriggerId: 
   - id: overview.3
-    chapter: Ablauf
+    chapter: Mond
     storyStepId: 
     title: Aussteigen
-    position: {x: 840, y: 0}
+    position: {x: 280, y: 0}
     status: 2
     purpose: "Bestehender Spielablauf. Zugeh\xF6rige Gespr\xE4che stehen in den jeweiligen
       Kapiteln. Gameplay-Abnahme separat."
@@ -2746,11 +4677,30 @@ MonoBehaviour:
       position: {x: 0, y: 0}
     overviewOnly: 1
     answerBoardLayout: 0
+    eventInfo:
+      enabled: 0
+      kind: 0
+      eventId: 
+      pool: 
+      fromLevel: 1
+      toLevel: 9
+      random: 0
+      once: 0
+      probability: 1
+      requiredFlag: 
+      blockedFlag: 
+      presentation: 
+      description: 
+    eventPositioned: 0
+    eventPosition: {x: 0, y: 0}
+    triggerOnly: 0
+    eventBindingEdited: 0
+    eventTriggerId: 
   - id: overview.4
-    chapter: Ablauf
+    chapter: Mond
     storyStepId: 
     title: Verlassenes Schiff finden
-    position: {x: 0, y: 150}
+    position: {x: 560, y: 0}
     status: 2
     purpose: "Bestehender Spielablauf. Zugeh\xF6rige Gespr\xE4che stehen in den jeweiligen
       Kapiteln. Gameplay-Abnahme separat."
@@ -2781,11 +4731,30 @@ MonoBehaviour:
       position: {x: 0, y: 0}
     overviewOnly: 1
     answerBoardLayout: 0
+    eventInfo:
+      enabled: 0
+      kind: 0
+      eventId: 
+      pool: 
+      fromLevel: 1
+      toLevel: 9
+      random: 0
+      once: 0
+      probability: 1
+      requiredFlag: 
+      blockedFlag: 
+      presentation: 
+      description: 
+    eventPositioned: 0
+    eventPosition: {x: 0, y: 0}
+    triggerOnly: 0
+    eventBindingEdited: 0
+    eventTriggerId: 
   - id: overview.5
     chapter: Ablauf
     storyStepId: 
     title: Station erreichen
-    position: {x: 280, y: 150}
+    position: {x: 280, y: 160}
     status: 2
     purpose: "Bestehender Spielablauf. Zugeh\xF6rige Gespr\xE4che stehen in den jeweiligen
       Kapiteln. Gameplay-Abnahme separat."
@@ -2816,11 +4785,30 @@ MonoBehaviour:
       position: {x: 0, y: 0}
     overviewOnly: 1
     answerBoardLayout: 0
+    eventInfo:
+      enabled: 0
+      kind: 0
+      eventId: 
+      pool: 
+      fromLevel: 1
+      toLevel: 9
+      random: 0
+      once: 0
+      probability: 1
+      requiredFlag: 
+      blockedFlag: 
+      presentation: 
+      description: 
+    eventPositioned: 0
+    eventPosition: {x: 0, y: 0}
+    triggerOnly: 0
+    eventBindingEdited: 0
+    eventTriggerId: 
   - id: overview.6
     chapter: Ablauf
     storyStepId: 
     title: Registrierung und Funk
-    position: {x: 560, y: 150}
+    position: {x: 560, y: 160}
     status: 2
     purpose: "Bestehender Spielablauf. Zugeh\xF6rige Gespr\xE4che stehen in den jeweiligen
       Kapiteln. Gameplay-Abnahme separat."
@@ -2851,11 +4839,30 @@ MonoBehaviour:
       position: {x: 0, y: 0}
     overviewOnly: 1
     answerBoardLayout: 0
+    eventInfo:
+      enabled: 0
+      kind: 0
+      eventId: 
+      pool: 
+      fromLevel: 1
+      toLevel: 9
+      random: 0
+      once: 0
+      probability: 1
+      requiredFlag: 
+      blockedFlag: 
+      presentation: 
+      description: 
+    eventPositioned: 0
+    eventPosition: {x: 0, y: 0}
+    triggerOnly: 0
+    eventBindingEdited: 0
+    eventTriggerId: 
   - id: overview.7
     chapter: Ablauf
     storyStepId: 
     title: "Rhekk am Au\xDFenposten finden"
-    position: {x: 840, y: 150}
+    position: {x: 840, y: 160}
     status: 2
     purpose: "Bestehender Spielablauf. Zugeh\xF6rige Gespr\xE4che stehen in den jeweiligen
       Kapiteln. Gameplay-Abnahme separat."
@@ -2886,6 +4893,25 @@ MonoBehaviour:
       position: {x: 0, y: 0}
     overviewOnly: 1
     answerBoardLayout: 0
+    eventInfo:
+      enabled: 0
+      kind: 0
+      eventId: 
+      pool: 
+      fromLevel: 1
+      toLevel: 9
+      random: 0
+      once: 0
+      probability: 1
+      requiredFlag: 
+      blockedFlag: 
+      presentation: 
+      description: 
+    eventPositioned: 0
+    eventPosition: {x: 0, y: 0}
+    triggerOnly: 0
+    eventBindingEdited: 0
+    eventTriggerId: 
   - id: overview.8
     chapter: Ablauf
     storyStepId: 
@@ -2921,6 +4947,25 @@ MonoBehaviour:
       position: {x: 0, y: 0}
     overviewOnly: 1
     answerBoardLayout: 0
+    eventInfo:
+      enabled: 0
+      kind: 0
+      eventId: 
+      pool: 
+      fromLevel: 1
+      toLevel: 9
+      random: 0
+      once: 0
+      probability: 1
+      requiredFlag: 
+      blockedFlag: 
+      presentation: 
+      description: 
+    eventPositioned: 0
+    eventPosition: {x: 0, y: 0}
+    triggerOnly: 0
+    eventBindingEdited: 0
+    eventTriggerId: 
   - id: overview.9
     chapter: Ablauf
     storyStepId: 
@@ -2956,6 +5001,25 @@ MonoBehaviour:
       position: {x: 0, y: 0}
     overviewOnly: 1
     answerBoardLayout: 0
+    eventInfo:
+      enabled: 0
+      kind: 0
+      eventId: 
+      pool: 
+      fromLevel: 1
+      toLevel: 9
+      random: 0
+      once: 0
+      probability: 1
+      requiredFlag: 
+      blockedFlag: 
+      presentation: 
+      description: 
+    eventPositioned: 0
+    eventPosition: {x: 0, y: 0}
+    triggerOnly: 0
+    eventBindingEdited: 0
+    eventTriggerId: 
   - id: overview.10
     chapter: Ablauf
     storyStepId: 
@@ -2991,6 +5055,25 @@ MonoBehaviour:
       position: {x: 0, y: 0}
     overviewOnly: 1
     answerBoardLayout: 0
+    eventInfo:
+      enabled: 0
+      kind: 0
+      eventId: 
+      pool: 
+      fromLevel: 1
+      toLevel: 9
+      random: 0
+      once: 0
+      probability: 1
+      requiredFlag: 
+      blockedFlag: 
+      presentation: 
+      description: 
+    eventPositioned: 0
+    eventPosition: {x: 0, y: 0}
+    triggerOnly: 0
+    eventBindingEdited: 0
+    eventTriggerId: 
   - id: overview.11
     chapter: Ablauf
     storyStepId: 
@@ -3029,11 +5112,30 @@ MonoBehaviour:
       position: {x: 0, y: 0}
     overviewOnly: 1
     answerBoardLayout: 0
+    eventInfo:
+      enabled: 0
+      kind: 0
+      eventId: 
+      pool: 
+      fromLevel: 1
+      toLevel: 9
+      random: 0
+      once: 0
+      probability: 1
+      requiredFlag: 
+      blockedFlag: 
+      presentation: 
+      description: 
+    eventPositioned: 0
+    eventPosition: {x: 0, y: 0}
+    triggerOnly: 0
+    eventBindingEdited: 0
+    eventTriggerId: 
   - id: overview.12
     chapter: Ablauf
     storyStepId: 
     title: "Neues Raumschiff / Bildschirm-Enth\xFCllung"
-    position: {x: 0, y: 450}
+    position: {x: 0, y: 440}
     status: 1
     purpose: "Grobe Richtung vereinbart; Storydetails noch offen.\n\nMobile dreht
       auf Landscape; PC \xF6ffnet den Hochkantbereich auf den ganzen Bildschirm.
@@ -3065,11 +5167,30 @@ MonoBehaviour:
       position: {x: 0, y: 0}
     overviewOnly: 1
     answerBoardLayout: 0
+    eventInfo:
+      enabled: 0
+      kind: 0
+      eventId: 
+      pool: 
+      fromLevel: 1
+      toLevel: 9
+      random: 0
+      once: 0
+      probability: 1
+      requiredFlag: 
+      blockedFlag: 
+      presentation: 
+      description: 
+    eventPositioned: 0
+    eventPosition: {x: 0, y: 0}
+    triggerOnly: 0
+    eventBindingEdited: 0
+    eventTriggerId: 
   - id: overview.13
     chapter: Ablauf
     storyStepId: 
     title: Eigenes Zuhause
-    position: {x: 279, y: 449}
+    position: {x: 280, y: 440}
     status: 1
     purpose: "Grobe Richtung vereinbart; Storydetails noch offen.\n\nKleine eigene
       Station beziehungsweise Au\xDFenposten; Storyweg noch offen."
@@ -3091,3 +5212,1213 @@ MonoBehaviour:
     choices: []
     overviewOnly: 1
     answerBoardLayout: 0
+    eventInfo:
+      enabled: 0
+      kind: 0
+      eventId: 
+      pool: 
+      fromLevel: 1
+      toLevel: 9
+      random: 0
+      once: 0
+      probability: 1
+      requiredFlag: 
+      blockedFlag: 
+      presentation: 
+      description: 
+    eventPositioned: 0
+    eventPosition: {x: 0, y: 0}
+    triggerOnly: 0
+    eventBindingEdited: 0
+    eventTriggerId: 
+  - id: story.event.training.silence
+    chapter: Training
+    storyStepId: overview.0
+    title: ...
+    position: {x: 740, y: 1700}
+    status: 2
+    purpose: 
+    questions: 
+    channel: 0
+    speaker: {fileID: 11400000, guid: 149b2e3da5e479940a2910bf232e4d67, type: 2}
+    textKey: story.event.training.silence
+    sourceReference: ...
+    sourcePath: Assets/Scenes/MainScene.unity
+    sourceProperty: 'earthAsides.Array.data[0]'
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices: []
+    overviewOnly: 0
+    answerBoardLayout: 1
+    eventInfo:
+      enabled: 1
+      kind: 4
+      eventId: late-training
+      pool: earth-asides
+      fromLevel: 10
+      toLevel: 0
+      random: 1
+      once: 0
+      probability: 0.25
+      requiredFlag: 
+      blockedFlag: 
+      presentation: Kurzer Hinweis
+      description: Ab Level 10 maximal ein Zufallsversuch je neuem Level; keine direkte
+        Wiederholung des letzten Kommentars.
+    eventPositioned: 1
+    eventPosition: {x: 20, y: 2340}
+    triggerOnly: 0
+    eventBindingEdited: 0
+    eventTriggerId: trigger.4.earth-asides
+  - id: trigger.2.discovery-ZeroG
+    chapter: Training
+    storyStepId: 
+    title: "Ausl\xF6ser"
+    position: {x: 300, y: 2880}
+    status: 2
+    purpose: 
+    questions: 
+    channel: 0
+    speaker: {fileID: 0}
+    textKey: 
+    sourceReference: 
+    sourcePath: Assets/Scenes/MainScene.unity
+    sourceProperty: discoveryMessages.Array.data[0].text
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices: []
+    overviewOnly: 0
+    answerBoardLayout: 1
+    eventInfo:
+      enabled: 1
+      kind: 2
+      eventId: ZeroG
+      pool: discovery-ZeroG
+      fromLevel: 1
+      toLevel: 9
+      random: 0
+      once: 1
+      probability: 1
+      requiredFlag: 
+      blockedFlag: story.ack.ZeroG
+      presentation: SlowMotion
+      description: "Erste Entdeckung: ZeroG. Unbest\xE4tigte Meldungen k\xF6nnen
+        nach einer Unterbrechung erneut erscheinen; tats\xE4chliche N\xE4he, Flugphase
+        und Anzeigetiming pr\xFCft das Spiel."
+    eventPositioned: 0
+    eventPosition: {x: 0, y: 0}
+    triggerOnly: 1
+    eventBindingEdited: 0
+    eventTriggerId: 
+  - id: trigger.2.discovery-Moon
+    chapter: Mond
+    storyStepId: 
+    title: "Ausl\xF6ser"
+    position: {x: 0, y: 0}
+    status: 2
+    purpose: 
+    questions: 
+    channel: 0
+    speaker: {fileID: 0}
+    textKey: 
+    sourceReference: 
+    sourcePath: Assets/Scenes/MainScene.unity
+    sourceProperty: discoveryMessages.Array.data[1].text
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices: []
+    overviewOnly: 0
+    answerBoardLayout: 1
+    eventInfo:
+      enabled: 1
+      kind: 2
+      eventId: Moon
+      pool: discovery-Moon
+      fromLevel: 1
+      toLevel: 9
+      random: 0
+      once: 1
+      probability: 1
+      requiredFlag: 
+      blockedFlag: story.ack.Moon
+      presentation: SlowMotion
+      description: "Erste Entdeckung: Moon. Unbest\xE4tigte Meldungen k\xF6nnen nach
+        einer Unterbrechung erneut erscheinen; tats\xE4chliche N\xE4he, Flugphase
+        und Anzeigetiming pr\xFCft das Spiel."
+    eventPositioned: 0
+    eventPosition: {x: 0, y: 0}
+    triggerOnly: 1
+    eventBindingEdited: 0
+    eventTriggerId: 
+  - id: trigger.2.discovery-MoonLanding
+    chapter: Mond
+    storyStepId: 
+    title: "Ausl\xF6ser"
+    position: {x: 0, y: 280}
+    status: 2
+    purpose: 
+    questions: 
+    channel: 0
+    speaker: {fileID: 0}
+    textKey: 
+    sourceReference: 
+    sourcePath: Assets/Scenes/MainScene.unity
+    sourceProperty: discoveryMessages.Array.data[2].text
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices: []
+    overviewOnly: 0
+    answerBoardLayout: 1
+    eventInfo:
+      enabled: 1
+      kind: 2
+      eventId: MoonLanding
+      pool: discovery-MoonLanding
+      fromLevel: 1
+      toLevel: 9
+      random: 0
+      once: 1
+      probability: 1
+      requiredFlag: 
+      blockedFlag: story.ack.MoonLanding
+      presentation: LandingResults
+      description: "Erste Entdeckung: MoonLanding. Unbest\xE4tigte Meldungen k\xF6nnen
+        nach einer Unterbrechung erneut erscheinen; tats\xE4chliche N\xE4he, Flugphase
+        und Anzeigetiming pr\xFCft das Spiel."
+    eventPositioned: 0
+    eventPosition: {x: 0, y: 0}
+    triggerOnly: 1
+    eventBindingEdited: 0
+    eventTriggerId: 
+  - id: trigger.2.discovery-EVA
+    chapter: Mond
+    storyStepId: 
+    title: "Ausl\xF6ser"
+    position: {x: 0, y: 560}
+    status: 2
+    purpose: 
+    questions: 
+    channel: 0
+    speaker: {fileID: 0}
+    textKey: 
+    sourceReference: 
+    sourcePath: Assets/Scenes/MainScene.unity
+    sourceProperty: discoveryMessages.Array.data[3].text
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices: []
+    overviewOnly: 0
+    answerBoardLayout: 1
+    eventInfo:
+      enabled: 1
+      kind: 2
+      eventId: EVA
+      pool: discovery-EVA
+      fromLevel: 1
+      toLevel: 9
+      random: 0
+      once: 1
+      probability: 1
+      requiredFlag: 
+      blockedFlag: story.ack.EVA
+      presentation: Overlay
+      description: "Erste Entdeckung: EVA. Unbest\xE4tigte Meldungen k\xF6nnen nach
+        einer Unterbrechung erneut erscheinen; tats\xE4chliche N\xE4he, Flugphase
+        und Anzeigetiming pr\xFCft das Spiel."
+    eventPositioned: 0
+    eventPosition: {x: 0, y: 0}
+    triggerOnly: 1
+    eventBindingEdited: 0
+    eventTriggerId: 
+  - id: trigger.2.discovery-AbandonedShip
+    chapter: Mond
+    storyStepId: 
+    title: "Ausl\xF6ser"
+    position: {x: 0, y: 840}
+    status: 2
+    purpose: 
+    questions: 
+    channel: 0
+    speaker: {fileID: 0}
+    textKey: 
+    sourceReference: 
+    sourcePath: Assets/Scenes/MainScene.unity
+    sourceProperty: discoveryMessages.Array.data[4].text
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices: []
+    overviewOnly: 0
+    answerBoardLayout: 1
+    eventInfo:
+      enabled: 1
+      kind: 2
+      eventId: AbandonedShip
+      pool: discovery-AbandonedShip
+      fromLevel: 1
+      toLevel: 9
+      random: 0
+      once: 1
+      probability: 1
+      requiredFlag: 
+      blockedFlag: story.ack.AbandonedShip
+      presentation: Immediate
+      description: "Erste Entdeckung: AbandonedShip. Unbest\xE4tigte Meldungen k\xF6nnen
+        nach einer Unterbrechung erneut erscheinen; tats\xE4chliche N\xE4he, Flugphase
+        und Anzeigetiming pr\xFCft das Spiel."
+    eventPositioned: 0
+    eventPosition: {x: 0, y: 0}
+    triggerOnly: 1
+    eventBindingEdited: 0
+    eventTriggerId: 
+  - id: trigger.2.discovery-UFO
+    chapter: Funk
+    storyStepId: 
+    title: "Ausl\xF6ser"
+    position: {x: 0, y: 0}
+    status: 2
+    purpose: 
+    questions: 
+    channel: 0
+    speaker: {fileID: 0}
+    textKey: 
+    sourceReference: 
+    sourcePath: Assets/Scenes/MainScene.unity
+    sourceProperty: discoveryMessages.Array.data[5].text
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices: []
+    overviewOnly: 0
+    answerBoardLayout: 1
+    eventInfo:
+      enabled: 1
+      kind: 2
+      eventId: UFO
+      pool: discovery-UFO
+      fromLevel: 1
+      toLevel: 9
+      random: 0
+      once: 1
+      probability: 1
+      requiredFlag: 
+      blockedFlag: story.ack.UFO
+      presentation: Immediate
+      description: "Erste Entdeckung: UFO. Unbest\xE4tigte Meldungen k\xF6nnen nach
+        einer Unterbrechung erneut erscheinen; tats\xE4chliche N\xE4he, Flugphase
+        und Anzeigetiming pr\xFCft das Spiel."
+    eventPositioned: 0
+    eventPosition: {x: 0, y: 0}
+    triggerOnly: 1
+    eventBindingEdited: 0
+    eventTriggerId: 
+  - id: trigger.2.discovery-Station
+    chapter: Funk
+    storyStepId: 
+    title: "Ausl\xF6ser"
+    position: {x: 0, y: 280}
+    status: 2
+    purpose: 
+    questions: 
+    channel: 0
+    speaker: {fileID: 0}
+    textKey: 
+    sourceReference: 
+    sourcePath: Assets/Scenes/MainScene.unity
+    sourceProperty: discoveryMessages.Array.data[6].text
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices: []
+    overviewOnly: 0
+    answerBoardLayout: 1
+    eventInfo:
+      enabled: 1
+      kind: 2
+      eventId: Station
+      pool: discovery-Station
+      fromLevel: 1
+      toLevel: 9
+      random: 0
+      once: 1
+      probability: 1
+      requiredFlag: 
+      blockedFlag: story.ack.Station
+      presentation: Paused
+      description: "Erste Entdeckung: Station. Unbest\xE4tigte Meldungen k\xF6nnen
+        nach einer Unterbrechung erneut erscheinen; tats\xE4chliche N\xE4he, Flugphase
+        und Anzeigetiming pr\xFCft das Spiel."
+    eventPositioned: 0
+    eventPosition: {x: 0, y: 0}
+    triggerOnly: 1
+    eventBindingEdited: 0
+    eventTriggerId: 
+  - id: trigger.2.discovery-StationLanding
+    chapter: Funk
+    storyStepId: 
+    title: "Ausl\xF6ser"
+    position: {x: 0, y: 560}
+    status: 2
+    purpose: 
+    questions: 
+    channel: 0
+    speaker: {fileID: 0}
+    textKey: 
+    sourceReference: 
+    sourcePath: Assets/Scenes/MainScene.unity
+    sourceProperty: discoveryMessages.Array.data[7].text
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices: []
+    overviewOnly: 0
+    answerBoardLayout: 1
+    eventInfo:
+      enabled: 1
+      kind: 2
+      eventId: StationLanding
+      pool: discovery-StationLanding
+      fromLevel: 1
+      toLevel: 9
+      random: 0
+      once: 1
+      probability: 1
+      requiredFlag: 
+      blockedFlag: story.ack.StationLanding
+      presentation: LandingResults
+      description: "Erste Entdeckung: StationLanding. Unbest\xE4tigte Meldungen k\xF6nnen
+        nach einer Unterbrechung erneut erscheinen; tats\xE4chliche N\xE4he, Flugphase
+        und Anzeigetiming pr\xFCft das Spiel."
+    eventPositioned: 0
+    eventPosition: {x: 0, y: 0}
+    triggerOnly: 1
+    eventBindingEdited: 0
+    eventTriggerId: 
+  - id: trigger.7.zeroGAfterDepartureMessage
+    chapter: Training
+    storyStepId: 
+    title: "Ausl\xF6ser"
+    position: {x: 300, y: 4060}
+    status: 2
+    purpose: 
+    questions: 
+    channel: 0
+    speaker: {fileID: 0}
+    textKey: 
+    sourceReference: 
+    sourcePath: Assets/Scenes/MainScene.unity
+    sourceProperty: zeroGAfterDepartureMessage
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices: []
+    overviewOnly: 0
+    answerBoardLayout: 1
+    eventInfo:
+      enabled: 1
+      kind: 7
+      eventId: ZeroG
+      pool: zeroGAfterDepartureMessage
+      fromLevel: 1
+      toLevel: 9
+      random: 0
+      once: 1
+      probability: 1
+      requiredFlag: story.earth.9
+      blockedFlag: story.ack.ZeroG
+      presentation: "Spielabh\xE4ngige Meldung"
+      description: "Alternative erste Schwerelosigkeitsmeldung nach best\xE4tigter
+        Level-9-\xDCbertragung."
+    eventPositioned: 0
+    eventPosition: {x: 0, y: 0}
+    triggerOnly: 1
+    eventBindingEdited: 0
+    eventTriggerId: 
+  - id: trigger.6.earthReturnMessage
+    chapter: Training
+    storyStepId: 
+    title: "Ausl\xF6ser"
+    position: {x: 1200, y: 3740}
+    status: 2
+    purpose: 
+    questions: 
+    channel: 0
+    speaker: {fileID: 0}
+    textKey: 
+    sourceReference: 
+    sourcePath: Assets/Scenes/MainScene.unity
+    sourceProperty: earthReturnMessage
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices: []
+    overviewOnly: 0
+    answerBoardLayout: 1
+    eventInfo:
+      enabled: 1
+      kind: 6
+      eventId: earth-return
+      pool: earthReturnMessage
+      fromLevel: 1
+      toLevel: 9
+      random: 0
+      once: 1
+      probability: 1
+      requiredFlag: story.companyLanderReturned
+      blockedFlag: story.ack.CompanyReturn
+      presentation: "Spielabh\xE4ngige Meldung"
+      description: "Nach R\xFCckkehr des gefundenen Firmenschiffs zur Erde; Anzeige
+        bei den Landeergebnissen beziehungsweise als best\xE4tigbares Gespr\xE4ch."
+    eventPositioned: 0
+    eventPosition: {x: 0, y: 0}
+    triggerOnly: 1
+    eventBindingEdited: 0
+    eventTriggerId: 
+  - id: trigger.5.moonKnownEarthMessage
+    chapter: Training
+    storyStepId: 
+    title: "Ausl\xF6ser"
+    position: {x: 300, y: 3740}
+    status: 2
+    purpose: 
+    questions: 
+    channel: 0
+    speaker: {fileID: 0}
+    textKey: 
+    sourceReference: 
+    sourcePath: Assets/Scenes/MainScene.unity
+    sourceProperty: moonKnownEarthMessage
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices: []
+    overviewOnly: 0
+    answerBoardLayout: 1
+    eventInfo:
+      enabled: 1
+      kind: 5
+      eventId: known-moon
+      pool: moonKnownEarthMessage
+      fromLevel: 1
+      toLevel: 9
+      random: 0
+      once: 0
+      probability: 1
+      requiredFlag: discovery.Moon
+      blockedFlag: 
+      presentation: "Spielabh\xE4ngige Meldung"
+      description: "Ersetzt normale Trainingsstart-Kommentare, wenn der Mond bereits
+        bekannt ist; Level\xFCbertragungen und Level 10+ haben Vorrang."
+    eventPositioned: 0
+    eventPosition: {x: 0, y: 0}
+    triggerOnly: 1
+    eventBindingEdited: 0
+    eventTriggerId: 
+  - id: trigger.0.earth-level-1
+    chapter: Training
+    storyStepId: 
+    title: "Ausl\xF6ser"
+    position: {x: 20, y: 160}
+    status: 2
+    purpose: 
+    questions: 
+    channel: 0
+    speaker: {fileID: 0}
+    textKey: 
+    sourceReference: 
+    sourcePath: Assets/Scenes/MainScene.unity
+    sourceProperty: 'earthMessages.Array.data[0].messages.Array.data[0]'
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices: []
+    overviewOnly: 0
+    answerBoardLayout: 1
+    eventInfo:
+      enabled: 1
+      kind: 0
+      eventId: level-start
+      pool: earth-level-1
+      fromLevel: 1
+      toLevel: 1
+      random: 1
+      once: 0
+      probability: 1
+      requiredFlag: 
+      blockedFlag: discovery.Moon
+      presentation: Kurzer Hinweis
+      description: "Zufallskommentar beim Trainingsstart; h\xF6chste passende Levelgruppe.
+        \xDCbertragungen in Level 3/6/9 haben Vorrang, bei bekanntem Mond wird dieser
+        Kommentar ersetzt."
+    eventPositioned: 0
+    eventPosition: {x: 0, y: 0}
+    triggerOnly: 1
+    eventBindingEdited: 0
+    eventTriggerId: 
+  - id: trigger.0.earth-level-2
+    chapter: Training
+    storyStepId: 
+    title: "Ausl\xF6ser"
+    position: {x: 760, y: 160}
+    status: 2
+    purpose: 
+    questions: 
+    channel: 0
+    speaker: {fileID: 0}
+    textKey: 
+    sourceReference: 
+    sourcePath: Assets/Scenes/MainScene.unity
+    sourceProperty: 'earthMessages.Array.data[1].messages.Array.data[0]'
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices: []
+    overviewOnly: 0
+    answerBoardLayout: 1
+    eventInfo:
+      enabled: 1
+      kind: 0
+      eventId: level-start
+      pool: earth-level-2
+      fromLevel: 2
+      toLevel: 2
+      random: 1
+      once: 0
+      probability: 1
+      requiredFlag: 
+      blockedFlag: discovery.Moon
+      presentation: Kurzer Hinweis
+      description: "Zufallskommentar beim Trainingsstart; h\xF6chste passende Levelgruppe.
+        \xDCbertragungen in Level 3/6/9 haben Vorrang, bei bekanntem Mond wird dieser
+        Kommentar ersetzt."
+    eventPositioned: 0
+    eventPosition: {x: 0, y: 0}
+    triggerOnly: 1
+    eventBindingEdited: 0
+    eventTriggerId: 
+  - id: trigger.0.earth-level-4
+    chapter: Training
+    storyStepId: 
+    title: "Ausl\xF6ser"
+    position: {x: 20, y: 660}
+    status: 2
+    purpose: 
+    questions: 
+    channel: 0
+    speaker: {fileID: 0}
+    textKey: 
+    sourceReference: 
+    sourcePath: Assets/Scenes/MainScene.unity
+    sourceProperty: 'earthMessages.Array.data[2].messages.Array.data[0]'
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices: []
+    overviewOnly: 0
+    answerBoardLayout: 1
+    eventInfo:
+      enabled: 1
+      kind: 0
+      eventId: level-start
+      pool: earth-level-4
+      fromLevel: 4
+      toLevel: 4
+      random: 1
+      once: 0
+      probability: 1
+      requiredFlag: 
+      blockedFlag: discovery.Moon
+      presentation: Kurzer Hinweis
+      description: "Zufallskommentar beim Trainingsstart; h\xF6chste passende Levelgruppe.
+        \xDCbertragungen in Level 3/6/9 haben Vorrang, bei bekanntem Mond wird dieser
+        Kommentar ersetzt."
+    eventPositioned: 0
+    eventPosition: {x: 0, y: 0}
+    triggerOnly: 1
+    eventBindingEdited: 0
+    eventTriggerId: 
+  - id: trigger.0.earth-level-5
+    chapter: Training
+    storyStepId: 
+    title: "Ausl\xF6ser"
+    position: {x: 760, y: 660}
+    status: 2
+    purpose: 
+    questions: 
+    channel: 0
+    speaker: {fileID: 0}
+    textKey: 
+    sourceReference: 
+    sourcePath: Assets/Scenes/MainScene.unity
+    sourceProperty: 'earthMessages.Array.data[3].messages.Array.data[0]'
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices: []
+    overviewOnly: 0
+    answerBoardLayout: 1
+    eventInfo:
+      enabled: 1
+      kind: 0
+      eventId: level-start
+      pool: earth-level-5
+      fromLevel: 5
+      toLevel: 5
+      random: 1
+      once: 0
+      probability: 1
+      requiredFlag: 
+      blockedFlag: discovery.Moon
+      presentation: Kurzer Hinweis
+      description: "Zufallskommentar beim Trainingsstart; h\xF6chste passende Levelgruppe.
+        \xDCbertragungen in Level 3/6/9 haben Vorrang, bei bekanntem Mond wird dieser
+        Kommentar ersetzt."
+    eventPositioned: 0
+    eventPosition: {x: 0, y: 0}
+    triggerOnly: 1
+    eventBindingEdited: 0
+    eventTriggerId: 
+  - id: trigger.0.earth-level-7
+    chapter: Training
+    storyStepId: 
+    title: "Ausl\xF6ser"
+    position: {x: 20, y: 1160}
+    status: 2
+    purpose: 
+    questions: 
+    channel: 0
+    speaker: {fileID: 0}
+    textKey: 
+    sourceReference: 
+    sourcePath: Assets/Scenes/MainScene.unity
+    sourceProperty: 'earthMessages.Array.data[4].messages.Array.data[0]'
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices: []
+    overviewOnly: 0
+    answerBoardLayout: 1
+    eventInfo:
+      enabled: 1
+      kind: 0
+      eventId: level-start
+      pool: earth-level-7
+      fromLevel: 7
+      toLevel: 7
+      random: 1
+      once: 0
+      probability: 1
+      requiredFlag: 
+      blockedFlag: discovery.Moon
+      presentation: Kurzer Hinweis
+      description: "Zufallskommentar beim Trainingsstart; h\xF6chste passende Levelgruppe.
+        \xDCbertragungen in Level 3/6/9 haben Vorrang, bei bekanntem Mond wird dieser
+        Kommentar ersetzt."
+    eventPositioned: 0
+    eventPosition: {x: 0, y: 0}
+    triggerOnly: 1
+    eventBindingEdited: 0
+    eventTriggerId: 
+  - id: trigger.0.earth-level-8
+    chapter: Training
+    storyStepId: 
+    title: "Ausl\xF6ser"
+    position: {x: 760, y: 1160}
+    status: 2
+    purpose: 
+    questions: 
+    channel: 0
+    speaker: {fileID: 0}
+    textKey: 
+    sourceReference: 
+    sourcePath: Assets/Scenes/MainScene.unity
+    sourceProperty: 'earthMessages.Array.data[5].messages.Array.data[0]'
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices: []
+    overviewOnly: 0
+    answerBoardLayout: 1
+    eventInfo:
+      enabled: 1
+      kind: 0
+      eventId: level-start
+      pool: earth-level-8
+      fromLevel: 8
+      toLevel: 8
+      random: 1
+      once: 0
+      probability: 1
+      requiredFlag: 
+      blockedFlag: discovery.Moon
+      presentation: Kurzer Hinweis
+      description: "Zufallskommentar beim Trainingsstart; h\xF6chste passende Levelgruppe.
+        \xDCbertragungen in Level 3/6/9 haben Vorrang, bei bekanntem Mond wird dieser
+        Kommentar ersetzt."
+    eventPositioned: 0
+    eventPosition: {x: 0, y: 0}
+    triggerOnly: 1
+    eventBindingEdited: 0
+    eventTriggerId: 
+  - id: trigger.1.transmission-3
+    chapter: Training
+    storyStepId: 
+    title: "Ausl\xF6ser"
+    position: {x: 1560, y: 160}
+    status: 2
+    purpose: 
+    questions: 
+    channel: 0
+    speaker: {fileID: 0}
+    textKey: 
+    sourceReference: 
+    sourcePath: Assets/Scenes/MainScene.unity
+    sourceProperty: earthTransmissions.Array.data[0].text
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices: []
+    overviewOnly: 0
+    answerBoardLayout: 1
+    eventInfo:
+      enabled: 1
+      kind: 1
+      eventId: training-level-3
+      pool: transmission-3
+      fromLevel: 3
+      toLevel: 3
+      random: 0
+      once: 1
+      probability: 1
+      requiredFlag: 
+      blockedFlag: story.earth.3
+      presentation: "Best\xE4tigbare \xDCbertragung / Funk"
+      description: "Beim Erreichen dieses Trainingslevels, nicht erst nach dessen
+        Abschluss; nur solange Schwerelosigkeit noch nicht entdeckt wurde. Nach Best\xE4tigung
+        wird story.earth.3 gespeichert."
+    eventPositioned: 0
+    eventPosition: {x: 0, y: 0}
+    triggerOnly: 1
+    eventBindingEdited: 0
+    eventTriggerId: 
+  - id: trigger.1.transmission-6
+    chapter: Training
+    storyStepId: 
+    title: "Ausl\xF6ser"
+    position: {x: 1560, y: 660}
+    status: 2
+    purpose: 
+    questions: 
+    channel: 0
+    speaker: {fileID: 0}
+    textKey: 
+    sourceReference: 
+    sourcePath: Assets/Scenes/MainScene.unity
+    sourceProperty: earthTransmissions.Array.data[1].text
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices: []
+    overviewOnly: 0
+    answerBoardLayout: 1
+    eventInfo:
+      enabled: 1
+      kind: 1
+      eventId: training-level-6
+      pool: transmission-6
+      fromLevel: 6
+      toLevel: 6
+      random: 0
+      once: 1
+      probability: 1
+      requiredFlag: 
+      blockedFlag: story.earth.6
+      presentation: "Best\xE4tigbare \xDCbertragung / Funk"
+      description: "Beim Erreichen dieses Trainingslevels, nicht erst nach dessen
+        Abschluss; nur solange Schwerelosigkeit noch nicht entdeckt wurde. Nach Best\xE4tigung
+        wird story.earth.6 gespeichert."
+    eventPositioned: 0
+    eventPosition: {x: 0, y: 0}
+    triggerOnly: 1
+    eventBindingEdited: 0
+    eventTriggerId: 
+  - id: trigger.1.transmission-9
+    chapter: Training
+    storyStepId: 
+    title: "Ausl\xF6ser"
+    position: {x: 1560, y: 1160}
+    status: 2
+    purpose: 
+    questions: 
+    channel: 0
+    speaker: {fileID: 0}
+    textKey: 
+    sourceReference: 
+    sourcePath: Assets/Scenes/MainScene.unity
+    sourceProperty: earthTransmissions.Array.data[2].text
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices: []
+    overviewOnly: 0
+    answerBoardLayout: 1
+    eventInfo:
+      enabled: 1
+      kind: 1
+      eventId: training-level-9
+      pool: transmission-9
+      fromLevel: 9
+      toLevel: 9
+      random: 0
+      once: 1
+      probability: 1
+      requiredFlag: 
+      blockedFlag: story.earth.9
+      presentation: "Best\xE4tigbare \xDCbertragung / Funk"
+      description: "Beim Erreichen dieses Trainingslevels, nicht erst nach dessen
+        Abschluss; nur solange Schwerelosigkeit noch nicht entdeckt wurde. Nach Best\xE4tigung
+        wird story.earth.9 gespeichert."
+    eventPositioned: 0
+    eventPosition: {x: 0, y: 0}
+    triggerOnly: 1
+    eventBindingEdited: 0
+    eventTriggerId: 
+  - id: trigger.4.earth-asides
+    chapter: Training
+    storyStepId: 
+    title: "Ausl\xF6ser"
+    position: {x: 340, y: 2020}
+    status: 2
+    purpose: 
+    questions: 
+    channel: 0
+    speaker: {fileID: 0}
+    textKey: 
+    sourceReference: 
+    sourcePath: Assets/Scenes/MainScene.unity
+    sourceProperty: 'earthAsides.Array.data[1]'
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices: []
+    overviewOnly: 0
+    answerBoardLayout: 1
+    eventInfo:
+      enabled: 1
+      kind: 4
+      eventId: late-training
+      pool: earth-asides
+      fromLevel: 10
+      toLevel: 0
+      random: 1
+      once: 0
+      probability: 0.25
+      requiredFlag: 
+      blockedFlag: 
+      presentation: Kurzer Hinweis
+      description: Ab Level 10 maximal ein Zufallsversuch je neuem Level; keine direkte
+        Wiederholung des letzten Kommentars.
+    eventPositioned: 0
+    eventPosition: {x: 0, y: 0}
+    triggerOnly: 1
+    eventBindingEdited: 0
+    eventTriggerId: 
+  - id: trigger.3.flight-AtmosphereExit
+    chapter: Training
+    storyStepId: 
+    title: "Ausl\xF6ser"
+    position: {x: 1200, y: 2860}
+    status: 2
+    purpose: 
+    questions: 
+    channel: 0
+    speaker: {fileID: 0}
+    textKey: 
+    sourceReference: 
+    sourcePath: Assets/Scripts/StoryTextController.cs
+    sourceProperty: 
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices: []
+    overviewOnly: 0
+    answerBoardLayout: 1
+    eventInfo:
+      enabled: 1
+      kind: 3
+      eventId: AtmosphereExit
+      pool: flight-AtmosphereExit
+      fromLevel: 1
+      toLevel: 0
+      random: 1
+      once: 0
+      probability: 0.25
+      requiredFlag: story.ack.ZeroG
+      blockedFlag: story.earth.9
+      presentation: Kurzer Hinweis
+      description: "Flugzustand AtmosphereExit; ein Kommentar pro Flugversuch, mit
+        Startverz\xF6gerung und Cooldown. Nach der ersten Entdeckung, nicht als Dialogfolge."
+    eventPositioned: 0
+    eventPosition: {x: 0, y: 0}
+    triggerOnly: 1
+    eventBindingEdited: 0
+    eventTriggerId: 
+  - id: trigger.3.flight-BackToPlanet
+    chapter: Training
+    storyStepId: 
+    title: "Ausl\xF6ser"
+    position: {x: 300, y: 3280}
+    status: 2
+    purpose: 
+    questions: 
+    channel: 0
+    speaker: {fileID: 0}
+    textKey: 
+    sourceReference: 
+    sourcePath: Assets/Scripts/StoryTextController.cs
+    sourceProperty: 
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices: []
+    overviewOnly: 0
+    answerBoardLayout: 1
+    eventInfo:
+      enabled: 1
+      kind: 3
+      eventId: BackToPlanet
+      pool: flight-BackToPlanet
+      fromLevel: 3
+      toLevel: 0
+      random: 1
+      once: 0
+      probability: 0.25
+      requiredFlag: 
+      blockedFlag: story.earth.9
+      presentation: Kurzer Hinweis
+      description: "Flugzustand BackToPlanet; ein Kommentar pro Flugversuch, mit
+        Startverz\xF6gerung und Cooldown. Nach der ersten Entdeckung, nicht als Dialogfolge."
+    eventPositioned: 0
+    eventPosition: {x: 0, y: 0}
+    triggerOnly: 1
+    eventBindingEdited: 0
+    eventTriggerId: 
+  - id: trigger.3.flight-NearToMoon
+    chapter: Mond
+    storyStepId: 
+    title: "Ausl\xF6ser"
+    position: {x: 0, y: 1280}
+    status: 2
+    purpose: 
+    questions: 
+    channel: 0
+    speaker: {fileID: 0}
+    textKey: 
+    sourceReference: 
+    sourcePath: Assets/Scripts/StoryTextController.cs
+    sourceProperty: 
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices: []
+    overviewOnly: 0
+    answerBoardLayout: 1
+    eventInfo:
+      enabled: 1
+      kind: 3
+      eventId: NearToMoon
+      pool: flight-NearToMoon
+      fromLevel: 1
+      toLevel: 0
+      random: 1
+      once: 0
+      probability: 0.25
+      requiredFlag: story.ack.Moon
+      blockedFlag: story.earth.9
+      presentation: Kurzer Hinweis
+      description: "Flugzustand NearToMoon; ein Kommentar pro Flugversuch, mit Startverz\xF6gerung
+        und Cooldown. Nach der ersten Entdeckung, nicht als Dialogfolge."
+    eventPositioned: 0
+    eventPosition: {x: 0, y: 0}
+    triggerOnly: 1
+    eventBindingEdited: 0
+    eventTriggerId: 
+  - id: trigger.3.early-earth-return
+    chapter: Training
+    storyStepId: 
+    title: "Ausl\xF6ser"
+    position: {x: 1200, y: 3280}
+    status: 2
+    purpose: 
+    questions: 
+    channel: 0
+    speaker: {fileID: 0}
+    textKey: 
+    sourceReference: 
+    sourcePath: Assets/Scripts/StoryTextController.cs
+    sourceProperty: 
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices: []
+    overviewOnly: 0
+    answerBoardLayout: 1
+    eventInfo:
+      enabled: 1
+      kind: 3
+      eventId: BackToPlanet
+      pool: early-earth-return
+      fromLevel: 1
+      toLevel: 2
+      random: 0
+      once: 0
+      probability: 0.25
+      requiredFlag: 
+      blockedFlag: story.earth.9
+      presentation: Kurzer Hinweis
+      description: "R\xFCckkehr zur Erde in Level 1/2: ersetzt den Zufallstext durch
+        den Auftankhinweis, falls die Kommentar-Chance greift."
+    eventPositioned: 0
+    eventPosition: {x: 0, y: 0}
+    triggerOnly: 1
+    eventBindingEdited: 0
+    eventTriggerId: 
+  decorations: []
+  eventTriggersManaged: 1
+  snapToGrid: 1
+  gridSize: 20

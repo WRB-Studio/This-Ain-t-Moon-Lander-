@@ -207,10 +207,10 @@ public class StoryTextController : MonoBehaviour
             return;
         }
         if (QueueEarthTransmission(level)) return;
+        if (HasDiscovered(Discovery.Moon)) { Show(EventText("moonKnownEarthMessage", moonKnownEarthMessage)); return; }
         string[] messages = GetEarthMessages(level);
         if (messages.Length == 0) return;
         string message = messages[UnityEngine.Random.Range(0, messages.Length)];
-        if (HasDiscovered(Discovery.Moon)) message = moonKnownEarthMessage;
         Show(message);
     }
 
@@ -222,16 +222,18 @@ public class StoryTextController : MonoBehaviour
         LevelMessages selected = null;
         foreach (var group in earthMessages)
             if (group.fromLevel <= level && (selected == null || group.fromLevel > selected.fromLevel)) selected = group;
-        return selected?.messages ?? Array.Empty<string>();
+        var fallback = selected?.messages ?? Array.Empty<string>();
+        return StoryLibrary.Project ? StoryLibrary.Project.TrainingTexts(level, fallback, StoryLibrary.Flag) : fallback;
     }
 
     public string PickEarthAside()
     {
-        if (earthAsides.Length == 0) return "";
-        int previous = Array.IndexOf(earthAsides, data.lastEarthAside);
-        int index = UnityEngine.Random.Range(0, earthAsides.Length - (previous >= 0 && earthAsides.Length > 1 ? 1 : 0));
-        if (previous >= 0 && earthAsides.Length > 1 && index >= previous) index++;
-        data.lastEarthAside = earthAsides[index];
+        var messages = StoryLibrary.Project ? StoryLibrary.Project.EventTexts("earth-asides", earthAsides) : earthAsides;
+        if (messages.Length == 0) return "";
+        int previous = Array.IndexOf(messages, Localization.Reference(data.lastEarthAside));
+        int index = UnityEngine.Random.Range(0, messages.Length - (previous >= 0 && messages.Length > 1 ? 1 : 0));
+        if (previous >= 0 && messages.Length > 1 && index >= previous) index++;
+        data.lastEarthAside = messages[index];
         return data.lastEarthAside;
     }
 
@@ -248,7 +250,7 @@ public class StoryTextController : MonoBehaviour
                 && activeAcknowledgement != key && !queuedTransmissions.Contains(level))
             {
                 queuedTransmissions.Add(level);
-                Enqueue(transmission.text, key, level);
+                Enqueue(EventText("transmission-" + level, transmission.text), key, level);
             }
             return true;
         }
@@ -283,7 +285,7 @@ public class StoryTextController : MonoBehaviour
 #endif
             && data.GetFlag("story.companyLanderReturned") && !data.GetFlag("story.ack.CompanyReturn")
             && !IsShowingDialogue)
-            ShowOperatorDialogue(earthReturnMessage, "story.ack.CompanyReturn");
+            ShowOperatorDialogue(EventText("earthReturnMessage", earthReturnMessage), "story.ack.CompanyReturn");
         if (!game.IsExploring) QueueEarthTransmission(game.level);
         if (!gravityManager || !game.ControlledTarget) return;
         var target = game.ControlledTarget;
@@ -363,9 +365,15 @@ public class StoryTextController : MonoBehaviour
     public string GetDiscoveryText(Discovery discovery)
     {
         if (discovery == Discovery.ZeroG && data != null && data.GetFlag("story.earth.9"))
-            return zeroGAfterDepartureMessage;
-        foreach (var entry in discoveryMessages) if (entry.discovery == discovery) return entry.text;
+            return EventText("zeroGAfterDepartureMessage", zeroGAfterDepartureMessage);
+        foreach (var entry in discoveryMessages) if (entry.discovery == discovery) return EventText("discovery-" + discovery, entry.text);
         return "";
+    }
+
+    string EventText(string pool, string fallback)
+    {
+        var texts = StoryLibrary.Project ? StoryLibrary.Project.EventTexts(pool, new[] { fallback }) : new[] { fallback };
+        return texts.Length > 0 ? texts[0] : "";
     }
 
     DiscoveryPresentation GetDiscoveryPresentation(Discovery discovery)
@@ -395,7 +403,7 @@ public class StoryTextController : MonoBehaviour
             || data.GetFlag("story.companyLanderReturned")) return null;
         data.SetFlag("story.companyLanderReturned", true);
         LanderChooserManager.Instance.RefreshChooser();
-        return earthReturnMessage;
+        return EventText("earthReturnMessage", earthReturnMessage);
     }
 
     public string TakeStationLandingMessage()
@@ -408,6 +416,7 @@ public class StoryTextController : MonoBehaviour
 
     public void ShowOperatorDialogue(string message, string acknowledgement = null)
     {
+        if (string.IsNullOrEmpty(message)) return;
         if (RadioController.Instance && RadioController.Instance.IsOwned)
         {
             RadioController.Instance.Receive(new RadioMessage
@@ -442,9 +451,11 @@ public class StoryTextController : MonoBehaviour
         nextAllowed[type] = Time.time + typeCooldown;
         if (UnityEngine.Random.value >= flightCommentChance) return;
         if (!stateMessages.TryGetValue(type, out var messages) || messages.Length == 0) return;
+        if (StoryLibrary.Project) messages = StoryLibrary.Project.EventTexts("flight-" + type, messages);
+        if (messages.Length == 0) return;
         string message = messages[UnityEngine.Random.Range(0, messages.Length)];
         if (GameController.Instance.level < 3 && type == eStoryTextType.BackToPlanet)
-            message = "[[game.back.on.earth.you.can.refuel.on.a.free.landing.pad]]";
+            message = EventText("early-earth-return", "[[game.back.on.earth.you.can.refuel.on.a.free.landing.pad]]");
         flightCommentUsed = true;
         Show(message);
     }

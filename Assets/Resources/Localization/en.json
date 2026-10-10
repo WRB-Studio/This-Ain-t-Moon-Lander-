@@ -4,7 +4,8 @@
   "entries": [
     {
       "key": "game.a.full.tank.i.ll.have.a.word.with.accounting.the.missing.pilot.ca",
-      "text": "A full tank? I'll have a word with accounting. The missing pilot can wait."
+      "text": "At least someone refuelled.",
+      "aliases": ["A full tank? I'll have a word with accounting. The missing pilot can wait."]
     },
     {
       "key": "game.all.right.i.ll.take.it",
@@ -12,7 +13,8 @@
     },
     {
       "key": "game.am.i.supposed.to.fix.this.now",
-      "text": "Am I supposed to fix this now?"
+      "text": "Should I investigate?",
+      "aliases": ["Am I supposed to fix this now?"]
     },
     {
       "key": "game.another.one",
@@ -28,7 +30,8 @@
     },
     {
       "key": "game.any.progress.the.parking.situation.is.excellent.right.microphone",
-      "text": "'Any progress?'\n'The parking situation is excellent.'\nRight. Microphone off."
+      "text": "Parking situation: excellent.\nThe rest of the sky is still waiting.",
+      "aliases": ["'Any progress?'\n'The parking situation is excellent.'\nRight. Microphone off."]
     },
     {
       "key": "game.as.if.i.d.let.you.fly.that.thing.to.the.moon.again",
@@ -40,11 +43,13 @@
     },
     {
       "key": "game.back.in.one.piece.with.the.company.lander.excellent.work.by.show",
-      "text": "Back in one piece. With the company lander.\nExcellent work.\n\nBy 'show some initiative', I did not mean\nan unauthorized Moon trip on company fuel.\n\nStill. The ship is back.\nI'll keep the report suitably vague."
+      "text": "Company ship returned, report salvaged.\nLet's leave out the lunar parking spot.",
+      "aliases": ["Back in one piece. With the company lander.\nExcellent work.\n\nBy 'show some initiative', I did not mean\nan unauthorized Moon trip on company fuel.\n\nStill. The ship is back.\nI'll keep the report suitably vague."]
     },
     {
       "key": "game.before.we.get.to.the.coordinates.take.this.radio.messages.optiona",
-      "text": "Before we get to the coordinates: take this radio.\n\nMessages, optional video, signal tracking. It even keeps the old messages.\n\nPlease take it. Our last pilot was difficult to reach."
+      "text": "Take this radio for messages and signal tracking.",
+      "aliases": ["Before we get to the coordinates: take this radio.\n\nMessages, optional video, signal tracking. It even keeps the old messages.\n\nPlease take it. Our last pilot was difficult to reach."]
     },
     {
       "key": "game.bring.it.down.preferably.in.one.piece",
@@ -56,7 +61,8 @@
     },
     {
       "key": "game.coffee.please.it.s.been.nothing.but.parking.all.day.wait.is.this",
-      "text": "'Coffee?'\n'Please. It's been nothing but parking all day.'\nWait. Is this still broadcasting?"
+      "text": "Coffee would count as progress now.",
+      "aliases": ["'Coffee?'\n'Please. It's been nothing but parking all day.'\nWait. Is this still broadcasting?"]
     },
     {
       "key": "game.concourse",
@@ -76,15 +82,18 @@
     },
     {
       "key": "game.did.you.bring.the.delivery.we.were.expecting.that.ship.yesterday",
-      "text": "Did you bring the delivery?\nWe were expecting that ship yesterday."
+      "text": "Did you bring the missing delivery?",
+      "aliases": ["Did you bring the delivery?\nWe were expecting that ship yesterday."]
     },
     {
       "key": "game.docking.confirmed.you.can.step.outside",
-      "text": "Docking confirmed.\nYou can step outside."
+      "text": "Docked.\nStep outside and head to registration.",
+      "aliases": ["Docking confirmed.\nYou can step outside."]
     },
     {
       "key": "game.done.no.heroic.speeches.required",
-      "text": "Done. No heroic speeches required."
+      "text": "Sent.",
+      "aliases": ["Done. No heroic speeches required."]
     },
     {
       "key": "game.door",
@@ -100,11 +109,13 @@
     },
     {
       "key": "game.excellent.a.confirmed.receipt.my.favourite.kind.of.adventure",
-      "text": "Excellent. A confirmed receipt. My favourite kind of adventure."
+      "text": "Receipt confirmed — my favourite adventure.",
+      "aliases": ["Excellent. A confirmed receipt. My favourite kind of adventure."]
     },
     {
       "key": "game.excellent.one.radio.issued.try.to.return.with.the.same.number.of",
-      "text": "Excellent. One radio issued. Try to return with the same number of radios."
+      "text": "Please don't lose this one as well.",
+      "aliases": ["Excellent. One radio issued. Try to return with the same number of radios."]
     },
     {
       "key": "game.exit.lander",
@@ -120,15 +131,18 @@
     },
     {
       "key": "game.finally.the.company.lander.parked.on.the.moon.with.a.full.tank.i",
-      "text": "Finally. The company lander.\n\nParked on the Moon with a full tank.\nI'll have a word with accounting.\n\nBring it back to Earth in one piece.\nInsurance doesn't cover\n'forgotten on the Moon'."
+      "text": "The company ship still has a full tank.\nBring it back to Earth — insurance dislikes lunar parking.",
+      "aliases": ["Finally. The company lander.\n\nParked on the Moon with a full tank.\nI'll have a word with accounting.\n\nBring it back to Earth in one piece.\nInsurance doesn't cover\n'forgotten on the Moon'."]
     },
     {
       "key": "game.good.third.level.you.understand.how.a.landing.pad.works.i.was.hop",
-      "text": "Good. Third level.\nYou understand how a landing pad works.\n\nI was hoping for a little more\ninitiative after the introduction.\nBut fine. Another pad.\n\nDon't let me interrupt your parking."
+      "text": "You can land now.\nI used to think that was all there was, too.",
+      "aliases": ["Good. Third level.\nYou understand how a landing pad works.\n\nI was hoping for a little more\ninitiative after the introduction.\nBut fine. Another pad.\n\nDon't let me interrupt your parking."]
     },
     {
       "key": "game.has.anyone.told.them.they.can.leave.i.did.several.times.oh.you.ca",
-      "text": "'Has anyone told them they can leave?'\n'I did. Several times.'\nOh. You can hear us."
+      "text": "You're allowed to fly on.\nThey just didn't print that on the pad.",
+      "aliases": ["'Has anyone told them they can leave?'\n'I did. Several times.'\nOh. You can hear us."]
     },
     {
       "key": "game.here.is.a.little.message.for.you",
@@ -156,11 +170,13 @@
     },
     {
       "key": "game.i.specifically.told.you.that.you.can.fly.up",
-      "text": "I specifically told you that you can fly up."
+      "text": "Up is a flight direction too, by the way.",
+      "aliases": ["I specifically told you that you can fly up."]
     },
     {
       "key": "game.i.would.sigh.but.this.is.text",
-      "text": "I would sigh, but this is text."
+      "text": "I'll spare you the sigh.",
+      "aliases": ["I would sigh, but this is text."]
     },
     {
       "key": "game.if.it.rattles.it.was.doing.that.before",
@@ -184,11 +200,13 @@
     },
     {
       "key": "game.incoming.transmission.you.re.late.wait.you.re.not.our.pilot.where",
-      "text": "INCOMING TRANSMISSION\n\nYou're late.\n\n...Wait. You're not our pilot.\nWhere did you get that ship?"
+      "text": "You're not our pilot.\nWhere did you get his ship?",
+      "aliases": ["INCOMING TRANSMISSION\n\nYou're late.\n\n...Wait. You're not our pilot.\nWhere did you get that ship?"]
     },
     {
       "key": "game.is.that.pilot.still.landing.yes.don.t.ask.oh.the.microphone.is.on",
-      "text": "'Is that pilot still landing?'\n'Yes. Don't ask.'\nOh. The microphone is on."
+      "text": "Still landing?\nFine, I'll leave the microphone on.",
+      "aliases": ["'Is that pilot still landing?'\n'Yes. Don't ask.'\nOh. The microphone is on."]
     },
     {
       "key": "game.it.was.parked.on.the.moon",
@@ -200,7 +218,8 @@
     },
     {
       "key": "game.land.if.you.must.i.am.past.negotiating",
-      "text": "Land if you must. I am past negotiating."
+      "text": "Another landing? I'll stay out of it.",
+      "aliases": ["Land if you must. I am past negotiating."]
     },
     {
       "key": "game.land.safely.on.the.marked.pad",
@@ -244,7 +263,8 @@
     },
     {
       "key": "game.nine.levels.i.gave.you.a.sky.a.spacecraft.thrusters.and.you.keep",
-      "text": "NINE LEVELS!\nI gave you a sky!\nA spacecraft! Thrusters!\nAnd you keep opening\none parking spot after another!\n\nFULL TANK. FLY UP. KEEP GOING.\nI don't know how to make\nthis any clearer!\n\nYou know what? Do whatever you want.\nLand another hundred times.\nGive the pads names. I'm out."
+      "text": "Nine landings — enough practice.\nFill the tank, fly up and keep going: the sky isn't a lid.",
+      "aliases": ["NINE LEVELS!\nI gave you a sky!\nA spacecraft! Thrusters!\nAnd you keep opening\none parking spot after another!\n\nFULL TANK. FLY UP. KEEP GOING.\nI don't know how to make\nthis any clearer!\n\nYou know what? Do whatever you want.\nLand another hundred times.\nGive the pads names. I'm out."]
     },
     {
       "key": "game.no.promises",
@@ -260,11 +280,13 @@
     },
     {
       "key": "game.noted.i.ll.put.that.under.courier.comments",
-      "text": "Noted. I'll put that under 'courier comments'."
+      "text": "Filed under 'courier comments'.",
+      "aliases": ["Noted. I'll put that under 'courier comments'."]
     },
     {
       "key": "game.of.course.nobody.told.you.communication.is.more.of.a.decorative.c",
-      "text": "Of course nobody told you. Communication is more of a decorative concept at that company."
+      "text": "Communication is mostly decorative here.",
+      "aliases": ["Of course nobody told you. Communication is more of a decorative concept at that company."]
     },
     {
       "key": "game.of.course",
@@ -272,19 +294,23 @@
     },
     {
       "key": "game.of.course.i.ll.record.accepted.reluctantly.here.you.go.refusing.e",
-      "text": "Of course. I'll record 'accepted reluctantly'. Here you go. Refusing equipment requires a radio to submit the refusal."
+      "text": "Recorded: accepted reluctantly.",
+      "aliases": ["Of course. I'll record 'accepted reluctantly'. Here you go. Refusing equipment requires a radio to submit the refusal."]
     },
     {
       "key": "game.oh.you.re.actually.trying.something.else.and.gravity.has.stopped",
-      "text": "Oh. You're actually trying something else.\n\nAnd gravity has stopped participating.\nI hadn't planned for that."
+      "text": "No more gravity.\nParking skills won't get you far here.",
+      "aliases": ["Oh. You're actually trying something else.\n\nAnd gravity has stopped participating.\nI hadn't planned for that."]
     },
     {
       "key": "game.oh.so.that.is.the.moon.minor.naming.issue",
-      "text": "Oh.\nSo THAT is the Moon.\nMinor naming issue."
+      "text": "There's the actual Moon.\nI wouldn't take the name down below too seriously.",
+      "aliases": ["Oh.\nSo THAT is the Moon.\nMinor naming issue."]
     },
     {
       "key": "game.on.the.moon.well.at.least.we.know.where.our.pilot.parked",
-      "text": "On the Moon. Well. At least we know where our pilot parked."
+      "text": "An unusual parking spot.",
+      "aliases": ["On the Moon. Well. At least we know where our pilot parked."]
     },
     {
       "key": "game.outpost.radio",
@@ -348,7 +374,8 @@
     },
     {
       "key": "game.sixth.level.you.are.seriously.collecting.parking.spots.fine.let.m",
-      "text": "Sixth level.\nYou are seriously collecting\nparking spots.\n\nFine. Let me be very clear:\nFill your tank. Fly up.\nAnd don't stop just because\nthe landing pad disappears from view.\n\nThe edge of the screen is not a wall.\nI really thought you would\ntry that yourself eventually."
+      "text": "Refuel and fly up.\nThe edge of the screen isn't a wall.",
+      "aliases": ["Sixth level.\nYou are seriously collecting\nparking spots.\n\nFine. Let me be very clear:\nFill your tank. Fly up.\nAnd don't stop just because\nthe landing pad disappears from view.\n\nThe edge of the screen is not a wall.\nI really thought you would\ntry that yourself eventually."]
     },
     {
       "key": "game.slow.your.descent.before.touching.down",
@@ -356,7 +383,8 @@
     },
     {
       "key": "game.someone.with.that.lander.you.meet.half.the.requirements",
-      "text": "Someone with that lander. You meet half the requirements."
+      "text": "Someone with that ship.",
+      "aliases": ["Someone with that lander. You meet half the requirements."]
     },
     {
       "key": "game.station",
@@ -372,7 +400,8 @@
     },
     {
       "key": "game.supposed.to.no.you.just.happen.to.have.the.ship.and.very.little.s",
-      "text": "Supposed to? No. You just happen to have the ship and very little supervision."
+      "text": "You have the ship — that'll do for now.",
+      "aliases": ["Supposed to? No. You just happen to have the ship and very little supervision."]
     },
     {
       "key": "game.sure",
@@ -392,15 +421,18 @@
     },
     {
       "key": "game.that.s.inconvenient.people.are.usually.our.best.source.of.excuses",
-      "text": "That's inconvenient. People are usually our best source of excuses."
+      "text": "Then we're short on excuses, too.",
+      "aliases": ["That's inconvenient. People are usually our best source of excuses."]
     },
     {
       "key": "game.the.cargo.compartment.was.opened.after.that.the.log.goes.quiet.i",
-      "text": "The cargo compartment was opened.\nAfter that, the log goes quiet.\n\nI have the last confirmed pickup location."
+      "text": "The log ends after the cargo bay opened at the last pickup site.",
+      "aliases": ["The cargo compartment was opened.\nAfter that, the log goes quiet.\n\nI have the last confirmed pickup location."]
     },
     {
       "key": "game.the.coordinates.are.in.a.message.on.your.new.radio.open.radio.and",
-      "text": "The coordinates are in a message on your new radio.\n\nOpen RADIO and select 'Track signal' when you're ready.\n\nMaintenance has topped up your tank.\n\nFor now I'll write: 'Ship returned. Rest unclear.'\n\nThat holds up surprisingly well."
+      "text": "Tank full — open RADIO and choose 'Track signal' for the pickup site.",
+      "aliases": ["The coordinates are in a message on your new radio.\n\nOpen RADIO and select 'Track signal' when you're ready.\n\nMaintenance has topped up your tank.\n\nFor now I'll write: 'Ship returned. Rest unclear.'\n\nThat holds up surprisingly well."]
     },
     {
       "key": "game.the.corridor.is.free.the.paperwork.is.not",
@@ -416,11 +448,13 @@
     },
     {
       "key": "game.the.pickup.coordinates.are.still.on.your.radio.open.radio.to.read",
-      "text": "The pickup coordinates are still on your radio.\n\nOpen RADIO to read the message or track the signal.\n\nInvestigate, go home, or enjoy the corridor. I have plenty of forms to keep me company."
+      "text": "The pickup site is in RADIO.\n'Track signal' will guide you there.",
+      "aliases": ["The pickup coordinates are still on your radio.\n\nOpen RADIO to read the message or track the signal.\n\nInvestigate, go home, or enjoy the corridor. I have plenty of forms to keep me company."]
     },
     {
       "key": "game.the.replacement.pilot.take.a.seat.or.stand.the.chair.is.being.rep",
-      "text": "The replacement pilot?\nTake a seat. Or stand. The chair is being repaired."
+      "text": "The replacement pilot?\nThe chair is still being repaired.",
+      "aliases": ["The replacement pilot?\nTake a seat. Or stand. The chair is being repaired."]
     },
     {
       "key": "game.the.scenery.changes.your.ambition.does.not",
@@ -428,7 +462,8 @@
     },
     {
       "key": "game.then.you.re.the.replacement.finder.close.enough",
-      "text": "Then you're the replacement finder. Close enough."
+      "text": "Replacement finder, then.",
+      "aliases": ["Then you're the replacement finder. Close enough."]
     },
     {
       "key": "game.there.was.nobody.there.to.ask",
@@ -436,7 +471,8 @@
     },
     {
       "key": "game.there.you.are.welcome.to.the.station.we.were.expecting.that.lande",
-      "text": "There you are. Welcome to the station.\nWe were expecting that lander.\n\nUse either landing pad.\nKeep it upright, please.\nOur maintenance crew has had\na very long day."
+      "text": "We've been expecting that ship.\nLand on either pad — preferably upright.",
+      "aliases": ["There you are. Welcome to the station.\nWe were expecting that lander.\n\nUse either landing pad.\nKeep it upright, please.\nOur maintenance crew has had\na very long day."]
     },
     {
       "key": "game.those.parcels.have.been.waiting.longer.than.i.have",
@@ -460,7 +496,8 @@
     },
     {
       "key": "game.wait.where.are.you.now.i.know.i.said.i.was.leaving.but.gravity.ha",
-      "text": "Wait. Where are you now?\n\nI know. I said I was leaving.\nBut gravity has stopped participating.\nThat wasn't part of my little landing game."
+      "text": "You flew on after all.\nEven gravity lets go up here.",
+      "aliases": ["Wait. Where are you now?\n\nI know. I said I was leaving.\nBut gravity has stopped participating.\nThat wasn't part of my little landing game."]
     },
     {
       "key": "game.we.expected.the.ship.yesterday",
@@ -484,15 +521,18 @@
     },
     {
       "key": "game.you.actually.landed.on.the.moon.i.hadn.t.planned.that.far.ahead",
-      "text": "You actually landed on the Moon.\nI hadn't planned that far ahead."
+      "text": "Landed on the actual Moon.\nAlready more interesting than the parking spot below.",
+      "aliases": ["You actually landed on the Moon.\nI hadn't planned that far ahead."]
     },
     {
       "key": "game.you.are.remarkably.good.at.missing.the.point",
-      "text": "You are remarkably good at missing the point."
+      "text": "You've mastered landing — now for curiosity.",
+      "aliases": ["You are remarkably good at missing the point."]
     },
     {
       "key": "game.you.can.get.out.apparently.this.spacecraft.came.with.legs",
-      "text": "You can get out?\nApparently this spacecraft came with legs."
+      "text": "You can step outside.\nApparently the ship comes with legs.",
+      "aliases": ["You can get out?\nApparently this spacecraft came with legs."]
     },
     {
       "key": "game.you.could.explore.or.polish.your.parking.record",
@@ -516,7 +556,8 @@
     },
     {
       "key": "game.your.radio.is.registered.equipment.issued.acceptance.recorded.att",
-      "text": "Your radio is registered. Equipment issued, acceptance recorded.\n\nAttached: the last confirmed pickup coordinates. The cargo compartment was opened there. After that, the log goes quiet.\n\nYour ship has been refuelled. Take a look if you like.\n\nFile status: 'Ship returned. Rest unclear.'"
+      "text": "Last pickup site marked; pilot and delivery have been missing since.\nTank full — choose 'Track signal' to investigate.",
+      "aliases": ["Your radio is registered. Equipment issued, acceptance recorded.\n\nAttached: the last confirmed pickup coordinates. The cargo compartment was opened there. After that, the log goes quiet.\n\nYour ship has been refuelled. Take a look if you like.\n\nFile status: 'Ship returned. Rest unclear.'"]
     },
     {
       "key": "game.your.radio.is.registered.last.confirmed.pickup.coordinates.attach",
@@ -1140,7 +1181,8 @@
     },
     {
       "key": "cargo.status.complete",
-      "text": "Rhekk has reached registration. To be continued."
+      "text": "Rhekk is at registration. The pilot is still missing.",
+      "aliases": ["Rhekk has reached registration. To be continued."]
     },
     {
       "key": "cargo.status.failed",
@@ -1172,7 +1214,8 @@
     },
     {
       "key": "cargo.outpost.landed",
-      "text": "No crew. No welcome. The fuel system still works.\n\nRefuel, step outside and investigate the tracker."
+      "text": "Abandoned, but the fuel system still works.\nRefuel and follow the tracker on foot.",
+      "aliases": ["No crew. No welcome. The fuel system still works.\n\nRefuel, step outside and investigate the tracker."]
     },
     {
       "key": "cargo.outpost.pad",
@@ -1200,31 +1243,38 @@
     },
     {
       "key": "cargo.answer.who",
-      "text": "Who is in there?"
+      "text": "How did you end up here?",
+      "aliases": ["Who is in there?"]
     },
     {
       "key": "cargo.answer.freight",
-      "text": "I was told to look for a delivery."
+      "text": "I'm looking for the missing delivery.",
+      "aliases": ["I was told to look for a delivery."]
     },
     {
       "key": "cargo.answer.pilot",
-      "text": "What happened to the pilot?"
+      "text": "Where is the pilot now?",
+      "aliases": ["What happened to the pilot?"]
     },
     {
       "key": "cargo.answer.ship",
-      "text": "I found his ship on the Moon."
+      "text": "I brought his ship from the Moon — how do I get you out?",
+      "aliases": ["I found his ship on the Moon."]
     },
     {
       "key": "cargo.answer.transport",
-      "text": "How do I get you out of here?"
+      "text": "Where do I put you down at the station?",
+      "aliases": ["How do I get you out of here?"]
     },
     {
       "key": "cargo.answer.help",
-      "text": "All right. I will take you to the station."
+      "text": "All right, I will get the cable.",
+      "aliases": ["All right. I will take you to the station."]
     },
     {
       "key": "cargo.answer.no.promises",
-      "text": "I will try. No promises."
+      "text": "I'll try.",
+      "aliases": ["I will try. No promises."]
     },
     {
       "key": "cargo.answer.back",
@@ -1240,47 +1290,58 @@
     },
     {
       "key": "cargo.answer.what.now",
-      "text": "What will you do now?"
+      "text": "I will meet you at registration.",
+      "aliases": ["What will you do now?"]
     },
     {
       "key": "cargo.answer.see.you",
-      "text": "See you at registration."
+      "text": "See you there.",
+      "aliases": ["See you at registration."]
     },
     {
       "key": "cargo.dialog.discovery.1",
-      "text": "Finally. Did the station send someone who can read this time?\n\nMy name is Rhekk. The label says PASSENGER TRANSPORT. Not parcel. Not spare parts. Passenger. I am the difference."
+      "text": "I'm Rhekk — a passenger, not a parcel.\nApparently the label was too subtle.",
+      "aliases": ["Finally. Did the station send someone who can read this time?\n\nMy name is Rhekk. The label says PASSENGER TRANSPORT. Not parcel. Not spare parts. Passenger. I am the difference."]
     },
     {
       "key": "cargo.dialog.discovery.2",
-      "text": "The pilot left me here. He wanted to investigate the installation beyond the outpost. Just a quick look, he said.\n\nFive minutes. I would like to state for the record that it has not been five minutes."
+      "text": "The pilot went to check the installation behind the outpost.\nHis five minutes are taking remarkably long.",
+      "aliases": ["The pilot left me here. He wanted to investigate the installation beyond the outpost. Just a quick look, he said.\n\nFive minutes. I would like to state for the record that it has not been five minutes."]
     },
     {
       "key": "cargo.dialog.discovery.3",
-      "text": "Then it really did leave without him. I heard the engines. The ship did not respond when I pointed out that I was still here.\n\nA remarkably poor listener.\n\nI have heard nothing from the pilot since."
+      "text": "The ship took off without him.\nI haven't heard from the pilot since.",
+      "aliases": ["Then it really did leave without him. I heard the engines. The ship did not respond when I pointed out that I was still here.\n\nA remarkably poor listener.\n\nI have heard nothing from the pilot since."]
     },
     {
       "key": "cargo.dialog.discovery.4",
-      "text": "The station dock has to equalise the pressure first. The capsule stays sealed here. For once, I approve of a regulation.\n\nThere is a steel cable on the frame. Connect it here, carry the free end to your ship and attach it to the lower towing point. Then board your ship.\n\nI would have preferred carry-on luggage."
+      "text": "The capsule stays sealed until the station dock equalises the pressure.\nPress CONNECT, carry the loose steel cable end to your ship and ATTACH it below.",
+      "aliases": ["The station dock has to equalise the pressure first. The capsule stays sealed here. For once, I approve of a regulation.\n\nThere is a steel cable on the frame. Connect it here, carry the free end to your ship and attach it to the lower towing point. Then board your ship.\n\nI would have preferred carry-on luggage."]
     },
     {
       "key": "cargo.dialog.discovery.5",
-      "text": "Take me to the marked delivery area beside the station landing pads. Lower me slowly. Once I am standing still, the coupling releases the cable automatically. Then you can land and open the capsule.\n\nSlowly means slowly. Not: The ground will do the braking."
+      "text": "Lower me gently onto the marked area beside the station pads; the cable releases once I settle.\nThen land and open the capsule.",
+      "aliases": ["Take me to the marked delivery area beside the station landing pads. Lower me slowly. Once I am standing still, the coupling releases the cable automatically. Then you can land and open the capsule.\n\nSlowly means slowly. Not: The ground will do the braking."]
     },
     {
       "key": "cargo.dialog.repeat",
-      "text": "Cable to capsule. Free end to ship. ATTACH. Board. Fly to the station. Lower gently.\n\nI am happy to repeat that. My schedule here is unusually clear."
+      "text": "CONNECT, carry the cable to your ship, ATTACH below and board.\nAt the station, lower gently, let me settle, then land and open the capsule.",
+      "aliases": ["Cable to capsule. Free end to ship. ATTACH. Board. Fly to the station. Lower gently.\n\nI am happy to repeat that. My schedule here is unusually clear."]
     },
     {
       "key": "cargo.dialog.release.1",
-      "text": "Fresh air. Solid ground. A journey without further geological samples.\n\nYour flying style introduced my internal organs to one another.\n\nBut you brought me here. Thank you. I actually mean that."
+      "text": "Thanks for bringing me here.\nMy organs would have preferred a smoother flight.",
+      "aliases": ["Fresh air. Solid ground. A journey without further geological samples.\n\nYour flying style introduced my internal organs to one another.\n\nBut you brought me here. Thank you. I actually mean that."]
     },
     {
       "key": "cargo.dialog.release.2",
-      "text": "Registration first. Someone filed me as a delivery. I would like my status corrected from cargo to person.\n\nAfter that, we can talk about the pilot. And this ship that takes off without one."
+      "text": "I'm off to registration to change my status from cargo to person.\nThen we'll talk about the pilot and the ship that leaves without him.",
+      "aliases": ["Registration first. Someone filed me as a delivery. I would like my status corrected from cargo to person.\n\nAfter that, we can talk about the pilot. And this ship that takes off without one."]
     },
     {
       "key": "cargo.dialog.release.3",
-      "text": "You know where registration is. If they try to put me in another box, I will knock.\n\nYou should recognise the sound by now."
+      "text": "If they pack me up again, I'll knock.\nYou know the sound.",
+      "aliases": ["You know where registration is. If they try to put me in another box, I will knock.\n\nYou should recognise the sound by now."]
     },
     {
       "key": "cargo.radio.tow.title",
@@ -1288,7 +1349,8 @@
     },
     {
       "key": "cargo.radio.tow.body",
-      "text": "Connection established. Destination: marked cargo delivery area beside the station pads.\n\nLower the capsule gently and let it settle briefly. The cable disconnects automatically. Then land and open the capsule.\n\nRhekk: \"If the form asks: Riding on the outside was not my idea.\""
+      "text": "Lower the capsule gently onto the marked area beside the station pads and wait for the cable to release.\nThen land and open the capsule.",
+      "aliases": ["Connection established. Destination: marked cargo delivery area beside the station pads.\n\nLower the capsule gently and let it settle briefly. The cable disconnects automatically. Then land and open the capsule.\n\nRhekk: \"If the form asks: Riding on the outside was not my idea.\""]
     },
     {
       "key": "cargo.radio.delivered.title",
@@ -1296,7 +1358,8 @@
     },
     {
       "key": "cargo.radio.delivered.body",
-      "text": "Capsule safely settled. Tow coupling released.\n\nLand your ship and open the capsule on foot.\n\nRhekk: \"I have arrived. It would be nice if the door agreed.\""
+      "text": "Capsule safely settled, cable released.\nLand and open it on foot.",
+      "aliases": ["Capsule safely settled. Tow coupling released.\n\nLand your ship and open the capsule on foot.\n\nRhekk: \"I have arrived. It would be nice if the door agreed.\""]
     },
     {
       "key": "cargo.radio.failed.title",
@@ -1304,7 +1367,8 @@
     },
     {
       "key": "cargo.radio.failed.body",
-      "text": "Capsule destroyed or towing ship lost. Rescue failed.\n\nRETRY resets this mission at the outpost. Your other progress is retained.\n\nAccounting would like a written definition of \"gently\"."
+      "text": "Capsule or towing ship lost: rescue failed.\nRETRY restarts this mission at the outpost; other progress is retained.",
+      "aliases": ["Capsule destroyed or towing ship lost. Rescue failed.\n\nRETRY resets this mission at the outpost. Your other progress is retained.\n\nAccounting would like a written definition of \"gently\"."]
     },
     {
       "key": "cargo.radio.complete.title",
@@ -1312,7 +1376,8 @@
     },
     {
       "key": "cargo.radio.complete.body",
-      "text": "Rhekk has reached registration.\n\nStatus: Person. Capacity for complaints: Fully restored.\n\nThe pilot is still missing. Why the ship left on its own remains unknown."
+      "text": "Rhekk is at registration; the pilot is still missing.\nStatus: person, still ready to complain.",
+      "aliases": ["Rhekk has reached registration.\n\nStatus: Person. Capacity for complaints: Fully restored.\n\nThe pilot is still missing. Why the ship left on its own remains unknown."]
     },
     {
       "key": "story.character.training-pilot",
@@ -1357,6 +1422,10 @@
     {
       "key": "story.character.resident-7",
       "text": "StationOperator"
+    },
+    {
+      "key": "story.event.training.silence",
+      "text": "..."
     }
   ]
 }

@@ -79,6 +79,7 @@ public static class StoryImport
                         var node = Single(project, property.stringValue, "Training und Entdeckungen", speaker, StoryChannel.Radio, main, property.propertyPath);
                         if (speaker != pilot && node.speaker == pilot) node.speaker = speaker;
                     }
+                    StoryEventAuthoring.Read(project, text, main);
                 }
             }
         }
@@ -182,11 +183,13 @@ public static class StoryImport
         {
             string id = "overview." + i;
             if (project.Find(id) != null) continue;
-            var node = new StoryNode { id = id, chapter = chapter, title = titles[i], overviewOnly = true,
+            string section = i <= 1 ? project.ResolveChapter("Training") : i <= 4 ? project.ResolveChapter("Mond") : chapter;
+            if (!project.chapters.Contains(section)) project.chapters.Insert(i <= 1 ? 0 : Mathf.Min(1, project.chapters.Count), section);
+            var node = new StoryNode { id = id, chapter = section, title = titles[i], overviewOnly = true,
                 status = i < 11 ? StoryDevelopmentStatus.Implemented : StoryDevelopmentStatus.Planned,
                 sourcePath = i < 11 ? "Assets/Scenes/MainScene.unity" : "GAME_CONCEPT.md",
                 purpose = i < 11 ? "Bestehender Spielablauf. Zugehörige Gespräche stehen in den jeweiligen Kapiteln. Gameplay-Abnahme separat." : "Grobe Richtung vereinbart; Storydetails noch offen.",
-                position = new Vector2((i % 4) * 280, (i / 4) * 150) };
+                position = i >= 2 && i <= 4 ? new Vector2((i - 2) * 280, 0) : new Vector2((i % 4) * 280, (i / 4) * 150) };
             if (i + 1 < titles.Length) node.choices.Add(new StoryChoice { next = "overview." + (i + 1) });
             project.nodes.Add(node);
         }
@@ -209,7 +212,7 @@ public static class StoryImport
             project.nodes.Remove(old);
         }
         string future = project.ResolveChapter("Spätere Geschichte");
-        string mainChapter = project.Find("overview.0")?.chapter ?? project.chapters.FirstOrDefault();
+        string mainChapter = project.Find("overview.5")?.chapter ?? project.chapters.FirstOrDefault();
         if (!string.IsNullOrEmpty(mainChapter) && mainChapter != future)
         {
             foreach (var n in project.nodes.Where(n => n.overviewOnly && n.chapter == future)) n.chapter = mainChapter;
@@ -235,7 +238,24 @@ public static class StoryImport
                 node.storyStepId = "overview." + step;
             }
         }
+        SplitDiscoveryGroups(project);
+        StoryTriggerAuthoring.Sync(project);
         EditorUtility.SetDirty(project);
+    }
+    static void SplitDiscoveryGroups(StoryProject project)
+    {
+        string old = project.ResolveChapter("Training und Entdeckungen");
+        foreach (var node in project.nodes.Where(n => !n.overviewOnly && n.chapter == old))
+        {
+            if (node.textKey == "game.back.to.the.moon.you.know.more.about.it.than.i.do"
+                || node.textKey == "game.i.wonder.what.else.is.up.there"
+                || node.textKey == "game.still.there.this.wasn.t.in.my.little.landing.game") node.storyStepId = "overview.2";
+            string group = node.storyStepId == "overview.5" ? "Funk"
+                : node.storyStepId == "overview.2" || node.storyStepId == "overview.3" || node.storyStepId == "overview.4" ? "Mond" : "Training";
+            node.chapter = project.ResolveChapter(group);
+            if (!project.dialogueGroups.Contains(node.chapter)) project.dialogueGroups.Add(node.chapter);
+        }
+        if (!project.nodes.Any(n => !n.overviewOnly && n.chapter == old)) project.dialogueGroups.Remove(old);
     }
     public static void MigrateSections()
     {

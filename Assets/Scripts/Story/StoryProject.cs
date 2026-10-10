@@ -52,6 +52,11 @@ public enum StoryDevelopmentStatus { Idea, Planned, Implemented, Verified }
     public List<StoryChoice> choices = new();
     public bool overviewOnly;
     public bool answerBoardLayout;
+    public StoryEventInfo eventInfo = new();
+    public bool eventPositioned;
+    public Vector2 eventPosition;
+    public bool triggerOnly, eventBindingEdited;
+    public string eventTriggerId;
 }
 [CreateAssetMenu(menuName = "Story/Projekt")]
 public class StoryProject : ScriptableObject
@@ -60,6 +65,28 @@ public class StoryProject : ScriptableObject
     public List<string> dialogueGroups = new();
     public List<StoryChapterAlias> chapterAliases = new();
     public List<StoryNode> nodes = new();
+    public List<StoryBoardDecoration> decorations = new();
+    public bool eventTriggersManaged;
+    public bool snapToGrid;
+    public float gridSize = 20;
+    public StoryEventInfo EventInfo(StoryNode node) => Find(node.eventTriggerId)?.eventInfo ?? node.eventInfo;
+    public string[] EventTexts(string pool, string[] fallback)
+    {
+        var trigger = nodes.Find(n => n.triggerOnly && n.eventInfo.pool == pool);
+        return trigger == null ? eventTriggersManaged ? Array.Empty<string>() : fallback : TriggerTexts(trigger.id, StoryLibrary.Flag);
+    }
+    public string[] TriggerTexts(string triggerId, Func<string, bool> flags = null) => nodes.Where(n => !n.triggerOnly && n.eventTriggerId == triggerId && !string.IsNullOrEmpty(n.textKey)
+        && (flags == null || StorySession.All(n.conditions, flags))).Select(n => "[[" + n.textKey + "]]").ToArray();
+    public string[] TrainingTexts(int level, string[] fallback, Func<string, bool> flags)
+    {
+        var triggers = nodes.Where(n => n.triggerOnly && n.eventInfo.kind == StoryEventKind.LevelStart).ToList();
+        if (triggers.Count == 0) return eventTriggersManaged ? Array.Empty<string>() : fallback;
+        var chosen = triggers.Where(n => n.eventInfo.fromLevel <= level && (n.eventInfo.toLevel == 0 || n.eventInfo.toLevel >= level)
+            && (string.IsNullOrEmpty(n.eventInfo.requiredFlag) || flags(n.eventInfo.requiredFlag))
+            && (string.IsNullOrEmpty(n.eventInfo.blockedFlag) || !flags(n.eventInfo.blockedFlag))).OrderBy(n => n.eventInfo.fromLevel).LastOrDefault();
+        if (chosen == null) return Array.Empty<string>();
+        var texts = TriggerTexts(chosen.id, flags); return chosen.eventInfo.random ? texts : texts.Take(1).ToArray();
+    }
     public string ResolveChapter(string source) => chapterAliases.Find(alias => alias.source == source)?.name ?? source;
     public void SeparateSections()
     {
@@ -75,8 +102,9 @@ public class StoryProject : ScriptableObject
     public StoryNode Match(string message, Func<string, bool> flags)
     {
         if (string.IsNullOrEmpty(message)) return null;
-        return nodes.LastOrDefault(n => !n.overviewOnly && !string.IsNullOrEmpty(n.sourceReference)
-            && message.EndsWith(n.sourceReference, StringComparison.Ordinal) && StorySession.All(n.conditions, flags));
+        return nodes.LastOrDefault(n => !n.overviewOnly && !n.triggerOnly
+            && ((!string.IsNullOrEmpty(n.sourceReference) && message.EndsWith(n.sourceReference, StringComparison.Ordinal))
+                || (!string.IsNullOrEmpty(n.textKey) && message.EndsWith("[[" + n.textKey + "]]", StringComparison.Ordinal))) && StorySession.All(n.conditions, flags));
     }
 }
 

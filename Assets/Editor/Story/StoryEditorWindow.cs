@@ -5,7 +5,7 @@ using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 
-public class StoryEditorWindow : EditorWindow
+public partial class StoryEditorWindow : EditorWindow
 {
     StoryProject project;
     SerializedObject serialized;
@@ -30,15 +30,23 @@ public class StoryEditorWindow : EditorWindow
     bool showNavigationHelp;
     [SerializeField] float boardZoom = 1;
     bool focusBoard;
-    int selectedAnswer = -1, draggedAnswer = -1, previewStart;
+    int selectedAnswer = -1, previewStart;
+    readonly HashSet<(string id, int answer)> markedCards = new();
+    readonly HashSet<(string id, int answer)> selectionBeforeMarquee = new();
+    bool marquee, additiveMarquee;
+    Vector2 marqueeStart, marqueeEnd;
+    int connectionOwner = -1, connectionAnswer = -1, connectionSide;
     Vector2 previewScroll, characterDetailsScroll;
+    int messageFilter, previewMode, previewLevel = 1, previewSignal;
+    StoryEventSimulator eventSimulator;
+    string eventPreviewReason = "";
     readonly StoryCharacterPreview characterPreview = new();
     bool StoryView => tab == 0;
     List<string> Sections => StoryView ? project.chapters : project.dialogueGroups;
     int previousBoardTab = -1;
     public static void Open() { var window = GetWindow<StoryEditorWindow>("Story & Charaktere"); window.minSize = new Vector2(1050, 650); }
     double nextCharacterFrame;
-    void OnEnable() { language = SessionState.GetString("StoryEditor.ContentLanguage", Localization.CurrentLanguage); Undo.undoRedoPerformed += Refresh; EditorApplication.update += CharacterFrame; Refresh(); }
+    void OnEnable() { language = SessionState.GetString("StoryEditor.ContentLanguage", Localization.CurrentLanguage); eventSimulator = new StoryEventSimulator(flags); Undo.undoRedoPerformed += Refresh; EditorApplication.update += CharacterFrame; Refresh(); }
     void OnDisable() { Undo.undoRedoPerformed -= Refresh; EditorApplication.update -= CharacterFrame; StopAudio(); characterPreview.Dispose(); }
     void CharacterFrame()
     {
@@ -50,12 +58,20 @@ public class StoryEditorWindow : EditorWindow
         project = AssetDatabase.LoadAssetAtPath<StoryProject>(StoryImport.ProjectPath); serialized = project ? new SerializedObject(project) : null;
         if (project && (project.dialogueGroups.Count == 0 || project.Find("pilot-trail") != null || project.nodes.Any(n => !n.overviewOnly && !n.answerBoardLayout)))
         { StoryImport.SeparateExisting(project); AssetDatabase.SaveAssets(); }
+        if (project && !project.nodes.Any(n => n.triggerOnly) && project.nodes.Any(n => n.eventInfo.enabled))
+        { StoryTriggerAuthoring.Sync(project); AssetDatabase.SaveAssets(); }
+        if (project && project.nodes.Any(n => n.triggerOnly) && !project.eventTriggersManaged)
+        { project.eventTriggersManaged = true; EditorUtility.SetDirty(project); }
         textDrafts.Clear(); chapter = Mathf.Clamp(chapter, 0, project ? Mathf.Max(0, Sections.Count - 1) : 0);
         if (!project || selected >= project.nodes.Count) selected = -1;
-        chapterNameIndex = -1; drag = -1; selectedAnswer = draggedAnswer = -1; panning = false; preview = null; StopAudio(); Repaint();
+        chapterNameIndex = -1; drag = connectionOwner = -1; selectedAnswer = -1; panning = marquee = false; markedCards.Clear(); preview = null; StopAudio(); Repaint();
+        selectedDecoration = draggingDecoration = resizingDecoration = null;
     }
     void OnGUI()
     {
+        if (project && tab <= 1 && Event.current.type == EventType.KeyDown && Event.current.keyCode == KeyCode.Delete
+            && GUIUtility.keyboardControl == 0 && GUIUtility.hotControl == 0 && markedCards.Count > 0)
+        { Event.current.Use(); RemoveMarked(); GUIUtility.ExitGUI(); }
         if (Event.current.type == EventType.KeyDown && Event.current.control && GUIUtility.keyboardControl == 0)
         {
             bool undo = Event.current.keyCode == KeyCode.Z && !Event.current.shift;
@@ -87,7 +103,7 @@ public class StoryEditorWindow : EditorWindow
     void Board()
     {
         if (previousBoardTab != tab)
-        { previousBoardTab = tab; chapter = 0; selected = -1; chapterNameIndex = -1; search = ""; focusBoard = true; }
+        { previousBoardTab = tab; chapter = 0; selected = -1; selectedDecoration = null; markedCards.Clear(); chapterNameIndex = -1; search = ""; focusBoard = true; }
         sidebarWidth = Mathf.Clamp(sidebarWidth, 230, Mathf.Max(230, position.width - detailsWidth - 320));
         detailsWidth = Mathf.Clamp(detailsWidth, 340, Mathf.Max(340, position.width - sidebarWidth - 320));
         using (new EditorGUILayout.HorizontalScope())
@@ -98,11 +114,12 @@ public class StoryEditorWindow : EditorWindow
                 using (new EditorGUILayout.VerticalScope(PanelStyle()))
                 {
                 GUILayout.Label(StoryView ? "Storykapitel" : "Gesprächsgruppen", EditorStyles.boldLabel);
+                if (!StoryView) messageFilter = GUILayout.Toolbar(messageFilter, new[] { "Alle", "Dialoge", "Ereignisse" });
                 GUILayout.Space(8);
                 for (int i = 0; i < Sections.Count; i++)
                 {
                     if (GUILayout.Toggle(chapter == i, Sections[i], "Button", GUILayout.Height(28)) && chapter != i)
-                    { chapter = i; selected = -1; chapterNameIndex = -1; focusBoard = true; }
+                    { chapter = i; selected = -1; selectedDecoration = null; markedCards.Clear(); chapterNameIndex = -1; focusBoard = true; }
                     GUILayout.Space(3);
                 }
                 GUILayout.Space(10);
@@ -134,20 +151,30 @@ public class StoryEditorWindow : EditorWindow
                 if (GUILayout.Button(StoryView ? "Neuer Storyschritt" : "Neue Dialogzeile", GUILayout.Height(30)))
                 {
                     Edit("Storyschritt"); var id = "story." + Guid.NewGuid().ToString("N");
-                    project.nodes.Add(new StoryNode { id = id, title = "Neuer Schritt", chapter = Sections.ElementAtOrDefault(chapter), textKey = StoryView ? "" : id, overviewOnly = StoryView, position = boardScroll + new Vector2(30, 30),
+                    project.nodes.Add(new StoryNode { id = id, title = "Neuer Schritt", chapter = Sections.ElementAtOrDefault(chapter), textKey = StoryView ? "" : id, overviewOnly = StoryView, position = SnapPoint(boardScroll + new Vector2(30, 30)),
                         answerBoardLayout = true, choices = new() { new StoryChoice { textKey = StoryView ? "" : "game.continue" } } });
-                    selected = project.nodes.Count - 1; selectedAnswer = -1; Dirty();
+                    selected = project.nodes.Count - 1; selectedAnswer = -1;
+                    markedCards.Clear(); markedCards.Add((id, -1)); SnapLayout(markedCards); Dirty();
                 }
                 GUILayout.Space(8);
                 if (GUILayout.Button(new GUIContent("Quellen ergänzen", "Ergänzt neue Inhalte aus dem Spiel. Vorhandene Storyschritte und Texte bleiben erhalten."), GUILayout.Height(28)))
                 { SaveAll(); StoryImport.Build(); Refresh(); }
                 }
                 GUILayout.Space(8);
+                using (new EditorGUILayout.HorizontalScope())
+                {
+                    if (GUILayout.Button("Titel hinzufügen", GUILayout.Height(28))) AddDecoration(StoryDecorationKind.Label);
+                    if (GUILayout.Button("Linie hinzufügen", GUILayout.Height(28))) AddDecoration(StoryDecorationKind.Line);
+                }
+                if (!StoryView && GUILayout.Button("Auslöser hinzufügen", GUILayout.Height(28))) AddTrainingTrigger();
+                GridControls();
+                using (new EditorGUI.DisabledScope(markedCards.Count == 0))
+                    if (GUILayout.Button(new GUIContent("Auswahl entfernen", "Löscht alle markierten Karten, Labels und Linien. Rückgängig mit Strg+Z."), GUILayout.Height(28))) { RemoveMarked(); GUIUtility.ExitGUI(); }
                 if (GUILayout.Button(new GUIContent("Inhalte fokussieren", "Zeigt alle Nodes des aktuellen Kapitels und setzt die Suche zurück."), GUILayout.Height(28)))
                 { search = ""; focusBoard = true; Repaint(); }
                 GUILayout.Space(8);
                 showNavigationHelp = EditorGUILayout.Foldout(showNavigationHelp, "Navigation", true);
-                if (showNavigationHelp) EditorGUILayout.HelpBox("Mausrad: Zoom am Mauszeiger.\nLeere Fläche ziehen: Board bewegen.\nKarte ziehen: Schritt verschieben.\nMittlere/rechte Maustaste: überall navigieren.", MessageType.None);
+                if (showNavigationHelp) EditorGUILayout.HelpBox("Verbindungspunkt ziehen: Folgeschritt verbinden.\nRechts oder Mausrad gedrückt ziehen: Board bewegen.\nLinks auf leerer Fläche ziehen: Auswahlrechteck.\nStrg/Shift: Auswahl ergänzen.\nMarkierte Karte ziehen: Auswahl verschieben.\nMausrad: Zoom am Mauszeiger.", MessageType.None);
                 EditorGUILayout.EndScrollView();
             }
             Splitter(ref sidebarWidth, false);
@@ -183,6 +210,7 @@ public class StoryEditorWindow : EditorWindow
         else if (e.type == EventType.MouseUp) { GUIUtility.hotControl = 0; e.Use(); }
     }
     IEnumerable<int> Visible() => Enumerable.Range(0, project.nodes.Count).Where(i => project.nodes[i].overviewOnly == StoryView && project.nodes[i].chapter == Sections.ElementAtOrDefault(chapter)
+        && (StoryView || messageFilter == 0 || messageFilter == 1 && !project.EventInfo(project.nodes[i]).enabled || messageFilter == 2 && project.EventInfo(project.nodes[i]).enabled)
         && (string.IsNullOrEmpty(search) || (project.nodes[i].title + project.nodes[i].id + project.nodes[i].purpose).IndexOf(search, StringComparison.OrdinalIgnoreCase) >= 0));
     void Graph(Rect rect)
     {
@@ -199,36 +227,111 @@ public class StoryEditorWindow : EditorWindow
         var view = new Rect(Vector2.zero, rect.size);
         EditorGUI.DrawRect(view, new Color(.09f, .09f, .09f));
         Handles.BeginGUI(); Handles.color = new Color(.16f, .16f, .16f);
-        float grid = 40 * boardZoom; while (grid < 24) grid *= 2;
-        for (float x = -Mathf.Repeat(boardScroll.x * boardZoom, grid); x < rect.width; x += grid) Handles.DrawLine(new Vector2(x, 0), new Vector2(x, rect.height));
-        for (float y = -Mathf.Repeat(boardScroll.y * boardZoom, grid); y < rect.height; y += grid) Handles.DrawLine(new Vector2(0, y), new Vector2(rect.width, y));
+        float grid = GridStep * boardZoom; while (grid < 8) grid *= 2;
+        if (showGrid) for (float x = -Mathf.Repeat(boardScroll.x * boardZoom, grid); x < rect.width; x += grid) Handles.DrawLine(new Vector2(x, 0), new Vector2(x, rect.height));
+        if (showGrid) for (float y = -Mathf.Repeat(boardScroll.y * boardZoom, grid); y < rect.height; y += grid) Handles.DrawLine(new Vector2(0, y), new Vector2(rect.width, y));
         Handles.color = Color.white; Handles.EndGUI();
+        DrawDecorations();
         var worldBounds = ContentBounds();
         var e = Event.current;
         if (e.type == EventType.MouseDown && view.Contains(e.mousePosition))
         {
+            dragRemainder = Vector2.zero;
             int hit = indices.Where(i => NodeRect(project.nodes[i]).Contains(e.mousePosition)).DefaultIfEmpty(-1).Last();
             int answerHit = -1;
             if (!StoryView) foreach (int owner in indices) for (int a = 0; a < project.nodes[owner].choices.Count; a++)
                 if (AnswerRect(project.nodes[owner], a).Contains(e.mousePosition)) { hit = owner; answerHit = a; }
-            if (e.button == 1 || e.button == 2 || e.button == 0 && hit < 0)
-            { panning = true; drag = -1; GUIUtility.hotControl = control; lastMouse = e.mousePosition; GUIUtility.keyboardControl = 0; e.Use(); }
+            if (!StoryView) foreach (int owner in indices) if (project.nodes[owner].triggerOnly && EventRect(project.nodes[owner]).Contains(e.mousePosition)) { hit = owner; answerHit = -2; }
+            var port = HitPort(indices, e.mousePosition);
+            if (e.button == 0 && port.owner >= 0)
+            {
+                connectionOwner = port.owner; connectionAnswer = port.answer; connectionSide = port.side;
+                selectedDecoration = null;
+                selected = port.owner; selectedAnswer = port.answer; markedCards.Clear(); markedCards.Add((project.nodes[port.owner].id, port.answer));
+                panning = marquee = false; drag = -1;
+                lastMouse = e.mousePosition; GUIUtility.hotControl = control; GUIUtility.keyboardControl = 0; e.Use(); Repaint();
+            }
+            else if (e.button == 1 || e.button == 2)
+            { connectionOwner = -1; panning = true; marquee = false; drag = -1; GUIUtility.hotControl = control; lastMouse = e.mousePosition; GUIUtility.keyboardControl = 0; e.Use(); }
+            else if (e.button == 0 && !e.control && !e.shift && hit < 0 && DecorationResizeHit(e.mousePosition))
+            {
+                resizingDecoration = selectedDecoration; draggingDecoration = null; panning = marquee = false; drag = -1; dragRecorded = false;
+                GUIUtility.hotControl = control; GUIUtility.keyboardControl = 0; lastMouse = e.mousePosition; e.Use();
+            }
+            else if (e.button == 0 && hit < 0 && HitDecoration(e.mousePosition) is StoryBoardDecoration decoration)
+            {
+                var card = (decoration.id, -3);
+                if (e.control && markedCards.Contains(card)) markedCards.Remove(card);
+                else { if (!e.control && !e.shift && !markedCards.Contains(card)) markedCards.Clear(); markedCards.Add(card); }
+                selectedDecoration = decoration.id; selected = -1; draggingDecoration = markedCards.Contains(card) ? decoration.id : null;
+                if (draggingDecoration == null) PrimaryMarkedCard();
+                panning = marquee = false; drag = -1; dragRecorded = false; GUIUtility.hotControl = control; GUIUtility.keyboardControl = 0; lastMouse = e.mousePosition; e.Use(); Repaint();
+            }
+            else if (e.button == 0 && hit < 0)
+            {
+                marquee = true; panning = false; drag = -1; additiveMarquee = e.control || e.shift;
+                selectionBeforeMarquee.Clear(); selectionBeforeMarquee.UnionWith(markedCards);
+                if (!additiveMarquee) { markedCards.Clear(); selected = selectedAnswer = -1; selectedDecoration = null; }
+                marqueeStart = marqueeEnd = boardScroll + e.mousePosition / boardZoom;
+                GUIUtility.hotControl = control; GUIUtility.keyboardControl = 0; e.Use(); Repaint();
+            }
             else if (e.button == 0)
-            { selected = drag = hit; selectedAnswer = draggedAnswer = answerHit; panning = false; dragRecorded = false; GUIUtility.hotControl = control; lastMouse = e.mousePosition; GUIUtility.keyboardControl = 0; e.Use(); Repaint(); }
+            {
+                var card = (project.nodes[hit].id, answerHit);
+                selectedDecoration = null; draggingDecoration = resizingDecoration = null;
+                if (e.control && markedCards.Contains(card)) markedCards.Remove(card);
+                else { if (!e.control && !e.shift && !markedCards.Contains(card)) markedCards.Clear(); markedCards.Add(card); }
+                selected = hit; selectedAnswer = answerHit;
+                drag = markedCards.Contains(card) ? hit : -1;
+                if (drag < 0) PrimaryMarkedCard();
+                panning = marquee = false; dragRecorded = false; GUIUtility.hotControl = control;
+                lastMouse = e.mousePosition; GUIUtility.keyboardControl = 0; e.Use(); Repaint();
+            }
         }
         if (GUIUtility.hotControl == control && e.type == EventType.MouseDrag)
         {
             Vector2 delta = (e.mousePosition - lastMouse) / boardZoom; lastMouse = e.mousePosition;
             if (panning) boardScroll -= delta;
-            else if (drag >= 0 && drag < project.nodes.Count)
+            else if (!string.IsNullOrEmpty(resizingDecoration))
             {
-                if (!dragRecorded) { Undo.IncrementCurrentGroup(); dragUndoGroup = Undo.GetCurrentGroup(); Undo.RegisterCompleteObjectUndo(project, "Storyschritt verschieben"); dragRecorded = true; }
-                if (draggedAnswer < 0) project.nodes[drag].position += delta;
-                else
+                if (!dragRecorded) { Undo.IncrementCurrentGroup(); dragUndoGroup = Undo.GetCurrentGroup(); Undo.RegisterCompleteObjectUndo(project, "Boardelement Größe ändern"); dragRecorded = true; }
+                var d = project.decorations.Find(d => d.id == resizingDecoration); var world = SnapPoint(boardScroll + e.mousePosition / boardZoom);
+                if (d.kind == StoryDecorationKind.Label) d.size = Vector2.Max(Vector2.one * 20, world - d.position);
+                else if (resizeLineStart) d.position = world; else d.end = world;
+                Dirty();
+            }
+            else if (marquee)
+            {
+                marqueeEnd = boardScroll + e.mousePosition / boardZoom;
+                markedCards.Clear(); if (additiveMarquee) markedCards.UnionWith(selectionBeforeMarquee);
+                var area = MarqueeBounds();
+                foreach (int i in indices)
                 {
-                    var choice = project.nodes[drag].choices[draggedAnswer];
-                    if (!choice.positioned) choice.position = AnswerOffset(draggedAnswer);
-                    choice.positioned = true; choice.position += delta;
+                    var node = project.nodes[i];
+                    if (area.Overlaps(node.triggerOnly ? EventWorldRect(node) : new Rect(node.position, new Vector2(230, 95)))) markedCards.Add((node.id, node.triggerOnly ? -2 : -1));
+                    if (!StoryView) for (int a = 0; a < node.choices.Count; a++)
+                        if (area.Overlaps(AnswerWorldRect(node, a))) markedCards.Add((node.id, a));
+                }
+                foreach (var d in BoardDecorations()) if (DecorationOverlaps(d, area)) markedCards.Add((d.id, -3));
+                PrimaryMarkedCard();
+            }
+            else if (drag >= 0 && drag < project.nodes.Count || !string.IsNullOrEmpty(draggingDecoration))
+            {
+                if (project.snapToGrid) { dragRemainder += delta; delta = SnapPoint(dragRemainder); dragRemainder -= delta; }
+                if (!dragRecorded) { Undo.IncrementCurrentGroup(); dragUndoGroup = Undo.GetCurrentGroup(); Undo.RegisterCompleteObjectUndo(project, "Auswahl verschieben"); dragRecorded = true; }
+                foreach (var card in markedCards)
+                {
+                    var owner = project.Find(card.id);
+                    if (owner == null)
+                    { var d = project.decorations.Find(d => d.id == card.id); if (d != null) { d.position += delta; d.end += delta; } continue; }
+                    if (card.answer == -2) owner.position += delta;
+                    else if (card.answer == -1) owner.position += delta;
+                    else if (!markedCards.Contains((card.id, -1)) && card.answer < owner.choices.Count)
+                    {
+                        var choice = owner.choices[card.answer];
+                        if (!choice.positioned) choice.position = AnswerOffset(card.answer);
+                        choice.positioned = true; choice.position += delta;
+                    }
                 }
                 Dirty();
             }
@@ -236,10 +339,22 @@ public class StoryEditorWindow : EditorWindow
         }
         if (GUIUtility.hotControl == control && e.type == EventType.MouseUp)
         {
-            if (dragRecorded) Undo.CollapseUndoOperations(dragUndoGroup);
-            dragRecorded = false; drag = draggedAnswer = -1; panning = false; GUIUtility.hotControl = 0; e.Use();
+            if (connectionOwner >= 0)
+            {
+                var destination = HitPort(indices, e.mousePosition);
+                if (destination.owner < 0) destination = HitCard(indices, e.mousePosition);
+                if (destination.owner >= 0) LinkCards(connectionOwner, connectionAnswer, destination.owner, destination.answer);
+                connectionOwner = -1;
+            }
+            if (dragRecorded) { SnapLayout(markedCards); Undo.CollapseUndoOperations(dragUndoGroup); }
+            dragRecorded = false; drag = -1; panning = marquee = false; GUIUtility.hotControl = 0; e.Use();
+            draggingDecoration = resizingDecoration = null;
         }
-        if (e.type == EventType.ScrollWheel && view.Contains(e.mousePosition))
+        if (e.type == EventType.KeyDown && e.keyCode == KeyCode.Escape && GUIUtility.hotControl == control && marquee)
+        { markedCards.Clear(); markedCards.UnionWith(selectionBeforeMarquee); PrimaryMarkedCard(); marquee = false; GUIUtility.hotControl = 0; e.Use(); Repaint(); }
+        if (e.type == EventType.KeyDown && e.keyCode == KeyCode.Escape && GUIUtility.hotControl == control && connectionOwner >= 0)
+        { connectionOwner = -1; GUIUtility.hotControl = 0; e.Use(); Repaint(); }
+        if (e.type == EventType.ScrollWheel && view.Contains(e.mousePosition) && GUIUtility.hotControl == 0)
         {
             Vector2 anchor = boardScroll + e.mousePosition / boardZoom;
             boardZoom = Mathf.Clamp(boardZoom * Mathf.Exp(-e.delta.y * .08f), .05f, 2.5f);
@@ -247,6 +362,11 @@ public class StoryEditorWindow : EditorWindow
             e.Use(); Repaint();
         }
         Handles.BeginGUI();
+        if (!StoryView) foreach (int i in indices)
+        {
+            var text = project.nodes[i]; var trigger = project.Find(text.eventTriggerId);
+            if (!text.triggerOnly && trigger != null && indices.Contains(project.nodes.IndexOf(trigger))) ConnectCards(EventRect(trigger), NodeRect(text), new Color(.9f, .65f, .25f));
+        }
         foreach (int i in indices)
             for (int answerIndex = 0; answerIndex < project.nodes[i].choices.Count; answerIndex++)
             {
@@ -269,35 +389,176 @@ public class StoryEditorWindow : EditorWindow
         infoStyle.normal.textColor = new Color(.83f, .85f, .88f);
         foreach (int i in indices)
         {
-            var node = project.nodes[i]; Rect box = NodeRect(node);
+            var node = project.nodes[i]; if (node.triggerOnly) continue; Rect box = NodeRect(node);
             EditorGUI.DrawRect(new Rect(box.x + 3 * boardZoom, box.y + 4 * boardZoom, box.width, box.height), new Color(0, 0, 0, .45f));
-            Color border = selected == i ? new Color(.3f, .72f, 1) : new Color(.48f, .5f, .53f);
-            float edge = Mathf.Max(1, (selected == i ? 2 : 1) * boardZoom);
+            bool marked = markedCards.Contains((node.id, -1));
+            Color border = marked ? new Color(.3f, .72f, 1) : new Color(.48f, .5f, .53f);
+            float edge = Mathf.Max(1, (marked ? 2 : 1) * boardZoom);
             EditorGUI.DrawRect(box, border);
             EditorGUI.DrawRect(new Rect(box.x + edge, box.y + edge, box.width - edge * 2, box.height - edge * 2), new Color(.25f, .26f, .28f));
-            EditorGUI.DrawRect(new Rect(box.x + edge, box.y + edge, box.width - edge * 2, 47 * boardZoom), selected == i ? new Color(.16f, .28f, .38f) : new Color(.2f, .21f, .23f));
+            EditorGUI.DrawRect(new Rect(box.x + edge, box.y + edge, box.width - edge * 2, 47 * boardZoom), marked ? new Color(.16f, .28f, .38f) : new Color(.2f, .21f, .23f));
             GUI.Label(new Rect(box.x + 10 * boardZoom, box.y + 6 * boardZoom, 210 * boardZoom, 40 * boardZoom), NodeTitle(node), titleStyle);
             string info = node.overviewOnly ? node.status + " · Storyschritt\n" + project.nodes.Count(n => !n.overviewOnly && n.storyStepId == node.id) + " Gesprächszeilen"
-                : "Text · " + node.channel + "\n" + (node.speaker ? StoryCatalog.Text(node.speaker.nameKey, language) : "Kein Sprecher");
+                : (project.EventInfo(node).enabled ? "Ereignismeldung · " : "Text · ") + node.channel + "\n" + (node.speaker ? StoryCatalog.Text(node.speaker.nameKey, language) : "Kein Sprecher");
             GUI.Label(new Rect(box.x + 10 * boardZoom, box.y + 54 * boardZoom, 210 * boardZoom, 34 * boardZoom), info, infoStyle);
         }
         if (!StoryView) foreach (int i in indices) for (int a = 0; a < project.nodes[i].choices.Count; a++)
         {
             Rect box = AnswerRect(project.nodes[i], a);
-            EditorGUI.DrawRect(box, selected == i && selectedAnswer == a ? new Color(.3f, .72f, 1) : new Color(.35f, .58f, .42f));
+            EditorGUI.DrawRect(box, markedCards.Contains((project.nodes[i].id, a)) ? new Color(.3f, .72f, 1) : new Color(.35f, .58f, .42f));
             EditorGUI.DrawRect(new Rect(box.x + 1, box.y + 1, box.width - 2, box.height - 2), new Color(.15f, .24f, .18f));
             GUI.Label(new Rect(box.x + 8 * boardZoom, box.y + 5 * boardZoom, 220 * boardZoom, 18 * boardZoom), "Antwort " + (a + 1), titleStyle);
             string text = StoryCatalog.Text(project.nodes[i].choices[a].textKey, language);
             GUI.Label(new Rect(box.x + 8 * boardZoom, box.y + 25 * boardZoom, 220 * boardZoom, 40 * boardZoom), string.IsNullOrEmpty(text) ? "Antworttext fehlt" : text, titleStyle);
         }
-        GUI.Label(new Rect(8, rect.height - 22, rect.width - 16, 20), $"Zoom: {boardZoom:P0} · Board: {worldBounds.width:0} × {worldBounds.height:0}", EditorStyles.miniLabel);
+        foreach (int i in indices)
+        {
+            if (!StoryView && project.nodes[i].triggerOnly)
+            {
+                var node = project.nodes[i]; var box = EventRect(node);
+                EditorGUI.DrawRect(box, markedCards.Contains((node.id, -2)) ? new Color(.3f, .72f, 1) : new Color(.72f, .5f, .24f));
+                EditorGUI.DrawRect(new Rect(box.x + 1, box.y + 1, box.width - 2, box.height - 2), new Color(.26f, .2f, .13f));
+                GUI.Label(new Rect(box.x + 8 * boardZoom, box.y + 6 * boardZoom, 220 * boardZoom, 22 * boardZoom), string.IsNullOrEmpty(node.title) ? "Auslöser" : node.title, titleStyle);
+                GUI.Label(new Rect(box.x + 8 * boardZoom, box.y + 30 * boardZoom, 220 * boardZoom, 72 * boardZoom), EventSummary(project.EventInfo(node)) + "\n" + project.TriggerTexts(node.id).Length + " Texte", new GUIStyle(titleStyle) { fontStyle = FontStyle.Normal });
+                DrawPorts(box);
+            }
+            if (!project.nodes[i].triggerOnly) DrawPorts(NodeRect(project.nodes[i]));
+            if (!StoryView) for (int a = 0; a < project.nodes[i].choices.Count; a++) DrawPorts(AnswerRect(project.nodes[i], a));
+        }
+        if (connectionOwner >= 0)
+        {
+            var owner = project.nodes[connectionOwner];
+            Rect card = connectionAnswer == -2 ? EventRect(owner) : connectionAnswer < 0 ? NodeRect(owner) : AnswerRect(owner, connectionAnswer);
+            Vector2 start = CardPorts(card)[connectionSide];
+            var normals = new[] { Vector2.left, Vector2.right, Vector2.down, Vector2.up };
+            var hover = HitPort(indices, lastMouse); if (hover.owner < 0) hover = HitCard(indices, lastMouse);
+            Color color = hover.owner >= 0 && CanLink(connectionOwner, connectionAnswer, hover.owner, hover.answer) ? Color.green : Color.cyan;
+            Handles.BeginGUI();
+            Handles.DrawBezier(start, lastMouse, start + normals[connectionSide] * (60 * boardZoom), lastMouse, color, null, 2);
+            Handles.EndGUI();
+        }
+        if (marquee)
+        {
+            var world = MarqueeBounds(); var box = new Rect((world.position - boardScroll) * boardZoom, world.size * boardZoom);
+            EditorGUI.DrawRect(box, new Color(.3f, .65f, 1, .15f));
+            var color = new Color(.3f, .72f, 1);
+            EditorGUI.DrawRect(new Rect(box.x, box.y, box.width, 1), color); EditorGUI.DrawRect(new Rect(box.x, box.yMax - 1, box.width, 1), color);
+            EditorGUI.DrawRect(new Rect(box.x, box.y, 1, box.height), color); EditorGUI.DrawRect(new Rect(box.xMax - 1, box.y, 1, box.height), color);
+        }
+        GUI.Label(new Rect(8, rect.height - 22, rect.width - 16, 20), $"Zoom: {boardZoom:P0} · {markedCards.Count} markiert · Board: {worldBounds.width:0} × {worldBounds.height:0}", EditorStyles.miniLabel);
         GUI.EndGroup();
     }
-    Rect NodeRect(StoryNode node) => new((node.position - boardScroll) * boardZoom, new Vector2(230, 95) * boardZoom);
+    Rect NodeRect(StoryNode node) => node.triggerOnly ? EventRect(node) : new((node.position - boardScroll) * boardZoom, new Vector2(230, 95) * boardZoom);
+    Rect EventWorldRect(StoryNode node) => new(node.triggerOnly ? node.position : node.eventPositioned ? node.eventPosition : node.position + new Vector2(-310, 0), new Vector2(240, 110));
+    Rect EventRect(StoryNode node) { var rect = EventWorldRect(node); return new Rect((rect.position - boardScroll) * boardZoom, rect.size * boardZoom); }
+    static string EventSummary(StoryEventInfo info)
+    {
+        string range = info.kind == StoryEventKind.LevelStart || info.kind == StoryEventKind.LevelTransmission || info.kind == StoryEventKind.LateTraining
+            ? "\nLevel " + info.fromLevel + (info.toLevel == 0 ? "+" : info.toLevel != info.fromLevel ? "–" + info.toLevel : "") : "";
+        return StoryEventSimulator.Signal(info) + range + "\n" + (info.once ? "Einmalig" : "Wiederholbar") + (info.random ? " · Zufallsauswahl" : " · Fester Text") + (info.probability < 1 ? "\nChance: " + info.probability.ToString("P0") : "");
+    }
+    static Vector2[] CardPorts(Rect r) => new[] { new Vector2(r.xMin, r.center.y), new Vector2(r.xMax, r.center.y), new Vector2(r.center.x, r.yMin), new Vector2(r.center.x, r.yMax) };
+    void DrawPorts(Rect card)
+    {
+        float size = Mathf.Clamp(9 * boardZoom, 6, 14);
+        foreach (var point in CardPorts(card))
+        {
+            Rect port = new(point - Vector2.one * (size * .5f), Vector2.one * size);
+            EditorGUI.DrawRect(port, new Color(.07f, .08f, .1f));
+            EditorGUI.DrawRect(new Rect(port.x + 1, port.y + 1, size - 2, size - 2), new Color(.55f, .8f, 1));
+            EditorGUIUtility.AddCursorRect(port, MouseCursor.Link);
+        }
+    }
+    (int owner, int answer, int side) HitPort(List<int> indices, Vector2 mouse)
+    {
+        float radius = Mathf.Clamp(7 * boardZoom, 5, 12);
+        foreach (int i in indices.AsEnumerable().Reverse())
+            for (int a = project.nodes[i].triggerOnly ? -2 : StoryView ? -1 : project.nodes[i].choices.Count - 1; a >= (project.nodes[i].triggerOnly ? -2 : -1); a--)
+            {
+                var ports = CardPorts(a == -2 ? EventRect(project.nodes[i]) : a < 0 ? NodeRect(project.nodes[i]) : AnswerRect(project.nodes[i], a));
+                for (int side = 0; side < 4; side++) if ((mouse - ports[side]).sqrMagnitude <= radius * radius) return (i, a, side);
+            }
+        return (-1, -1, -1);
+    }
+    (int owner, int answer, int side) HitCard(List<int> indices, Vector2 mouse)
+    {
+        foreach (int i in indices.AsEnumerable().Reverse())
+        {
+            if (!StoryView) for (int a = project.nodes[i].choices.Count - 1; a >= 0; a--) if (AnswerRect(project.nodes[i], a).Contains(mouse)) return (i, a, -1);
+            if (!StoryView && project.nodes[i].triggerOnly && EventRect(project.nodes[i]).Contains(mouse)) return (i, -2, -1);
+            if (NodeRect(project.nodes[i]).Contains(mouse)) return (i, -1, -1);
+        }
+        return (-1, -1, -1);
+    }
+    bool CanLink(int from, int fromAnswer, int to, int toAnswer)
+    {
+        if (project.nodes[from].triggerOnly) return !project.nodes[to].triggerOnly && !project.nodes[to].overviewOnly && toAnswer == -1;
+        if (project.nodes[to].triggerOnly) return false;
+        if (fromAnswer == -2 || toAnswer == -2) return from == to && fromAnswer == -2 && toAnswer == -1;
+        if (project.EventInfo(project.nodes[from]).enabled || project.EventInfo(project.nodes[to]).enabled) return false;
+        if (from == to && fromAnswer == toAnswer) return false;
+        if (project.nodes[from].overviewOnly != project.nodes[to].overviewOnly) return false;
+        return fromAnswer < 0 || toAnswer < 0;
+    }
+    void LinkCards(int from, int fromAnswer, int to, int toAnswer)
+    {
+        if (project.nodes[from].triggerOnly)
+        {
+            if (!CanLink(from, fromAnswer, to, toAnswer)) return;
+            var trigger = project.nodes[from]; var text = project.nodes[to];
+            Undo.RegisterCompleteObjectUndo(project, "Auslöser mit Text verbinden");
+            if (!trigger.eventInfo.random)
+                foreach (var prior in project.nodes.Where(n => n.eventTriggerId == trigger.id && n != text))
+                { prior.eventTriggerId = ""; prior.eventInfo.enabled = false; prior.eventBindingEdited = true; }
+            text.eventTriggerId = trigger.id; text.eventInfo = JsonUtility.FromJson<StoryEventInfo>(JsonUtility.ToJson(trigger.eventInfo)); text.eventBindingEdited = true;
+            markedCards.Clear(); markedCards.Add((trigger.id, -2)); selected = from; selectedAnswer = -2;
+            Dirty(); return;
+        }
+        if (fromAnswer == -2 && from == to && toAnswer == -1) return;
+        if (project.EventInfo(project.nodes[from]).enabled || project.EventInfo(project.nodes[to]).enabled)
+        { ShowNotification(new GUIContent("Ereignisse sind an ihre Spielauslöser gebunden und bilden keine Dialogfolge.")); return; }
+        if (!CanLink(from, fromAnswer, to, toAnswer))
+        { ShowNotification(new GUIContent("Bitte eine andere, passende Karte wählen; Antworten führen zu Texten.")); return; }
+        var source = project.nodes[from]; var target = project.nodes[to];
+        if (toAnswer >= 0)
+        {
+            if (from == to) return;
+            if (source.choices.Count >= 6) { ShowNotification(new GUIContent("Maximal sechs Antworten pro Text.")); return; }
+            Vector2 world = AnswerWorldRect(target, toAnswer).position;
+            Undo.RegisterCompleteObjectUndo(project, "Antwort verbinden");
+            var choice = target.choices[toAnswer]; target.choices.RemoveAt(toAnswer); source.choices.Add(choice);
+            choice.positioned = true; choice.position = world - source.position; choice.continueLegacy = false;
+            choice.legacyAnswer = Mathf.Clamp(choice.legacyAnswer, 0, Mathf.Max(0, source.legacyAnswerCount - 1));
+            selected = from; selectedAnswer = source.choices.Count - 1;
+        }
+        else
+        {
+            StoryChoice choice;
+            bool create = fromAnswer < 0 && source.choices.Count != 1;
+            if (create && !source.overviewOnly && source.choices.Count >= 6) { ShowNotification(new GUIContent("Maximal sechs Antworten pro Text.")); return; }
+            Undo.RegisterCompleteObjectUndo(project, "Folgeschritt verbinden");
+            if (fromAnswer >= 0) choice = source.choices[fromAnswer];
+            else if (!create) choice = source.choices[0];
+            else { choice = new StoryChoice { textKey = source.overviewOnly ? "" : "game.continue" }; source.choices.Add(choice); }
+            if (choice.next != target.id) choice.continueLegacy = false;
+            choice.next = target.id;
+            selected = from; selectedAnswer = source.overviewOnly ? -1 : source.choices.IndexOf(choice);
+        }
+        markedCards.Clear(); markedCards.Add((source.id, selectedAnswer));
+        Dirty(); ShowNotification(new GUIContent("Verbindung übernommen"));
+    }
+    Rect MarqueeBounds() => Rect.MinMaxRect(Mathf.Min(marqueeStart.x, marqueeEnd.x), Mathf.Min(marqueeStart.y, marqueeEnd.y), Mathf.Max(marqueeStart.x, marqueeEnd.x), Mathf.Max(marqueeStart.y, marqueeEnd.y));
+    void PrimaryMarkedCard()
+    {
+        selected = selectedAnswer = -1;
+        selectedDecoration = null;
+        foreach (var card in markedCards)
+        { int index = project.nodes.FindIndex(n => n.id == card.id); if (index >= 0) { selected = index; selectedAnswer = card.answer; selectedDecoration = null; }
+            else if (project.decorations.Any(d => d.id == card.id)) { selected = -1; selectedDecoration = card.id; } }
+    }
     void ConnectCards(Rect from, Rect to, Color color)
     {
-        Vector2[] Ports(Rect r) => new[] { new Vector2(r.xMin, r.center.y), new Vector2(r.xMax, r.center.y), new Vector2(r.center.x, r.yMin), new Vector2(r.center.x, r.yMax) };
-        var starts = Ports(from); var ends = Ports(to);
+        var starts = CardPorts(from); var ends = CardPorts(to);
         var normals = new[] { Vector2.left, Vector2.right, Vector2.down, Vector2.up };
         int source = 0, target = 0; float shortest = float.PositiveInfinity;
         for (int a = 0; a < 4; a++) for (int b = 0; b < 4; b++)
@@ -315,11 +576,13 @@ public class StoryEditorWindow : EditorWindow
     Rect ContentBounds(float padding = 200)
     {
         var nodes = project.nodes.Where(n => n.overviewOnly == StoryView && n.chapter == Sections.ElementAtOrDefault(chapter)).ToList();
-        if (nodes.Count == 0) return new Rect(0, 0, 600, 400);
-        Vector2 min = nodes.Select(n => n.position).Aggregate(Vector2.Min) - Vector2.one * padding;
-        Vector2 max = nodes.Select(n => n.position + new Vector2(230, 95)).Aggregate(Vector2.Max) + Vector2.one * padding;
+        Vector2 min = nodes.Count == 0 ? Vector2.zero : nodes.Select(n => n.position).Aggregate(Vector2.Min) - Vector2.one * padding;
+        Vector2 max = nodes.Count == 0 ? new Vector2(600, 400) : nodes.Select(n => n.position + new Vector2(230, 95)).Aggregate(Vector2.Max) + Vector2.one * padding;
+        if (!StoryView) foreach (var node in nodes.Where(n => n.triggerOnly))
+        { var trigger = EventWorldRect(node); min = Vector2.Min(min, trigger.min - Vector2.one * padding); max = Vector2.Max(max, trigger.max + Vector2.one * padding); }
         if (!StoryView) foreach (var node in nodes) for (int a = 0; a < node.choices.Count; a++)
         { var answer = AnswerWorldRect(node, a); min = Vector2.Min(min, answer.min - Vector2.one * padding); max = Vector2.Max(max, answer.max + Vector2.one * padding); }
+        foreach (var d in BoardDecorations()) { var bounds = DecorationBounds(d); min = Vector2.Min(min, bounds.min - Vector2.one * padding); max = Vector2.Max(max, bounds.max + Vector2.one * padding); }
         return Rect.MinMaxRect(min.x, min.y, max.x, max.y);
     }
     void RenameChapter()
@@ -363,9 +626,25 @@ public class StoryEditorWindow : EditorWindow
     }
     void Details()
     {
+        var decoration = project.decorations.Find(d => d.id == selectedDecoration);
+        if (decoration != null) { DecorationDetails(decoration); return; }
         if (selected < 0 || selected >= project.nodes.Count) { GUILayout.Label("Schritt im Board auswählen."); return; }
+        if (markedCards.Count > 1) EditorGUILayout.HelpBox(markedCards.Count + " Karten markiert. Ziehen verschiebt die Auswahl; unten stehen die Eigenschaften der aktiven Karte.", MessageType.None);
         serialized.Update(); var node = serialized.FindProperty("nodes").GetArrayElementAtIndex(selected);
         var selectedNode = project.nodes[selected];
+        if (selectedNode.triggerOnly) { TriggerDetails(node, selectedNode); return; }
+        if (project.EventInfo(selectedNode).enabled)
+        {
+            GUILayout.Label("Ereignismeldung", EditorStyles.boldLabel);
+            EditorGUILayout.HelpBox(EventSummary(project.EventInfo(selectedNode)) + "\n\n" + project.EventInfo(selectedNode).description, MessageType.Info);
+            var commonTrigger = project.Find(selectedNode.eventTriggerId);
+            if (commonTrigger != null)
+            {
+                if (GUILayout.Button("Gemeinsamen Auslöser öffnen")) { OpenNode(commonTrigger); GUIUtility.ExitGUI(); }
+            }
+            else using (new EditorGUI.DisabledScope(true)) EditorGUILayout.PropertyField(node.FindPropertyRelative("eventInfo"), new GUIContent("Auslöser aus dem Spielsystem"), true);
+            EditorGUILayout.HelpBox("Die Auslöserdaten werden aus dem vorhandenen Storysystem gelesen. Texte und Audio sind hier bearbeitbar; der Auslöser wird nicht durch eine künstliche Dialogverbindung ersetzt.", MessageType.None);
+        }
         if (!selectedNode.overviewOnly && selectedAnswer >= 0 && selectedAnswer < selectedNode.choices.Count)
         { AnswerDetails(node, selectedNode); return; }
         GUILayout.Label("Storyschritt", EditorStyles.boldLabel);
@@ -393,8 +672,7 @@ public class StoryEditorWindow : EditorWindow
             foreach (var dialogue in associated)
                 if (GUILayout.Button(NodeTitle(dialogue))) { OpenNode(dialogue); GUIUtility.ExitGUI(); }
             if (associated.Count == 0) GUILayout.Label("Noch keine Gespräche zugewiesen.");
-            if (GUILayout.Button("Storyschritt löschen") && EditorUtility.DisplayDialog("Storyschritt löschen", "Gespräche bleiben erhalten; ihre Zuordnung muss danach angepasst werden.", "Löschen", "Abbrechen"))
-            { Edit("Storyschritt löschen"); project.nodes.RemoveAt(selected); selected = -1; Dirty(); }
+            if (GUILayout.Button(markedCards.Count > 1 ? "Auswahl entfernen" : "Storyschritt entfernen")) { RemoveMarked(); GUIUtility.ExitGUI(); }
             return;
         }
         var steps = project.nodes.Where(n => n.overviewOnly).ToList();
@@ -411,6 +689,14 @@ public class StoryEditorWindow : EditorWindow
         serialized.Update(); node = serialized.FindProperty("nodes").GetArrayElementAtIndex(selected);
         foreach (string field in new[] { "voiceDE", "voiceEN", "sound", "conditions", "onEnter" }) EditorGUILayout.PropertyField(node.FindPropertyRelative(field), true);
         if (GUILayout.Button("Audio dieser Zeile hören")) PlayNode(current);
+        if (project.EventInfo(current).enabled)
+        {
+            if (GUILayout.Button("Diese Meldung einzeln ansehen")) { previewMode = 0; StartPreview(current); tab = 3; }
+            if (GUILayout.Button("Auslöser in der Vorschau öffnen"))
+            { previewMode = 1; var signals = EventSignals(); previewSignal = Mathf.Max(0, Array.IndexOf(signals, StoryEventSimulator.Signal(project.EventInfo(current)))); tab = 3; }
+            GUILayout.Label("Keine Antwortzweige: Diese Meldung wird durch ihr Ereignis ausgelöst.", EditorStyles.wordWrappedLabel);
+            return;
+        }
         var choices = node.FindPropertyRelative("choices");
         GUILayout.Label("Antworten / Verzweigungen", EditorStyles.boldLabel);
         for (int i = 0; i < choices.arraySize; i++)
@@ -441,15 +727,17 @@ public class StoryEditorWindow : EditorWindow
         EditorGUILayout.SelectableLabel(current.sourcePath + "\n" + current.sourceProperty, GUILayout.Height(40));
         if (GUILayout.Button("Quelle auswählen")) Selection.activeObject = AssetDatabase.LoadMainAssetAtPath(current.sourcePath);
         if (GUILayout.Button("Ab hier durchspielen")) { StartPreview(current); tab = 3; }
-        if (GUILayout.Button("Schritt löschen") && EditorUtility.DisplayDialog("Storyschritt löschen", "Verweise auf diesen Schritt müssen anschließend angepasst werden.", "Löschen", "Abbrechen"))
-        { Edit("Schritt löschen"); project.nodes.RemoveAt(selected); selected = -1; Dirty(); }
+        if (GUILayout.Button(markedCards.Count > 1 ? "Auswahl entfernen" : "Text entfernen")) { RemoveMarked(); GUIUtility.ExitGUI(); }
     }
     void OpenNode(StoryNode node)
     {
-        selectedAnswer = -1;
+        selectedDecoration = null;
+        selectedAnswer = node.triggerOnly ? -2 : -1;
+        markedCards.Clear(); markedCards.Add((node.id, selectedAnswer));
         tab = node.overviewOnly ? 0 : 1; previousBoardTab = tab;
         chapter = Mathf.Max(0, Sections.IndexOf(node.chapter)); chapterNameIndex = -1;
         selected = project.nodes.IndexOf(node); search = ""; focusBoard = true; Repaint();
+        messageFilter = project.EventInfo(node).enabled ? 2 : 0;
     }
     void AnswerDetails(SerializedProperty node, StoryNode owner)
     {
@@ -469,9 +757,8 @@ public class StoryEditorWindow : EditorWindow
         serialized.ApplyModifiedProperties();
         TextPair(owner.choices[selectedAnswer].textKey);
         if (!string.IsNullOrEmpty(owner.choices[selectedAnswer].reactionKey)) TextPair(owner.choices[selectedAnswer].reactionKey);
-        if (GUILayout.Button("Textkarte auswählen")) selectedAnswer = -1;
-        if (GUILayout.Button("Antwort entfernen"))
-        { Edit("Antwort entfernen"); owner.choices.RemoveAt(selectedAnswer); selectedAnswer = -1; Dirty(); }
+        if (GUILayout.Button("Textkarte auswählen")) { selectedAnswer = -1; markedCards.Clear(); markedCards.Add((owner.id, -1)); }
+        if (GUILayout.Button(markedCards.Count > 1 ? "Auswahl entfernen" : "Antwort entfernen")) { RemoveMarked(); GUIUtility.ExitGUI(); }
     }
     void TextPair(string key)
     {
@@ -566,7 +853,7 @@ public class StoryEditorWindow : EditorWindow
         StopAudio(); trace.Clear();
         preview = new StorySession(project, key => flags.TryGetValue(key, out bool value) && value, (key, value) => flags[key] = value);
         selected = project.nodes.IndexOf(node);
-        previewStart = Mathf.Max(0, project.nodes.Where(n => !n.overviewOnly).ToList().IndexOf(node));
+        previewStart = Mathf.Max(0, project.nodes.Where(n => !n.overviewOnly && !n.triggerOnly).ToList().IndexOf(node));
         if (!preview.Begin(node)) { preview = null; trace.Add("Voraussetzungen nicht erfüllt. Simulierte Flags rechts setzen."); return; }
         trace.Add(node.title); if (autoAudio) PlayNode(node);
     }
@@ -578,11 +865,16 @@ public class StoryEditorWindow : EditorWindow
             {
                 previewScroll = EditorGUILayout.BeginScrollView(previewScroll);
                 GUILayout.Label("Gesprächsvorschau · " + language.ToUpperInvariant(), EditorStyles.boldLabel);
-                var starts = project.nodes.Where(n => !n.overviewOnly).ToList();
+                previewMode = GUILayout.Toolbar(previewMode, new[] { "Einzeltext / Gespräch", "Ereignis auslösen" });
+                var starts = project.nodes.Where(n => !n.overviewOnly && !n.triggerOnly).ToList();
                 if (starts.Count == 0) { GUILayout.Label("Noch keine Dialogtexte vorhanden."); EditorGUILayout.EndScrollView(); return; }
                 previewStart = Mathf.Clamp(previewStart, 0, starts.Count - 1);
-                previewStart = EditorGUILayout.Popup("Starttext", previewStart, starts.Select(n => n.chapter + " · " + NodeTitle(n)).ToArray());
-                if (GUILayout.Button("Gespräch starten", GUILayout.Height(30))) StartPreview(starts[previewStart]);
+                if (previewMode == 0)
+                {
+                    previewStart = EditorGUILayout.Popup("Starttext", previewStart, starts.Select(n => n.chapter + " · " + NodeTitle(n)).ToArray());
+                    if (GUILayout.Button("Text / Gespräch starten", GUILayout.Height(30))) StartPreview(starts[previewStart]);
+                }
+                else DrawEventPreview();
                 autoAudio = EditorGUILayout.Toggle("Audio automatisch", autoAudio);
                 if (selected >= 0 && selected < project.nodes.Count && GUILayout.Button("Ausgewählten Schritt neu starten")) StartPreview(project.nodes[selected]);
                 if (preview?.Node != null)
@@ -600,8 +892,9 @@ public class StoryEditorWindow : EditorWindow
                         int index = i;
                         if (GUILayout.Button(StoryCatalog.Text(options[i].textKey, language), GUILayout.MinHeight(34)))
                         {
+                            var previousNode = preview.Node;
                             if (!preview.Choose(index, false)) trace.Add("Ziel fehlt oder seine Bedingungen sind nicht erfüllt.");
-                            else { StopAudio(); trace.Add(preview.Node == null ? "Gespräch beendet." : preview.Node.title); if (autoAudio && preview.Node != null) PlayNode(preview.Node); }
+                            else { if (previousNode.eventInfo.enabled) eventSimulator.Confirm(project, previousNode); StopAudio(); trace.Add(preview.Node == null ? "Gespräch beendet." : preview.Node.title); if (autoAudio && preview.Node != null) PlayNode(preview.Node); }
                             break;
                         }
                     }
@@ -629,10 +922,30 @@ public class StoryEditorWindow : EditorWindow
                 flagKey = EditorGUILayout.TextField(flagKey, GUILayout.Height(26));
                 GUILayout.Label("Beispiel: story.registrationComplete. Nur für Bedingungen dieser Vorschau.", EditorStyles.wordWrappedMiniLabel);
                 if (GUILayout.Button("Flag hinzufügen") && !string.IsNullOrWhiteSpace(flagKey)) { flags[flagKey] = true; flagKey = ""; }
-                if (GUILayout.Button("Simulation zurücksetzen")) { flags.Clear(); preview = null; trace.Clear(); StopAudio(); }
+                if (GUILayout.Button("Simulation zurücksetzen")) { flags.Clear(); preview = null; trace.Clear(); eventSimulator.Reset(); eventPreviewReason = ""; StopAudio(); }
                 GUILayout.Label("Löscht simulierte Flags und Verlauf. Spielstände bleiben unverändert.", EditorStyles.wordWrappedMiniLabel);
             }
         }
+    }
+    string[] EventSignals() => new[] { "Trainingsstart" }.Concat(project.nodes.Where(n => n.triggerOnly).Select(n => StoryEventSimulator.Signal(project.EventInfo(n)))).Distinct().ToArray();
+    void DrawEventPreview()
+    {
+        var signals = EventSignals(); previewSignal = Mathf.Clamp(previewSignal, 0, signals.Length - 1);
+        previewSignal = EditorGUILayout.Popup("Ereignis", previewSignal, signals);
+        previewLevel = Mathf.Max(1, EditorGUILayout.IntField("Trainingslevel", previewLevel));
+        var candidates = eventSimulator.Candidates(project, signals[previewSignal], previewLevel);
+        if (GUILayout.Button("Ereignis auslösen", GUILayout.Height(30)))
+        {
+            var result = eventSimulator.Fire(project, signals[previewSignal], previewLevel);
+            StopAudio(); preview = null; eventPreviewReason = result.reason;
+            if (result.node != null) StartPreview(result.node);
+            else trace.Add(result.reason);
+        }
+        if (!string.IsNullOrEmpty(eventPreviewReason)) EditorGUILayout.HelpBox(eventPreviewReason, MessageType.Info);
+        GUILayout.Label("Mögliche Texte für dieses Ereignis: " + candidates.Count, EditorStyles.boldLabel);
+        foreach (var node in candidates)
+            if (GUILayout.Button(NodeTitle(node), new GUIStyle(GUI.skin.button) { wordWrap = true }, GUILayout.MinHeight(28))) StartPreview(node);
+        EditorGUILayout.HelpBox("Die Liste zeigt passende Varianten; Auslösen berücksichtigt auch Zufallschance und Einmaligkeit. Physische Flugbedingungen und echtes Timing werden hier nicht simuliert.", MessageType.None);
     }
     void Validation()
     {
@@ -645,12 +958,14 @@ public class StoryEditorWindow : EditorWindow
     }
     public static IEnumerable<string> Issues(StoryProject project)
     {
+        foreach (var trigger in project.nodes.Where(n => n.triggerOnly))
+            if (project.TriggerTexts(trigger.id).Length == 0) yield return trigger.id + ": Auslöser hat keinen verbundenen Text.";
         var de = StoryCatalog.Load("de").entries.GroupBy(e => e.key).ToDictionary(g => g.Key, g => g.First().text);
         var en = StoryCatalog.Load("en").entries.GroupBy(e => e.key).ToDictionary(g => g.Key, g => g.First().text);
         foreach (var group in project.nodes.GroupBy(n => n.id).Where(g => string.IsNullOrEmpty(g.Key) || g.Count() > 1)) yield return group.Key + ": ID fehlt oder doppelt.";
         foreach (var node in project.nodes)
         {
-            if (node.overviewOnly) continue;
+            if (node.overviewOnly || node.triggerOnly) continue;
             if (!node.speaker) yield return node.id + ": Sprecher fehlt.";
             else
             {
