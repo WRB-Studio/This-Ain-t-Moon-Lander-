@@ -53,9 +53,13 @@ MonoBehaviour:
   hopFreq: 2.75
   maxMoveSpeed: 1.5
   stationSpeedMultiplier: 0.75
-  moonSpeedMultiplier: 0.6
+  moonSpeedMultiplier: 0.75
   rotateSmooth: 12
   inputDeadZone: 0.6
+  touchWalkDistance: 0.015
+  touchSprintDistance: 0.1
+  minimumWalkMultiplier: 0.6
+  sprintMultiplier: 1.4
 --- !u!50 &217283479221188408
 Rigidbody2D:
   serializedVersion: 5

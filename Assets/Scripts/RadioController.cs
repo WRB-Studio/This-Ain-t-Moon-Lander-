@@ -56,9 +56,25 @@ public class RadioController : MonoBehaviour
     public bool IsOwned => Data != null && Data.GetFlag("story.radioOwned");
     public bool IsOpen => device && device.activeSelf;
     public bool HasTrackedSignal => IsOwned && TrackedMessage != null;
-    RadioMessage TrackedMessage => Data?.radioTrackedMessageId == stationSignal.id
-        ? SpaceStation.Instance && SpaceStation.Instance.IsAvailable ? stationSignal : null
-        : Data?.radioMessages?.Find(m => m.id == Data.radioTrackedMessageId && !string.IsNullOrEmpty(m.signal));
+    public SpaceNavigationTarget TrackedTarget => TargetForSignal(TrackedMessage?.signal);
+    SpaceNavigationTarget TargetForSignal(string signal)
+    {
+        if (string.IsNullOrEmpty(signal)) return null;
+        string id = signal.StartsWith("world.") ? signal.Substring(6)
+            : signal == "pickup" ? "outpost" : signal == "station" || signal == "station.delivery" ? "station" : null;
+        return id == null ? null : SpaceNavigationTarget.Active.Find(t => t && t.Available && t.signalId == id);
+    }
+    public Vector3 TrackedPosition => TrackedMessage != null ? Destination(TrackedMessage) : Vector3.zero;
+    RadioMessage TrackedMessage => WorldSignal(Data?.radioTrackedMessageId) ?? (Data?.radioTrackedMessageId == stationSignal.id
+        ? SpaceStation.Instance && SpaceStation.Instance.IsAvailable && TargetForSignal("station") is { IsDiscovered: true } ? stationSignal : null
+        : Data?.radioMessages?.Find(m => m.id == Data.radioTrackedMessageId && !string.IsNullOrEmpty(m.signal)));
+    RadioMessage WorldSignal(string id)
+    {
+        if (string.IsNullOrEmpty(id) || !id.StartsWith("world.")) return null;
+        var target = SpaceNavigationTarget.Active.Find(t => t && t.Available && t.IsDiscovered && "world." + t.signalId == id);
+        return target ? new RadioMessage { id = id, signal = id, title = "[[" + target.titleKey + "]]"
+            + (target.kind == SpaceNavigationTarget.ObjectKind.Ship && target.signalId.StartsWith("ship.") ? " " + target.signalId.Substring("ship.".Length) : ""), coordinates = target.transform.position } : null;
+    }
     RadioMessage SelectedSignal => signals.Count > 0 ? signals[selectedSignal] : null;
 
     void Awake()
@@ -66,7 +82,7 @@ public class RadioController : MonoBehaviour
         Instance = this;
         device.SetActive(false);
         openButton.gameObject.SetActive(false);
-        navigationIcon.gameObject.SetActive(false);
+        if (navigationIcon) navigationIcon.gameObject.SetActive(false);
         openButton.onClick.AddListener(Open);
         closeButton.onClick.AddListener(Close);
         previousButton.onClick.AddListener(() => Select(selected - 1));
@@ -90,8 +106,15 @@ public class RadioController : MonoBehaviour
         {
             initialized = true;
             if (IsOwned && Data.GetFlag("story.registrationComplete")) ReceivePickup();
+            if (Data.radioTrackedMessageId != null && Data.radioTrackedMessageId.StartsWith("world.") && WorldSignal(Data.radioTrackedMessageId) == null)
+            {
+                var target = TargetForSignal(Data.radioTrackedMessageId);
+                var mission = target ? Data.radioMessages.Find(m => TargetForSignal(m.signal) == target) : null;
+                Data.radioTrackedMessageId = mission?.id;
+            }
             selected = Mathf.Max(0, Data.radioMessages.Count - 1);
         }
+        DirectionMarkerSystem.Instance?.SetTrackedSignal(HasTrackedSignal, TrackedPosition, TrackedTarget);
         bool available = IsOwned && (GameController.Instance.IsPlaying
             || GameController.Instance.Phase == GameController.GamePhase.Landed)
             && !(StationConversation.Instance && StationConversation.Instance.IsShowing)
@@ -288,6 +311,7 @@ public class RadioController : MonoBehaviour
         if (!IsOpen || SelectedSignal == null) return;
         var signal = SelectedSignal;
         Data.radioTrackedMessageId = Data.radioTrackedMessageId == signal.id ? null : signal.id;
+        DirectionMarkerSystem.Instance?.SetTrackedSignal(HasTrackedSignal, TrackedPosition, TrackedTarget);
         UpdateSignalText();
         SaveLoadManager.Instance.Save();
     }
@@ -296,7 +320,11 @@ public class RadioController : MonoBehaviour
     {
         string currentId = SelectedSignal?.id ?? Data.radioTrackedMessageId;
         signals.Clear();
-        if (SpaceStation.Instance && SpaceStation.Instance.IsAvailable) signals.Add(stationSignal);
+        if (SpaceStation.Instance && SpaceStation.Instance.IsAvailable && TargetForSignal("station") is { IsDiscovered: true }) signals.Add(stationSignal);
+        foreach (var target in SpaceNavigationTarget.Active)
+            if (target && target.Available && target.IsDiscovered && target.kind != SpaceNavigationTarget.ObjectKind.Station
+                && target.transform != GameController.Instance.ControlledTarget)
+                signals.Add(WorldSignal("world." + target.signalId));
         foreach (var message in Data.radioMessages)
             if (!string.IsNullOrEmpty(message.signal) && !signals.Exists(s => s.signal == message.signal)) signals.Add(message);
         selectedSignal = Mathf.Max(0, signals.FindIndex(s => s.id == currentId));
@@ -312,6 +340,11 @@ public class RadioController : MonoBehaviour
 
     Vector3 Destination(RadioMessage message)
     {
+        if (message.signal != null && message.signal.StartsWith("world."))
+        {
+            var target = SpaceNavigationTarget.Active.Find(t => t && t.Available && "world." + t.signalId == message.signal);
+            if (target) return target.transform.position;
+        }
         if (message.signal == "pickup" && CargoMission.Instance) return CargoMission.Instance.SignalTarget.position;
         if (message.signal == "station.delivery" && CargoMission.Instance) return CargoMission.Instance.DeliverySurface.bounds.center;
         if (message.signal == "station" && SpaceStation.Instance) return SpaceStation.Instance.transform.position;
@@ -337,31 +370,14 @@ public class RadioController : MonoBehaviour
         float distance = GameController.Instance.ControlledTarget
             ? Vector2.Distance(GameController.Instance.ControlledTarget.position, position) : 0f;
         string status = Data.radioTrackedMessageId == message.id ? "[[radio.active]]" : "[[radio.selected]]";
-        signalText.SetLocalizedText($"{status}  {position.x:0}, {position.y:0}\n[[radio.distance]]  {distance:0} [[radio.units]]");
+        string distanceLabel = SpaceFlightNavigation.Instance ? SpaceFlightNavigation.Instance.FormatDistance(distance) : $"{distance:0} [[radio.units]]";
+        signalText.SetLocalizedText($"{status}  {position.x:0}, {position.y:0}\n[[radio.distance]]  {distanceLabel}");
     }
 
     void LateUpdate()
     {
-        var message = TrackedMessage;
-        var game = GameController.Instance;
-        var camera = Camera.main;
-        bool visible = IsOwned && message != null && game && game.ControlledTarget && camera && !IsOpen
-            && game.IsPlaying && (game.Phase == GameController.GamePhase.Flight
-                || game.Phase == GameController.GamePhase.EVA && !(StationInterior.Instance && StationInterior.Instance.IsInside));
-        navigationIcon.gameObject.SetActive(visible);
-        if (!visible) return;
-        Vector3 destination = Destination(message);
-        Vector2 sourceScreen = camera.WorldToScreenPoint(game.ControlledTarget.position);
-        Vector2 direction = ((Vector2)camera.WorldToScreenPoint(destination) - sourceScreen).normalized;
-        var canvas = navigationIcon.GetComponentInParent<Canvas>();
-        RectTransformUtility.ScreenPointToLocalPointInRectangle((RectTransform)navigationIcon.parent, sourceScreen,
-            canvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : canvas.worldCamera, out var localPosition);
-        navigationIcon.anchoredPosition = localPosition + direction * orbitRadius;
-        navigationIcon.localRotation = Quaternion.Euler(0f, 0f, Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg);
-        navigationDistance.transform.rotation = Quaternion.identity;
-        float distance = Vector2.Distance(game.ControlledTarget.position, destination);
-        navigationDistance.SetLocalizedText(Localization.Reference(message.title) + "\n" + (distance < 10f ? "[[game.signal.nearby]]" : $"{distance:0} u"));
-        navigationGraphic.color = Color.white;
+        // World navigation owns tracked markers; keep the legacy radio glyph hidden.
+        if (navigationIcon) navigationIcon.gameObject.SetActive(false);
     }
 
     void OnDisable() { StopStoryPresentation(); Close(); }

@@ -11,7 +11,7 @@ public sealed class StoryEventSimulator
     string lastAside;
     public StoryEventSimulator(Dictionary<string, bool> flags) => this.flags = flags;
     bool Flag(string key) => !string.IsNullOrEmpty(key) && flags.TryGetValue(key, out bool value) && value;
-    public static string Signal(StoryEventInfo info) => info.kind == StoryEventKind.LevelStart || info.kind == StoryEventKind.LevelTransmission || info.kind == StoryEventKind.KnownMoon || info.kind == StoryEventKind.LateTraining
+    public static string Signal(StoryEventInfo info) => info.kind == StoryEventKind.TrainingIntroduction ? "Trainingseinführung" : info.kind == StoryEventKind.LevelStart || info.kind == StoryEventKind.LevelTransmission || info.kind == StoryEventKind.KnownMoon || info.kind == StoryEventKind.LateTraining
         ? "Trainingsstart" : info.kind == StoryEventKind.Discovery || info.kind == StoryEventKind.ZeroGAfterTraining ? "Entdeckung: " + info.eventId
         : info.kind == StoryEventKind.FlightState ? "Flugzustand: " + info.eventId : "Rückkehr: " + info.eventId;
     public List<StoryNode> Candidates(StoryProject project, string signal, int level)

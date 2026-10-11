@@ -280,7 +280,7 @@
     },
     {
       "key": "game.oh.so.that.is.the.moon.minor.naming.issue",
-      "text": "Da ist der echte Mond.\nDen Namen unten würde ich nicht zu ernst nehmen."
+      "text": "Da ist er: der Mond.\nBrems rechtzeitig – hier zieht es dich zur Oberfläche."
     },
     {
       "key": "game.on.the.moon.well.at.least.we.know.where.our.pilot.parked",
@@ -1144,7 +1144,7 @@
     },
     {
       "key": "cargo.status.failed",
-      "text": "MISSION FEHLGESCHLAGEN: Kapsel zerstört. NEU VERSUCHEN setzt die Mission am Außenposten zurück."
+      "text": "Rettung fehlgeschlagen. Die Kapsel wird am Außenposten zurückgestellt."
     },
     {
       "key": "cargo.action.talk",
@@ -1304,7 +1304,7 @@
     },
     {
       "key": "cargo.radio.failed.body",
-      "text": "Kapsel oder Schleppschiff verloren: Rettung fehlgeschlagen.\nNEU VERSUCHEN startet diese Mission am Außenposten neu; übriger Fortschritt bleibt erhalten."
+      "text": "Kapsel oder Schleppschiff verloren.\nDie Kapsel steht wieder am Außenposten; übriger Fortschritt bleibt."
     },
     {
       "key": "cargo.radio.complete.title",
@@ -1316,7 +1316,7 @@
     },
     {
       "key": "story.character.training-pilot",
-      "text": "Trainingspilot"
+      "text": "Flugtrainer · Testpilot a. D."
     },
     {
       "key": "story.character.resident-1",
@@ -1361,6 +1361,20 @@
     {
       "key": "story.event.training.silence",
       "text": "..."
-    }
+    },
+    {"key": "story.training.introduction", "text": "<b>Steuerung</b>\n• Gedrückt halten: Schub.\n• Links/rechts vom Schiff: lenken.\n\n<b>Ziel</b>\nLangsam und aufrecht auf dem Pad landen.\nDie Werkstatt ist schon voll."},
+    {"key": "story.training.speaker", "text": "Flugtrainer · Testpilot a. D."},
+    {"key": "story.training.navigation", "text": "<b>Navigation</b>\nDie Leiste unten zeigt die Richtung zum Landepad.\n\nDas reicht fürs Erste.\nBring das Schiff heil runter."},
+    {"key": "navigation.au", "text": "AE"},
+    {"key": "navigation.earth", "text": "Erde"},
+    {"key": "navigation.moon", "text": "Mond"},
+    {"key": "navigation.ship", "text": "Raumschiff"},
+    {"key": "moon.flag.discovery", "text": "Hier war wirklich schon jemand. Hoffentlich mit Rückflugticket."},
+    {"key": "station.ambient.0", "text": "Schon wieder ein Pilot. Läuft das Training noch?"},
+    {"key": "station.ambient.1", "text": "Die Kaffeemaschine hat wieder Schwerkraftprobleme."},
+    {"key": "station.ambient.2", "text": "Solange nichts explodiert, ist heute ein guter Tag."},
+    {"key": "eva.zerog.warning", "text": "Kein Halt!\nZurück zur Gravitation."},
+    {"key": "eva.zerog.title", "text": "Im All verloren"},
+    {"key": "eva.zerog.lost", "text": "Erneut versuchen bringt dich zum letzten sicheren Speicherpunkt."}
   ]
 }

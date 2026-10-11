@@ -16,14 +16,21 @@ public class CameraController : MonoBehaviour
     [SerializeField] float zoomInDistance = 2f;
     [SerializeField] float zoomOutDistance = 12f;
 
+    [Tooltip("Unter diesem Flugtempo ist der volle Landungszoom erlaubt.")]
+    [SerializeField, Min(0f)] float landingZoomSlowSpeed = 2f;
+    [Tooltip("Ab diesem Flugtempo bleibt die Kamera beim Landen in der Übersicht.")]
+    [SerializeField, Min(.1f)] float landingZoomFastSpeed = 12f;
+
     [Header("ZeroG Zoom")]
     [SerializeField] float zeroGMaxZoom = 10f;   // wie weit raus im All
     [SerializeField] float zeroGSmooth = 3f;
     [Header("Station Zoom")]
     [SerializeField, Min(0.05f)] float stationZoomSmooth = 0.6f;
-    [SerializeField, Min(1f)] float stationLandingZoom = 26f;
+    [SerializeField, HideInInspector] float stationLandingZoom = 26f;
     [SerializeField, Min(1f)] float stationAstronautZoom = 18f;
-    [SerializeField, Range(0f, 1f)] float stationFocusWeight = 0.35f;
+    [UnityEngine.Serialization.FormerlySerializedAs("stationFocusWeight")]
+    [Tooltip("Anteil des Landepunkts am Kamerafokus beim nahen Anflug.")]
+    [SerializeField, Range(0f, .5f)] float landingFocusWeight = .4f;
 
     [Header("Landing Moon Zoom")]
     [SerializeField] float moonEnterMaxZoom = 12f;
@@ -55,6 +62,7 @@ public class CameraController : MonoBehaviour
     void LateUpdate()
     {
         if (!target) return;
+        UpdateComposition();
         FollowTarget();
         DistanceBasedZoom();
     }
@@ -63,6 +71,7 @@ public class CameraController : MonoBehaviour
     {
         if (!target) return;
 
+        UpdateComposition();
         cam.orthographicSize = CalcTargetZoom();
         followPosition = GetFollowPosition();
         transform.position = followPosition + shakeOffset;
@@ -77,16 +86,22 @@ public class CameraController : MonoBehaviour
 
     Vector3 GetFollowPosition()
     {
-        Vector3 desired = target.position + followOffset;
-        var station = SpaceStation.Instance;
-        if (!station || !station.IsAvailable || (StationInterior.Instance && StationInterior.Instance.IsInside)) return desired;
-        float distance = Vector2.Distance(target.position, station.transform.position);
-        float proximity = 1f - Mathf.InverseLerp(station.GravityRange, station.ApproachDistance, distance);
-        float stationShift = (station.transform.position.x - desired.x)
-            * stationFocusWeight * Mathf.SmoothStep(0f, 1f, proximity);
-        // Reserve screen space around the player, including on narrow portrait displays.
-        float maximumShift = cam.orthographicSize * cam.aspect * 0.35f;
-        desired.x += Mathf.Clamp(stationShift, -maximumShift, maximumShift);
+        Vector2 up = Vector2.up;
+        if (hasLandingSurface && landingDistance < SurfaceFarDistance)
+            up = landingNormal;
+        else if (isAstronaut && GravityManager2D.Instance)
+        {
+            var gravity = GravityManager2D.Instance.GetGravity(target.position);
+            if (gravity.sqrMagnitude > .01f) up = -gravity.normalized;
+        }
+        Vector3 desired = target.position + new Vector3(up.x * followOffset.y + followOffset.x, up.y * followOffset.y, followOffset.z);
+        if (!isAstronaut && hasLandingSurface)
+        {
+            float blend = LandingNearBlend;
+            var focus = Vector2.Lerp(target.position, landingPoint, landingFocusWeight * Mathf.SmoothStep(0, 1, blend));
+            desired.x = focus.x + up.x * followOffset.y * (1f - blend);
+            desired.y = focus.y + up.y * followOffset.y * (1f - blend);
+        }
         return desired;
     }
 
@@ -106,106 +121,91 @@ public class CameraController : MonoBehaviour
     {
         if (isAstronaut)
         {
-            var evaStation = SpaceStation.Instance;
-            bool onStationDeck = evaStation && evaStation.IsAvailable
-                && (!StationInterior.Instance || !StationInterior.Instance.IsInside)
-                && Vector2.Distance(target.position, evaStation.transform.position) <= evaStation.GravityRange;
-            return onStationDeck ? stationAstronautZoom : astronautZoom;
+            bool station = SpaceStation.Instance && SpaceStation.Instance.IsAvailable
+                && Vector2.Distance(target.position, SpaceStation.Instance.transform.position) <= SpaceStation.Instance.GravityRange
+                && !(StationInterior.Instance && StationInterior.Instance.IsInside);
+            return station ? stationAstronautZoom : astronautZoom;
         }
-
         var gm = GravityManager2D.Instance;
-
-        var outpost = AsteroidOutpost.Instance;
-        if (outpost && outpost.IsNear(target.position))
+        float baseline = gm ? Mathf.Lerp(maxZoom, zeroGMaxZoom, gm.GetZeroBlend(target.position)) : maxZoom;
+        if (hasLandingSurface)
         {
-            float distance = Vector2.Distance(target.position, outpost.LandingPad.transform.position);
-            float zoom = Mathf.Max(18f, 38f / cam.aspect);
-            float blend = Mathf.InverseLerp(15f, 105f, distance);
-            return Mathf.Lerp(zoom, Mathf.Max(zoom, zeroGMaxZoom), blend);
+            float near = LandingNearBlend;
+            float landingZoom = moonSurface ? moonSurfaceZoom : minZoom;
+            // Portrait framing must leave room for both the ship and its approach point.
+            landingZoom = Mathf.Max(landingZoom, 4f / Mathf.Max(.3f, cam.aspect));
+            baseline = Mathf.Lerp(Mathf.Max(baseline, approachZoom), landingZoom, Mathf.SmoothStep(0, 1, near));
         }
         if (CargoMission.Instance && CargoMission.Instance.Stage == CargoMission.Progress.Towing)
-            return Mathf.Max(zeroGMaxZoom, 18f / Mathf.Min(1f, cam.aspect));
-
-        var station = SpaceStation.Instance;
-        if (station && station.IsAvailable && target
-            && Vector2.Distance(target.position, station.transform.position) <= station.ApproachDistance)
-        {
-            float closest = float.PositiveInfinity;
-            StationLandingPad nearest = null;
-            foreach (var pad in station.pads)
-            {
-                float distance = Vector2.Distance(target.position, pad.Surface.bounds.center);
-                if (distance < closest) { closest = distance; nearest = pad; }
-            }
-            float wideZoom = station.GetApproachZoom(target.position, zeroGMaxZoom);
-            if (!nearest) return wideZoom;
-            float padZoom = Mathf.Max(stationLandingZoom, nearest.Surface.bounds.extents.x / cam.aspect + 1f);
-            float landingBlend = 1f - Mathf.InverseLerp(zoomInDistance, station.GravityRange, closest);
-            return Mathf.Lerp(wideZoom, padZoom, Mathf.SmoothStep(0f, 1f, landingBlend));
-        }
-
-        // 1) PAD: wenn in Reichweite -> ran zoomen
-        if (target)
-        {
-            float d = float.PositiveInfinity;
-            Physics2D.OverlapCircle(target.position, zoomOutDistance, new ContactFilter2D { useTriggers = false }, padHits);
-            foreach (var hit in padHits)
-                if (hit && hit.CompareTag("LandingPad"))
-                    d = Mathf.Min(d, Vector2.Distance(target.position, hit.transform.position));
-            if (d <= zoomOutDistance)
-            {
-                float t = Mathf.Clamp01(Mathf.InverseLerp(zoomInDistance, zoomOutDistance, d));
-                return Mathf.Lerp(minZoom, maxZoom, t);
-            }
-        }
-
-        // 2) MOON SURFACE: nur wenn im Mondbereich + Oberfl�che in Range -> ran zoomen
-        if (gm && target)
-        {
-            float moonEnterT = gm.GetMoonBlend(target.position);
-
-            if (moonEnterT > 0.001f)
-            {
-                float surfaceDist = GetSurfaceDistance(gm.transform.position);
-                if (surfaceDist <= surfaceFarDist)
-                {
-                    float enterZoom = Mathf.Lerp(maxZoom, moonEnterMaxZoom, moonEnterT);
-
-                    float nearT = 1f - Mathf.Clamp01(
-                        Mathf.InverseLerp(surfaceNearDist, surfaceFarDist, surfaceDist)
-                    );
-
-                    return Mathf.Lerp(enterZoom, moonSurfaceZoom, nearT);
-                }
-            }
-        }
-
-        // 3) ZERO-G: wenn zeroG -> raus zoomen auf zeroGMaxZoom
-        if (gm && target)
-        {
-            float zeroT = Mathf.Clamp01(Mathf.InverseLerp(gm.zeroGStartY, gm.zeroGFullY, target.position.y));
-            if (zeroT > 0.001f)
-                return Mathf.Lerp(maxZoom, zeroGMaxZoom, zeroT);
-        }
-
-        // 4) DEFAULT
-        return maxZoom;
+            baseline = Mathf.Max(baseline, 13f / Mathf.Min(1, cam.aspect));
+        return baseline;
     }
 
-    float GetSurfaceDistance(Vector3 moonCenter)
+    [Header("Object Approach")]
+    [Tooltip("Oberflächen in diesem Radius lösen zunächst einen Überblick aus, auch Asteroiden vor dem Außenposten.")]
+    [SerializeField, Min(20)] float approachScanDistance = 120;
+    [SerializeField, Min(1)] float obstacleApproachZoom = 26;
+    bool hasLandingSurface, moonSurface;
+    float landingDistance, approachZoom;
+    Vector2 landingPoint, landingNormal;
+    float LandingNearBlend
     {
-        Vector2 origin = target.position;
-        Vector2 dir = ((Vector2)moonCenter - origin).normalized;
-
-        Physics2D.Raycast(origin, dir, new ContactFilter2D { useTriggers = false }, surfaceHits, 1000f);
-
-        foreach (var hit in surfaceHits)
+        get
         {
-            if (hit.collider.CompareTag("Moon"))
-                return hit.distance;
+            float near = 1f - Mathf.InverseLerp(SurfaceNearDistance, SurfaceFarDistance, landingDistance);
+            var body = GameController.Instance ? GameController.Instance.ControlledBody : null;
+            float speed = body ? body.linearVelocity.magnitude : 0f;
+            float fast = Mathf.InverseLerp(landingZoomSlowSpeed, Mathf.Max(landingZoomSlowSpeed + .01f, landingZoomFastSpeed), speed);
+            return near * (1f - Mathf.SmoothStep(0f, 1f, fast));
         }
+    }
+    float SurfaceNearDistance => moonSurface ? surfaceNearDist : zoomInDistance;
+    float SurfaceFarDistance => moonSurface ? surfaceFarDist : zoomOutDistance;
 
-        return surfaceFarDist; // fallback
+    bool IsSurface(Collider2D collider)
+    {
+        if (!collider || collider.isTrigger || collider.transform.IsChildOf(target)) return false;
+        if (collider.GetComponentInParent<LanderController>() || collider.GetComponentInParent<NPCMotor2D>()
+            || collider.GetComponentInParent<AstronautMoonController>()) return false;
+        return collider.CompareTag("Moon") || collider.CompareTag("LandingPad") || collider.CompareTag("Landscape")
+            || collider.GetComponentInParent<AsteroidOutpost>() || collider.GetComponentInParent<SpaceStation>();
+    }
+    void UpdateComposition()
+    {
+        hasLandingSurface = false; landingDistance = float.PositiveInfinity; approachZoom = maxZoom; moonSurface = false;
+        if (!target || isAstronaut) return;
+        Vector2 origin = target.position;
+        var filter = new ContactFilter2D { useTriggers = false };
+        Physics2D.OverlapCircle(origin, approachScanDistance, filter, padHits);
+        Collider2D nearest = null;
+        foreach (var collider in padHits)
+        {
+            if (!IsSurface(collider)) continue;
+            Vector2 point = collider.ClosestPoint(origin);
+            float distance = Vector2.Distance(origin, point);
+            if (distance < landingDistance) { nearest = collider; landingPoint = point; landingDistance = distance; }
+        }
+        if (!nearest) return;
+        hasLandingSurface = true;
+        landingNormal = (origin - landingPoint).normalized;
+        moonSurface = nearest.CompareTag("Moon");
+        if (moonSurface)
+            approachZoom = Mathf.Max(moonEnterMaxZoom, nearest.bounds.extents.x / Mathf.Max(.3f, cam.aspect) + 7);
+        else if (nearest.GetComponentInParent<AsteroidOutpost>())
+            approachZoom = Mathf.Max(obstacleApproachZoom, 20 / Mathf.Max(.3f, cam.aspect));
+        else if (nearest.GetComponentInParent<SpaceStation>())
+            approachZoom = Mathf.Max(obstacleApproachZoom, SpaceStation.Instance.GetApproachZoom(origin, zeroGMaxZoom));
+        float approach = 1 - Mathf.InverseLerp(surfaceFarDist, approachScanDistance, landingDistance);
+        approachZoom = Mathf.Lerp(zeroGMaxZoom, approachZoom, Mathf.SmoothStep(0, 1, approach));
+        if (nearest.CompareTag("Landscape") || nearest.CompareTag("LandingPad") && !nearest.GetComponentInParent<SpaceStation>() && !nearest.GetComponentInParent<AsteroidOutpost>()) approachZoom = maxZoom;
+        // The actual approach follows local gravity, then velocity in zero-G; never a fixed world-down assumption.
+        Vector2 gravity = LanderController.Instance ? LanderController.Instance.Gravity : Vector2.zero;
+        Vector2 direction = gravity.sqrMagnitude > .01f ? gravity.normalized
+            : GameController.Instance.ControlledBody && GameController.Instance.ControlledBody.linearVelocity.sqrMagnitude > .1f
+                ? GameController.Instance.ControlledBody.linearVelocity.normalized : -landingNormal;
+        Physics2D.Raycast(origin, direction, filter, surfaceHits, surfaceFarDist);
+        foreach (var hit in surfaceHits)
+            if (IsSurface(hit.collider)) { landingPoint = hit.point; landingNormal = hit.normal; landingDistance = hit.distance; break; }
     }
 
     public void SetTarget(Transform newTarget, bool instantFocus = false)

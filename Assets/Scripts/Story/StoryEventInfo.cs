@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public enum StoryEventKind { LevelStart, LevelTransmission, Discovery, FlightState, LateTraining, KnownMoon, EarthReturn, ZeroGAfterTraining }
+public enum StoryEventKind { LevelStart, LevelTransmission, Discovery, FlightState, LateTraining, KnownMoon, EarthReturn, ZeroGAfterTraining, TrainingIntroduction }
 [Serializable] public class StoryEventInfo
 {
     public bool enabled;

@@ -42,7 +42,7 @@ public class AudioManager : MonoBehaviour
     public void Init()
     {
         var data = SaveLoadManager.Instance.Data ?? new SaveGame();
-        sfxVolume = data.volSfx;
+        SetSfxVolume(data.volSfx, false);
         musicVolume = data.volMusic;
         musicSource.playOnAwake = false;
         musicSource.loop = true;
@@ -68,6 +68,7 @@ public class AudioManager : MonoBehaviour
     {
         var source = Instantiate(sourcePrefab, transform);
         source.name = sourceName;
+        source.playOnAwake = false;
         volumeScales[source] = 1f;
         return source;
     }

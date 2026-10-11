@@ -30,6 +30,7 @@ public class CargoMissionUI : MonoBehaviour
         panel.SetActive(visible);
         if (!visible) return;
         status.SetLocalizedText(mission.Status);
+        status.gameObject.SetActive(mission.Stage == CargoMission.Progress.Failed);
         talkButton.gameObject.SetActive(mission.CanTalk);
         connectButton.gameObject.SetActive(mission.CanTakeCable);
         attachButton.gameObject.SetActive(mission.CanAttachCable);

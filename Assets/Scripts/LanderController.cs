@@ -499,6 +499,8 @@ public class LanderController : MonoBehaviour
 
     public void HandleThrustSound(bool thrusting)
     {
+        if (!sfxThrustSound && thrusting && AudioManager.Instance)
+            sfxThrustSound = AudioManager.Instance.CreateThrusterSound();
         if (!sfxThrustSound) return;
         if (thrusting && !sfxThrustSound.isPlaying) sfxThrustSound.Play();
         else if (!thrusting && sfxThrustSound.isPlaying) sfxThrustSound.Stop();

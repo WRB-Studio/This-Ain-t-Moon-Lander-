@@ -26,12 +26,11 @@ public static class UIAuthoringChecks
             Require(dialogueText.GetPreferredValues(transmissions.GetArrayElementAtIndex(i).FindPropertyRelative("text").stringValue,
                 dialogueText.rectTransform.rect.width, 0f).y <= dialogueText.rectTransform.rect.height,
                 "The full transmission must fit above the Continue button.");
-        Require(ui.startPanel && ui.landingPanel && ui.crashPanel
+        Require(ui.startPanel && ui.resultPanel
             && PrefabUtility.IsPartOfPrefabInstance(ui.startPanel)
-            && PrefabUtility.IsPartOfPrefabInstance(ui.landingPanel)
-            && PrefabUtility.IsPartOfPrefabInstance(ui.crashPanel), "Start, landing and crash must use separate panel prefabs.");
-        Require(ui.landingPanel.continueButton && ui.btnRefill && ui.crashPanel.retryButton,
-            "Panel actions must be authored in their prefabs.");
+            && PrefabUtility.IsPartOfPrefabInstance(ui.resultPanel), "Start and result panels must use authored prefabs.");
+        Require(ui.resultPanel.continueButton && ui.btnRefill && ui.resultPanel.retryButton,
+            "Result actions must be authored in the shared result prefab.");
         Require(ui.refillProgressFill && ui.refillProgressFill.transform.IsChildOf(ui.btnRefill.transform)
             && ui.refillProgressFill.type == Image.Type.Simple && !ui.refillProgressFill.sprite,
             "Refill progress must be authored inside the button prefab.");

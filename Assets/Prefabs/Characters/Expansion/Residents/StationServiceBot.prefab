@@ -302,7 +302,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7691481397100755460, guid: 3262a9735f2d49039c077c72d0a670ab, type: 3}
       propertyPath: comments.Array.size
-      value: 0
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7691481397100755460, guid: 3262a9735f2d49039c077c72d0a670ab, type: 3}
+      propertyPath: 'comments.Array.data[0]'
+      value: '[[station.ambient.0]]'
+      objectReference: {fileID: 0}
+    - target: {fileID: 7691481397100755460, guid: 3262a9735f2d49039c077c72d0a670ab, type: 3}
+      propertyPath: 'comments.Array.data[1]'
+      value: '[[station.ambient.1]]'
+      objectReference: {fileID: 0}
+    - target: {fileID: 7691481397100755460, guid: 3262a9735f2d49039c077c72d0a670ab, type: 3}
+      propertyPath: 'comments.Array.data[2]'
+      value: '[[station.ambient.2]]'
       objectReference: {fileID: 0}
     - target: {fileID: 7813874853807008780, guid: 3262a9735f2d49039c077c72d0a670ab, type: 3}
       propertyPath: m_Sprite

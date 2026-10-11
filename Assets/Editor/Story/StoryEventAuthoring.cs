@@ -9,6 +9,14 @@ public static class StoryEventAuthoring
     public static void Read(StoryProject project, StoryTextController source, string path)
     {
         var so = new SerializedObject(source);
+        Set(project, so.FindProperty("introductoryBriefing").stringValue, path, "introductoryBriefing",
+            new StoryEventInfo { kind = StoryEventKind.TrainingIntroduction, pool = "training-introduction", once = true,
+                blockedFlag = "story.ack.TrainingIntroduction", presentation = "Piloten-Panel vor dem Countdown",
+                description = "Beim ersten Trainingsstart nach dem Titel; Weiter bestätigt die Steuerung und führt zum Navigationshinweis." });
+        Set(project, so.FindProperty("navigationBriefing").stringValue, path, "navigationBriefing",
+            new StoryEventInfo { kind = StoryEventKind.TrainingIntroduction, pool = "training-navigation", once = true,
+                blockedFlag = "story.ack.TrainingNavigation", presentation = "Piloten-Panel vor dem Countdown",
+                description = "Nach der Steuerung: erklärt die untere Navigation; Weiter startet den Countdown. Unterbrochene Hinweise werden erneut angeboten." });
         var groups = so.FindProperty("earthMessages"); var transmissions = so.FindProperty("earthTransmissions");
         for (int i = 0; i < groups.arraySize; i++)
         {
@@ -117,7 +125,7 @@ public static class StoryEventAuthoring
         if (node == null)
         {
             node = new StoryNode { id = key, textKey = key, title = reference, chapter = project.ResolveChapter("Training"),
-                sourceReference = reference, sourcePath = path, sourceProperty = property, storyStepId = "overview.0", status = StoryDevelopmentStatus.Implemented, answerBoardLayout = true };
+                sourceReference = reference, sourcePath = path, sourceProperty = property, storyStepId = "overview.0", channel = StoryChannel.Radio, status = StoryDevelopmentStatus.Implemented, answerBoardLayout = true };
             node.position = new Vector2(0, project.nodes.Where(n => n.chapter == node.chapter).Select(n => n.position.y).DefaultIfEmpty(0).Max() + 300);
             node.speaker = project.nodes.FirstOrDefault(n => n.speaker && n.speaker.id == "training-pilot")?.speaker;
             project.nodes.Add(node);

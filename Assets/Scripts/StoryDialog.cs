@@ -45,7 +45,7 @@ public class StoryDialog : MonoBehaviour
     {
         if (!drawingStory) { storySession = null; storyCompleted = null; LastStoryReactionReference = null; StopStoryAudio(); }
         if (storyPortrait) storyPortrait.gameObject.SetActive(false);
-        conversationContent.SetActive(false);
+        if (conversationContent) conversationContent.SetActive(false);
         foreach (var button in answerButtons) button.gameObject.SetActive(false);
         messageText.gameObject.SetActive(true);
         continueButton.gameObject.SetActive(true);
@@ -53,6 +53,8 @@ public class StoryDialog : MonoBehaviour
         messageText.SetLocalizedText(authored == null ? message : "[[" + authored.textKey + "]]");
         gameObject.SetActive(true);
         SetCanContinue(canContinue);
+        speakerText.SetLocalizedText(authored?.speaker ? "[[" + authored.speaker.nameKey + "]]" : "");
+        speakerText.gameObject.SetActive(authored?.speaker);
         if (authored != null) PlayStoryAudio(authored);
     }
 
@@ -70,10 +72,11 @@ public class StoryDialog : MonoBehaviour
             }
         }
         Show(string.Empty, Expression.StationCrew, false);
-        messageText.gameObject.SetActive(false);
+        if (messageText != conversationText) messageText.gameObject.SetActive(false);
         continueButton.gameObject.SetActive(false);
-        conversationContent.SetActive(true);
-        speakerText.SetLocalizedText(Localization.Reference(speaker) + ":");
+        if (conversationContent) conversationContent.SetActive(true);
+        speakerText.gameObject.SetActive(!string.IsNullOrEmpty(speaker));
+        speakerText.SetLocalizedText(Localization.Reference(speaker));
         conversationText.SetLocalizedText(message);
         for (int i = 0; i < answerButtons.Length; i++)
         {

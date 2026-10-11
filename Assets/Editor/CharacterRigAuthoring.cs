@@ -461,6 +461,7 @@ public static class CharacterRigAuthoring
         moonToIdle.hasExitTime = false;
         moonToIdle.duration = 0.20f;
         moonToIdle.AddCondition(AnimatorConditionMode.IfNot, 0f, "IsWalking");
+        ZeroGAnimationAuthoring.AddToController(controller);
         EditorUtility.SetDirty(controller);
         return controller;
     }

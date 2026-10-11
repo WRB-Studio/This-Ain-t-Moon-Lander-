@@ -14,12 +14,16 @@ public class CharacterVisual : MonoBehaviour
     float moonHopTempo = 1f;
     bool adjustMoonHop;
     bool hopping;
+    bool hasFloatingAnimation;
 
     void Awake()
     {
         if (facingRoot) facingBasePosition = facingRoot.localPosition;
         if (animator) hips = animator.transform.Find("Hips");
         if (hips) hipsBaseY = hips.localPosition.y;
+        if (animator)
+            foreach (var parameter in animator.parameters)
+                if (parameter.name == "IsFloating") hasFloatingAnimation = true;
     }
 
     public void SetMoonHop(float height, float frequency)
@@ -65,6 +69,11 @@ public class CharacterVisual : MonoBehaviour
     static readonly int IsWalking = Animator.StringToHash("IsWalking");
     static readonly int WalkSpeed = Animator.StringToHash("WalkSpeed");
     static readonly int IsOnMoon = Animator.StringToHash("IsOnMoon");
+    static readonly int IsFloating = Animator.StringToHash("IsFloating");
+    public void SetFloating(bool floating)
+    {
+        if (animator && hasFloatingAnimation) animator.SetBool(IsFloating, floating);
+    }
 
     public void SetWalking(bool walking, float worldSpeed, bool onMoon = false)
     {

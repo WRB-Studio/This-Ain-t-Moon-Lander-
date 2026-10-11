@@ -304,7 +304,7 @@
     },
     {
       "key": "game.oh.so.that.is.the.moon.minor.naming.issue",
-      "text": "There's the actual Moon.\nI wouldn't take the name down below too seriously.",
+      "text": "There it is: the Moon.\nBrake early – gravity pulls you toward the surface.",
       "aliases": ["Oh.\nSo THAT is the Moon.\nMinor naming issue."]
     },
     {
@@ -1186,7 +1186,7 @@
     },
     {
       "key": "cargo.status.failed",
-      "text": "MISSION FAILED: Capsule destroyed. RETRY resets the mission at the outpost."
+      "text": "Rescue failed. The capsule is being reset at the outpost."
     },
     {
       "key": "cargo.action.talk",
@@ -1367,7 +1367,7 @@
     },
     {
       "key": "cargo.radio.failed.body",
-      "text": "Capsule or towing ship lost: rescue failed.\nRETRY restarts this mission at the outpost; other progress is retained.",
+      "text": "Capsule or towing ship lost.\nThe capsule is back at the outpost; other progress is retained.",
       "aliases": ["Capsule destroyed or towing ship lost. Rescue failed.\n\nRETRY resets this mission at the outpost. Your other progress is retained.\n\nAccounting would like a written definition of \"gently\"."]
     },
     {
@@ -1381,7 +1381,7 @@
     },
     {
       "key": "story.character.training-pilot",
-      "text": "Training pilot"
+      "text": "Flight instructor · former test pilot"
     },
     {
       "key": "story.character.resident-1",
@@ -1426,6 +1426,20 @@
     {
       "key": "story.event.training.silence",
       "text": "..."
-    }
+    },
+    {"key": "story.training.introduction", "text": "<b>Controls</b>\n• Hold your finger or mouse button: thrust.\n• Move to either side of the ship: steer.\n\n<b>Objective</b>\nLand slowly and upright on the pad.\nThe workshop is already full."},
+    {"key": "story.training.speaker", "text": "Flight instructor · former test pilot"},
+    {"key": "story.training.navigation", "text": "<b>Navigation</b>\nThe bar below points toward the landing pad.\n\nThat will do for now.\nBring the ship down in one piece."},
+    {"key": "navigation.au", "text": "AU"},
+    {"key": "navigation.earth", "text": "Earth"},
+    {"key": "navigation.moon", "text": "Moon"},
+    {"key": "navigation.ship", "text": "Spacecraft"},
+    {"key": "moon.flag.discovery", "text": "Someone really has been here. Hopefully with a return ticket."},
+    {"key": "station.ambient.0", "text": "Another pilot. Is the training still running?"},
+    {"key": "station.ambient.1", "text": "The coffee machine has gravity issues again."},
+    {"key": "station.ambient.2", "text": "If nothing explodes, today is a good day."},
+    {"key": "eva.zerog.warning", "text": "No footing!\nGet back to gravity."},
+    {"key": "eva.zerog.title", "text": "Lost in space"},
+    {"key": "eva.zerog.lost", "text": "Choose Try again to return to the last safe checkpoint."}
   ]
 }

@@ -28,12 +28,36 @@ public class AstronautMoonController : MonoBehaviour
     [SerializeField] float rotateSmooth = 12f;
     [Tooltip("Ignoriert kleine seitliche Eingaben. Höher = stärkere Eingabe nötig.")]
     [Range(0f, 1f)][SerializeField] float inputDeadZone = 0.15f;
+    [Tooltip("Abstand zum Charakter als Anteil der Bildschirmhöhe, ab dem das Gehen beginnt.")]
+    [SerializeField, Range(0f, .2f)] float touchWalkDistance = .015f;
+    [Tooltip("Abstand als Anteil der Bildschirmhöhe für volles Lauftempo.")]
+    [SerializeField, Range(.05f, .5f)] float touchSprintDistance = .1f;
+    [Tooltip("Gehgeschwindigkeit direkt außerhalb der Ruhezone, relativ zum Basistempo.")]
+    [SerializeField, Range(.1f, 1f)] float minimumWalkMultiplier = .6f;
+    [Tooltip("Sprinttempo relativ zur Basis-Gehgeschwindigkeit.")]
+    [SerializeField, Min(1f)] float sprintMultiplier = 1.4f;
+    float inputSpeed;
+    [Header("Zero-G")]
+    [Tooltip("Unter dieser lokalen Beschleunigung treibt der Astronaut frei und kann nicht laufen.")]
+    [SerializeField, Min(0f)] float zeroGThreshold = .05f;
+    [Tooltip("Sekunden freies Treiben, bevor der Astronaut verloren geht.")]
+    [SerializeField, Min(1f)] float zeroGSurvivalTime = 5f;
+    float zeroGElapsed;
+    bool zeroGWarningShown;
+    public bool IsZeroGAt(Vector2 position) => GravityManager2D.Instance
+        && GravityManager2D.Instance.GetGravity(position).sqrMagnitude <= zeroGThreshold * zeroGThreshold;
+    public bool CanSavePosition => rb && IsGrounded && !IsZeroGAt(rb.position);
+    public bool IsFloating { get; private set; }
+    [Tooltip("Abstand des Bodenfühlers entlang der lokalen Schwerkraft.")]
+    [SerializeField, Min(.01f)] float groundProbeDistance = .15f;
+    public bool IsGrounded { get; private set; }
+    Collider2D shape;
+    readonly RaycastHit2D[] groundHits = new RaycastHit2D[8];
 
     Animator anim;
     SpriteRenderer sr;
     CharacterVisual characterVisual;
     Rigidbody2D rb;
-    Transform moonCenter;
 
     Vector2 desiredDirWorld;
     bool lastFlip;
@@ -44,6 +68,7 @@ public class AstronautMoonController : MonoBehaviour
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+        shape = GetComponent<Collider2D>();
         rb.gravityScale = 0f;
         rb.freezeRotation = true;
 
@@ -58,7 +83,6 @@ public class AstronautMoonController : MonoBehaviour
 
     void Start()
     {
-        CacheMoonCenter();
         var body = GetComponent<Collider2D>();
         foreach (var ship in FindObjectsByType<LanderController>(FindObjectsSortMode.None))
             if (ship.StationPad && ship.landerState == LanderController.eLanderState.LandedPad)
@@ -66,26 +90,69 @@ public class AstronautMoonController : MonoBehaviour
                     if (!collider.isTrigger) Physics2D.IgnoreCollision(body, collider);
     }
 
-    void Update() => ReadInputDir();
+    void Update()
+    {
+        ReadInputDir();
+        var game = GameController.Instance;
+        if (!game || game.Phase != GameController.GamePhase.EVA || !game.IsPlaying) return;
+        if (!IsZeroGAt(rb.position))
+        {
+            zeroGElapsed = 0;
+            ClearZeroGWarning();
+            return;
+        }
+        if (PauseMenu.IsPaused || RadioController.Instance && RadioController.Instance.IsOpen
+            || StoryTextController.Instance && StoryTextController.Instance.IsShowingDialogue
+            || CargoMission.Instance && CargoMission.Instance.IsShowing
+            || StationConversation.Instance && StationConversation.Instance.IsShowing) return;
+        zeroGElapsed += Time.deltaTime;
+        float remaining = Mathf.Max(0, zeroGSurvivalTime - zeroGElapsed);
+        LanderUI.Instance.ShowAstronautZeroGWarning(remaining);
+        zeroGWarningShown = true;
+        if (remaining <= 0)
+        {
+            ClearZeroGWarning();
+            game.HandleAstronautLost();
+        }
+    }
+    void ClearZeroGWarning()
+    {
+        if (zeroGWarningShown && LanderUI.Instance) LanderUI.Instance.ShowHideDeadZoneWarning(false);
+        zeroGWarningShown = false;
+    }
+    void OnDisable() => ClearZeroGWarning();
 
     void FixedUpdate()
     {
-        if (!moonCenter || !GameController.Instance || GameController.Instance.Phase != GameController.GamePhase.EVA) return;
-
-        Vector2 toCenter = GetToMoonCenter();
-        if (toCenter.sqrMagnitude < 0.0001f) return;
-
-        Vector2 radialIn = toCenter.normalized;
+        if (!GravityManager2D.Instance || !GameController.Instance || GameController.Instance.Phase != GameController.GamePhase.EVA) return;
+        Vector2 gravity = GravityManager2D.Instance.GetGravity(rb.position);
+        IsFloating = gravity.sqrMagnitude <= zeroGThreshold * zeroGThreshold;
+        if (characterVisual) characterVisual.SetFloating(IsFloating);
+        if (IsFloating)
+        {
+            IsGrounded = false;
+            desiredDirWorld = Vector2.zero;
+            inputSpeed = 0f;
+            UpdateAnimAndFlip(0, true);
+            // Keep momentum and orientation; waving limbs does not propel the astronaut.
+            return;
+        }
+        Vector2 radialIn = gravity.normalized;
         Vector2 stationGravity = SpaceStation.Instance ? SpaceStation.Instance.GetGravity(rb.position) : Vector2.zero;
         if (stationGravity.sqrMagnitude == 0f && AsteroidOutpost.Instance)
             stationGravity = AsteroidOutpost.Instance.GetGravity(rb.position);
         bool onStation = stationGravity.sqrMagnitude > 0f;
-        if (onStation) radialIn = Vector2.down;
         Vector2 radialOut = -radialIn;
         Vector2 tangent = new Vector2(-radialOut.y, radialOut.x);
 
-        ApplyMoonGravity(radialIn, stationGravity);
+        rb.AddForce(gravity * rb.mass, ForceMode2D.Force);
         ApplyUprightRotation(radialOut);
+        IsGrounded = CheckGround(radialIn);
+        if (!IsGrounded)
+        {
+            UpdateAnimAndFlip(0, onStation);
+            return;
+        }
 
         float targetTangent = CalcTargetTangentSpeed(tangent);
         targetTangent *= onStation ? stationSpeedMultiplier : moonSpeedMultiplier;
@@ -94,32 +161,25 @@ public class AstronautMoonController : MonoBehaviour
         UpdateAnimAndFlip(targetTangent, onStation);
     }
 
-    void CacheMoonCenter()
-    {
-        moonCenter = GravityManager2D.Instance ? GravityManager2D.Instance.transform : null;
-    }
-
     void ReadInputDir()
     {
         desiredDirWorld = Vector2.zero;
+        inputSpeed = 0f;
         if (!gameCamera) gameCamera = Camera.main;
-        if (!gameCamera || !GameController.Instance.IsPlaying) return;
+        if (!gameCamera || !GameController.Instance || !GameController.Instance.IsPlaying || IsFloating) return;
         if (LanderUI.Instance.TryGetGameplayPointer(out var screenPosition))
+        {
             desiredDirWorld = ScreenToWorldDir(screenPosition);
+            float distance = Vector2.Distance(screenPosition, gameCamera.WorldToScreenPoint(rb.position)) / Mathf.Max(1, Screen.height);
+            float intensity = Mathf.InverseLerp(touchWalkDistance, Mathf.Max(touchWalkDistance + .01f, touchSprintDistance), distance);
+            inputSpeed = distance <= touchWalkDistance ? 0f : Mathf.Lerp(minimumWalkMultiplier, sprintMultiplier, Mathf.SmoothStep(0, 1, intensity));
+        }
     }
     Vector2 ScreenToWorldDir(Vector2 screenPos)
     {
         var wp = gameCamera.ScreenToWorldPoint(new Vector3(screenPos.x, screenPos.y, 0f));
         Vector2 dir = (Vector2)wp - rb.position;
         return dir.sqrMagnitude < 0.0001f ? Vector2.zero : dir.normalized;
-    }
-
-    Vector2 GetToMoonCenter() => (Vector2)moonCenter.position - rb.position;
-
-    void ApplyMoonGravity(Vector2 radialIn, Vector2 stationGravity)
-    {
-        rb.AddForce(stationGravity.sqrMagnitude > 0f ? stationGravity
-            : radialIn * GravityManager2D.Instance.moonGravityStrength, ForceMode2D.Force);
     }
 
     void ApplyUprightRotation(Vector2 radialOut)
@@ -129,11 +189,24 @@ public class AstronautMoonController : MonoBehaviour
         rb.MoveRotation(z);
     }
 
+    bool CheckGround(Vector2 down)
+    {
+        if (!shape) return false;
+        int count = shape.Cast(down, new ContactFilter2D { useTriggers = false }, groundHits, groundProbeDistance);
+        for (int i = 0; i < count; i++)
+        {
+            var collider = groundHits[i].collider;
+            if (!collider || collider.GetComponentInParent<NPCMotor2D>() || collider.GetComponentInParent<LanderController>()) continue;
+            if (Vector2.Dot(groundHits[i].normal, -down) > .35f) return true;
+        }
+        return false;
+    }
+
     float CalcTargetTangentSpeed(Vector2 tangent)
     {
         float move = Vector2.Dot(desiredDirWorld, tangent);
         if (Mathf.Abs(move) < inputDeadZone) move = 0f;
-        return move * maxMoveSpeed;
+        return Mathf.Sign(move) * (move == 0 ? 0 : maxMoveSpeed * inputSpeed);
     }
 
     void ApplyTangentialVelocity(Vector2 radialIn, Vector2 tangent, float targetTangent)

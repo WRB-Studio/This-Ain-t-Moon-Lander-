@@ -618,7 +618,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &3609083557628097661
 RectTransform:
   m_ObjectHideFlags: 0
@@ -707,7 +707,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '[[cargo.outpost.sign]]'
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 9dd5fef454fcab945a18f10eb1b3cd79, type: 2}
   m_sharedMaterial: {fileID: 1726415759315284689, guid: 9dd5fef454fcab945a18f10eb1b3cd79, type: 2}
@@ -794,7 +794,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 933f5654dd184ec7825d27a182bdb5d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LocalizedText
-  source: '[[cargo.outpost.sign]]'
+  source: 
 --- !u!1 &7039875412762423608
 GameObject:
   m_ObjectHideFlags: 0
@@ -865,7 +865,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2675000288993492851
 RectTransform:
   m_ObjectHideFlags: 0
@@ -954,7 +954,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '[[cargo.outpost.pad]]'
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 9dd5fef454fcab945a18f10eb1b3cd79, type: 2}
   m_sharedMaterial: {fileID: 1726415759315284689, guid: 9dd5fef454fcab945a18f10eb1b3cd79, type: 2}
@@ -1041,7 +1041,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 933f5654dd184ec7825d27a182bdb5d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LocalizedText
-  source: '[[cargo.outpost.pad]]'
+  source: 
 --- !u!1 &9079851028409989242
 GameObject:
   m_ObjectHideFlags: 0

@@ -7,6 +7,16 @@ public class GameController : MonoBehaviour
     [Min(1)] public int level = 1;
     public LandingPadPlacer landingPadPrefab;
     [Min(1f)] public float autoSaveInterval = 10f;
+    [Header("Safe checkpoints")]
+    [Tooltip("Maximale Geschwindigkeit für einen Speicherpunkt außerhalb von EVA.")]
+    [Min(0f)] public float checkpointSpeed = .15f;
+    [Tooltip("Maximale Drehgeschwindigkeit für einen ruhigen Speicherpunkt.")]
+    [Min(0f)] public float checkpointAngularSpeed = 5f;
+    [Tooltip("So lange muss das Schiff außerhalb eines Landepads ruhig stehen.")]
+    [Min(0f)] public float checkpointStillTime = .75f;
+    float stillSince;
+    Rigidbody2D stillBody;
+    bool checkpointWasAvailable;
     [Tooltip("Seconds needed to refill an empty tank.")]
     [Min(0.1f)] public float refillDuration = 5f;
     float refillContactGrace;
@@ -19,6 +29,7 @@ public class GameController : MonoBehaviour
     public enum GamePhase { Countdown, Flight, Landed, EVA, Crashed }
     public GamePhase Phase { get; private set; }
     public bool HasResults { get; private set; }
+    public bool AstronautLost { get; private set; }
     public bool IsExploring { get; private set; }
     public bool IsRefilling { get; private set; }
     public float RefillProgress => IsRefilling && LanderController.Instance
@@ -28,12 +39,29 @@ public class GameController : MonoBehaviour
         && LanderController.Instance.landerState == LanderController.eLanderState.LandedPad
         && LanderController.Instance.IsTouchingPad;
     public bool CanStartNextLevel => HasResults && CanRefill && !LanderController.Instance.IsOnServicePad;
-    public bool CanChooseLander => HasResults && (!LanderController.Instance.IsOnServicePad || Phase == GamePhase.Crashed)
+    public bool CanChooseLander => !AstronautLost && HasResults && (!LanderController.Instance.IsOnServicePad || Phase == GamePhase.Crashed)
         && (!IsExploring || Phase == GamePhase.Crashed
         || (CanRefill && SaveLoadManager.Instance.Data.GetFlag("story.companyLanderReturned")));
     public Transform ControlledTarget { get; private set; }
     public Rigidbody2D ControlledBody { get; private set; }
     public bool IsPlaying => !HasResults && (Phase == GamePhase.Flight || Phase == GamePhase.Landed || Phase == GamePhase.EVA);
+    public bool CanCaptureCheckpoint
+    {
+        get
+        {
+            if (!worldReady) return false;
+            if (Phase == GamePhase.EVA) return MoonEVAController.Instance && MoonEVAController.Instance.astronaut
+                && MoonEVAController.Instance.astronaut.GetComponent<AstronautMoonController>().CanSavePosition;
+            if (Phase == GamePhase.Countdown) return true;
+            if (Phase == GamePhase.Crashed || !LanderController.Instance || LanderController.Instance.IsCrashed || !ControlledBody) return false;
+            if (CargoMission.Instance && !CargoMission.Instance.IsTowCalm(checkpointSpeed, checkpointAngularSpeed)) return false;
+            if (Phase == GamePhase.Landed && LanderController.Instance.IsTouchingPad
+                && LanderController.Instance.landerState == LanderController.eLanderState.LandedPad) return true;
+            return Calm(ControlledBody) && stillBody == ControlledBody && Time.time - stillSince >= checkpointStillTime;
+        }
+    }
+    bool Calm(Rigidbody2D body) => body && body.linearVelocity.sqrMagnitude <= checkpointSpeed * checkpointSpeed
+        && Mathf.Abs(body.angularVelocity) <= checkpointAngularSpeed;
 
     void Awake() => Instance = this;
 
@@ -84,12 +112,25 @@ public class GameController : MonoBehaviour
 
     public void RestartGame()
     {
+        var checkpoint = SaveLoadManager.Instance.Data.world;
+        var eva = MoonEVAController.Instance;
+        var astronautSettings = eva.astronaut ? eva.astronaut.GetComponent<AstronautMoonController>()
+            : eva.astronautPrefab.GetComponent<AstronautMoonController>();
+        bool safeEVA = checkpoint == null || checkpoint.phase != GamePhase.EVA
+            || checkpoint.astronaut != null && astronautSettings && !astronautSettings.IsZeroGAt(checkpoint.astronaut.position);
+        if (Phase == GamePhase.Crashed && checkpoint != null && safeEVA && checkpoint.phase != GamePhase.Crashed && RestoreWorld(checkpoint))
+        {
+            StoryTextController.Instance.BlockInputUntilRelease();
+            SaveLoadManager.Instance.Save();
+            return;
+        }
         StartArcadeRound();
         SaveLoadManager.Instance.Save();
     }
 
     void StartArcadeRound()
     {
+        AstronautLost = false;
         if (CargoMission.Instance) CargoMission.Instance.OnRunRestart();
         if (StationConversation.Instance) StationConversation.Instance.Close();
         if (StationInterior.Instance) StationInterior.Instance.ResetToOutside();
@@ -117,7 +158,6 @@ public class GameController : MonoBehaviour
         LanderController.Instance.StartLander();
         ScoringController.Instance.BeginRun();
         StoryTextController.Instance.Restart();
-        StoryTextController.Instance.ShowEarthBriefing();
         SaveLoadManager.Instance.Save();
     }
 
@@ -140,6 +180,17 @@ public class GameController : MonoBehaviour
 
     public void HandleLanding(Collision2D collision, bool moon)
     {
+        var ship = LanderController.Instance;
+        var landedKind = ship.IsOnOutpost ? SpaceNavigationTarget.ObjectKind.Outpost
+            : ship.IsOnStation ? SpaceNavigationTarget.ObjectKind.Station
+            : moon ? SpaceNavigationTarget.ObjectKind.Moon : SpaceNavigationTarget.ObjectKind.Earth;
+        var destination = collision.collider.GetComponentInParent<SpaceNavigationTarget>();
+        if (destination && destination.kind == landedKind) destination.DiscoverOnLanding();
+        else
+        {
+            var location = SpaceNavigationTarget.Active.Find(t => t && t.kind == landedKind && t.Available);
+            if (location) location.DiscoverOnLanding();
+        }
         Phase = GamePhase.Landed;
         if (LanderController.Instance.IsOnOutpost)
         {
@@ -246,6 +297,7 @@ public class GameController : MonoBehaviour
 
     public void HandleCrash(LanderController.eLanderState state)
     {
+        AstronautLost = false;
         StoryTextController.Instance.Restart();
         ResultStoryMessage = null;
         IsRefilling = false;
@@ -262,6 +314,9 @@ public class GameController : MonoBehaviour
 
     void Update()
     {
+        bool calm = Calm(ControlledBody) && (!CargoMission.Instance || CargoMission.Instance.IsTowCalm(checkpointSpeed, checkpointAngularSpeed));
+        if (stillBody != ControlledBody || !calm) stillSince = Time.time;
+        stillBody = ControlledBody;
         if (IsRefilling)
         {
             if (CanRefill)
@@ -281,7 +336,27 @@ public class GameController : MonoBehaviour
                 SaveLoadManager.Instance.Save();
             }
         }
-        if (!worldReady || Time.unscaledTime < nextAutoSave) return;
+        if (!worldReady) return;
+        bool checkpointAvailable = CanCaptureCheckpoint;
+        if (checkpointAvailable && !checkpointWasAvailable) SaveLoadManager.Instance.Save();
+        else if (Time.unscaledTime >= nextAutoSave)
+        {
+            nextAutoSave = Time.unscaledTime + Mathf.Max(1f, autoSaveInterval);
+            if (checkpointAvailable) SaveLoadManager.Instance.Save();
+        }
+        checkpointWasAvailable = checkpointAvailable;
+    }
+
+    public void HandleAstronautLost()
+    {
+        if (Phase != GamePhase.EVA || !IsPlaying) return;
+        StoryTextController.Instance.Restart();
+        AstronautLost = true;
+        ResultStoryMessage = "[[eva.zerog.lost]]";
+        Phase = GamePhase.Crashed; HasResults = true; IsRefilling = false; resultsHaveScore = false;
+        if (ControlledBody) { ControlledBody.linearVelocity = Vector2.zero; ControlledBody.angularVelocity = 0; ControlledBody.simulated = false; }
+        MoonEVAController.Instance.RefreshAction();
+        LanderUI.Instance.ShowResults(LanderController.eLanderState.DeadZone, false, true);
         SaveLoadManager.Instance.Save();
     }
 
@@ -289,7 +364,7 @@ public class GameController : MonoBehaviour
 
     public void CaptureWorld(SaveGame data)
     {
-        if (!worldReady || !RandomLandscape.Instance.HasLayout) return;
+        if (!CanCaptureCheckpoint || !RandomLandscape.Instance.HasLayout) return;
         var pads = FindObjectsByType<LandingPadPlacer>(FindObjectsSortMode.None);
         var ships = FindObjectsByType<LanderController>(FindObjectsSortMode.None);
         var world = new WorldSave
@@ -318,6 +393,12 @@ public class GameController : MonoBehaviour
         world.moonPosition = moon.position; world.moonRotation = moon.eulerAngles.z; world.moonScale = moon.localScale;
         for (int i = 0; i < pads.Length; i++) world.pads[i] = pads[i].transform.position;
         for (int i = 0; i < ships.Length; i++) world.ships[i] = ships[i].CaptureState();
+        if (Phase == GamePhase.Landed && LanderController.Instance.IsTouchingPad && world.activeShip >= 0)
+        {
+            // A pad checkpoint resumes at rest, without carrying a touchdown slide into the next session.
+            world.ships[world.activeShip].velocity = Vector2.zero;
+            world.ships[world.activeShip].angularVelocity = 0f;
+        }
         if (CargoMission.Instance) world.cargoMission = CargoMission.Instance.Capture(ships);
         var astronaut = MoonEVAController.Instance.astronaut;
         if (astronaut)
@@ -332,6 +413,7 @@ public class GameController : MonoBehaviour
     public bool RestoreWorld(WorldSave world)
     {
         if (!world.IsValid()) return false;
+        AstronautLost = false;
         foreach (var ship in world.ships)
             if (!LanderChooserManager.Instance.GetPrefab(ship.definitionId))
             {

@@ -23,6 +23,13 @@ public class CargoPassenger : MonoBehaviour
         visual.SetWalking(walking, walking ? Motor.Body.linearVelocity.magnitude : 0f);
         if (walking) visual.FaceLeft(Motor.Body.linearVelocity.x < 0f);
     }
+    public void FacePlayer()
+    {
+        var player = GameController.Instance ? GameController.Instance.ControlledTarget : null;
+        if (!player || !visual) return;
+        Stand();
+        visual.FaceLeft(player.position.x < transform.position.x);
+    }
     public void Stand() { Motor.Stop(); visual.SetWalking(false, 0f); }
     public void AdvanceHiddenTransit(Vector3 destination)
     {

@@ -19,6 +19,9 @@ public class CargoMission : MonoBehaviour
     [SerializeField] Page[] releaseConversation;
     [SerializeField, Min(0.1f)] float interactionDistance = 3.5f;
     [SerializeField, Min(1f)] float minimumExpeditionFuel = 180f;
+    [Tooltip("Kurze Anzeige des Fehlschlags, danach steht die Kapsel wieder am Außenposten.")]
+    [SerializeField, Min(0f)] float failureResetDelay = 2f;
+    float failureResetAt;
     public Progress Stage { get; private set; }
     public bool IsShowing { get; private set; }
     public Collider2D DeliverySurface => deliverySurface;
@@ -110,6 +113,7 @@ public class CargoMission : MonoBehaviour
         else passenger.gameObject.SetActive(Stage == Progress.Released || Stage == Progress.WalkingToStation);
         initialized = true;
         restoring = false;
+        if (Stage == Progress.Failed) ResetAttempt();
         if (IsAvailable && LanderController.Instance.IsOnStation
             && !SaveLoadManager.Instance.Data.GetFlag("story.cargoExpeditionFueled")) PrepareExpedition(LanderController.Instance);
     }
@@ -117,6 +121,7 @@ public class CargoMission : MonoBehaviour
     {
         CloseConversation();
         if (Stage == Progress.Towing) Fail();
+        if (Stage == Progress.Failed) ResetAttempt();
         if (HoldingCable)
         {
             Stage = Progress.Briefed;
@@ -133,6 +138,7 @@ public class CargoMission : MonoBehaviour
             Stage = Progress.Briefed;
             capsule.Disconnect();
         }
+        if (Stage == Progress.Failed && !PauseMenu.IsPaused && Time.unscaledTime >= failureResetAt) ResetAttempt();
         if (IsShowing || PauseMenu.IsPaused) return;
         if (Stage == Progress.Released && CanInteract)
             BeginConversation(true, releaseConversation);
@@ -160,6 +166,7 @@ public class CargoMission : MonoBehaviour
         pages = conversation;
         page = 0;
         releaseDialogue = releasing;
+        if (releasing && passenger) passenger.FacePlayer();
         previousTimeScale = Time.timeScale;
         previousHudAlpha = hud.alpha;
         previousInteractable = hud.interactable;
@@ -277,27 +284,59 @@ public class CargoMission : MonoBehaviour
     {
         if (Stage != Progress.Towing) return;
         Stage = Progress.Failed;
+        failureResetAt = Time.unscaledTime + failureResetDelay;
         capsule.Disconnect();
         capsule.SetAppearance(Stage);
         towShip = null;
+        var data = SaveLoadManager.Instance.Data;
+        data.radioMessages.RemoveAll(message => message.id == "cargo.failed");
+        data.radioTrackedMessageId = "station.pickup";
+        ResetSavedCheckpoint();
         if (AudioManager.Instance) AudioManager.Instance.PlaySound(AudioManager.Instance.sfxCrash, 0.7f);
         Receive("cargo.failed", "[[cargo.radio.failed.title]]", "[[cargo.radio.failed.body]]");
         Save();
     }
     public void Retry()
     {
-        if (Stage != Progress.Failed || PauseMenu.IsPaused || !IsAvailable || !GameController.Instance.IsPlaying) return;
+        if (Stage != Progress.Failed || PauseMenu.IsPaused || !IsAvailable) return;
+        ResetAttempt();
+    }
+    void ResetAttempt()
+    {
+        CloseConversation();
         capsule.Disconnect();
         Stage = Progress.Waiting;
-        capsule.SetAppearance(Stage);
+        capsule.Body.bodyType = RigidbodyType2D.Dynamic;
+        capsule.Body.linearVelocity = Vector2.zero;
+        capsule.Body.angularVelocity = 0f;
         capsule.transform.SetPositionAndRotation(AsteroidOutpost.Instance.CargoSpawn.position, Quaternion.identity);
         capsule.Body.position = capsule.transform.position;
         capsule.Body.rotation = 0f;
+        capsule.SetAppearance(Stage);
+        towShip = null;
+        walkArea = 0;
+        passenger.transform.SetParent(transform, true);
+        passenger.Stand();
         passenger.gameObject.SetActive(false);
         var data = SaveLoadManager.Instance.Data;
-        data.radioMessages.RemoveAll(message => message.id.StartsWith("cargo."));
+        data.radioMessages.RemoveAll(message => message.id.StartsWith("cargo.") && message.id != "cargo.failed");
         data.radioTrackedMessageId = "station.pickup";
+        ResetSavedCheckpoint();
         Save();
+    }
+    public bool IsTowCalm(float speed, float angularSpeed) => Stage != Progress.Towing || capsule.Body
+        && capsule.Body.linearVelocity.sqrMagnitude <= speed * speed && Mathf.Abs(capsule.Body.angularVelocity) <= angularSpeed;
+    CargoMissionSave ResetCheckpoint() => new CargoMissionSave
+    {
+        stage = Progress.Waiting, towShip = -1, walkArea = 0, cableLength = capsule.TowLength,
+        passengerPosition = AsteroidOutpost.Instance.CargoSpawn.position,
+        capsule = new ActorSave { position = AsteroidOutpost.Instance.CargoSpawn.position, scale = capsule.transform.lossyScale,
+            rotation = 0, velocity = Vector2.zero, angularVelocity = 0 }
+    };
+    void ResetSavedCheckpoint()
+    {
+        var world = SaveLoadManager.Instance.Data.world;
+        if (world != null) world.cargoMission = ResetCheckpoint();
     }
     void Receive(string id, string title, string body, string signal = null)
     {
@@ -309,9 +348,18 @@ public class CargoMission : MonoBehaviour
         });
         if (signal != null) SaveLoadManager.Instance.Data.radioTrackedMessageId = id;
     }
-    void Save() { if (!restoring) SaveLoadManager.Instance.Save(); }
+    void Save()
+    {
+        if (restoring) return;
+        var world = SaveLoadManager.Instance.Data.world;
+        // A delivered/released passenger must not become attached again when the pilot returns to a checkpoint.
+        if (world != null && Stage >= Progress.Delivered && Stage <= Progress.Complete)
+            world.cargoMission = Capture(System.Array.Empty<LanderController>());
+        SaveLoadManager.Instance.Save();
+    }
     public CargoMissionSave Capture(LanderController[] ships)
     {
+        if (Stage == Progress.Failed) return ResetCheckpoint();
         var state = new CargoMissionSave
         {
             stage = Stage, capsule = new ActorSave(), towShip = System.Array.IndexOf(ships, towShip),

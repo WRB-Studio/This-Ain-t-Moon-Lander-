@@ -40,13 +40,15 @@ public class StoryTextController : MonoBehaviour
     [Header("UI")]
     [SerializeField] TMP_Text txtInfo;
     [SerializeField] StoryDialog dialog;
+    [SerializeField] TrainingBriefingPanel briefingPanel;
+    [SerializeField, TextArea(2, 4)] string introductoryBriefing = "[[story.training.introduction]]";
+    [SerializeField, TextArea(2, 4)] string navigationBriefing = "[[story.training.navigation]]";
     [SerializeField] CanvasGroup gameplayPanelVisibility;
     public StoryDialog Dialog => dialog;
     public CanvasGroup GameplayVisibility => gameplayPanelVisibility;
     public void BlockInputUntilRelease() => waitForPointerRelease = true;
 
     [Header("Timing")]
-    [SerializeField, Min(0.1f)] float visibleTime = 3f;
     [SerializeField, Min(0f)] float triggerDelayFromRunStart = 0.5f;
     [SerializeField, Min(0f)] float typeCooldown = 2f;
     [SerializeField, Range(0.01f, 1f)] float discoveryTimeScale = 0.05f;
@@ -109,13 +111,13 @@ public class StoryTextController : MonoBehaviour
     readonly Dictionary<eStoryTextType, float> nextAllowed = new();
     readonly Dictionary<Discovery, float> discoveryReadyAt = new();
     Coroutine runner;
-    StoryLineAudio lineAudio;
     string lastQueued;
     bool shownAtmosphereExit, shownBackToPlanet, shownNearMoon;
     bool flightCommentUsed;
     bool dialogueVisible;
     bool operatorDialogue;
     bool waitForPointerRelease;
+    bool launchBriefing;
     bool hadResults;
     float runStartTime, previousTimeScale;
     float previousFixedDeltaTime;
@@ -143,6 +145,7 @@ public class StoryTextController : MonoBehaviour
     {
         Instance = this;
         if (txtInfo) txtInfo.gameObject.SetActive(false);
+        if (briefingPanel) briefingPanel.Hide();
         if (dialog)
         {
             dialog.Hide();
@@ -174,6 +177,7 @@ public class StoryTextController : MonoBehaviour
 
     public void Restart()
     {
+        launchBriefing = false;
         ClearPresentation();
         shownAtmosphereExit = shownBackToPlanet = shownNearMoon = false;
         flightCommentUsed = false;
@@ -189,7 +193,6 @@ public class StoryTextController : MonoBehaviour
         EndDiscovery();
         if (txtInfo) txtInfo.gameObject.SetActive(false);
         queue.Clear(); queuedDiscoveries.Clear(); lastQueued = null;
-        if (lineAudio) lineAudio.Stop();
         queuedTransmissions.Clear();
     }
 
@@ -212,6 +215,20 @@ public class StoryTextController : MonoBehaviour
         if (messages.Length == 0) return;
         string message = messages[UnityEngine.Random.Range(0, messages.Length)];
         Show(message);
+    }
+
+    public IEnumerator ShowLaunchBriefing()
+    {
+        launchBriefing = true;
+        bool introductionNeeded = !data.GetFlag("story.ack.TrainingIntroduction");
+        bool navigationNeeded = !data.GetFlag("story.ack.TrainingNavigation");
+        if (introductionNeeded)
+            Enqueue(EventText("training-introduction", introductoryBriefing), "story.ack.TrainingIntroduction");
+        if (navigationNeeded)
+            Enqueue(EventText("training-navigation", navigationBriefing), "story.ack.TrainingNavigation");
+        if (!introductionNeeded && !navigationNeeded) ShowEarthBriefing();
+        while (runner != null || dialogueVisible || waitForPointerRelease) yield return null;
+        launchBriefing = false;
     }
 
     public string[] GetEarthMessages(int level)
@@ -267,6 +284,7 @@ public class StoryTextController : MonoBehaviour
         if (StationConversation.Instance && StationConversation.Instance.IsShowing) return;
         if (CargoMission.Instance && CargoMission.Instance.IsShowing) return;
         var game = GameController.Instance;
+        if (launchBriefing && game && game.Phase == GameController.GamePhase.Countdown) return;
         if (!game || (!game.IsPlaying && game.Phase != GameController.GamePhase.Landed
             && !(operatorDialogue && game.HasResults)))
         {
@@ -438,9 +456,13 @@ public class StoryTextController : MonoBehaviour
 
     void DisplayDialogue(string message, int portraitLevel, bool surprised, bool canContinue)
     {
+        var node = StoryLibrary.Project ? StoryLibrary.Project.Match(message, StoryLibrary.Flag) : null;
         dialog.Show(message, StoryDialog.Expression.None, canContinue);
         dialogueVisible = true;
         SetGameplayPanelVisible(false);
+        if (launchBriefing && LanderUI.Instance)
+            LanderUI.Instance.ShowNavigationExplanation(node?.textKey == "story.training.navigation"
+                || message == navigationBriefing);
     }
     public void Show(eStoryTextType type)
     {
@@ -486,7 +508,8 @@ public class StoryTextController : MonoBehaviour
                 }
                 bool communication = entry.transmissionLevel > 0 || entry.discovery == Discovery.Station
                     || entry.discovery == Discovery.UFO || entry.discovery == Discovery.AbandonedShip;
-                if (communication && RadioController.Instance && RadioController.Instance.IsOwned)
+                if (communication && !launchBriefing && entry.transmissionLevel == 0
+                    && RadioController.Instance && RadioController.Instance.IsOwned)
                 {
                     bool station = entry.discovery == Discovery.Station;
                     bool unknown = entry.discovery == Discovery.UFO;
@@ -508,7 +531,7 @@ public class StoryTextController : MonoBehaviour
                 bool paused = entry.discovery.HasValue
                     && GetDiscoveryPresentation(entry.discovery.Value) == DiscoveryPresentation.Paused;
                 bool immediate = paused || (entry.discovery.HasValue
-                    && GetDiscoveryPresentation(entry.discovery.Value) == DiscoveryPresentation.Immediate);
+                    && GetDiscoveryPresentation(entry.discovery.Value) == DiscoveryPresentation.Immediate) || launchBriefing;
                 if (immediate)
                 {
                     continueRequested = false;
@@ -551,19 +574,26 @@ public class StoryTextController : MonoBehaviour
             }
             else
             {
-                if (!GameController.Instance.IsPlaying) continue;
-                var node = StoryLibrary.Project ? StoryLibrary.Project.Match(entry.text, StoryLibrary.Flag) : null;
-                txtInfo.SetLocalizedText(node == null ? entry.text : "[[" + node.textKey + "]]");
-                txtInfo.gameObject.SetActive(true);
-                if (!lineAudio) lineAudio = txtInfo.gameObject.AddComponent<StoryLineAudio>();
-                lineAudio.Play(node);
-                if (entry.acknowledgement != null)
+                if (!GameController.Instance.IsPlaying && !launchBriefing) continue;
+                if (!launchBriefing)
                 {
-                    data.SetFlag(entry.acknowledgement, true);
-                    SaveLoadManager.Instance.Save();
+                    if (entry.discovery.HasValue || GameController.Instance.Phase != GameController.GamePhase.Flight
+                        || !(GravityManager2D.Instance && GravityManager2D.Instance.GetMoonBlend(GameController.Instance.ControlledTarget.position) > 0f))
+                        SpaceFlightNavigation.Instance?.ShowAside(entry.text);
+                    if (entry.acknowledgement != null) { data.SetFlag(entry.acknowledgement, true); SaveLoadManager.Instance.Save(); }
+                    continue;
                 }
-                yield return PauseMenu.WaitUnpaused(Mathf.Max(visibleTime, Localization.Resolve(entry.text).Length * 0.055f));
-                txtInfo.gameObject.SetActive(false);
+                activeAcknowledgement = entry.acknowledgement ?? "operator";
+                continueRequested = false;
+                previousTimeScale = Time.timeScale;
+                previousFixedDeltaTime = Time.fixedDeltaTime;
+                ownsTimeScale = true;
+                Time.timeScale = 0f;
+                dialog.Show(entry.text);
+                dialogueVisible = true;
+                SetGameplayPanelVisible(false);
+                while (!continueRequested) yield return null;
+                EndDiscovery();
             }
         }
         runner = null; lastQueued = null;
@@ -612,8 +642,10 @@ public class StoryTextController : MonoBehaviour
 
     void HideDialogue()
     {
+        if (launchBriefing && LanderUI.Instance) LanderUI.Instance.ShowNavigationExplanation(false);
         dialogueVisible = false;
         if (dialog) dialog.Hide();
+        if (briefingPanel) briefingPanel.Hide();
         SetGameplayPanelVisible(true);
     }
 

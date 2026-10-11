@@ -14,18 +14,16 @@ public class LanderUI : MonoBehaviour
 
     [Header("Panels")]
     public StartPanel startPanel;
-    public LandingPanel landingPanel;
-    public CrashPanel crashPanel;
+    public ResultPanel resultPanel;
 
     [Header("HUD")]
     public TMP_Text txtLanderFuel;
     public TMP_Text txtLanderInfos;
     public TMP_Text warningTitle;
     public TMP_Text warningMessage;
-    public Button btnRefill => landingPanel.refillButton;
-    public Image refillProgressFill => landingPanel.refillProgressFill;
-    public TMP_Text txtGameOverMessage => GameController.Instance.Phase == GameController.GamePhase.Crashed
-        ? crashPanel.message : landingPanel.message;
+    public Button btnRefill => resultPanel.refillButton;
+    public Image refillProgressFill => resultPanel.refillProgressFill;
+    public TMP_Text txtGameOverMessage => resultPanel.message;
     TMP_Text refillLabel;
     string refillIdleLabel;
     Selectable.Transition refillTransition;
@@ -35,16 +33,35 @@ public class LanderUI : MonoBehaviour
     public RectTransform indicatorPad;
     public RectTransform indicatorMoon;
 
+    [Tooltip("Höhenunterschied ohne Pfeil, in Welt-Einheiten.")]
+    [Min(0f)] public float navigationHeightTolerance = 2f;
+
     public float maxXRange = 10f;         // ab wann ganz links/rechts
     public float fadeDistance = 1.5f;     // unterhalb wird ausgeblendet
     public float maxOffset = 120f;        // UI-Pixel nach links/rechts
     Image imgIndicatorPad;
     Image imgIndicatorMoon;
+    Image imgIndicatorEarth;
+    [SerializeField] RectTransform indicatorEarth;
+    [SerializeField] RectTransform indicatorStation;
+    [Tooltip("Bis zu dieser Entfernung bleiben Navigationssymbole groß.")]
+    [SerializeField, Min(0f)] float navigationScaleNearDistance = 10f;
+    [Tooltip("Ab dieser Entfernung haben Navigationssymbole ihre kleinste Größe.")]
+    [SerializeField, Min(1f)] float navigationScaleFarDistance = 500f;
+    bool navigationExplanation;
+    public void ShowNavigationExplanation(bool visible) { navigationExplanation = visible; navigationGrp.gameObject.SetActive(visible); }
 
     [Header("Indicator Scale")]
     public Vector3 indicatorNormalScale = Vector3.one;
     public Vector3 indicatorSmallScale = Vector3.one * 0.6f;
     public float indicatorScaleSmooth = 10f;
+    [Tooltip("Dauer der kurzen Vergrößerung, wenn der Mond erstmals in der Navigation erscheint.")]
+    [Min(0.1f)] public float moonRevealDuration = 0.9f;
+    [Tooltip("Maximale Größe beim ersten Erscheinen, relativ zur normalen Symbolgröße.")]
+    [Min(1f)] public float moonRevealScale = 1.7f;
+    bool moonWasRevealed;
+    float moonRevealStarted = float.NegativeInfinity;
+    Vector3 moonIndicatorScale;
 
     [Header("Fuel Bar")]
     public int blocks = 10;
@@ -220,12 +237,17 @@ public class LanderUI : MonoBehaviour
         scoring = ScoringController.Instance;
         imgIndicatorPad = indicatorPad.GetComponent<Image>();
         imgIndicatorMoon = indicatorMoon.GetComponent<Image>();
+        if (indicatorEarth) imgIndicatorEarth = indicatorEarth.GetComponent<Image>();
+        indicatorMoon.gameObject.SetActive(false);
+        moonIndicatorScale = indicatorMoon.localScale;
+        moonWasRevealed = StoryTextController.Instance
+            && StoryTextController.Instance.HasDiscovered(StoryTextController.Discovery.ZeroG);
 
         ShowHideDeadZoneWarning(false);
         HidePanels();
-        crashPanel.retryButton.onClick.AddListener(OnRestartClicked);
-        landingPanel.nextLevelButton.onClick.AddListener(OnNextClicked);
-        landingPanel.continueButton.onClick.AddListener(() => GameController.Instance.ContinueFlight());
+        resultPanel.retryButton.onClick.AddListener(OnRestartClicked);
+        resultPanel.nextLevelButton.onClick.AddListener(OnNextClicked);
+        resultPanel.continueButton.onClick.AddListener(() => GameController.Instance.ContinueFlight());
         btnRefill.onClick.AddListener(() => GameController.Instance.RefillTank());
         refillLabel = btnRefill.GetComponentInChildren<TMP_Text>();
         refillIdleLabel = refillLabel.LocalizationSource();
@@ -256,7 +278,29 @@ public class LanderUI : MonoBehaviour
         }
         ShowRayEditorVisuals();
         UpdateNav(landingPad.transform, indicatorPad, imgIndicatorPad);
-        UpdateNav(GravityManager2D.Instance.transform, indicatorMoon, imgIndicatorMoon);
+        bool inSpace = GameController.Instance.ControlledTarget.position.y >= GravityManager2D.Instance.zeroGFullY;
+        bool radioOwned = RadioController.Instance && RadioController.Instance.IsOwned;
+        if (radioOwned) navigationGrp.gameObject.SetActive(false);
+        else if (navigationExplanation || !GameController.Instance.HasResults && GameController.Instance.Phase != GameController.GamePhase.Countdown
+            && !(StationInterior.Instance && StationInterior.Instance.IsInside)) navigationGrp.gameObject.SetActive(!(RadioController.Instance && RadioController.Instance.IsOwned));
+        indicatorPad.gameObject.SetActive(!inSpace);
+        if (indicatorEarth) { indicatorEarth.gameObject.SetActive(inSpace); if (inSpace) UpdateNav(landingPad.transform, indicatorEarth, imgIndicatorEarth); }
+        bool moonRevealed = inSpace && !radioOwned;
+        indicatorMoon.gameObject.SetActive(moonRevealed);
+        if (moonRevealed && !moonWasRevealed)
+        {
+            moonWasRevealed = true;
+            moonRevealStarted = Time.unscaledTime;
+            moonIndicatorScale = indicatorNormalScale;
+        }
+        if (moonRevealed) UpdateNav(GravityManager2D.Instance.transform, indicatorMoon, imgIndicatorMoon);
+        if (indicatorStation)
+        {
+            var station = SpaceStation.Instance;
+            bool showStation = !radioOwned && station && station.IsAvailable;
+            indicatorStation.gameObject.SetActive(showStation);
+            if (showStation) UpdateNav(station.transform, indicatorStation, indicatorStation.GetComponent<Graphic>());
+        }
         UpdateIndicatorScales();
         RefreshRefillButton();
 
@@ -288,6 +332,13 @@ public class LanderUI : MonoBehaviour
             warningMessage.color = Color.white;
             warningMessage.gameObject.SetActive(false);
         }
+    }
+    public void ShowAstronautZeroGWarning(float remaining)
+    {
+        showDeadZoneWarning = false;
+        warningTitle.SetLocalizedText("[[eva.zerog.warning]]"); warningTitle.color = Color.red;
+        warningMessage.SetLocalizedText(Mathf.CeilToInt(remaining).ToString()); warningMessage.color = Color.red;
+        warningTitle.gameObject.SetActive(true); warningMessage.gameObject.SetActive(true);
     }
 
     bool TryGetAltitude(out float altitude, out RaycastHit2D hit)
@@ -410,7 +461,7 @@ public class LanderUI : MonoBehaviour
         }
     }
 
-    void UpdateNav(Transform target, RectTransform indicator, Image imgIndicator)
+    void UpdateNav(Transform target, RectTransform indicator, Graphic imgIndicator)
     {
         if (!target || !lander) return;
 
@@ -422,24 +473,39 @@ public class LanderUI : MonoBehaviour
             new Vector2(t * maxOffset, indicator.anchoredPosition.y);
 
         // Fade (nah = unsichtbar)
-        float a = Mathf.InverseLerp(0f, fadeDistance, Mathf.Abs(dx));
+        float a = Mathf.InverseLerp(0f, fadeDistance,
+            Vector2.Distance(target.position, GameController.Instance.ControlledTarget.position));
         var c = imgIndicator.color;
         c.a = a;
         imgIndicator.color = c;
+        var heightIndicator = indicator.GetComponent<NavigationHeightIndicator>();
+        if (heightIndicator)
+            heightIndicator.Draw(target.position.y - GameController.Instance.ControlledTarget.position.y, navigationHeightTolerance, c);
+    }
+
+    Vector3 NavigationScale(Transform target)
+    {
+        float distance = Vector2.Distance(target.position, GameController.Instance.ControlledTarget.position);
+        float blend = Mathf.InverseLerp(navigationScaleNearDistance,
+            Mathf.Max(navigationScaleNearDistance + .01f, navigationScaleFarDistance), distance);
+        return Vector3.Lerp(indicatorNormalScale, indicatorSmallScale, blend);
     }
 
     void UpdateIndicatorScales()
     {
-        float y = GameController.Instance.ControlledTarget.position.y;
-        bool inSpace = y >= GravityManager2D.Instance.zeroGFullY;
-
-        Vector3 padTarget = inSpace ? indicatorSmallScale : indicatorNormalScale;
-        Vector3 moonTarget = inSpace ? indicatorNormalScale : indicatorSmallScale;
-
-        float k = 1f - Mathf.Exp(-indicatorScaleSmooth * Time.deltaTime);
-
-        indicatorPad.localScale = Vector3.Lerp(indicatorPad.localScale, padTarget, k);
-        indicatorMoon.localScale = Vector3.Lerp(indicatorMoon.localScale, moonTarget, k);
+        float k = 1f - Mathf.Exp(-indicatorScaleSmooth * Time.unscaledDeltaTime);
+        indicatorPad.localScale = Vector3.Lerp(indicatorPad.localScale, NavigationScale(landingPad.transform), k);
+        if (indicatorEarth) indicatorEarth.localScale = Vector3.Lerp(indicatorEarth.localScale, NavigationScale(landingPad.transform), k);
+        if (indicatorStation && SpaceStation.Instance)
+            indicatorStation.localScale = Vector3.Lerp(indicatorStation.localScale, NavigationScale(SpaceStation.Instance.transform), k);
+        float revealProgress = Mathf.Clamp01((Time.unscaledTime - moonRevealStarted) / Mathf.Max(.1f, moonRevealDuration));
+        float pulse = 1f + (moonRevealScale - 1f) * Mathf.Sin(revealProgress * Mathf.PI);
+        moonIndicatorScale = Vector3.Lerp(moonIndicatorScale, NavigationScale(GravityManager2D.Instance.transform), k);
+        indicatorMoon.localScale = moonIndicatorScale * pulse;
+        if (revealProgress < 1f)
+        {
+            var moonColor = imgIndicatorMoon.color; moonColor.a = 1f; imgIndicatorMoon.color = moonColor;
+        }
     }
 
     public void ShowResults(LanderController.eLanderState state, bool showScore = false, bool immediate = false)
@@ -467,30 +533,40 @@ public class LanderUI : MonoBehaviour
         if (landed)
         {
             bool station = lander.IsOnStation;
-            landingPanel.title.SetLocalizedText(lander.IsOnOutpost ? "[[cargo.outpost.title]]" : station ? "[[game.station.landing]]" : isMoon ? "[[game.moon.landing]]" : "[[game.landed.title]]");
-            landingPanel.message.SetLocalizedText(message);
-            landingPanel.totalScore.SetLocalizedText(xp);
-            landingPanel.score.gameObject.SetActive(showScore);
-            landingPanel.score.SetLocalizedText(isMoon
+            resultPanel.title.SetLocalizedText(lander.IsOnOutpost ? "[[cargo.outpost.title]]" : station ? "[[game.station.landing]]" : isMoon ? "[[game.moon.landing]]" : "[[game.landed.title]]");
+            resultPanel.message.SetLocalizedText(message);
+            resultPanel.totalScore.SetLocalizedText(xp);
+            resultPanel.totalScore.gameObject.SetActive(true);
+            resultPanel.score.gameObject.SetActive(showScore);
+            resultPanel.score.SetLocalizedText(isMoon
                 ? $"[[score.success]] +{scoring.LastBaseScore}\n[[score.speed]]   +{scoring.LastSpeedScore}\n[[score.fuel]]    +{scoring.LastFuelScore}\n[[score.time]]    +{scoring.LastTimeScore}\n★[[score.moon]]★  +{scoring.LastMoonScore}\n────────────\n[[score.score]]   {scoring.LastScore}\n\n[[score.best]]    {scoring.BestScore}\n"
                 : $"[[score.success]] +{scoring.LastBaseScore}\n[[score.speed]]   +{scoring.LastSpeedScore}\n[[score.angle]]   +{scoring.LastAngleScore}\n[[score.center]]  +{scoring.LastCenterScore}\n[[score.fuel]]    +{scoring.LastFuelScore}\n[[score.time]]    +{scoring.LastTimeScore}\n────────────\n[[score.score]]   {scoring.LastScore}\n\n[[score.best]]    {scoring.BestScore}\n");
-            landingPanel.nextLevelButton.gameObject.SetActive(GameController.Instance.CanStartNextLevel);
-            landingPanel.continueButton.gameObject.SetActive(!station || SaveLoadManager.Instance.Data.GetFlag("story.registrationComplete"));
+            resultPanel.nextLevelButton.gameObject.SetActive(GameController.Instance.CanStartNextLevel);
+            resultPanel.continueButton.gameObject.SetActive(!station || SaveLoadManager.Instance.Data.GetFlag("story.registrationComplete"));
             btnRefill.gameObject.SetActive(GameController.Instance.CanRefill);
-            landingPanel.gameObject.SetActive(true);
+            resultPanel.exitLanderButton.gameObject.SetActive(true);
+            resultPanel.retryButton.gameObject.SetActive(false);
+            resultPanel.gameObject.SetActive(true);
             MoonEVAController.Instance.RefreshAction();
         }
         else
         {
-            crashPanel.title.SetLocalizedText(state switch
+            resultPanel.title.SetLocalizedText(GameController.Instance.AstronautLost ? "[[eva.zerog.title]]" : state switch
             {
                 LanderController.eLanderState.OutOfFuel => "[[game.out.of.fuel]]",
                 LanderController.eLanderState.DeadZone => "[[game.signal.lost.title]]",
                 _ => "[[game.crashed]]"
             });
-            crashPanel.message.SetLocalizedText(message);
-            crashPanel.totalScore.SetLocalizedText(xp);
-            crashPanel.gameObject.SetActive(true);
+            resultPanel.message.SetLocalizedText(message);
+            resultPanel.totalScore.SetLocalizedText(xp);
+            resultPanel.totalScore.gameObject.SetActive(true);
+            resultPanel.score.gameObject.SetActive(false);
+            resultPanel.nextLevelButton.gameObject.SetActive(false);
+            resultPanel.continueButton.gameObject.SetActive(false);
+            resultPanel.refillButton.gameObject.SetActive(false);
+            resultPanel.exitLanderButton.gameObject.SetActive(false);
+            resultPanel.retryButton.gameObject.SetActive(true);
+            resultPanel.gameObject.SetActive(true);
         }
         LanderChooserManager.Instance.SetChooserButtonsVisible(GameController.Instance.CanChooseLander);
         LanderChooserManager.Instance.panelChooser.gameObject.SetActive(false);
@@ -524,8 +600,7 @@ public class LanderUI : MonoBehaviour
     void HidePanels()
     {
         startPanel.gameObject.SetActive(false);
-        landingPanel.gameObject.SetActive(false);
-        crashPanel.gameObject.SetActive(false);
+        resultPanel.gameObject.SetActive(false);
     }
 
     public void HideGameOver()
@@ -537,7 +612,7 @@ public class LanderUI : MonoBehaviour
         nextHudUpdate = 0f;
         txtLanderFuel.gameObject.SetActive(true);
         txtLanderInfos.gameObject.SetActive(true);
-        navigationGrp.gameObject.SetActive(true);
+        navigationGrp.gameObject.SetActive(!(RadioController.Instance && RadioController.Instance.IsOwned));
         LanderChooserManager.Instance.SetChooserButtonsVisible(false);
         LanderChooserManager.Instance.panelChooser.gameObject.SetActive(false);
         refillProgressFill.gameObject.SetActive(false);
@@ -552,7 +627,7 @@ public class LanderUI : MonoBehaviour
     {
         if (!btnRefill) return;
         if (GameController.Instance.HasResults && GameController.Instance.Phase == GameController.GamePhase.Landed)
-            landingPanel.nextLevelButton.gameObject.SetActive(GameController.Instance.CanStartNextLevel);
+            resultPanel.nextLevelButton.gameObject.SetActive(GameController.Instance.CanStartNextLevel);
         btnRefill.interactable = GameController.Instance.CanRefill && !GameController.Instance.IsRefilling && lander.currentFuel < lander.fuelMax;
         bool refilling = GameController.Instance.IsRefilling;
         if (showingRefill != refilling)
@@ -603,14 +678,16 @@ public class LanderUI : MonoBehaviour
         yield return new WaitForSeconds(2f);
         startPanel.gameTitle.gameObject.SetActive(false);
 
+        startPanel.gameObject.SetActive(false);
+        yield return StoryTextController.Instance.ShowLaunchBriefing();
+        startPanel.gameObject.SetActive(true);
+
         startPanel.title.gameObject.SetActive(true);
         startPanel.message.gameObject.SetActive(true);
         RefreshPanel();
 
         startPanel.message.SetLocalizedText("[[game.start.in]]");
         startPanel.title.SetLocalizedText("[[hud.level]] " + GameController.Instance.level + "\n\n ");
-
-        yield return new WaitForSeconds(1.5f);
 
         for (int count = Mathf.Max(0, startCountdown); count > 0; count--)
         {
@@ -622,7 +699,7 @@ public class LanderUI : MonoBehaviour
 
         txtLanderFuel.gameObject.SetActive(true);
         txtLanderInfos.gameObject.SetActive(true);
-        navigationGrp.gameObject.SetActive(true);
+        navigationGrp.gameObject.SetActive(!(RadioController.Instance && RadioController.Instance.IsOwned));
 
         AudioManager.Instance.PlaySound(AudioManager.Instance.sfxCountdownStart, 1f, 1f, false);
         startPanel.title.SetLocalizedText("[[game.land]]");
@@ -644,7 +721,7 @@ public class LanderUI : MonoBehaviour
         yield return null;
         layout = null;
 
-        foreach (var panel in new[] { startPanel.gameObject, landingPanel.gameObject, crashPanel.gameObject })
+        foreach (var panel in new[] { startPanel.gameObject, resultPanel.gameObject })
             if (panel.activeInHierarchy) LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)panel.transform);
     }
 

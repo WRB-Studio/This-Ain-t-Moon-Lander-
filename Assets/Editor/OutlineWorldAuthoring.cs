@@ -27,7 +27,7 @@ public static class OutlineWorldAuthoring
     {
         var root = new GameObject(name); root.transform.SetParent(parent, false); return root.transform;
     }
-    static void Body(Transform parent, string name, Vector2[] points, int order)
+    public static void Body(Transform parent, string name, Vector2[] points, int order)
     {
         var mesh = new Mesh { name = name };
         var vertices = new Vector3[points.Length + 1]; var triangles = new int[points.Length * 3];
@@ -46,14 +46,14 @@ public static class OutlineWorldAuthoring
         root.gameObject.AddComponent<MeshFilter>().sharedMesh = mesh;
         var renderer = root.gameObject.AddComponent<MeshRenderer>(); renderer.sharedMaterial = Black; renderer.sortingOrder = order;
     }
-    static void Stroke(Transform parent, string name, Vector2[] points, float width, int order, bool loop = true)
+    public static void Stroke(Transform parent, string name, Vector2[] points, float width, int order, bool loop = true)
     {
         var line = Child(parent, name).gameObject.AddComponent<LineRenderer>();
         line.sharedMaterial = White; line.useWorldSpace = false; line.loop = loop;
         line.positionCount = points.Length; line.SetPositions(points.Select(point => (Vector3)point).ToArray());
         line.startWidth = line.endWidth = width; line.numCornerVertices = 3; line.numCapVertices = 3; line.sortingOrder = order;
     }
-    static void Crater(Transform parent, string name, Vector2 center, Vector2 radii, float width, int order)
+    public static void Crater(Transform parent, string name, Vector2 center, Vector2 radii, float width, int order)
     {
         var points = Enumerable.Range(0, 96).Select(i =>
         {

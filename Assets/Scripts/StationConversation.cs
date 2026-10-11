@@ -16,11 +16,13 @@ public class StationConversation : MonoBehaviour
         public Answer[] answers;
         public bool givesRadio;
     }
+    [SerializeField] CharacterVisual conversationPartner;
     [SerializeField] string speaker = "[[game.registration]]";
     [SerializeField] ConversationStep[] steps;
     [SerializeField, TextArea] string repeatMessage = "[[game.the.pickup.coordinates.are.still.on.your.radio.open.radio.to.read]]";
     [SerializeField] string goodbyeAnswer = "[[game.thanks.i.will.take.a.look]]";
     public bool IsShowing { get; private set; }
+    public CharacterVisual Partner => conversationPartner;
     StoryDialog dialog;
     CanvasGroup hud;
     float previousTimeScale;
@@ -43,6 +45,12 @@ public class StationConversation : MonoBehaviour
             || !dialog || steps == null || steps.Length == 0 || !GameController.Instance.IsPlaying || StoryTextController.Instance.BlocksGameplayInput
             || !StationInterior.Instance || StationInterior.Instance.CurrentArea != StationInterior.Area.Registration) return;
         if (CargoMission.Instance && CargoMission.Instance.IsShowing) return;
+        if (conversationPartner)
+        {
+            conversationPartner.FaceLeft(GameController.Instance.ControlledTarget.position.x < conversationPartner.transform.position.x);
+            var resident = conversationPartner.GetComponentInParent<StationResident>();
+            if (resident) resident.FacePlayer();
+        }
         StoryTextController.Instance.Restart();
         repeat = SaveLoadManager.Instance.Data.GetFlag("story.registrationComplete");
         IsShowing = true;

@@ -2,7 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class LandingPanel : MonoBehaviour
+public class ResultPanel : MonoBehaviour
 {
     public TMP_Text title;
     public TMP_Text message;
@@ -14,4 +14,5 @@ public class LandingPanel : MonoBehaviour
     public Image refillProgressFill;
     public Button chooseShipButton;
     public Button exitLanderButton;
+    public Button retryButton;
 }

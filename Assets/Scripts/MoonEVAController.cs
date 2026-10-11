@@ -11,8 +11,8 @@ public class MoonEVAController : MonoBehaviour
     public Transform astronautParent;
     [Header("UI")]
     public Button btnExit;
-    public LandingPanel landingPanel;
-    public Button scoreExitButton => landingPanel.exitLanderButton;
+    public ResultPanel resultPanel;
+    public Button scoreExitButton => resultPanel.exitLanderButton;
     [HideInInspector] public GameObject astronaut;
     [SerializeField, Min(0.1f)] float stationBoardingDistance = 1.25f;
     LanderController[] stationLanders;

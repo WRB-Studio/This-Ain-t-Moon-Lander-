@@ -61,12 +61,12 @@ MonoBehaviour:
   walkSpeed: 1
   entersStationOnApproach: 0
   approachDistance: 3
-  bubbleText: {fileID: 57383820}
+  bubbleText: {fileID: 1967895110476873014}
   comments:
   - '[[game.the.lander.is.back.finally]]'
-  commentDistance: 1.5
-  commentDuration: 7
-  commentHideDistance: 5
+  commentDistance: 4
+  commentDuration: 4.5
+  commentHideDistance: 6
   commentCooldown: 10
 --- !u!50 &5411381240452976774
 Rigidbody2D:
@@ -155,6 +155,14 @@ PrefabInstance:
     m_TransformParent: {fileID: 5866181376250272127}
     m_Modifications:
     - target: {fileID: 570000001, guid: d70b2a0294a742d1bd59cb391b6fd39d, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 500
+      objectReference: {fileID: 0}
+    - target: {fileID: 570000001, guid: d70b2a0294a742d1bd59cb391b6fd39d, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 130
+      objectReference: {fileID: 0}
+    - target: {fileID: 570000001, guid: d70b2a0294a742d1bd59cb391b6fd39d, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.02
       objectReference: {fileID: 0}
@@ -170,9 +178,21 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 570000003, guid: d70b2a0294a742d1bd59cb391b6fd39d, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 570000006, guid: d70b2a0294a742d1bd59cb391b6fd39d, type: 3}
       propertyPath: m_text
-      value: Station
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 570000006, guid: d70b2a0294a742d1bd59cb391b6fd39d, type: 3}
+      propertyPath: m_fontSize
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 4285184397148282726, guid: d70b2a0294a742d1bd59cb391b6fd39d, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -199,18 +219,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 933f5654dd184ec7825d27a182bdb5d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LocalizedText
-  source: '[[game.station]]'
+  source: 
 --- !u!224 &57383819 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 570000001, guid: d70b2a0294a742d1bd59cb391b6fd39d, type: 3}
   m_PrefabInstance: {fileID: 580000010}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &57383820 stripped
+--- !u!114 &1967895110476873014 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 570000006, guid: d70b2a0294a742d1bd59cb391b6fd39d, type: 3}
+  m_CorrespondingSourceObject: {fileID: 1967895109913650236, guid: d70b2a0294a742d1bd59cb391b6fd39d, type: 3}
   m_PrefabInstance: {fileID: 580000010}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 57383817}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}

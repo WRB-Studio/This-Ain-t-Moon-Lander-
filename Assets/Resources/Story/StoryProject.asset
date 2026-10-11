@@ -1028,7 +1028,7 @@ MonoBehaviour:
   - id: game.oh.so.that.is.the.moon.minor.naming.issue
     chapter: Mond
     storyStepId: overview.2
-    title: Da ist der echte Mond.
+    title: Mond entdecken
     position: {x: 400, y: 0}
     status: 2
     purpose: 
@@ -6416,6 +6416,363 @@ MonoBehaviour:
     eventPositioned: 0
     eventPosition: {x: 0, y: 0}
     triggerOnly: 1
+    eventBindingEdited: 0
+    eventTriggerId: 
+  - id: story.training.introduction
+    chapter: Training
+    storyStepId: overview.0
+    title: "Flugtrainer: Einf\xFChrung und Steuerung"
+    position: {x: 340, y: -360}
+    status: 2
+    purpose: 
+    questions: 
+    channel: 1
+    speaker: {fileID: 11400000, guid: 149b2e3da5e479940a2910bf232e4d67, type: 2}
+    textKey: story.training.introduction
+    sourceReference: '[[story.training.introduction]]'
+    sourcePath: Assets/Scenes/MainScene.unity
+    sourceProperty: introductoryBriefing
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices: []
+    overviewOnly: 0
+    answerBoardLayout: 1
+    eventInfo:
+      enabled: 1
+      kind: 8
+      eventId: 
+      pool: training-introduction
+      fromLevel: 1
+      toLevel: 9
+      random: 0
+      once: 1
+      probability: 1
+      requiredFlag: 
+      blockedFlag: story.ack.TrainingIntroduction
+      presentation: Piloten-Panel vor dem Countdown
+      description: "Beim ersten Trainingsstart nach dem Titel; Weiter best\xE4tigt
+        die Steuerung und f\xFChrt zum Navigationshinweis."
+    eventPositioned: 0
+    eventPosition: {x: 0, y: 0}
+    triggerOnly: 0
+    eventBindingEdited: 0
+    eventTriggerId: trigger.8.training-introduction
+  - id: trigger.8.training-introduction
+    chapter: Training
+    storyStepId: 
+    title: "Ausl\xF6ser"
+    position: {x: 0, y: -360}
+    status: 2
+    purpose: 
+    questions: 
+    channel: 0
+    speaker: {fileID: 0}
+    textKey: 
+    sourceReference: 
+    sourcePath: Assets/Scenes/MainScene.unity
+    sourceProperty: introductoryBriefing
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices: []
+    overviewOnly: 0
+    answerBoardLayout: 1
+    eventInfo:
+      enabled: 1
+      kind: 8
+      eventId: 
+      pool: training-introduction
+      fromLevel: 1
+      toLevel: 9
+      random: 0
+      once: 1
+      probability: 1
+      requiredFlag: 
+      blockedFlag: story.ack.TrainingIntroduction
+      presentation: Piloten-Panel vor dem Countdown
+      description: "Beim ersten Trainingsstart nach dem Titel; Weiter best\xE4tigt
+        die Steuerung und f\xFChrt zum Navigationshinweis."
+    eventPositioned: 0
+    eventPosition: {x: 0, y: 0}
+    triggerOnly: 1
+    eventBindingEdited: 0
+    eventTriggerId: 
+  - id: story.training.navigation
+    chapter: Training
+    storyStepId: overview.0
+    title: 'Flugtrainer: Navigation und Trainingsstart'
+    position: {x: 340, y: -200}
+    status: 2
+    purpose: 
+    questions: 
+    channel: 1
+    speaker: {fileID: 11400000, guid: 149b2e3da5e479940a2910bf232e4d67, type: 2}
+    textKey: story.training.navigation
+    sourceReference: '[[story.training.navigation]]'
+    sourcePath: Assets/Scenes/MainScene.unity
+    sourceProperty: navigationBriefing
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices: []
+    overviewOnly: 0
+    answerBoardLayout: 1
+    eventInfo:
+      enabled: 1
+      kind: 8
+      eventId: 
+      pool: training-navigation
+      fromLevel: 1
+      toLevel: 9
+      random: 0
+      once: 1
+      probability: 1
+      requiredFlag: 
+      blockedFlag: story.ack.TrainingNavigation
+      presentation: Piloten-Panel vor dem Countdown
+      description: "Nach der Steuerung: erkl\xE4rt die untere Navigation; Weiter
+        startet den Countdown. Unterbrochene Hinweise werden erneut angeboten."
+    eventPositioned: 0
+    eventPosition: {x: 0, y: 0}
+    triggerOnly: 0
+    eventBindingEdited: 0
+    eventTriggerId: trigger.8.training-navigation
+  - id: trigger.8.training-navigation
+    chapter: Training
+    storyStepId: 
+    title: "Ausl\xF6ser"
+    position: {x: 0, y: -200}
+    status: 2
+    purpose: 
+    questions: 
+    channel: 0
+    speaker: {fileID: 0}
+    textKey: 
+    sourceReference: 
+    sourcePath: Assets/Scenes/MainScene.unity
+    sourceProperty: navigationBriefing
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices: []
+    overviewOnly: 0
+    answerBoardLayout: 1
+    eventInfo:
+      enabled: 1
+      kind: 8
+      eventId: 
+      pool: training-navigation
+      fromLevel: 1
+      toLevel: 9
+      random: 0
+      once: 1
+      probability: 1
+      requiredFlag: 
+      blockedFlag: story.ack.TrainingNavigation
+      presentation: Piloten-Panel vor dem Countdown
+      description: "Nach der Steuerung: erkl\xE4rt die untere Navigation; Weiter
+        startet den Countdown. Unterbrochene Hinweise werden erneut angeboten."
+    eventPositioned: 0
+    eventPosition: {x: 0, y: 0}
+    triggerOnly: 1
+    eventBindingEdited: 0
+    eventTriggerId: 
+  - id: station.ambient.0
+    chapter: Stationsbewohner
+    storyStepId: overview.5
+    title: "Schon wieder ein Pilot. L\xE4uft das Training noch?"
+    position: {x: 0, y: 877.5}
+    status: 2
+    purpose: 
+    questions: 
+    channel: 0
+    speaker: {fileID: 11400000, guid: c0782531f12f80248b1825be5de6efb5, type: 2}
+    textKey: station.ambient.0
+    sourceReference: '[[station.ambient.0]]'
+    sourcePath: Assets/Scenes/MainScene.unity
+    sourceProperty: 'comments.Array.data[0]'
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices: []
+    overviewOnly: 0
+    answerBoardLayout: 1
+    eventInfo:
+      enabled: 0
+      kind: 0
+      eventId: 
+      pool: 
+      fromLevel: 1
+      toLevel: 9
+      random: 0
+      once: 0
+      probability: 1
+      requiredFlag: 
+      blockedFlag: 
+      presentation: 
+      description: 
+    eventPositioned: 0
+    eventPosition: {x: 0, y: 0}
+    triggerOnly: 0
+    eventBindingEdited: 0
+    eventTriggerId: 
+  - id: station.ambient.1
+    chapter: Stationsbewohner
+    storyStepId: overview.5
+    title: Die Kaffeemaschine hat wieder Schwerkraftprobleme.
+    position: {x: 728, y: 877.5}
+    status: 2
+    purpose: 
+    questions: 
+    channel: 0
+    speaker: {fileID: 11400000, guid: c0782531f12f80248b1825be5de6efb5, type: 2}
+    textKey: station.ambient.1
+    sourceReference: '[[station.ambient.1]]'
+    sourcePath: Assets/Scenes/MainScene.unity
+    sourceProperty: 'comments.Array.data[1]'
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices: []
+    overviewOnly: 0
+    answerBoardLayout: 1
+    eventInfo:
+      enabled: 0
+      kind: 0
+      eventId: 
+      pool: 
+      fromLevel: 1
+      toLevel: 9
+      random: 0
+      once: 0
+      probability: 1
+      requiredFlag: 
+      blockedFlag: 
+      presentation: 
+      description: 
+    eventPositioned: 0
+    eventPosition: {x: 0, y: 0}
+    triggerOnly: 0
+    eventBindingEdited: 0
+    eventTriggerId: 
+  - id: station.ambient.2
+    chapter: Stationsbewohner
+    storyStepId: overview.5
+    title: Solange nichts explodiert, ist heute ein guter Tag.
+    position: {x: 1456, y: 877.5}
+    status: 2
+    purpose: 
+    questions: 
+    channel: 0
+    speaker: {fileID: 11400000, guid: c0782531f12f80248b1825be5de6efb5, type: 2}
+    textKey: station.ambient.2
+    sourceReference: '[[station.ambient.2]]'
+    sourcePath: Assets/Scenes/MainScene.unity
+    sourceProperty: 'comments.Array.data[2]'
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices: []
+    overviewOnly: 0
+    answerBoardLayout: 1
+    eventInfo:
+      enabled: 0
+      kind: 0
+      eventId: 
+      pool: 
+      fromLevel: 1
+      toLevel: 9
+      random: 0
+      once: 0
+      probability: 1
+      requiredFlag: 
+      blockedFlag: 
+      presentation: 
+      description: 
+    eventPositioned: 0
+    eventPosition: {x: 0, y: 0}
+    triggerOnly: 0
+    eventBindingEdited: 0
+    eventTriggerId: 
+  - id: moon.flag.discovery
+    chapter: Mond
+    storyStepId: overview.3
+    title: 'Flagge: jemand war schon hier'
+    position: {x: 1040, y: 4050}
+    status: 2
+    purpose: "Einmalige beil\xE4ufige Bemerkung beim Vorbeilaufen; kein Dialog, keine
+      Pause. Speichert story.moonFlagSeen."
+    questions: 
+    channel: 0
+    speaker: {fileID: 0}
+    textKey: moon.flag.discovery
+    sourceReference: '[[moon.flag.discovery]]'
+    sourcePath: Assets/Scripts/MoonFlagDiscovery.cs
+    sourceProperty: text
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices: []
+    overviewOnly: 0
+    answerBoardLayout: 1
+    eventInfo:
+      enabled: 0
+      kind: 0
+      eventId: 
+      pool: 
+      fromLevel: 1
+      toLevel: 9
+      random: 0
+      once: 0
+      probability: 1
+      requiredFlag: 
+      blockedFlag: 
+      presentation: 
+      description: 
+    eventPositioned: 0
+    eventPosition: {x: 0, y: 0}
+    triggerOnly: 0
     eventBindingEdited: 0
     eventTriggerId: 
   decorations: []

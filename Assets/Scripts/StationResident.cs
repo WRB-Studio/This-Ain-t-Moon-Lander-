@@ -60,12 +60,24 @@ public class StationResident : MonoBehaviour
         if (!activeResidents.Contains(this)) activeResidents.Add(this);
         if (!placed && patrolMode == PatrolMode.MinMaxX) PlaceOnInitialFloor();
         placed = true;
-        if (bubbleText) bubbleText.gameObject.SetActive(false);
+        if (bubbleText) { bubbleText.SetLocalizedText(""); bubbleText.gameObject.SetActive(false); }
+    }
+    public void FacePlayer()
+    {
+        Cache();
+        var player = GameController.Instance ? GameController.Instance.ControlledTarget : null;
+        if (!player) return;
+        bool left = player.position.x < transform.position.x;
+        motor.Stop();
+        if (characterVisual) { characterVisual.SetWalking(false, 0f); characterVisual.FaceLeft(left); }
+        else { if (animator) animator.SetBool(Walking, false); if (sprite) sprite.flipX = left; }
     }
     void Update()
     {
         var game = GameController.Instance;
         var station = SpaceStation.Instance;
+        if (StationConversation.Instance && StationConversation.Instance.IsShowing
+            && StationConversation.Instance.Partner == characterVisual) { FacePlayer(); return; }
         if (entered) { motor.Stop(); return; }
         bool nearPlayer = game && station && station.IsAvailable && game.IsPlaying && game.Phase == GameController.GamePhase.EVA && game.ControlledTarget
             && Vector2.Distance(game.ControlledTarget.position, transform.position) <= approachDistance;
@@ -153,6 +165,10 @@ public class StationResident : MonoBehaviour
     void UpdateComment(GameController game)
     {
         if (!bubbleText) return;
+        var bubble = bubbleText.transform.parent;
+        var parentScale = bubble.parent ? bubble.parent.lossyScale : Vector3.one;
+        bubble.localScale = new Vector3(.01f / Mathf.Max(.001f, Mathf.Abs(parentScale.x)), .01f / Mathf.Max(.001f, Mathf.Abs(parentScale.y)), 1f);
+        bubble.rotation = Quaternion.identity;
         Bounds bounds = VisualBounds;
         Vector3 bubblePosition = bubbleText.transform.parent.position;
         bubblePosition.x = bounds.center.x;
@@ -164,7 +180,7 @@ public class StationResident : MonoBehaviour
             && Vector2.Distance(game.ControlledTarget.position, transform.position) <= commentDistance;
         if (canComment)
             foreach (var other in activeResidents)
-                if (other != this && other.comments != null && other.comments.Length > 0
+                if (other != this && other.isActiveAndEnabled && other.bubbleText && other.comments != null && other.comments.Length > 0
                     && Vector2.Distance(game.ControlledTarget.position, other.transform.position)
                         < Vector2.Distance(game.ControlledTarget.position, transform.position)) { canComment = false; break; }
         if (canComment && comments != null && comments.Length > 0 && Time.time >= nextComment)
@@ -179,7 +195,7 @@ public class StationResident : MonoBehaviour
         bool keepVisible = game && game.IsPlaying && game.Phase == GameController.GamePhase.EVA && game.ControlledTarget
             && (!StationConversation.Instance || !StationConversation.Instance.IsShowing)
             && (!StationInterior.Instance || !StationInterior.Instance.IsTransitioning)
-            && Vector2.Distance(game.ControlledTarget.position, transform.position) <= commentHideDistance;
+            && Vector2.Distance(game.ControlledTarget.position, transform.position) <= Mathf.Max(commentDistance, commentHideDistance);
         bubbleText.gameObject.SetActive(keepVisible && Time.time < bubbleUntil);
     }
     public ResidentSave CaptureState()

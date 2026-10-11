@@ -14,7 +14,7 @@ Das Tools-Menü wurde bereinigt: einmalige Aufbau- und Export-Einträge sind ent
 
 ## Daten und Bearbeitung
 
-Die Übernahme erfasst die Storytexte aus der aktuellen Hauptszene, Registrierung, Rhekk-Mission, Funk und dem Story-Code. Sie ergänzt vorhandene Projekte, ohne bearbeitete Schritte neu zu erzeugen. Die 14 Ablaufknoten sind eine Entwicklungsübersicht, keine automatisch ausgeführten Missionen. Die drei früher separat angelegten Zukunftskonzepte wurden mit den passenden Ablaufknoten zusammengeführt; ihre Notizen bleiben erhalten. Aktuell liegen 109 Story-/Textnodes und 25 gemeinsame Auslöser vor; 56 Texte sind als Ereignismeldungen gekennzeichnet. Status: Idea, Planned, Implemented, Verified; importierte Inhalte sind Implemented, nicht automatisch Verified.
+Die Übernahme erfasst die Storytexte aus der aktuellen Hauptszene, Registrierung, Rhekk-Mission, Funk und dem Story-Code. Sie ergänzt vorhandene Projekte, ohne bearbeitete Schritte neu zu erzeugen. Die 14 Ablaufknoten sind eine Entwicklungsübersicht, keine automatisch ausgeführten Missionen. Die drei früher separat angelegten Zukunftskonzepte wurden mit den passenden Ablaufknoten zusammengeführt; ihre Notizen bleiben erhalten. Aktuell liegen 111 Story-/Textnodes und 27 gemeinsame Auslöser vor; 58 Texte sind als Ereignismeldungen gekennzeichnet. Status: Idea, Planned, Implemented, Verified; importierte Inhalte sind Implemented, nicht automatisch Verified.
 
 ## Ereignismeldungen und Training
 
@@ -110,3 +110,12 @@ Die vorhandenen Dialog- und Funk-Prefabs enthalten sechs bearbeitbare Antwortpl�
 Unity-Kompilierung und Asset-Übernahme im isolierten Editor-Projekt durchgeführt. Alle bisherigen DE/EN-Texte wurden unverändert erhalten; nur Charakter-Namen ergänzt. Keine Tests oder Play-Mode-Läufe gestartet.
 
 Im Editor noch manuell abnehmen: Board-Navigation und Undo/Redo, Textübernahme beider Sprachen, Charakterzuweisung, Vorschau mit Bedingungen/Flags und echten Audioclips. Im Spiel: Registrierung, Rhekk-Rettung, neue Entscheidungszweige, Funk-Speichern/Laden, Porträt- und Audiowiedergabe sowie Mobile-Layout. Bestehende lange Dialoge sind nur markiert, nicht gekürzt.
+# Trainingseinführung und Piloten-Panel
+
+Der Trainingsstart zeigt den Spieltitel, danach die kurze Einführung des Flugtrainers und einen zweiten kurzen Hinweis zur unteren Navigationsleiste. Nach „Weiter“ folgt der Countdown 3–1. Beide Hinweise werden einzeln einmal pro Spielstand bestätigt (`story.ack.TrainingIntroduction`, `story.ack.TrainingNavigation`); spätere Trainingsstarts zeigen ihre jeweilige Trainingsmeldung vor dem Countdown. Ein unterbrochener, unbestätigter Einstieg erscheint erneut. Innerhalb der Erdatmosphäre wird das Landepad angezeigt; außerhalb erscheinen Mond und Erde. Mit Funkgerät verschwindet die untere Leiste zugunsten der auswählbaren Funkziele und Flugmarker.
+
+Die Einführung steht im Gesprächsboard „Training“ mit dem Auslöser „Trainingseinführung“. Text, Sprecher und optionale deutsche/englische Sprachclips sind dort bearbeitbar. Wichtige Übertragungen behalten das bestätigbare Panel. Beiläufige Flugkommentare erscheinen ohne Pause als kurzer Text nebenbei; beim Mondanflug entfallen zufällige Zusatzkommentare. Bestehende persönliche Gespräche und Stationsfunk behalten ihre Darstellung.
+
+Das Layout liegt in `Assets/Prefabs/UI/TrainingBriefing.prefab`, die Zuweisung in `MainScene`. Rollenbezeichnung vorerst „Flugtrainer · Testpilot a. D.“. Native Asset-Erstellung und Kompilierung geprüft; Ablauf, Touch-Bedienung und Darstellung auf Geräten noch nicht im Spiel getestet.
+
+Während des Navigationshinweises ist die untere Leiste sichtbar. Einführung und Navigationshinweis nutzen kurze Überschriften, Aufzählungen und Absätze in beiden Sprachen. Das Mondsymbol liegt als wiederverwendbares Prefab `Assets/Prefabs/UI/MoonNavigationIcon.prefab` vor: schwarze Fläche, weiße Kreis- und Kraterkonturen, als scharfe UI-Geometrie gerendert. Beim ersten Zero-G-Erreichen vergrößert es sich kurz und kehrt zur normalen Größe zurück; Dauer und Faktor sind im `LanderUI`-Inspector einstellbar (`Moon Reveal Duration`, `Moon Reveal Scale`). Die Animation verwendet unskalierte Zeit, damit sie auch während einer Story-Pause sichtbar bleibt; bekannte Monde aus geladenen Spielständen lösen sie nicht erneut aus.

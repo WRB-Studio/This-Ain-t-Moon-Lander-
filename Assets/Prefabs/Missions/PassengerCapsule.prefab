@@ -1708,7 +1708,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &4281483396477006768
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1797,7 +1797,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '[[cargo.capsule.label]]'
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 9dd5fef454fcab945a18f10eb1b3cd79, type: 2}
   m_sharedMaterial: {fileID: 1726415759315284689, guid: 9dd5fef454fcab945a18f10eb1b3cd79, type: 2}
@@ -1884,7 +1884,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 933f5654dd184ec7825d27a182bdb5d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LocalizedText
-  source: '[[cargo.capsule.label]]'
+  source: 
 --- !u!1 &6799707633141146104
 GameObject:
   m_ObjectHideFlags: 0
