@@ -45,7 +45,6 @@ public class LanderChooserManager : MonoBehaviour
         originBtnColor = btnOptionPrefab.GetComponent<Image>().color;
 
         btnLanderChooser.onClick.AddListener(() => OpenCloseChooser());
-        btnLanderChooser.onClick.AddListener(() => OpenCloseChooser());
 
         panelChooser.gameObject.SetActive(false);
         SetChooserButtonsVisible(false);

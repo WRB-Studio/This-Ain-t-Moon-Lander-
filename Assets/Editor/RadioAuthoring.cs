@@ -62,15 +62,6 @@ public static class RadioAuthoring
         Set("openButton", open);
         Set("openLabel", open.GetComponentInChildren<TMP_Text>());
         Set("unreadLight", Image(open.transform, "UnreadLight", new Vector2(95f, 26f), new Vector2(10f, 10f), Color.white).gameObject);
-        var icon = Rect(root.transform, "TrackedSignal", Vector2.zero, new Vector2(40f, 40f));
-        var graphic = icon.gameObject.AddComponent<RadioSignalGraphic>();
-        graphic.raycastTarget = false;
-        var distance = Text(icon, "Distance", "SIGNAL", new Vector2(0f, -50f), new Vector2(420f, 90f), 26f);
-        distance.alignment = TextAlignmentOptions.Center;
-        Set("navigationIcon", icon);
-        Set("navigationGraphic", graphic);
-        Set("navigationDistance", distance);
-
         var device = Image(root.transform, "Device", Vector2.zero, Vector2.zero, new Color(0f, 0f, 0f, 0.85f));
         Stretch(device.rectTransform);
         device.raycastTarget = true;
@@ -173,7 +164,6 @@ public static class RadioAuthoring
         Set("pageText", page);
         controller.ApplyModifiedPropertiesWithoutUndo();
         device.gameObject.SetActive(false);
-        icon.gameObject.SetActive(false);
         open.gameObject.SetActive(false);
         var asset = PrefabUtility.SaveAsPrefabAsset(root, RadioPath);
         UnityEngine.Object.DestroyImmediate(root);

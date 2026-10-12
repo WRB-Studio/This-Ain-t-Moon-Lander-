@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
@@ -22,12 +23,21 @@ public partial class StoryEditorWindow
         }
         using (new EditorGUI.DisabledScope(!project.snapToGrid || markedCards.Count == 0))
             if (GUILayout.Button("Auswahl am Raster ausrichten")) { Undo.RegisterCompleteObjectUndo(project, "Auswahl ausrichten"); SnapLayout(markedCards); Dirty(); }
-        if (!StoryView && GUILayout.Button("Gesprächsboard anordnen"))
-        { Undo.RegisterCompleteObjectUndo(project, "Gesprächsboard anordnen"); StoryBoardLayout.Arrange(project, Sections[chapter]); if (project.snapToGrid) SnapLayout(null); Dirty(); focusBoard = true; }
+        if (GUILayout.Button(new GUIContent("Fokussieren", "Alle Inhalte anzeigen, Positionen bleiben erhalten"))) focusBoard = true;
     }
     void SnapLayout(HashSet<(string id, int answer)> selection)
     {
         if (!project.snapToGrid) return;
+        if (selection == null)
+        {
+            selection = new HashSet<(string id, int answer)>();
+            foreach (var node in WritingNodes())
+            {
+                selection.Add((node.id, node.triggerOnly ? -2 : -1));
+                for (int a = 0; a < node.choices.Count; a++) selection.Add((node.id, a));
+            }
+            foreach (var decoration in BoardDecorations()) selection.Add((decoration.id, -3));
+        }
         var originalAnswers = new Dictionary<StoryChoice, Vector2>();
         foreach (var node in project.nodes)
             for (int a = 0; a < node.choices.Count; a++) originalAnswers[node.choices[a]] = node.position + (node.choices[a].positioned ? node.choices[a].position : AnswerOffset(a));

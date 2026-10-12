@@ -43,7 +43,7 @@ public static class TrainingBriefingAuthoring
         var instance = (GameObject)PrefabUtility.InstantiatePrefab(asset, scene);
         var so = new SerializedObject(source); so.FindProperty("briefingPanel").objectReferenceValue = instance.GetComponentInChildren<TrainingBriefingPanel>(true);
         so.ApplyModifiedPropertiesWithoutUndo();
-        var project = AssetDatabase.LoadAssetAtPath<StoryProject>(StoryImport.ProjectPath);
+        var project = AssetDatabase.LoadAssetAtPath<StoryProject>(StoryEditorData.ProjectPath);
         StoryEventAuthoring.Read(project, source, scene.path); StoryTriggerAuthoring.Sync(project);
         var introduction = project.Find("story.training.introduction"); introduction.chapter = project.ResolveChapter("Training");
         introduction.channel = StoryChannel.Radio;
@@ -58,7 +58,7 @@ public static class TrainingBriefingAuthoring
     {
         var scene = EditorSceneManager.OpenScene("Assets/Scenes/MainScene.unity");
         var source = Object.FindFirstObjectByType<StoryTextController>(FindObjectsInactive.Include);
-        var project = AssetDatabase.LoadAssetAtPath<StoryProject>(StoryImport.ProjectPath);
+        var project = AssetDatabase.LoadAssetAtPath<StoryProject>(StoryEditorData.ProjectPath);
         StoryEventAuthoring.Read(project, source, scene.path); StoryTriggerAuthoring.Sync(project);
         var navigation = project.Find("story.training.navigation");
         navigation.title = "Flugtrainer: Navigation und Trainingsstart";

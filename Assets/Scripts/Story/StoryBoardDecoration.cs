@@ -5,6 +5,8 @@ public enum StoryDecorationKind { Label, Line }
 [Serializable] public class StoryBoardDecoration
 {
     public string id, chapter;
+    public string conversationId;
+    public string missionId;
     public bool storyView;
     public StoryDecorationKind kind;
     public string text = "Titel";

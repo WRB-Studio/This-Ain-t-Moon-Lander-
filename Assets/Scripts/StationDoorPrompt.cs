@@ -25,10 +25,8 @@ public class StationDoorPrompt : MonoBehaviour
         selected = null;
         bool allowed = station && station.IsAvailable && game && game.ControlledTarget && game.IsPlaying
             && game.Phase == GameController.GamePhase.EVA && interactions != null
-            && (!StationConversation.Instance || !StationConversation.Instance.IsShowing)
-            && (!StationInterior.Instance || !StationInterior.Instance.IsTransitioning)
-            && !StoryTextController.Instance.BlocksGameplayInput;
-        allowed &= !CargoMission.Instance || (!CargoMission.Instance.IsShowing && !CargoMission.Instance.HoldingCable);
+            && !GameplayInput.IsStationInteractionBlocked;
+        allowed &= !CargoMission.Instance || !CargoMission.Instance.HoldingCable;
         if (allowed)
             foreach (var interaction in interactions)
                 if (interaction && interaction.IsNear(game.ControlledTarget.position)

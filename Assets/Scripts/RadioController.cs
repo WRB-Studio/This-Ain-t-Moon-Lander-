@@ -30,10 +30,6 @@ public class RadioController : MonoBehaviour
     [SerializeField] Image storyPortrait;
     StorySession storySession;
     StoryLineAudio storyAudio;
-    [SerializeField] RectTransform navigationIcon;
-    [SerializeField] Graphic navigationGraphic;
-    [SerializeField] TMP_Text navigationDistance;
-    [SerializeField] float orbitRadius = 150f;
     [SerializeField] RadioMessage pickupMessage = new()
     {
         id = "station.pickup", sender = "[[game.registration]]", title = "[[game.last.confirmed.pickup]]",
@@ -82,7 +78,6 @@ public class RadioController : MonoBehaviour
         Instance = this;
         device.SetActive(false);
         openButton.gameObject.SetActive(false);
-        if (navigationIcon) navigationIcon.gameObject.SetActive(false);
         openButton.onClick.AddListener(Open);
         closeButton.onClick.AddListener(Close);
         previousButton.onClick.AddListener(() => Select(selected - 1));
@@ -117,11 +112,10 @@ public class RadioController : MonoBehaviour
         DirectionMarkerSystem.Instance?.SetTrackedSignal(HasTrackedSignal, TrackedPosition, TrackedTarget);
         bool available = IsOwned && (GameController.Instance.IsPlaying
             || GameController.Instance.Phase == GameController.GamePhase.Landed)
-            && !(StationConversation.Instance && StationConversation.Instance.IsShowing)
-            && !(CargoMission.Instance && CargoMission.Instance.IsShowing)
+            && !GameplayInput.IsConversationOpen
             && !(StoryTextController.Instance && ((StoryTextController.Instance.BlocksGameplayInput && !IsOpen)
                 || StoryTextController.Instance.HasPendingDialogue))
-            && !(StationInterior.Instance && StationInterior.Instance.IsTransitioning);
+            && !GameplayInput.IsStationTransitioning;
         openButton.gameObject.SetActive(available && !IsOpen);
         if (IsOpen && !available) Close();
         int unread = Data.radioMessages.Count(m => !m.read);
@@ -165,13 +159,12 @@ public class RadioController : MonoBehaviour
 
     public void Open()
     {
-        if (CargoMission.Instance && CargoMission.Instance.IsShowing) return;
+        if (GameplayInput.IsConversationOpen) return;
         if (PauseMenu.IsPaused || !IsOwned || IsOpen || !GameController.Instance
             || !(GameController.Instance.IsPlaying || GameController.Instance.Phase == GameController.GamePhase.Landed)
             || (StoryTextController.Instance && (StoryTextController.Instance.BlocksGameplayInput
                 || StoryTextController.Instance.HasPendingDialogue))
-            || (StationConversation.Instance && StationConversation.Instance.IsShowing)
-            || (StationInterior.Instance && StationInterior.Instance.IsTransitioning)) return;
+            || GameplayInput.IsStationTransitioning) return;
         previousTimeScale = Time.timeScale;
         Time.timeScale = 0f;
         device.SetActive(true);
@@ -372,12 +365,6 @@ public class RadioController : MonoBehaviour
         string status = Data.radioTrackedMessageId == message.id ? "[[radio.active]]" : "[[radio.selected]]";
         string distanceLabel = SpaceFlightNavigation.Instance ? SpaceFlightNavigation.Instance.FormatDistance(distance) : $"{distance:0} [[radio.units]]";
         signalText.SetLocalizedText($"{status}  {position.x:0}, {position.y:0}\n[[radio.distance]]  {distanceLabel}");
-    }
-
-    void LateUpdate()
-    {
-        // World navigation owns tracked markers; keep the legacy radio glyph hidden.
-        if (navigationIcon) navigationIcon.gameObject.SetActive(false);
     }
 
     void OnDisable() { StopStoryPresentation(); Close(); }

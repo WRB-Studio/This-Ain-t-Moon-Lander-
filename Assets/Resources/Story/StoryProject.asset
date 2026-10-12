@@ -28,6 +28,7 @@ MonoBehaviour:
   - id: game.the.replacement.pilot.take.a.seat.or.stand.the.chair.is.being.rep
     chapter: Registrierung
     storyStepId: overview.6
+    conversationId: conversation.game.the.replacement.pilot.take.a.seat.or.stand.the.chair.is.being.rep
     title: Der Ersatzpilot?
     position: {x: 0, y: 0}
     status: 2
@@ -90,6 +91,7 @@ MonoBehaviour:
   - id: game.where.did.you.get.the.ship
     chapter: Registrierung
     storyStepId: overview.6
+    conversationId: conversation.game.the.replacement.pilot.take.a.seat.or.stand.the.chair.is.being.rep
     title: Woher hast du das Schiff?
     position: {x: 760, y: 0}
     status: 2
@@ -152,6 +154,7 @@ MonoBehaviour:
   - id: game.did.you.bring.the.delivery.we.were.expecting.that.ship.yesterday
     chapter: Registrierung
     storyStepId: overview.6
+    conversationId: conversation.game.the.replacement.pilot.take.a.seat.or.stand.the.chair.is.being.rep
     title: Hast du die vermisste Lieferung dabei?
     position: {x: 1520, y: 0}
     status: 2
@@ -214,6 +217,7 @@ MonoBehaviour:
   - id: game.before.we.get.to.the.coordinates.take.this.radio.messages.optiona
     chapter: Registrierung
     storyStepId: overview.6
+    conversationId: conversation.game.the.replacement.pilot.take.a.seat.or.stand.the.chair.is.being.rep
     title: "Nimm dieses Funkger\xE4t f\xFCr Nachrichten und Signalortung."
     position: {x: 2280, y: 0}
     status: 2
@@ -276,6 +280,7 @@ MonoBehaviour:
   - id: game.the.cargo.compartment.was.opened.after.that.the.log.goes.quiet.i
     chapter: Registrierung
     storyStepId: overview.6
+    conversationId: conversation.game.the.replacement.pilot.take.a.seat.or.stand.the.chair.is.being.rep
     title: "Das Log endet nach dem \xD6ffnen des Frachtraums am letzten Abhol\u2026"
     position: {x: 3040, y: 0}
     status: 2
@@ -338,6 +343,7 @@ MonoBehaviour:
   - id: game.the.coordinates.are.in.a.message.on.your.new.radio.open.radio.and
     chapter: Registrierung
     storyStepId: overview.6
+    conversationId: conversation.game.the.replacement.pilot.take.a.seat.or.stand.the.chair.is.being.rep
     title: "Tank voll \u2013 \xF6ffne FUNK und w\xE4hle \xBBSignal orten\xAB f\xFCr
       den Abholort."
     position: {x: 3800, y: 0}
@@ -401,6 +407,7 @@ MonoBehaviour:
   - id: game.the.pickup.coordinates.are.still.on.your.radio.open.radio.to.read
     chapter: Registrierung
     storyStepId: overview.6
+    conversationId: conversation.game.the.pickup.coordinates.are.still.on.your.radio.open.radio.to.read
     title: Der Abholort steht im FUNK.
     position: {x: 0, y: 340}
     status: 2
@@ -454,6 +461,7 @@ MonoBehaviour:
   - id: game.the.lander.is.back.finally
     chapter: Stationsbewohner
     storyStepId: overview.5
+    conversationId: conversation.game.the.lander.is.back.finally
     title: "Das Schiff ist zur\xFCck. Endlich."
     position: {x: 0, y: 0}
     status: 2
@@ -498,6 +506,7 @@ MonoBehaviour:
   - id: game.registration.is.inside.i.was.heading.there.anyway
     chapter: Stationsbewohner
     storyStepId: overview.5
+    conversationId: conversation.game.registration.is.inside.i.was.heading.there.anyway
     title: Die Registrierung ist drinnen. Ich wollte ohnehin dorthin.
     position: {x: 0, y: 280}
     status: 2
@@ -542,6 +551,7 @@ MonoBehaviour:
   - id: game.if.it.rattles.it.was.doing.that.before
     chapter: Stationsbewohner
     storyStepId: overview.5
+    conversationId: conversation.game.if.it.rattles.it.was.doing.that.before
     title: Wenn es klappert, hat es das vorher schon getan.
     position: {x: 0, y: 560}
     status: 2
@@ -586,6 +596,7 @@ MonoBehaviour:
   - id: game.please.keep.the.landing.pads.clear
     chapter: Stationsbewohner
     storyStepId: overview.5
+    conversationId: conversation.game.please.keep.the.landing.pads.clear
     title: "Bitte die Landepl\xE4tze freihalten."
     position: {x: 0, y: 840}
     status: 2
@@ -630,6 +641,7 @@ MonoBehaviour:
   - id: game.you.look.different.on.the.duty.roster
     chapter: Stationsbewohner
     storyStepId: overview.5
+    conversationId: conversation.game.you.look.different.on.the.duty.roster
     title: Auf dem Dienstplan siehst du anders aus.
     position: {x: 0, y: 1120}
     status: 2
@@ -674,6 +686,7 @@ MonoBehaviour:
   - id: game.we.expected.the.ship.yesterday
     chapter: Stationsbewohner
     storyStepId: overview.5
+    conversationId: conversation.game.we.expected.the.ship.yesterday
     title: Wir haben das Schiff gestern erwartet.
     position: {x: 0, y: 1400}
     status: 2
@@ -718,6 +731,7 @@ MonoBehaviour:
   - id: game.new.here.registration.is.over.there
     chapter: Stationsbewohner
     storyStepId: overview.5
+    conversationId: conversation.game.new.here.registration.is.over.there
     title: "Neu hier? Die Registrierung ist dort dr\xFCben."
     position: {x: 0, y: 1680}
     status: 2
@@ -762,6 +776,7 @@ MonoBehaviour:
   - id: game.the.corridor.is.free.the.paperwork.is.not
     chapter: Stationsbewohner
     storyStepId: overview.5
+    conversationId: conversation.game.the.corridor.is.free.the.paperwork.is.not
     title: Der Flur ist frei. Der Papierkram nicht.
     position: {x: 0, y: 1960}
     status: 2
@@ -806,6 +821,7 @@ MonoBehaviour:
   - id: game.if.this.is.about.the.delivery.please.do.not.give.it.to.me
     chapter: Stationsbewohner
     storyStepId: overview.5
+    conversationId: conversation.game.if.this.is.about.the.delivery.please.do.not.give.it.to.me
     title: 'Falls es um die Lieferung geht: Gib sie bitte nicht mir.'
     position: {x: 0, y: 2240}
     status: 2
@@ -850,6 +866,7 @@ MonoBehaviour:
   - id: game.maintenance.is.closed.officially
     chapter: Stationsbewohner
     storyStepId: overview.5
+    conversationId: conversation.game.maintenance.is.closed.officially
     title: Die Wartung ist geschlossen. Offiziell.
     position: {x: 0, y: 2520}
     status: 2
@@ -894,6 +911,7 @@ MonoBehaviour:
   - id: game.those.parcels.have.been.waiting.longer.than.i.have
     chapter: Stationsbewohner
     storyStepId: overview.5
+    conversationId: conversation.game.those.parcels.have.been.waiting.longer.than.i.have
     title: "Diese Pakete warten schon l\xE4nger als ich."
     position: {x: 0, y: 2800}
     status: 2
@@ -938,6 +956,7 @@ MonoBehaviour:
   - id: game.storage.says.it.is.not.their.problem
     chapter: Stationsbewohner
     storyStepId: overview.5
+    conversationId: conversation.game.storage.says.it.is.not.their.problem
     title: Das Lager sagt, es sei nicht sein Problem.
     position: {x: 0, y: 3080}
     status: 2
@@ -982,8 +1001,9 @@ MonoBehaviour:
   - id: game.oh.you.re.actually.trying.something.else.and.gravity.has.stopped
     chapter: Training
     storyStepId: overview.1
+    conversationId: conversation.game.oh.you.re.actually.trying.something.else.and.gravity.has.stopped
     title: Keine Schwerkraft mehr.
-    position: {x: 700, y: 2880}
+    position: {x: 460, y: 2580}
     status: 2
     purpose: 
     questions: 
@@ -1028,6 +1048,7 @@ MonoBehaviour:
   - id: game.oh.so.that.is.the.moon.minor.naming.issue
     chapter: Mond
     storyStepId: overview.2
+    conversationId: conversation.game.oh.so.that.is.the.moon.minor.naming.issue
     title: Mond entdecken
     position: {x: 400, y: 0}
     status: 2
@@ -1074,6 +1095,7 @@ MonoBehaviour:
   - id: game.you.actually.landed.on.the.moon.i.hadn.t.planned.that.far.ahead
     chapter: Mond
     storyStepId: overview.2
+    conversationId: conversation.game.you.actually.landed.on.the.moon.i.hadn.t.planned.that.far.ahead
     title: Auf dem echten Mond gelandet.
     position: {x: 400, y: 280}
     status: 2
@@ -1120,6 +1142,7 @@ MonoBehaviour:
   - id: game.you.can.get.out.apparently.this.spacecraft.came.with.legs
     chapter: Mond
     storyStepId: overview.3
+    conversationId: conversation.game.you.can.get.out.apparently.this.spacecraft.came.with.legs
     title: Du kannst aussteigen.
     position: {x: 400, y: 560}
     status: 2
@@ -1166,6 +1189,7 @@ MonoBehaviour:
   - id: game.finally.the.company.lander.parked.on.the.moon.with.a.full.tank.i
     chapter: Mond
     storyStepId: overview.4
+    conversationId: conversation.game.finally.the.company.lander.parked.on.the.moon.with.a.full.tank.i
     title: Das Firmenschiff hat noch einen vollen Tank.
     position: {x: 400, y: 840}
     status: 2
@@ -1212,6 +1236,7 @@ MonoBehaviour:
   - id: game.incoming.transmission.you.re.late.wait.you.re.not.our.pilot.where
     chapter: Funk
     storyStepId: overview.5
+    conversationId: conversation.game.incoming.transmission.you.re.late.wait.you.re.not.our.pilot.where
     title: Du bist nicht unser Pilot.
     position: {x: 400, y: 0}
     status: 2
@@ -1258,6 +1283,7 @@ MonoBehaviour:
   - id: game.there.you.are.welcome.to.the.station.we.were.expecting.that.lande
     chapter: Funk
     storyStepId: overview.5
+    conversationId: conversation.game.there.you.are.welcome.to.the.station.we.were.expecting.that.lande
     title: Wir haben dieses Schiff erwartet.
     position: {x: 400, y: 280}
     status: 2
@@ -1304,6 +1330,7 @@ MonoBehaviour:
   - id: game.docking.confirmed.you.can.step.outside
     chapter: Funk
     storyStepId: overview.5
+    conversationId: conversation.game.docking.confirmed.you.can.step.outside
     title: Angedockt.
     position: {x: 400, y: 560}
     status: 2
@@ -1350,6 +1377,7 @@ MonoBehaviour:
   - id: game.wait.where.are.you.now.i.know.i.said.i.was.leaving.but.gravity.ha
     chapter: Training
     storyStepId: overview.0
+    conversationId: conversation.game.wait.where.are.you.now.i.know.i.said.i.was.leaving.but.gravity.ha
     title: Du bist doch weitergeflogen.
     position: {x: 700, y: 4060}
     status: 2
@@ -1395,6 +1423,7 @@ MonoBehaviour:
   - id: game.back.in.one.piece.with.the.company.lander.excellent.work.by.show
     chapter: Training
     storyStepId: overview.0
+    conversationId: conversation.game.back.in.one.piece.with.the.company.lander.excellent.work.by.show
     title: "Firmenschiff zur\xFCck, Bericht gerettet."
     position: {x: 1600, y: 3740}
     status: 2
@@ -1440,6 +1469,7 @@ MonoBehaviour:
   - id: game.you.know.where.the.real.moon.is.back.for.fuel.or.just.fond.of.thi
     chapter: Training
     storyStepId: overview.0
+    conversationId: conversation.game.you.know.where.the.real.moon.is.back.for.fuel.or.just.fond.of.thi
     title: "Du wei\xDFt, wo der echte Mond ist."
     position: {x: 700, y: 3740}
     status: 2
@@ -1485,6 +1515,7 @@ MonoBehaviour:
   - id: game.land.safely.on.the.marked.pad
     chapter: Training
     storyStepId: overview.0
+    conversationId: conversation.game.land.safely.on.the.marked.pad
     title: Lande sicher auf dem markierten Landeplatz.
     position: {x: 420, y: 0}
     status: 2
@@ -1531,6 +1562,7 @@ MonoBehaviour:
   - id: game.slow.your.descent.before.touching.down
     chapter: Training
     storyStepId: overview.0
+    conversationId: conversation.game.land.safely.on.the.marked.pad
     title: Bremse vor dem Aufsetzen deinen Sinkflug ab.
     position: {x: 420, y: 160}
     status: 2
@@ -1577,6 +1609,7 @@ MonoBehaviour:
   - id: game.keep.the.spacecraft.upright.aim.for.the.pad
     chapter: Training
     storyStepId: overview.0
+    conversationId: conversation.game.land.safely.on.the.marked.pad
     title: Halte das Schiff aufrecht. Ziele auf den Landeplatz.
     position: {x: 420, y: 320}
     status: 2
@@ -1623,6 +1656,7 @@ MonoBehaviour:
   - id: game.another.pad.same.procedure
     chapter: Training
     storyStepId: overview.0
+    conversationId: conversation.game.another.pad.same.procedure
     title: Noch ein Landeplatz. Gleiches Verfahren.
     position: {x: 1160, y: 0}
     status: 2
@@ -1669,6 +1703,7 @@ MonoBehaviour:
   - id: game.bring.it.down.preferably.in.one.piece
     chapter: Training
     storyStepId: overview.0
+    conversationId: conversation.game.another.pad.same.procedure
     title: "Bring es runter. M\xF6glichst in einem St\xFCck."
     position: {x: 1160, y: 160}
     status: 2
@@ -1715,6 +1750,7 @@ MonoBehaviour:
   - id: game.try.landing.near.the.middle.this.time
     chapter: Training
     storyStepId: overview.0
+    conversationId: conversation.game.another.pad.same.procedure
     title: "Lande diesmal m\xF6glichst in der Mitte."
     position: {x: 1160, y: 320}
     status: 2
@@ -1761,6 +1797,7 @@ MonoBehaviour:
   - id: game.yes.another.landing.how.adventurous
     chapter: Training
     storyStepId: overview.0
+    conversationId: conversation.game.yes.another.landing.how.adventurous
     title: Ja. Noch eine Landung. Wie abenteuerlich.
     position: {x: 420, y: 500}
     status: 2
@@ -1807,6 +1844,7 @@ MonoBehaviour:
   - id: game.another.parking.spot.awaits.your.grand.entrance
     chapter: Training
     storyStepId: overview.0
+    conversationId: conversation.game.yes.another.landing.how.adventurous
     title: "Ein weiterer Parkplatz wartet auf deinen gro\xDFen Auftritt."
     position: {x: 420, y: 660}
     status: 2
@@ -1853,6 +1891,7 @@ MonoBehaviour:
   - id: game.you.seem.very.committed.to.the.obvious.task
     chapter: Training
     storyStepId: overview.0
+    conversationId: conversation.game.yes.another.landing.how.adventurous
     title: Du widmest dich sehr konsequent der offensichtlichen Aufgabe.
     position: {x: 420, y: 820}
     status: 2
@@ -1899,6 +1938,7 @@ MonoBehaviour:
   - id: game.you.have.really.made.landing.your.whole.thing
     chapter: Training
     storyStepId: overview.0
+    conversationId: conversation.game.you.have.really.made.landing.your.whole.thing
     title: Landungen sind wirklich dein Lebensinhalt geworden.
     position: {x: 1160, y: 500}
     status: 2
@@ -1945,6 +1985,7 @@ MonoBehaviour:
   - id: game.i.briefly.hoped.you.would.surprise.me
     chapter: Training
     storyStepId: overview.0
+    conversationId: conversation.game.you.have.really.made.landing.your.whole.thing
     title: "Kurz hatte ich gehofft, du w\xFCrdest mich \xFCberraschen."
     position: {x: 1160, y: 660}
     status: 2
@@ -1991,6 +2032,7 @@ MonoBehaviour:
   - id: game.the.scenery.changes.your.ambition.does.not
     chapter: Training
     storyStepId: overview.0
+    conversationId: conversation.game.you.have.really.made.landing.your.whole.thing
     title: "Die Landschaft \xE4ndert sich. Dein Ehrgeiz nicht."
     position: {x: 1160, y: 820}
     status: 2
@@ -2037,6 +2079,7 @@ MonoBehaviour:
   - id: game.i.am.no.longer.counting.enthusiastically
     chapter: Training
     storyStepId: overview.0
+    conversationId: conversation.game.i.am.no.longer.counting.enthusiastically
     title: "Ich z\xE4hle inzwischen ohne Begeisterung mit."
     position: {x: 420, y: 1000}
     status: 2
@@ -2083,6 +2126,7 @@ MonoBehaviour:
   - id: game.you.could.explore.or.polish.your.parking.record
     chapter: Training
     storyStepId: overview.0
+    conversationId: conversation.game.i.am.no.longer.counting.enthusiastically
     title: "Du k\xF6nntest auf Entdeckung gehen. Oder deinen Parkrekord verbe\u2026"
     position: {x: 420, y: 1160}
     status: 2
@@ -2129,6 +2173,7 @@ MonoBehaviour:
   - id: game.i.specifically.told.you.that.you.can.fly.up
     chapter: Training
     storyStepId: overview.0
+    conversationId: conversation.game.i.am.no.longer.counting.enthusiastically
     title: "Nach oben ist \xFCbrigens auch eine Flugrichtung."
     position: {x: 420, y: 1320}
     status: 2
@@ -2175,6 +2220,7 @@ MonoBehaviour:
   - id: game.you.are.remarkably.good.at.missing.the.point
     chapter: Training
     storyStepId: overview.0
+    conversationId: conversation.game.you.are.remarkably.good.at.missing.the.point
     title: "Die Landung sitzt \u2013 jetzt fehlt nur noch die Neugier."
     position: {x: 1160, y: 1000}
     status: 2
@@ -2221,6 +2267,7 @@ MonoBehaviour:
   - id: game.i.would.sigh.but.this.is.text
     chapter: Training
     storyStepId: overview.0
+    conversationId: conversation.game.you.are.remarkably.good.at.missing.the.point
     title: Ich spare mir den Seufzer.
     position: {x: 1160, y: 1160}
     status: 2
@@ -2267,6 +2314,7 @@ MonoBehaviour:
   - id: game.land.if.you.must.i.am.past.negotiating
     chapter: Training
     storyStepId: overview.0
+    conversationId: conversation.game.you.are.remarkably.good.at.missing.the.point
     title: Noch eine Landung? Ich halte mich raus.
     position: {x: 1160, y: 1320}
     status: 2
@@ -2313,6 +2361,7 @@ MonoBehaviour:
   - id: game.good.third.level.you.understand.how.a.landing.pad.works.i.was.hop
     chapter: Training
     storyStepId: overview.0
+    conversationId: conversation.game.good.third.level.you.understand.how.a.landing.pad.works.i.was.hop
     title: Du kannst inzwischen landen.
     position: {x: 1960, y: 160}
     status: 2
@@ -2359,6 +2408,7 @@ MonoBehaviour:
   - id: game.sixth.level.you.are.seriously.collecting.parking.spots.fine.let.m
     chapter: Training
     storyStepId: overview.0
+    conversationId: conversation.game.sixth.level.you.are.seriously.collecting.parking.spots.fine.let.m
     title: "Tank auff\xFCllen und nach oben fliegen."
     position: {x: 1960, y: 660}
     status: 2
@@ -2405,6 +2455,7 @@ MonoBehaviour:
   - id: game.nine.levels.i.gave.you.a.sky.a.spacecraft.thrusters.and.you.keep
     chapter: Training
     storyStepId: overview.0
+    conversationId: conversation.game.nine.levels.i.gave.you.a.sky.a.spacecraft.thrusters.and.you.keep
     title: "Neun Landungen \u2013 das reicht als \xDCbung."
     position: {x: 1960, y: 1160}
     status: 2
@@ -2451,6 +2502,7 @@ MonoBehaviour:
   - id: game.uh.huh
     chapter: Training
     storyStepId: overview.0
+    conversationId: conversation.game.uh.huh
     title: Mhm.
     position: {x: 1040, y: 1700}
     status: 2
@@ -2496,6 +2548,7 @@ MonoBehaviour:
   - id: game.sure
     chapter: Training
     storyStepId: overview.0
+    conversationId: conversation.game.uh.huh
     title: Klar.
     position: {x: 1340, y: 1700}
     status: 2
@@ -2541,6 +2594,7 @@ MonoBehaviour:
   - id: game.of.course
     chapter: Training
     storyStepId: overview.0
+    conversationId: conversation.game.uh.huh
     title: "Nat\xFCrlich."
     position: {x: 740, y: 1860}
     status: 2
@@ -2586,6 +2640,7 @@ MonoBehaviour:
   - id: game.how.surprising
     chapter: Training
     storyStepId: overview.0
+    conversationId: conversation.game.uh.huh
     title: "Wie \xFCberraschend."
     position: {x: 1040, y: 1860}
     status: 2
@@ -2631,6 +2686,7 @@ MonoBehaviour:
   - id: game.another.one
     chapter: Training
     storyStepId: overview.0
+    conversationId: conversation.game.uh.huh
     title: Noch einer.
     position: {x: 1340, y: 1860}
     status: 2
@@ -2676,6 +2732,7 @@ MonoBehaviour:
   - id: game.you.ve.got.this
     chapter: Training
     storyStepId: overview.0
+    conversationId: conversation.game.uh.huh
     title: Du schaffst das.
     position: {x: 740, y: 2020}
     status: 2
@@ -2721,6 +2778,7 @@ MonoBehaviour:
   - id: game.i.m.not.here
     chapter: Training
     storyStepId: overview.0
+    conversationId: conversation.game.uh.huh
     title: Ich bin nicht da.
     position: {x: 1040, y: 2020}
     status: 2
@@ -2766,6 +2824,7 @@ MonoBehaviour:
   - id: game.that.was.not.an.invitation.to.talk
     chapter: Training
     storyStepId: overview.0
+    conversationId: conversation.game.uh.huh
     title: Das war keine Einladung zum Reden.
     position: {x: 1340, y: 2020}
     status: 2
@@ -2811,6 +2870,7 @@ MonoBehaviour:
   - id: game.no.i.am.not.commenting.on.this
     chapter: Training
     storyStepId: overview.0
+    conversationId: conversation.game.uh.huh
     title: Nein. Dazu sage ich nichts.
     position: {x: 740, y: 2180}
     status: 2
@@ -2856,6 +2916,7 @@ MonoBehaviour:
   - id: game.is.that.pilot.still.landing.yes.don.t.ask.oh.the.microphone.is.on
     chapter: Training
     storyStepId: overview.0
+    conversationId: conversation.game.uh.huh
     title: Immer noch beim Landen?
     position: {x: 1040, y: 2180}
     status: 2
@@ -2901,6 +2962,7 @@ MonoBehaviour:
   - id: game.coffee.please.it.s.been.nothing.but.parking.all.day.wait.is.this
     chapter: Training
     storyStepId: overview.0
+    conversationId: conversation.game.uh.huh
     title: "Kaffee w\xE4re jetzt ein Fortschritt."
     position: {x: 1340, y: 2180}
     status: 2
@@ -2946,6 +3008,7 @@ MonoBehaviour:
   - id: game.has.anyone.told.them.they.can.leave.i.did.several.times.oh.you.ca
     chapter: Training
     storyStepId: overview.0
+    conversationId: conversation.game.uh.huh
     title: "Du darfst \xFCbrigens weiterfliegen."
     position: {x: 740, y: 2340}
     status: 2
@@ -2991,6 +3054,7 @@ MonoBehaviour:
   - id: game.any.progress.the.parking.situation.is.excellent.right.microphone
     chapter: Training
     storyStepId: overview.0
+    conversationId: conversation.game.uh.huh
     title: Parkplatzsituation ausgezeichnet.
     position: {x: 1040, y: 2340}
     status: 2
@@ -3036,6 +3100,7 @@ MonoBehaviour:
   - id: game.your.radio.is.registered.equipment.issued.acceptance.recorded.att
     chapter: Funk
     storyStepId: overview.7
+    conversationId: conversation.game.your.radio.is.registered.equipment.issued.acceptance.recorded.att
     title: Letzter Abholort markiert; seitdem fehlen Pilot und Lieferung.
     position: {x: 0, y: 1000}
     status: 2
@@ -3098,6 +3163,7 @@ MonoBehaviour:
   - id: cargo.dialog.discovery.1
     chapter: Rhekk
     storyStepId: overview.7
+    conversationId: conversation.cargo.dialog.discovery.1
     title: "Ich bin Rhekk \u2013 Passagier, kein Paket."
     position: {x: 0, y: 0}
     status: 2
@@ -3160,6 +3226,7 @@ MonoBehaviour:
   - id: cargo.dialog.discovery.2
     chapter: Rhekk
     storyStepId: overview.7
+    conversationId: conversation.cargo.dialog.discovery.1
     title: "Der Pilot wollte kurz zur Anlage hinter dem Au\xDFenposten."
     position: {x: 760, y: 0}
     status: 2
@@ -3213,6 +3280,7 @@ MonoBehaviour:
   - id: cargo.dialog.discovery.3
     chapter: Rhekk
     storyStepId: overview.7
+    conversationId: conversation.cargo.dialog.discovery.1
     title: Das Schiff ist ohne ihn gestartet.
     position: {x: 1520, y: 0}
     status: 2
@@ -3266,6 +3334,7 @@ MonoBehaviour:
   - id: cargo.dialog.discovery.4
     chapter: Rhekk
     storyStepId: overview.8
+    conversationId: conversation.cargo.dialog.discovery.1
     title: Die Kapsel bleibt zu, bis das Stationsdock den Druck ausgleicht.
     position: {x: 2280, y: 0}
     status: 2
@@ -3319,6 +3388,7 @@ MonoBehaviour:
   - id: cargo.dialog.discovery.5
     chapter: Rhekk
     storyStepId: overview.8
+    conversationId: conversation.cargo.dialog.discovery.1
     title: "Setz mich langsam auf der markierten Ablage neben den Stations\u2026"
     position: {x: 3040, y: 0}
     status: 2
@@ -3381,6 +3451,7 @@ MonoBehaviour:
   - id: cargo.dialog.release.1
     chapter: Rhekk
     storyStepId: overview.9
+    conversationId: conversation.cargo.dialog.release.1
     title: Danke, dass du mich hergebracht hast.
     position: {x: 0, y: 340}
     status: 2
@@ -3443,6 +3514,7 @@ MonoBehaviour:
   - id: cargo.dialog.release.2
     chapter: Rhekk
     storyStepId: overview.9
+    conversationId: conversation.cargo.dialog.release.1
     title: "Ich gehe zur Registrierung: meinen Status von Fracht auf Perso\u2026"
     position: {x: 760, y: 280}
     status: 2
@@ -3496,6 +3568,7 @@ MonoBehaviour:
   - id: cargo.dialog.release.3
     chapter: Rhekk
     storyStepId: overview.9
+    conversationId: conversation.cargo.dialog.release.1
     title: Falls sie mich wieder einpacken, klopfe ich.
     position: {x: 1520, y: 280}
     status: 2
@@ -3549,6 +3622,7 @@ MonoBehaviour:
   - id: game.there.you.go.beyond.the.parking.spots
     chapter: Training
     storyStepId: overview.0
+    conversationId: conversation.game.there.you.go.beyond.the.parking.spots
     title: "Da geht es hin. \xDCber die Parkpl\xE4tze hinaus."
     position: {x: 1600, y: 2700}
     status: 2
@@ -3594,6 +3668,7 @@ MonoBehaviour:
   - id: game.still.exploring.now.i.m.curious
     chapter: Training
     storyStepId: overview.0
+    conversationId: conversation.game.there.you.go.beyond.the.parking.spots
     title: Du erkundest noch. Jetzt bin ich neugierig.
     position: {x: 1600, y: 2860}
     status: 2
@@ -3639,6 +3714,7 @@ MonoBehaviour:
   - id: game.i.wonder.how.far.this.goes
     chapter: Training
     storyStepId: overview.0
+    conversationId: conversation.game.there.you.go.beyond.the.parking.spots
     title: Wie weit das wohl geht?
     position: {x: 1600, y: 3020}
     status: 2
@@ -3684,6 +3760,7 @@ MonoBehaviour:
   - id: game.ah.parking.spots.again
     chapter: Training
     storyStepId: overview.0
+    conversationId: conversation.game.ah.parking.spots.again
     title: "Ah. Wieder Parkpl\xE4tze."
     position: {x: 700, y: 3120}
     status: 2
@@ -3729,6 +3806,7 @@ MonoBehaviour:
   - id: game.a.familiar.view.try.not.to.get.too.comfortable
     chapter: Training
     storyStepId: overview.0
+    conversationId: conversation.game.ah.parking.spots.again
     title: Vertrauter Anblick. Mach es dir nicht zu bequem.
     position: {x: 700, y: 3280}
     status: 2
@@ -3774,6 +3852,7 @@ MonoBehaviour:
   - id: game.back.for.fuel.that.sounds.like.a.plan
     chapter: Training
     storyStepId: overview.0
+    conversationId: conversation.game.ah.parking.spots.again
     title: "Zur\xFCck zum Tanken? Das klingt nach einem Plan."
     position: {x: 700, y: 3440}
     status: 2
@@ -3819,6 +3898,7 @@ MonoBehaviour:
   - id: game.back.to.the.moon.you.know.more.about.it.than.i.do
     chapter: Mond
     storyStepId: overview.2
+    conversationId: conversation.game.back.to.the.moon.you.know.more.about.it.than.i.do
     title: "Zur\xFCck zum Mond. Du wei\xDFt mehr dar\xFCber als ich."
     position: {x: 400, y: 1120}
     status: 2
@@ -3864,6 +3944,7 @@ MonoBehaviour:
   - id: game.i.wonder.what.else.is.up.there
     chapter: Mond
     storyStepId: overview.2
+    conversationId: conversation.game.back.to.the.moon.you.know.more.about.it.than.i.do
     title: Was da oben wohl noch ist?
     position: {x: 400, y: 1280}
     status: 2
@@ -3909,6 +3990,7 @@ MonoBehaviour:
   - id: game.still.there.this.wasn.t.in.my.little.landing.game
     chapter: Mond
     storyStepId: overview.2
+    conversationId: conversation.game.back.to.the.moon.you.know.more.about.it.than.i.do
     title: Immer noch da. Das war nicht in meinem kleinen Landespiel.
     position: {x: 400, y: 1440}
     status: 2
@@ -3954,6 +4036,7 @@ MonoBehaviour:
   - id: game.company
     chapter: Training
     storyStepId: overview.0
+    conversationId: conversation.game.company
     title: Firma
     position: {x: 300, y: 4400}
     status: 2
@@ -3998,6 +4081,7 @@ MonoBehaviour:
   - id: game.company.transmission
     chapter: Training
     storyStepId: overview.0
+    conversationId: conversation.game.company.transmission
     title: "Firmen\xFCbertragung"
     position: {x: 660, y: 4400}
     status: 2
@@ -4042,6 +4126,7 @@ MonoBehaviour:
   - id: game.back.on.earth.you.can.refuel.on.a.free.landing.pad
     chapter: Training
     storyStepId: overview.0
+    conversationId: conversation.game.back.on.earth.you.can.refuel.on.a.free.landing.pad
     title: "Zur\xFCck auf der Erde. Du kannst an einem freien Landeplatz auft\u2026"
     position: {x: 1600, y: 3280}
     status: 2
@@ -4087,6 +4172,7 @@ MonoBehaviour:
   - id: game.station
     chapter: Training
     storyStepId: overview.0
+    conversationId: conversation.game.station
     title: Station
     position: {x: 1000, y: 4400}
     status: 2
@@ -4131,6 +4217,7 @@ MonoBehaviour:
   - id: game.unknown.sender
     chapter: Training
     storyStepId: overview.0
+    conversationId: conversation.game.unknown.sender
     title: Unbekannter Absender
     position: {x: 1320, y: 4400}
     status: 2
@@ -4175,6 +4262,7 @@ MonoBehaviour:
   - id: game.unidentified.transmission
     chapter: Training
     storyStepId: overview.0
+    conversationId: conversation.game.unidentified.transmission
     title: "Unbekannte \xDCbertragung"
     position: {x: 1640, y: 4400}
     status: 2
@@ -4219,6 +4307,7 @@ MonoBehaviour:
   - id: game.incoming.transmission
     chapter: Training
     storyStepId: overview.0
+    conversationId: conversation.game.incoming.transmission
     title: "Eingehende \xDCbertragung"
     position: {x: 1940, y: 4400}
     status: 2
@@ -4263,6 +4352,7 @@ MonoBehaviour:
   - id: cargo.dialog.repeat
     chapter: Rhekk
     storyStepId: overview.7
+    conversationId: conversation.cargo.dialog.repeat
     title: "VERBINDEN, Seil zum Schiff tragen, unten FESTMACHEN und einste\u2026"
     position: {x: 0, y: 680}
     status: 2
@@ -4307,6 +4397,7 @@ MonoBehaviour:
   - id: cargo.radio.tow.body
     chapter: Funk
     storyStepId: overview.8
+    conversationId: conversation.cargo.radio.tow.body
     title: "Setz die Kapsel sanft auf der markierten Ablage neben den Stat\u2026"
     position: {x: 0, y: 1340}
     status: 2
@@ -4351,6 +4442,7 @@ MonoBehaviour:
   - id: cargo.radio.delivered.body
     chapter: Funk
     storyStepId: overview.9
+    conversationId: conversation.cargo.radio.delivered.body
     title: "Kapsel sicher abgesetzt, Seil gel\xF6st."
     position: {x: 0, y: 1620}
     status: 2
@@ -4395,6 +4487,7 @@ MonoBehaviour:
   - id: cargo.radio.complete.body
     chapter: Funk
     storyStepId: overview.10
+    conversationId: conversation.cargo.radio.complete.body
     title: Rhekk wartet bei der Registrierung; der Pilot bleibt vermisst.
     position: {x: 0, y: 1900}
     status: 2
@@ -4439,6 +4532,7 @@ MonoBehaviour:
   - id: cargo.radio.failed.body
     chapter: Funk
     storyStepId: overview.8
+    conversationId: conversation.cargo.radio.failed.body
     title: 'Kapsel oder Schleppschiff verloren: Rettung fehlgeschlagen.'
     position: {x: 0, y: 2180}
     status: 2
@@ -4483,6 +4577,7 @@ MonoBehaviour:
   - id: overview.0
     chapter: Training
     storyStepId: 
+    conversationId: 
     title: Landing-Pad-Training
     position: {x: -0, y: 0}
     status: 2
@@ -4537,6 +4632,7 @@ MonoBehaviour:
   - id: overview.1
     chapter: Training
     storyStepId: 
+    conversationId: 
     title: Ins All aufbrechen
     position: {x: 280, y: 0}
     status: 2
@@ -4591,6 +4687,7 @@ MonoBehaviour:
   - id: overview.2
     chapter: Mond
     storyStepId: 
+    conversationId: 
     title: Mond entdecken und landen
     position: {x: 0, y: 0}
     status: 2
@@ -4645,6 +4742,7 @@ MonoBehaviour:
   - id: overview.3
     chapter: Mond
     storyStepId: 
+    conversationId: 
     title: Aussteigen
     position: {x: 280, y: 0}
     status: 2
@@ -4699,6 +4797,7 @@ MonoBehaviour:
   - id: overview.4
     chapter: Mond
     storyStepId: 
+    conversationId: 
     title: Verlassenes Schiff finden
     position: {x: 560, y: 0}
     status: 2
@@ -4753,6 +4852,7 @@ MonoBehaviour:
   - id: overview.5
     chapter: Ablauf
     storyStepId: 
+    conversationId: 
     title: Station erreichen
     position: {x: 280, y: 160}
     status: 2
@@ -4807,6 +4907,7 @@ MonoBehaviour:
   - id: overview.6
     chapter: Ablauf
     storyStepId: 
+    conversationId: 
     title: Registrierung und Funk
     position: {x: 560, y: 160}
     status: 2
@@ -4861,6 +4962,7 @@ MonoBehaviour:
   - id: overview.7
     chapter: Ablauf
     storyStepId: 
+    conversationId: 
     title: "Rhekk am Au\xDFenposten finden"
     position: {x: 840, y: 160}
     status: 2
@@ -4915,6 +5017,7 @@ MonoBehaviour:
   - id: overview.8
     chapter: Ablauf
     storyStepId: 
+    conversationId: 
     title: Kapsel verbinden und abschleppen
     position: {x: 0, y: 300}
     status: 2
@@ -4969,6 +5072,7 @@ MonoBehaviour:
   - id: overview.9
     chapter: Ablauf
     storyStepId: 
+    conversationId: 
     title: Sanft absetzen und Rhekk befreien
     position: {x: 280, y: 300}
     status: 2
@@ -5023,6 +5127,7 @@ MonoBehaviour:
   - id: overview.10
     chapter: Ablauf
     storyStepId: 
+    conversationId: 
     title: Rhekk geht zur Registrierung
     position: {x: 560, y: 300}
     status: 2
@@ -5077,6 +5182,7 @@ MonoBehaviour:
   - id: overview.11
     chapter: Ablauf
     storyStepId: 
+    conversationId: 
     title: Pilotenspur
     position: {x: 840, y: 300}
     status: 1
@@ -5134,6 +5240,7 @@ MonoBehaviour:
   - id: overview.12
     chapter: Ablauf
     storyStepId: 
+    conversationId: 
     title: "Neues Raumschiff / Bildschirm-Enth\xFCllung"
     position: {x: 0, y: 440}
     status: 1
@@ -5189,6 +5296,7 @@ MonoBehaviour:
   - id: overview.13
     chapter: Ablauf
     storyStepId: 
+    conversationId: 
     title: Eigenes Zuhause
     position: {x: 280, y: 440}
     status: 1
@@ -5234,6 +5342,7 @@ MonoBehaviour:
   - id: story.event.training.silence
     chapter: Training
     storyStepId: overview.0
+    conversationId: conversation.game.uh.huh
     title: ...
     position: {x: 740, y: 1700}
     status: 2
@@ -5279,6 +5388,7 @@ MonoBehaviour:
   - id: trigger.2.discovery-ZeroG
     chapter: Training
     storyStepId: 
+    conversationId: 
     title: "Ausl\xF6ser"
     position: {x: 300, y: 2880}
     status: 2
@@ -5325,6 +5435,7 @@ MonoBehaviour:
   - id: trigger.2.discovery-Moon
     chapter: Mond
     storyStepId: 
+    conversationId: 
     title: "Ausl\xF6ser"
     position: {x: 0, y: 0}
     status: 2
@@ -5371,6 +5482,7 @@ MonoBehaviour:
   - id: trigger.2.discovery-MoonLanding
     chapter: Mond
     storyStepId: 
+    conversationId: 
     title: "Ausl\xF6ser"
     position: {x: 0, y: 280}
     status: 2
@@ -5417,6 +5529,7 @@ MonoBehaviour:
   - id: trigger.2.discovery-EVA
     chapter: Mond
     storyStepId: 
+    conversationId: 
     title: "Ausl\xF6ser"
     position: {x: 0, y: 560}
     status: 2
@@ -5463,6 +5576,7 @@ MonoBehaviour:
   - id: trigger.2.discovery-AbandonedShip
     chapter: Mond
     storyStepId: 
+    conversationId: 
     title: "Ausl\xF6ser"
     position: {x: 0, y: 840}
     status: 2
@@ -5509,6 +5623,7 @@ MonoBehaviour:
   - id: trigger.2.discovery-UFO
     chapter: Funk
     storyStepId: 
+    conversationId: 
     title: "Ausl\xF6ser"
     position: {x: 0, y: 0}
     status: 2
@@ -5555,6 +5670,7 @@ MonoBehaviour:
   - id: trigger.2.discovery-Station
     chapter: Funk
     storyStepId: 
+    conversationId: 
     title: "Ausl\xF6ser"
     position: {x: 0, y: 280}
     status: 2
@@ -5601,6 +5717,7 @@ MonoBehaviour:
   - id: trigger.2.discovery-StationLanding
     chapter: Funk
     storyStepId: 
+    conversationId: 
     title: "Ausl\xF6ser"
     position: {x: 0, y: 560}
     status: 2
@@ -5647,6 +5764,7 @@ MonoBehaviour:
   - id: trigger.7.zeroGAfterDepartureMessage
     chapter: Training
     storyStepId: 
+    conversationId: 
     title: "Ausl\xF6ser"
     position: {x: 300, y: 4060}
     status: 2
@@ -5692,6 +5810,7 @@ MonoBehaviour:
   - id: trigger.6.earthReturnMessage
     chapter: Training
     storyStepId: 
+    conversationId: 
     title: "Ausl\xF6ser"
     position: {x: 1200, y: 3740}
     status: 2
@@ -5737,6 +5856,7 @@ MonoBehaviour:
   - id: trigger.5.moonKnownEarthMessage
     chapter: Training
     storyStepId: 
+    conversationId: 
     title: "Ausl\xF6ser"
     position: {x: 300, y: 3740}
     status: 2
@@ -5782,6 +5902,7 @@ MonoBehaviour:
   - id: trigger.0.earth-level-1
     chapter: Training
     storyStepId: 
+    conversationId: 
     title: "Ausl\xF6ser"
     position: {x: 20, y: 160}
     status: 2
@@ -5828,6 +5949,7 @@ MonoBehaviour:
   - id: trigger.0.earth-level-2
     chapter: Training
     storyStepId: 
+    conversationId: 
     title: "Ausl\xF6ser"
     position: {x: 760, y: 160}
     status: 2
@@ -5874,6 +5996,7 @@ MonoBehaviour:
   - id: trigger.0.earth-level-4
     chapter: Training
     storyStepId: 
+    conversationId: 
     title: "Ausl\xF6ser"
     position: {x: 20, y: 660}
     status: 2
@@ -5920,6 +6043,7 @@ MonoBehaviour:
   - id: trigger.0.earth-level-5
     chapter: Training
     storyStepId: 
+    conversationId: 
     title: "Ausl\xF6ser"
     position: {x: 760, y: 660}
     status: 2
@@ -5966,6 +6090,7 @@ MonoBehaviour:
   - id: trigger.0.earth-level-7
     chapter: Training
     storyStepId: 
+    conversationId: 
     title: "Ausl\xF6ser"
     position: {x: 20, y: 1160}
     status: 2
@@ -6012,6 +6137,7 @@ MonoBehaviour:
   - id: trigger.0.earth-level-8
     chapter: Training
     storyStepId: 
+    conversationId: 
     title: "Ausl\xF6ser"
     position: {x: 760, y: 1160}
     status: 2
@@ -6058,6 +6184,7 @@ MonoBehaviour:
   - id: trigger.1.transmission-3
     chapter: Training
     storyStepId: 
+    conversationId: 
     title: "Ausl\xF6ser"
     position: {x: 1560, y: 160}
     status: 2
@@ -6104,6 +6231,7 @@ MonoBehaviour:
   - id: trigger.1.transmission-6
     chapter: Training
     storyStepId: 
+    conversationId: 
     title: "Ausl\xF6ser"
     position: {x: 1560, y: 660}
     status: 2
@@ -6150,6 +6278,7 @@ MonoBehaviour:
   - id: trigger.1.transmission-9
     chapter: Training
     storyStepId: 
+    conversationId: 
     title: "Ausl\xF6ser"
     position: {x: 1560, y: 1160}
     status: 2
@@ -6196,6 +6325,7 @@ MonoBehaviour:
   - id: trigger.4.earth-asides
     chapter: Training
     storyStepId: 
+    conversationId: 
     title: "Ausl\xF6ser"
     position: {x: 340, y: 2020}
     status: 2
@@ -6241,6 +6371,7 @@ MonoBehaviour:
   - id: trigger.3.flight-AtmosphereExit
     chapter: Training
     storyStepId: 
+    conversationId: 
     title: "Ausl\xF6ser"
     position: {x: 1200, y: 2860}
     status: 2
@@ -6286,6 +6417,7 @@ MonoBehaviour:
   - id: trigger.3.flight-BackToPlanet
     chapter: Training
     storyStepId: 
+    conversationId: 
     title: "Ausl\xF6ser"
     position: {x: 300, y: 3280}
     status: 2
@@ -6331,6 +6463,7 @@ MonoBehaviour:
   - id: trigger.3.flight-NearToMoon
     chapter: Mond
     storyStepId: 
+    conversationId: 
     title: "Ausl\xF6ser"
     position: {x: 0, y: 1280}
     status: 2
@@ -6376,6 +6509,7 @@ MonoBehaviour:
   - id: trigger.3.early-earth-return
     chapter: Training
     storyStepId: 
+    conversationId: 
     title: "Ausl\xF6ser"
     position: {x: 1200, y: 3280}
     status: 2
@@ -6421,6 +6555,7 @@ MonoBehaviour:
   - id: story.training.introduction
     chapter: Training
     storyStepId: overview.0
+    conversationId: conversation.story.training.introduction
     title: "Flugtrainer: Einf\xFChrung und Steuerung"
     position: {x: 340, y: -360}
     status: 2
@@ -6466,6 +6601,7 @@ MonoBehaviour:
   - id: trigger.8.training-introduction
     chapter: Training
     storyStepId: 
+    conversationId: 
     title: "Ausl\xF6ser"
     position: {x: 0, y: -360}
     status: 2
@@ -6511,6 +6647,7 @@ MonoBehaviour:
   - id: story.training.navigation
     chapter: Training
     storyStepId: overview.0
+    conversationId: conversation.story.training.navigation
     title: 'Flugtrainer: Navigation und Trainingsstart'
     position: {x: 340, y: -200}
     status: 2
@@ -6556,6 +6693,7 @@ MonoBehaviour:
   - id: trigger.8.training-navigation
     chapter: Training
     storyStepId: 
+    conversationId: 
     title: "Ausl\xF6ser"
     position: {x: 0, y: -200}
     status: 2
@@ -6601,6 +6739,7 @@ MonoBehaviour:
   - id: station.ambient.0
     chapter: Stationsbewohner
     storyStepId: overview.5
+    conversationId: conversation.station.ambient.0
     title: "Schon wieder ein Pilot. L\xE4uft das Training noch?"
     position: {x: 0, y: 877.5}
     status: 2
@@ -6645,6 +6784,7 @@ MonoBehaviour:
   - id: station.ambient.1
     chapter: Stationsbewohner
     storyStepId: overview.5
+    conversationId: conversation.station.ambient.1
     title: Die Kaffeemaschine hat wieder Schwerkraftprobleme.
     position: {x: 728, y: 877.5}
     status: 2
@@ -6689,6 +6829,7 @@ MonoBehaviour:
   - id: station.ambient.2
     chapter: Stationsbewohner
     storyStepId: overview.5
+    conversationId: conversation.station.ambient.2
     title: Solange nichts explodiert, ist heute ein guter Tag.
     position: {x: 1456, y: 877.5}
     status: 2
@@ -6733,8 +6874,9 @@ MonoBehaviour:
   - id: moon.flag.discovery
     chapter: Mond
     storyStepId: overview.3
+    conversationId: conversation.moon.flag.discovery
     title: 'Flagge: jemand war schon hier'
-    position: {x: 1040, y: 4050}
+    position: {x: 0, y: 1880}
     status: 2
     purpose: "Einmalige beil\xE4ufige Bemerkung beim Vorbeilaufen; kein Dialog, keine
       Pause. Speichert story.moonFlagSeen."
@@ -6775,6 +6917,451 @@ MonoBehaviour:
     triggerOnly: 0
     eventBindingEdited: 0
     eventTriggerId: 
+  - id: trigger.custom.091c332bc5284ea0beaead10e2a47508
+    chapter: Mond
+    storyStepId: 
+    conversationId: 
+    title: Trainingsstart
+    position: {x: -1120, y: -100}
+    status: 0
+    purpose: 
+    questions: 
+    channel: 0
+    speaker: {fileID: 0}
+    textKey: 
+    sourceReference: 
+    sourcePath: 
+    sourceProperty: 
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices: []
+    overviewOnly: 0
+    answerBoardLayout: 1
+    eventInfo:
+      enabled: 1
+      kind: 0
+      eventId: level-start
+      pool: trigger.custom.091c332bc5284ea0beaead10e2a47508
+      fromLevel: 1
+      toLevel: 1
+      random: 1
+      once: 0
+      probability: 1
+      requiredFlag: 
+      blockedFlag: 
+      presentation: 
+      description: "Eigener Trainingsausl\xF6ser f\xFCr Level 1\u20139."
+    eventPositioned: 0
+    eventPosition: {x: 0, y: 0}
+    triggerOnly: 1
+    eventBindingEdited: 0
+    eventTriggerId: 
+  - id: trigger.custom.c8a735527d5c41b9a9ee04d3cb62da16
+    chapter: Mond
+    storyStepId: 
+    conversationId: 
+    title: Trainingsstart
+    position: {x: -800, y: 400}
+    status: 0
+    purpose: 
+    questions: 
+    channel: 0
+    speaker: {fileID: 0}
+    textKey: 
+    sourceReference: 
+    sourcePath: 
+    sourceProperty: 
+    legacyAnswerCount: 0
+    location: 
+    relatedAsset: {fileID: 0}
+    voiceDE: {fileID: 0}
+    voiceEN: {fileID: 0}
+    sound: {fileID: 0}
+    conditions: []
+    onEnter: []
+    choices: []
+    overviewOnly: 0
+    answerBoardLayout: 1
+    eventInfo:
+      enabled: 1
+      kind: 0
+      eventId: level-start
+      pool: trigger.custom.c8a735527d5c41b9a9ee04d3cb62da16
+      fromLevel: 1
+      toLevel: 1
+      random: 1
+      once: 0
+      probability: 1
+      requiredFlag: 
+      blockedFlag: 
+      presentation: 
+      description: "Eigener Trainingsausl\xF6ser f\xFCr Level 1\u20139."
+    eventPositioned: 0
+    eventPosition: {x: 0, y: 0}
+    triggerOnly: 1
+    eventBindingEdited: 0
+    eventTriggerId: 
+  conversations:
+  - id: conversation.game.the.replacement.pilot.take.a.seat.or.stand.the.chair.is.being.rep
+    missionId: overview.6
+    title: Der Ersatzpilot?
+    location: 
+    entryNodeId: game.the.replacement.pilot.take.a.seat.or.stand.the.chair.is.being.rep
+    kind: 0
+  - id: conversation.game.the.pickup.coordinates.are.still.on.your.radio.open.radio.to.read
+    missionId: overview.6
+    title: Der Abholort steht im FUNK.
+    location: 
+    entryNodeId: game.the.pickup.coordinates.are.still.on.your.radio.open.radio.to.read
+    kind: 0
+  - id: conversation.game.the.lander.is.back.finally
+    missionId: overview.5
+    title: "Das Schiff ist zur\xFCck. Endlich."
+    location: 
+    entryNodeId: game.the.lander.is.back.finally
+    kind: 2
+  - id: conversation.game.registration.is.inside.i.was.heading.there.anyway
+    missionId: overview.5
+    title: Die Registrierung ist drinnen. Ich wollte ohnehin dorthin.
+    location: 
+    entryNodeId: game.registration.is.inside.i.was.heading.there.anyway
+    kind: 2
+  - id: conversation.game.if.it.rattles.it.was.doing.that.before
+    missionId: overview.5
+    title: Wenn es klappert, hat es das vorher schon getan.
+    location: 
+    entryNodeId: game.if.it.rattles.it.was.doing.that.before
+    kind: 2
+  - id: conversation.game.please.keep.the.landing.pads.clear
+    missionId: overview.5
+    title: "Bitte die Landepl\xE4tze freihalten."
+    location: 
+    entryNodeId: game.please.keep.the.landing.pads.clear
+    kind: 2
+  - id: conversation.game.you.look.different.on.the.duty.roster
+    missionId: overview.5
+    title: Auf dem Dienstplan siehst du anders aus.
+    location: 
+    entryNodeId: game.you.look.different.on.the.duty.roster
+    kind: 2
+  - id: conversation.game.we.expected.the.ship.yesterday
+    missionId: overview.5
+    title: Wir haben das Schiff gestern erwartet.
+    location: 
+    entryNodeId: game.we.expected.the.ship.yesterday
+    kind: 2
+  - id: conversation.game.new.here.registration.is.over.there
+    missionId: overview.5
+    title: "Neu hier? Die Registrierung ist dort dr\xFCben."
+    location: 
+    entryNodeId: game.new.here.registration.is.over.there
+    kind: 2
+  - id: conversation.game.the.corridor.is.free.the.paperwork.is.not
+    missionId: overview.5
+    title: Der Flur ist frei. Der Papierkram nicht.
+    location: 
+    entryNodeId: game.the.corridor.is.free.the.paperwork.is.not
+    kind: 2
+  - id: conversation.game.if.this.is.about.the.delivery.please.do.not.give.it.to.me
+    missionId: overview.5
+    title: 'Falls es um die Lieferung geht: Gib sie bitte nicht mir.'
+    location: 
+    entryNodeId: game.if.this.is.about.the.delivery.please.do.not.give.it.to.me
+    kind: 2
+  - id: conversation.game.maintenance.is.closed.officially
+    missionId: overview.5
+    title: Die Wartung ist geschlossen. Offiziell.
+    location: 
+    entryNodeId: game.maintenance.is.closed.officially
+    kind: 2
+  - id: conversation.game.those.parcels.have.been.waiting.longer.than.i.have
+    missionId: overview.5
+    title: "Diese Pakete warten schon l\xE4nger als ich."
+    location: 
+    entryNodeId: game.those.parcels.have.been.waiting.longer.than.i.have
+    kind: 2
+  - id: conversation.game.storage.says.it.is.not.their.problem
+    missionId: overview.5
+    title: Das Lager sagt, es sei nicht sein Problem.
+    location: 
+    entryNodeId: game.storage.says.it.is.not.their.problem
+    kind: 2
+  - id: conversation.game.oh.you.re.actually.trying.something.else.and.gravity.has.stopped
+    missionId: overview.1
+    title: Schwerelosigkeit entdecken
+    location: 
+    entryNodeId: game.oh.you.re.actually.trying.something.else.and.gravity.has.stopped
+    kind: 2
+  - id: conversation.game.oh.so.that.is.the.moon.minor.naming.issue
+    missionId: overview.2
+    title: Mond entdecken
+    location: 
+    entryNodeId: game.oh.so.that.is.the.moon.minor.naming.issue
+    kind: 2
+  - id: conversation.game.you.actually.landed.on.the.moon.i.hadn.t.planned.that.far.ahead
+    missionId: overview.2
+    title: Erste Mondlandung
+    location: 
+    entryNodeId: game.you.actually.landed.on.the.moon.i.hadn.t.planned.that.far.ahead
+    kind: 2
+  - id: conversation.game.you.can.get.out.apparently.this.spacecraft.came.with.legs
+    missionId: overview.3
+    title: Zum ersten Mal aussteigen
+    location: 
+    entryNodeId: game.you.can.get.out.apparently.this.spacecraft.came.with.legs
+    kind: 2
+  - id: conversation.game.finally.the.company.lander.parked.on.the.moon.with.a.full.tank.i
+    missionId: overview.4
+    title: Verlassenes Schiff entdecken
+    location: 
+    entryNodeId: game.finally.the.company.lander.parked.on.the.moon.with.a.full.tank.i
+    kind: 2
+  - id: conversation.game.incoming.transmission.you.re.late.wait.you.re.not.our.pilot.where
+    missionId: overview.5
+    title: Unbekannter Kontakt
+    location: 
+    entryNodeId: game.incoming.transmission.you.re.late.wait.you.re.not.our.pilot.where
+    kind: 2
+  - id: conversation.game.there.you.are.welcome.to.the.station.we.were.expecting.that.lande
+    missionId: overview.5
+    title: Station entdecken
+    location: 
+    entryNodeId: game.there.you.are.welcome.to.the.station.we.were.expecting.that.lande
+    kind: 2
+  - id: conversation.game.docking.confirmed.you.can.step.outside
+    missionId: overview.5
+    title: Erste Stationslandung
+    location: 
+    entryNodeId: game.docking.confirmed.you.can.step.outside
+    kind: 2
+  - id: conversation.game.wait.where.are.you.now.i.know.i.said.i.was.leaving.but.gravity.ha
+    missionId: overview.0
+    title: Schwerelosigkeit nach Trainer-Abschied
+    location: 
+    entryNodeId: game.wait.where.are.you.now.i.know.i.said.i.was.leaving.but.gravity.ha
+    kind: 2
+  - id: conversation.game.back.in.one.piece.with.the.company.lander.excellent.work.by.show
+    missionId: overview.0
+    title: "Firmenschiff zur Erde zur\xFCckbringen"
+    location: 
+    entryNodeId: game.back.in.one.piece.with.the.company.lander.excellent.work.by.show
+    kind: 2
+  - id: conversation.game.you.know.where.the.real.moon.is.back.for.fuel.or.just.fond.of.thi
+    missionId: overview.0
+    title: "Trainingsstart \xB7 Mond bereits bekannt"
+    location: 
+    entryNodeId: game.you.know.where.the.real.moon.is.back.for.fuel.or.just.fond.of.thi
+    kind: 2
+  - id: conversation.game.land.safely.on.the.marked.pad
+    missionId: overview.0
+    title: "Landetraining \xB7 Level 1"
+    location: 
+    entryNodeId: game.land.safely.on.the.marked.pad
+    kind: 2
+  - id: conversation.game.another.pad.same.procedure
+    missionId: overview.0
+    title: "Landetraining \xB7 Level 2"
+    location: 
+    entryNodeId: game.another.pad.same.procedure
+    kind: 2
+  - id: conversation.game.yes.another.landing.how.adventurous
+    missionId: overview.0
+    title: "Landetraining \xB7 Level 4"
+    location: 
+    entryNodeId: game.yes.another.landing.how.adventurous
+    kind: 2
+  - id: conversation.game.you.have.really.made.landing.your.whole.thing
+    missionId: overview.0
+    title: "Landetraining \xB7 Level 5"
+    location: 
+    entryNodeId: game.you.have.really.made.landing.your.whole.thing
+    kind: 2
+  - id: conversation.game.i.am.no.longer.counting.enthusiastically
+    missionId: overview.0
+    title: "Landetraining \xB7 Level 7"
+    location: 
+    entryNodeId: game.i.am.no.longer.counting.enthusiastically
+    kind: 2
+  - id: conversation.game.you.are.remarkably.good.at.missing.the.point
+    missionId: overview.0
+    title: "Landetraining \xB7 Level 8"
+    location: 
+    entryNodeId: game.you.are.remarkably.good.at.missing.the.point
+    kind: 2
+  - id: conversation.game.good.third.level.you.understand.how.a.landing.pad.works.i.was.hop
+    missionId: overview.0
+    title: "Trainer-Funk \xB7 Level 3"
+    location: 
+    entryNodeId: game.good.third.level.you.understand.how.a.landing.pad.works.i.was.hop
+    kind: 2
+  - id: conversation.game.sixth.level.you.are.seriously.collecting.parking.spots.fine.let.m
+    missionId: overview.0
+    title: "Trainer-Funk \xB7 Level 6"
+    location: 
+    entryNodeId: game.sixth.level.you.are.seriously.collecting.parking.spots.fine.let.m
+    kind: 2
+  - id: conversation.game.nine.levels.i.gave.you.a.sky.a.spacecraft.thrusters.and.you.keep
+    missionId: overview.0
+    title: "Trainer-Funk \xB7 Level 9"
+    location: 
+    entryNodeId: game.nine.levels.i.gave.you.a.sky.a.spacecraft.thrusters.and.you.keep
+    kind: 2
+  - id: conversation.game.uh.huh
+    missionId: overview.0
+    title: "Trainingskommentare \xB7 Level 10+"
+    location: 
+    entryNodeId: game.uh.huh
+    kind: 2
+  - id: conversation.game.your.radio.is.registered.equipment.issued.acceptance.recorded.att
+    missionId: overview.7
+    title: Letzter Abholort markiert; seitdem fehlen Pilot und Lieferung.
+    location: 
+    entryNodeId: game.your.radio.is.registered.equipment.issued.acceptance.recorded.att
+    kind: 1
+  - id: conversation.cargo.dialog.discovery.1
+    missionId: overview.7
+    title: "Ich bin Rhekk \u2013 Passagier, kein Paket."
+    location: 
+    entryNodeId: cargo.dialog.discovery.1
+    kind: 0
+  - id: conversation.cargo.dialog.release.1
+    missionId: overview.9
+    title: Danke, dass du mich hergebracht hast.
+    location: 
+    entryNodeId: cargo.dialog.release.1
+    kind: 0
+  - id: conversation.game.there.you.go.beyond.the.parking.spots
+    missionId: overview.0
+    title: "Flugkommentar \xB7 Atmosph\xE4re verlassen \xB7 Level 1+"
+    location: 
+    entryNodeId: game.there.you.go.beyond.the.parking.spots
+    kind: 2
+  - id: conversation.game.ah.parking.spots.again
+    missionId: overview.0
+    title: "Flugkommentar \xB7 Zur Erde zur\xFCckkehren \xB7 Level 3+"
+    location: 
+    entryNodeId: game.ah.parking.spots.again
+    kind: 2
+  - id: conversation.game.back.to.the.moon.you.know.more.about.it.than.i.do
+    missionId: overview.2
+    title: "Flugkommentar \xB7 Mondanflug \xB7 Level 1+"
+    location: 
+    entryNodeId: game.back.to.the.moon.you.know.more.about.it.than.i.do
+    kind: 2
+  - id: conversation.game.company
+    missionId: overview.0
+    title: Firma
+    location: 
+    entryNodeId: game.company
+    kind: 1
+  - id: conversation.game.company.transmission
+    missionId: overview.0
+    title: "Firmen\xFCbertragung"
+    location: 
+    entryNodeId: game.company.transmission
+    kind: 1
+  - id: conversation.game.back.on.earth.you.can.refuel.on.a.free.landing.pad
+    missionId: overview.0
+    title: "Flugkommentar \xB7 Zur Erde zur\xFCckkehren \xB7 Level 1\u20132"
+    location: 
+    entryNodeId: game.back.on.earth.you.can.refuel.on.a.free.landing.pad
+    kind: 2
+  - id: conversation.game.station
+    missionId: overview.0
+    title: Station
+    location: 
+    entryNodeId: game.station
+    kind: 1
+  - id: conversation.game.unknown.sender
+    missionId: overview.0
+    title: Unbekannter Absender
+    location: 
+    entryNodeId: game.unknown.sender
+    kind: 1
+  - id: conversation.game.unidentified.transmission
+    missionId: overview.0
+    title: "Unbekannte \xDCbertragung"
+    location: 
+    entryNodeId: game.unidentified.transmission
+    kind: 1
+  - id: conversation.game.incoming.transmission
+    missionId: overview.0
+    title: "Eingehende \xDCbertragung"
+    location: 
+    entryNodeId: game.incoming.transmission
+    kind: 1
+  - id: conversation.cargo.dialog.repeat
+    missionId: overview.7
+    title: "VERBINDEN, Seil zum Schiff tragen, unten FESTMACHEN und einste\u2026"
+    location: 
+    entryNodeId: cargo.dialog.repeat
+    kind: 0
+  - id: conversation.cargo.radio.tow.body
+    missionId: overview.8
+    title: "Setz die Kapsel sanft auf der markierten Ablage neben den Stat\u2026"
+    location: 
+    entryNodeId: cargo.radio.tow.body
+    kind: 1
+  - id: conversation.cargo.radio.delivered.body
+    missionId: overview.9
+    title: "Kapsel sicher abgesetzt, Seil gel\xF6st."
+    location: 
+    entryNodeId: cargo.radio.delivered.body
+    kind: 1
+  - id: conversation.cargo.radio.complete.body
+    missionId: overview.10
+    title: Rhekk wartet bei der Registrierung; der Pilot bleibt vermisst.
+    location: 
+    entryNodeId: cargo.radio.complete.body
+    kind: 1
+  - id: conversation.cargo.radio.failed.body
+    missionId: overview.8
+    title: 'Kapsel oder Schleppschiff verloren: Rettung fehlgeschlagen.'
+    location: 
+    entryNodeId: cargo.radio.failed.body
+    kind: 1
+  - id: conversation.story.training.introduction
+    missionId: overview.0
+    title: "Einweisung \xB7 Flugtraining"
+    location: 
+    entryNodeId: story.training.introduction
+    kind: 2
+  - id: conversation.story.training.navigation
+    missionId: overview.0
+    title: "Einweisung \xB7 Navigation"
+    location: 
+    entryNodeId: story.training.navigation
+    kind: 2
+  - id: conversation.station.ambient.0
+    missionId: overview.5
+    title: "Schon wieder ein Pilot. L\xE4uft das Training noch?"
+    location: 
+    entryNodeId: station.ambient.0
+    kind: 2
+  - id: conversation.station.ambient.1
+    missionId: overview.5
+    title: Die Kaffeemaschine hat wieder Schwerkraftprobleme.
+    location: 
+    entryNodeId: station.ambient.1
+    kind: 2
+  - id: conversation.station.ambient.2
+    missionId: overview.5
+    title: Solange nichts explodiert, ist heute ein guter Tag.
+    location: 
+    entryNodeId: station.ambient.2
+    kind: 2
+  - id: conversation.moon.flag.discovery
+    missionId: overview.3
+    title: 'Flagge: jemand war schon hier'
+    location: 
+    entryNodeId: moon.flag.discovery
+    kind: 0
   decorations: []
   eventTriggersManaged: 1
   snapToGrid: 1

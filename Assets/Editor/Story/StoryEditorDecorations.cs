@@ -7,7 +7,14 @@ public partial class StoryEditorWindow
 {
     string selectedDecoration, draggingDecoration, resizingDecoration;
     bool resizeLineStart;
-    System.Collections.Generic.IEnumerable<StoryBoardDecoration> BoardDecorations() => project.decorations.Where(d => d.storyView == StoryView && d.chapter == Sections.ElementAtOrDefault(chapter));
+    System.Collections.Generic.IEnumerable<StoryBoardDecoration> BoardDecorations()
+    {
+        var texts = WritingNodes().ToList();
+        return project.decorations.Where(d => !d.storyView
+            && (!string.IsNullOrEmpty(d.conversationId) ? texts.Any(n => n.conversationId == d.conversationId)
+                : !string.IsNullOrEmpty(d.missionId) ? CurrentMission != null ? d.missionId == writingMissionId : project.Find(d.missionId)?.chapter == PlanningChapter
+                : d.chapter == PlanningChapter || texts.Any(n => n.chapter == d.chapter)));
+    }
     Rect DecorationBounds(StoryBoardDecoration d) => d.kind == StoryDecorationKind.Label ? new Rect(d.position, d.size)
         : Rect.MinMaxRect(Mathf.Min(d.position.x, d.end.x), Mathf.Min(d.position.y, d.end.y), Mathf.Max(d.position.x, d.end.x) + 1, Mathf.Max(d.position.y, d.end.y) + 1);
     bool DecorationOverlaps(StoryBoardDecoration d, Rect area)
@@ -38,12 +45,13 @@ public partial class StoryEditorWindow
         resizeLineStart = d.kind == StoryDecorationKind.Line && Vector2.Distance(mouse, ScreenPoint(d.position)) < 8;
         return resizeLineStart || Vector2.Distance(mouse, ScreenPoint(d.kind == StoryDecorationKind.Line ? d.end : d.position + d.size)) < 8;
     }
-    void AddDecoration(StoryDecorationKind kind)
+    void AddDecoration(StoryDecorationKind kind, Vector2? worldPosition = null)
     {
         Undo.RegisterCompleteObjectUndo(project, "Boardelement hinzufügen");
-        var position = SnapPoint(boardScroll + new Vector2(50, 50));
-        var d = new StoryBoardDecoration { id = "decoration." + Guid.NewGuid().ToString("N"), chapter = Sections.ElementAtOrDefault(chapter), storyView = StoryView, kind = kind, position = position, end = SnapPoint(position + new Vector2(250, 0)) };
+        var position = SnapPoint(worldPosition ?? boardScroll + new Vector2(50, 50));
+        var d = new StoryBoardDecoration { id = "decoration." + Guid.NewGuid().ToString("N"), chapter = Sections.ElementAtOrDefault(chapter), conversationId = writingConversationId, kind = kind, position = position, end = SnapPoint(position + new Vector2(250, 0)) };
         project.decorations.Add(d); selectedDecoration = d.id; selected = -1;
+        d.missionId = MissionAt(position, MissionZones()); d.chapter = project.Find(d.missionId)?.chapter ?? PlanningChapter; d.conversationId = "";
         markedCards.Clear(); markedCards.Add((d.id, -3)); Dirty();
     }
     void DrawDecorations()
@@ -113,19 +121,37 @@ public partial class StoryEditorWindow
         Undo.IncrementCurrentGroup(); int group = Undo.GetCurrentGroup();
         Undo.RegisterCompleteObjectUndo(project, "Auswahl entfernen");
         var removed = markedCards.Where(c => c.answer == -1 || c.answer == -2).Select(c => c.id).ToHashSet();
+        foreach (var owner in project.nodes.Where(n => removed.Contains(n.id) && !n.overviewOnly && !n.triggerOnly && !n.planningAnswer).ToList())
+        {
+            string missionId = PlanningMissionOf(owner);
+            string chapterName = PlanningChapterOf(owner);
+            for (int index = 0; index < owner.choices.Count; index++)
+            {
+                if (markedCards.Contains((owner.id, index))) continue;
+                Vector2 position = AnswerWorldRect(owner, index).position;
+                var choice = owner.choices[index]; choice.positioned = true; choice.position = Vector2.zero;
+                project.nodes.Add(new StoryNode { id = "answer." + Guid.NewGuid().ToString("N"), title = "Antwortkarte", planningAnswer = true,
+                    planningScopeAssigned = true, planningMissionId = missionId, planningChapter = chapterName,
+                    chapter = chapterName, storyStepId = missionId, conversationId = owner.conversationId,
+                    position = position, answerBoardLayout = true, choices = new System.Collections.Generic.List<StoryChoice> { choice } });
+            }
+        }
         foreach (var ownerGroup in markedCards.Where(c => c.answer >= 0 && !removed.Contains(c.id)).GroupBy(c => c.id))
         {
             var owner = project.Find(ownerGroup.Key); if (owner == null) continue;
             foreach (int index in ownerGroup.Select(c => c.answer).Distinct().OrderByDescending(a => a))
                 if (index < owner.choices.Count) owner.choices.RemoveAt(index);
         }
+        removed.UnionWith(project.nodes.Where(n => n.planningAnswer && n.choices.Count == 0).Select(n => n.id));
         foreach (var node in project.nodes.Where(n => !removed.Contains(n.id)))
         {
             foreach (var choice in node.choices) if (removed.Contains(choice.next)) choice.next = "";
             if (removed.Contains(node.storyStepId)) node.storyStepId = "";
+            if (removed.Contains(node.planningContextId)) node.planningContextId = "";
             if (removed.Contains(node.eventTriggerId)) { node.eventTriggerId = ""; node.eventInfo.enabled = false; node.eventBindingEdited = true; }
         }
         project.nodes.RemoveAll(n => removed.Contains(n.id));
+        RepairWritingEntry();
         var decorationIds = markedCards.Where(c => c.answer == -3).Select(c => c.id).ToHashSet();
         project.decorations.RemoveAll(d => decorationIds.Contains(d.id));
         Undo.CollapseUndoOperations(group);

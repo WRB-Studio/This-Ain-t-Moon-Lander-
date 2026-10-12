@@ -222,7 +222,7 @@ public static class CommunicationPanelGalleryAuthoring
     {
         const string path = "Assets/Prefabs/UI/Radio.prefab"; var root = Begin(path, portrait ? "04 Radio portrait" : "05 Radio voice only");
         var data = new SerializedObject(root.GetComponent<RadioController>());
-        Field<GameObject>(data, "device").SetActive(true); Field<Button>(data, "openButton").gameObject.SetActive(false); Field<RectTransform>(data, "navigationIcon").gameObject.SetActive(false);
+        Field<GameObject>(data, "device").SetActive(true); Field<Button>(data, "openButton").gameObject.SetActive(false);
         Sample(Field<TMP_Text>(data, "senderText"), "Registrierung", "Registration"); Sample(Field<TMP_Text>(data, "titleText"), "Letzte bestätigte Abholung", "Last confirmed pickup");
         Sample(Field<TMP_Text>(data, "bodyText"), "Folge dem Tracker zum Außenposten.\nDie Fracht wartet draußen.", "Follow the tracker to the outpost.\nThe cargo is waiting outside.");
         Sample(Field<TMP_Text>(data, "pageText"), "1 / 1", "1 / 1"); Sample(Field<TMP_Text>(data, "signalNameText"), "Missionsziel", "Mission target"); Sample(Field<TMP_Text>(data, "signalText"), "Aktiv · 7,1 km", "Active · 7.1 km");

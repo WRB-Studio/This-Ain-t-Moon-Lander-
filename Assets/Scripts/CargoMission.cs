@@ -35,12 +35,9 @@ public class CargoMission : MonoBehaviour
     public bool CanAttachCable => CanInteract && HoldingCable && NearbyShip;
     public bool CanOpen => CanInteract && Stage == Progress.Delivered && NearCapsule;
     bool NearCapsule => Vector2.Distance(GameController.Instance.ControlledTarget.position, capsule.transform.position) <= interactionDistance;
-    bool CanInteract => IsAvailable && !IsShowing && !PauseMenu.IsPaused && GameController.Instance && GameController.Instance.IsPlaying
+    bool CanInteract => IsAvailable && GameController.Instance && GameController.Instance.IsPlaying
         && GameController.Instance.Phase == GameController.GamePhase.EVA && GameController.Instance.ControlledTarget
-        && !StoryTextController.Instance.BlocksGameplayInput
-        && !(StationConversation.Instance && StationConversation.Instance.IsShowing)
-        && !(RadioController.Instance && RadioController.Instance.IsOpen)
-        && !(StationInterior.Instance && StationInterior.Instance.IsTransitioning);
+        && !GameplayInput.IsBlocked;
     LanderController NearbyShip => MoonEVAController.Instance ? MoonEVAController.Instance.NearbyLander : null;
     public string Status => Stage switch
     {
@@ -60,8 +57,7 @@ public class CargoMission : MonoBehaviour
     int page;
     int walkArea;
     bool releaseDialogue;
-    float previousTimeScale, previousHudAlpha;
-    bool previousInteractable, previousRaycasts;
+    readonly ConversationPause conversationPause = new();
     bool initialized;
     bool restoring;
 
@@ -167,14 +163,8 @@ public class CargoMission : MonoBehaviour
         page = 0;
         releaseDialogue = releasing;
         if (releasing && passenger) passenger.FacePlayer();
-        previousTimeScale = Time.timeScale;
-        previousHudAlpha = hud.alpha;
-        previousInteractable = hud.interactable;
-        previousRaycasts = hud.blocksRaycasts;
-        hud.alpha = 0f;
-        hud.interactable = hud.blocksRaycasts = false;
         IsShowing = true;
-        Time.timeScale = 0f;
+        conversationPause.Begin(hud);
         ShowPage();
     }
     void ShowPage() => dialog.ShowConversation(passengerName, pages[page].message, pages[page].answers);
@@ -193,15 +183,7 @@ public class CargoMission : MonoBehaviour
     {
         if (!IsShowing) return;
         IsShowing = false;
-        if (dialog) dialog.Hide();
-        Time.timeScale = previousTimeScale;
-        if (hud)
-        {
-            hud.alpha = previousHudAlpha;
-            hud.interactable = previousInteractable;
-            hud.blocksRaycasts = previousRaycasts;
-        }
-        if (StoryTextController.Instance) StoryTextController.Instance.BlockInputUntilRelease();
+        conversationPause.End(dialog);
     }
     public void TakeCable()
     {

@@ -25,9 +25,7 @@ public class StationConversation : MonoBehaviour
     public CharacterVisual Partner => conversationPartner;
     StoryDialog dialog;
     CanvasGroup hud;
-    float previousTimeScale;
-    float previousHudAlpha;
-    bool previousInteractable, previousRaycasts;
+    readonly ConversationPause conversationPause = new();
     bool repeat;
     void Awake() => Instance = this;
     void Start()
@@ -41,10 +39,9 @@ public class StationConversation : MonoBehaviour
 #if UNITY_EDITOR
         if (!DebugEnabled) return;
 #endif
-        if (PauseMenu.IsPaused || IsShowing || (RadioController.Instance && RadioController.Instance.IsOpen)
-            || !dialog || steps == null || steps.Length == 0 || !GameController.Instance.IsPlaying || StoryTextController.Instance.BlocksGameplayInput
+        if (GameplayInput.IsInteractionBlocked
+            || !dialog || steps == null || steps.Length == 0 || !GameController.Instance.IsPlaying
             || !StationInterior.Instance || StationInterior.Instance.CurrentArea != StationInterior.Area.Registration) return;
-        if (CargoMission.Instance && CargoMission.Instance.IsShowing) return;
         if (conversationPartner)
         {
             conversationPartner.FaceLeft(GameController.Instance.ControlledTarget.position.x < conversationPartner.transform.position.x);
@@ -54,13 +51,7 @@ public class StationConversation : MonoBehaviour
         StoryTextController.Instance.Restart();
         repeat = SaveLoadManager.Instance.Data.GetFlag("story.registrationComplete");
         IsShowing = true;
-        previousTimeScale = Time.timeScale;
-        Time.timeScale = 0f;
-        previousHudAlpha = hud.alpha;
-        previousInteractable = hud.interactable;
-        previousRaycasts = hud.blocksRaycasts;
-        hud.alpha = 0f;
-        hud.interactable = hud.blocksRaycasts = false;
+        conversationPause.Begin(hud);
         ShowPage();
     }
     void ShowPage()
@@ -115,15 +106,7 @@ public class StationConversation : MonoBehaviour
     {
         if (!IsShowing) return;
         IsShowing = false;
-        if (dialog) dialog.Hide();
-        Time.timeScale = previousTimeScale;
-        if (hud)
-        {
-            hud.alpha = previousHudAlpha;
-            hud.interactable = previousInteractable;
-            hud.blocksRaycasts = previousRaycasts;
-        }
-        if (StoryTextController.Instance) StoryTextController.Instance.BlockInputUntilRelease();
+        conversationPause.End(dialog);
     }
 #if UNITY_EDITOR
     public bool DebugEnabled { get; private set; } = true;

@@ -729,12 +729,7 @@ public class LanderUI : MonoBehaviour
     {
         screenPosition = default;
         if (!GameController.Instance || !GameController.Instance.IsPlaying) return false;
-        if ((StationInterior.Instance && StationInterior.Instance.IsTransitioning)
-            || (StationConversation.Instance && StationConversation.Instance.IsShowing)) return false;
-        if (StoryTextController.Instance && StoryTextController.Instance.BlocksGameplayInput) return false;
-        if (CargoMission.Instance && CargoMission.Instance.IsShowing) return false;
-        if (RadioController.Instance && RadioController.Instance.IsOpen) return false;
-        if (PauseMenu.IsPaused) return false;
+        if (GameplayInput.IsBlocked) return false;
         for (int i = 0; i < Input.touchCount; i++)
         {
             var touch = Input.GetTouch(i);

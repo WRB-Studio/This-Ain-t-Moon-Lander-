@@ -23,11 +23,8 @@ public partial class StoryEditorWindow : EditorWindow
     Vector2 lastMouse;
     bool panning, dragRecorded;
     int dragUndoGroup;
-    string chapterName = "";
-    int chapterNameIndex = -1;
     [SerializeField] float sidebarWidth = 270, detailsWidth = 420;
     Vector2 sidebarScroll;
-    bool showNavigationHelp;
     [SerializeField] float boardZoom = 1;
     bool focusBoard;
     int selectedAnswer = -1, previewStart;
@@ -37,39 +34,34 @@ public partial class StoryEditorWindow : EditorWindow
     Vector2 marqueeStart, marqueeEnd;
     int connectionOwner = -1, connectionAnswer = -1, connectionSide;
     Vector2 previewScroll, characterDetailsScroll;
-    int messageFilter, previewMode, previewLevel = 1, previewSignal;
+    int previewMode, previewLevel = 1, previewSignal;
     StoryEventSimulator eventSimulator;
     string eventPreviewReason = "";
     readonly StoryCharacterPreview characterPreview = new();
-    bool StoryView => tab == 0;
-    List<string> Sections => StoryView ? project.chapters : project.dialogueGroups;
-    int previousBoardTab = -1;
-    public static void Open() { var window = GetWindow<StoryEditorWindow>("Story & Charaktere"); window.minSize = new Vector2(1050, 650); }
+    bool StoryView => false;
+    List<string> Sections => project.chapters;
+    public static void Open() { var window = GetWindow<StoryEditorWindow>("Storyboard"); window.minSize = new Vector2(1050, 650); }
     double nextCharacterFrame;
     void OnEnable() { language = SessionState.GetString("StoryEditor.ContentLanguage", Localization.CurrentLanguage); eventSimulator = new StoryEventSimulator(flags); Undo.undoRedoPerformed += Refresh; EditorApplication.update += CharacterFrame; Refresh(); }
-    void OnDisable() { Undo.undoRedoPerformed -= Refresh; EditorApplication.update -= CharacterFrame; StopAudio(); characterPreview.Dispose(); }
+    void OnDisable() { SaveWritingDrafts(); Undo.undoRedoPerformed -= Refresh; EditorApplication.update -= CharacterFrame; StopAudio(); characterPreview.Dispose(); }
     void CharacterFrame()
     {
-        if (tab != 2 || !characterPreview.Playing || EditorApplication.timeSinceStartup < nextCharacterFrame) return;
+        if (tab != 1 || !characterPreview.Playing || EditorApplication.timeSinceStartup < nextCharacterFrame) return;
         nextCharacterFrame = EditorApplication.timeSinceStartup + 1d / 60d; Repaint();
     }
     void Refresh()
     {
-        project = AssetDatabase.LoadAssetAtPath<StoryProject>(StoryImport.ProjectPath); serialized = project ? new SerializedObject(project) : null;
-        if (project && (project.dialogueGroups.Count == 0 || project.Find("pilot-trail") != null || project.nodes.Any(n => !n.overviewOnly && !n.answerBoardLayout)))
-        { StoryImport.SeparateExisting(project); AssetDatabase.SaveAssets(); }
-        if (project && !project.nodes.Any(n => n.triggerOnly) && project.nodes.Any(n => n.eventInfo.enabled))
-        { StoryTriggerAuthoring.Sync(project); AssetDatabase.SaveAssets(); }
-        if (project && project.nodes.Any(n => n.triggerOnly) && !project.eventTriggersManaged)
-        { project.eventTriggersManaged = true; EditorUtility.SetDirty(project); }
+        project = AssetDatabase.LoadAssetAtPath<StoryProject>(StoryPlanningCatalog.ProjectPath); serialized = project ? new SerializedObject(project) : null;
+        if (project && StoryWritingMigration.Sync(project)) AssetDatabase.SaveAssetIfDirty(project);
+        writingConversationId = "";
         textDrafts.Clear(); chapter = Mathf.Clamp(chapter, 0, project ? Mathf.Max(0, Sections.Count - 1) : 0);
         if (!project || selected >= project.nodes.Count) selected = -1;
-        chapterNameIndex = -1; drag = connectionOwner = -1; selectedAnswer = -1; panning = marquee = false; markedCards.Clear(); preview = null; StopAudio(); Repaint();
+        drag = connectionOwner = -1; selectedAnswer = -1; panning = marquee = false; markedCards.Clear(); preview = null; StopAudio(); Repaint();
         selectedDecoration = draggingDecoration = resizingDecoration = null;
     }
     void OnGUI()
     {
-        if (project && tab <= 1 && Event.current.type == EventType.KeyDown && Event.current.keyCode == KeyCode.Delete
+        if (project && tab == 0 && Event.current.type == EventType.KeyDown && Event.current.keyCode == KeyCode.Delete
             && GUIUtility.keyboardControl == 0 && GUIUtility.hotControl == 0 && markedCards.Count > 0)
         { Event.current.Use(); RemoveMarked(); GUIUtility.ExitGUI(); }
         if (Event.current.type == EventType.KeyDown && Event.current.control && GUIUtility.keyboardControl == 0)
@@ -78,113 +70,42 @@ public partial class StoryEditorWindow : EditorWindow
             bool redo = Event.current.keyCode == KeyCode.Y || Event.current.keyCode == KeyCode.Z && Event.current.shift;
             if (undo || redo) { Event.current.Use(); UndoOrRedo(redo); GUIUtility.ExitGUI(); }
         }
-        bool undoClicked, redoClicked;
-        using (new EditorGUILayout.HorizontalScope(EditorStyles.toolbar))
-        {
-            tab = GUILayout.Toolbar(tab, new[] { "Storyübersicht", "Gespräche", "Charaktere", "Vorschau", "Prüfung" }, EditorStyles.toolbarButton);
-            undoClicked = GUILayout.Button(new GUIContent("Rückgängig", "Ctrl+Z"), EditorStyles.toolbarButton);
-            redoClicked = GUILayout.Button(new GUIContent("Wiederholen", "Ctrl+Y / Ctrl+Shift+Z"), EditorStyles.toolbarButton);
-            GUILayout.FlexibleSpace();
-            GUILayout.Label("Inhalte:", EditorStyles.miniLabel, GUILayout.Width(45));
-            int choice = GUILayout.Toolbar(language == "de" ? 0 : 1, new[] { "Deutsch", "English" }, EditorStyles.toolbarButton);
-            if (choice != (language == "de" ? 0 : 1))
-            { language = choice == 0 ? "de" : "en"; SessionState.SetString("StoryEditor.ContentLanguage", language); if (preview?.Node != null && autoAudio) PlayNode(preview.Node); Repaint(); }
-            if (GUILayout.Button(new GUIContent("Speichern", "Übernimmt offene DE/EN-Textentwürfe und speichert Story- und Charakter-Assets."), EditorStyles.toolbarButton)) SaveAll();
-        }
-        if (undoClicked || redoClicked) { UndoOrRedo(redoClicked); GUIUtility.ExitGUI(); }
+        Rect toolbar = GUILayoutUtility.GetRect(0, 32, GUILayout.ExpandWidth(true));
+        GUI.Box(toolbar, GUIContent.none, EditorStyles.toolbar);
+        float toolbarY = toolbar.y + (toolbar.height - 22) * .5f;
+        tab = GUI.Toolbar(new Rect(toolbar.x + 4, toolbarY, 210, 22), tab == 1 ? 1 : 0, new[] { "Storyboard", "Charaktere" }, EditorStyles.toolbarButton);
+        float actionsX = Mathf.Max(toolbar.x + 230, toolbar.center.x - 130);
+        int choice = GUI.Toolbar(new Rect(actionsX, toolbarY, 100, 22), language == "de" ? 0 : 1, new[] { "DE", "EN" }, EditorStyles.miniButton);
+        if (choice != (language == "de" ? 0 : 1))
+        { language = choice == 0 ? "de" : "en"; SessionState.SetString("StoryEditor.ContentLanguage", language); Repaint(); }
+        if (GUI.Button(new Rect(actionsX + 112, toolbarY, 148, 22), new GUIContent("Story speichern", "Speichert ausschließlich das Planungsboard, seine DE/EN-Texte und Planungscharaktere."), EditorStyles.miniButton)) SaveAll();
         if (!project)
         {
-            EditorGUILayout.HelpBox("Storyprojekt fehlt. Die Übernahme verknüpft bestehende Texte und Abläufe; sie ändert keine Spielstände.", MessageType.Info);
-            if (GUILayout.Button("Bestehende Story übernehmen")) { StoryImport.Build(); Refresh(); }
+            EditorGUILayout.HelpBox("Planungsprojekt fehlt: Assets/StoryPlanning/StoryPlan.asset. Das vorhandene Projekt wiederherstellen, um seine Inhalte zu bearbeiten.", MessageType.Warning);
             return;
         }
-        if (tab <= 1) Board(); else if (tab == 2) Characters(); else if (tab == 3) Preview(); else Validation();
+        if (tab == 0) Board(); else Characters();
     }
     void Board()
     {
-        if (previousBoardTab != tab)
-        { previousBoardTab = tab; chapter = 0; selected = -1; selectedDecoration = null; markedCards.Clear(); chapterNameIndex = -1; search = ""; focusBoard = true; }
         sidebarWidth = Mathf.Clamp(sidebarWidth, 230, Mathf.Max(230, position.width - detailsWidth - 320));
         detailsWidth = Mathf.Clamp(detailsWidth, 340, Mathf.Max(340, position.width - sidebarWidth - 320));
         using (new EditorGUILayout.HorizontalScope())
         {
-            using (new EditorGUILayout.VerticalScope(GUILayout.Width(sidebarWidth)))
-            {
-                sidebarScroll = EditorGUILayout.BeginScrollView(sidebarScroll);
-                using (new EditorGUILayout.VerticalScope(PanelStyle()))
-                {
-                GUILayout.Label(StoryView ? "Storykapitel" : "Gesprächsgruppen", EditorStyles.boldLabel);
-                if (!StoryView) messageFilter = GUILayout.Toolbar(messageFilter, new[] { "Alle", "Dialoge", "Ereignisse" });
-                GUILayout.Space(8);
-                for (int i = 0; i < Sections.Count; i++)
-                {
-                    if (GUILayout.Toggle(chapter == i, Sections[i], "Button", GUILayout.Height(28)) && chapter != i)
-                    { chapter = i; selected = -1; selectedDecoration = null; markedCards.Clear(); chapterNameIndex = -1; focusBoard = true; }
-                    GUILayout.Space(3);
-                }
-                GUILayout.Space(10);
-                GUILayout.Label("Suche", EditorStyles.miniBoldLabel);
-                search = EditorGUILayout.TextField(search, GUILayout.Height(26));
-                GUILayout.Space(8);
-                if (GUILayout.Button(StoryView ? "Kapitel hinzufügen" : "Gesprächsgruppe hinzufügen", GUILayout.Height(28))) { Edit("Kapitel"); Sections.Add("Kapitel " + (Sections.Count + 1)); chapter = Sections.Count - 1; Dirty(); }
-                }
-                GUILayout.Space(8);
-                if (Sections.Count > 0)
-                {
-                    using (new EditorGUILayout.VerticalScope(PanelStyle()))
-                    {
-                    GUILayout.Label(StoryView ? "Ausgewähltes Kapitel" : "Ausgewählte Gesprächsgruppe", EditorStyles.boldLabel);
-                    GUILayout.Space(8);
-                    if (chapterNameIndex != chapter) { chapterName = Sections[chapter]; chapterNameIndex = chapter; }
-                    GUILayout.Label("Name", EditorStyles.miniBoldLabel);
-                    chapterName = EditorGUILayout.TextField(chapterName, GUILayout.Height(26));
-                    GUILayout.Space(8);
-                    using (new EditorGUI.DisabledScope(string.IsNullOrWhiteSpace(chapterName) || chapterName.Trim() == Sections[chapter]))
-                        if (GUILayout.Button(StoryView ? "Kapitel umbenennen" : "Gruppe umbenennen", GUILayout.Height(28))) RenameChapter();
-                    }
-                }
-                GUILayout.Space(8);
-                using (new EditorGUILayout.VerticalScope(PanelStyle()))
-                {
-                GUILayout.Label("Story bearbeiten", EditorStyles.boldLabel);
-                GUILayout.Space(8);
-                if (GUILayout.Button(StoryView ? "Neuer Storyschritt" : "Neue Dialogzeile", GUILayout.Height(30)))
-                {
-                    Edit("Storyschritt"); var id = "story." + Guid.NewGuid().ToString("N");
-                    project.nodes.Add(new StoryNode { id = id, title = "Neuer Schritt", chapter = Sections.ElementAtOrDefault(chapter), textKey = StoryView ? "" : id, overviewOnly = StoryView, position = SnapPoint(boardScroll + new Vector2(30, 30)),
-                        answerBoardLayout = true, choices = new() { new StoryChoice { textKey = StoryView ? "" : "game.continue" } } });
-                    selected = project.nodes.Count - 1; selectedAnswer = -1;
-                    markedCards.Clear(); markedCards.Add((id, -1)); SnapLayout(markedCards); Dirty();
-                }
-                GUILayout.Space(8);
-                if (GUILayout.Button(new GUIContent("Quellen ergänzen", "Ergänzt neue Inhalte aus dem Spiel. Vorhandene Storyschritte und Texte bleiben erhalten."), GUILayout.Height(28)))
-                { SaveAll(); StoryImport.Build(); Refresh(); }
-                }
-                GUILayout.Space(8);
-                using (new EditorGUILayout.HorizontalScope())
-                {
-                    if (GUILayout.Button("Titel hinzufügen", GUILayout.Height(28))) AddDecoration(StoryDecorationKind.Label);
-                    if (GUILayout.Button("Linie hinzufügen", GUILayout.Height(28))) AddDecoration(StoryDecorationKind.Line);
-                }
-                if (!StoryView && GUILayout.Button("Auslöser hinzufügen", GUILayout.Height(28))) AddTrainingTrigger();
-                GridControls();
-                using (new EditorGUI.DisabledScope(markedCards.Count == 0))
-                    if (GUILayout.Button(new GUIContent("Auswahl entfernen", "Löscht alle markierten Karten, Labels und Linien. Rückgängig mit Strg+Z."), GUILayout.Height(28))) { RemoveMarked(); GUIUtility.ExitGUI(); }
-                if (GUILayout.Button(new GUIContent("Inhalte fokussieren", "Zeigt alle Nodes des aktuellen Kapitels und setzt die Suche zurück."), GUILayout.Height(28)))
-                { search = ""; focusBoard = true; Repaint(); }
-                GUILayout.Space(8);
-                showNavigationHelp = EditorGUILayout.Foldout(showNavigationHelp, "Navigation", true);
-                if (showNavigationHelp) EditorGUILayout.HelpBox("Verbindungspunkt ziehen: Folgeschritt verbinden.\nRechts oder Mausrad gedrückt ziehen: Board bewegen.\nLinks auf leerer Fläche ziehen: Auswahlrechteck.\nStrg/Shift: Auswahl ergänzen.\nMarkierte Karte ziehen: Auswahl verschieben.\nMausrad: Zoom am Mauszeiger.", MessageType.None);
-                EditorGUILayout.EndScrollView();
-            }
+            using (new EditorGUILayout.VerticalScope(GUILayout.Width(sidebarWidth))) WritingSidebar();
             Splitter(ref sidebarWidth, false);
-            Rect board = GUILayoutUtility.GetRect(280, 400, GUILayout.ExpandWidth(true), GUILayout.ExpandHeight(true));
-            Graph(board);
+            using (new EditorGUILayout.VerticalScope(GUILayout.ExpandWidth(true)))
+            {
+                GUILayout.Label(WritingBreadcrumb(), EditorStyles.boldLabel);
+                Rect board = GUILayoutUtility.GetRect(280, 400, GUILayout.ExpandWidth(true), GUILayout.ExpandHeight(true));
+                Graph(board);
+            }
             Splitter(ref detailsWidth, true);
             using (new EditorGUILayout.VerticalScope(PanelStyle(), GUILayout.Width(detailsWidth)))
             {
                 detailScroll = EditorGUILayout.BeginScrollView(detailScroll);
-                Details(); EditorGUILayout.EndScrollView();
+                WritingDetails(); EditorGUILayout.EndScrollView();
+                WritingCardFooter();
             }
         }
     }
@@ -209,9 +130,7 @@ public partial class StoryEditorWindow : EditorWindow
         if (e.type == EventType.MouseDrag) { width += e.delta.x * (right ? -1 : 1); e.Use(); Repaint(); }
         else if (e.type == EventType.MouseUp) { GUIUtility.hotControl = 0; e.Use(); }
     }
-    IEnumerable<int> Visible() => Enumerable.Range(0, project.nodes.Count).Where(i => project.nodes[i].overviewOnly == StoryView && project.nodes[i].chapter == Sections.ElementAtOrDefault(chapter)
-        && (StoryView || messageFilter == 0 || messageFilter == 1 && !project.EventInfo(project.nodes[i]).enabled || messageFilter == 2 && project.EventInfo(project.nodes[i]).enabled)
-        && (string.IsNullOrEmpty(search) || (project.nodes[i].title + project.nodes[i].id + project.nodes[i].purpose).IndexOf(search, StringComparison.OrdinalIgnoreCase) >= 0));
+    IEnumerable<int> Visible() => WritingNodes().Select(n => project.nodes.IndexOf(n));
     void Graph(Rect rect)
     {
         var indices = Visible().ToList();
@@ -231,13 +150,15 @@ public partial class StoryEditorWindow : EditorWindow
         if (showGrid) for (float x = -Mathf.Repeat(boardScroll.x * boardZoom, grid); x < rect.width; x += grid) Handles.DrawLine(new Vector2(x, 0), new Vector2(x, rect.height));
         if (showGrid) for (float y = -Mathf.Repeat(boardScroll.y * boardZoom, grid); y < rect.height; y += grid) Handles.DrawLine(new Vector2(0, y), new Vector2(rect.width, y));
         Handles.color = Color.white; Handles.EndGUI();
+        DrawMissionFrames();
         DrawDecorations();
         var worldBounds = ContentBounds();
         var e = Event.current;
         if (e.type == EventType.MouseDown && view.Contains(e.mousePosition))
         {
+            CaptureMissionDropZones();
             dragRemainder = Vector2.zero;
-            int hit = indices.Where(i => NodeRect(project.nodes[i]).Contains(e.mousePosition)).DefaultIfEmpty(-1).Last();
+            int hit = indices.Where(i => !project.nodes[i].planningAnswer && NodeRect(project.nodes[i]).Contains(e.mousePosition)).DefaultIfEmpty(-1).Last();
             int answerHit = -1;
             if (!StoryView) foreach (int owner in indices) for (int a = 0; a < project.nodes[owner].choices.Count; a++)
                 if (AnswerRect(project.nodes[owner], a).Contains(e.mousePosition)) { hit = owner; answerHit = a; }
@@ -308,7 +229,7 @@ public partial class StoryEditorWindow : EditorWindow
                 foreach (int i in indices)
                 {
                     var node = project.nodes[i];
-                    if (area.Overlaps(node.triggerOnly ? EventWorldRect(node) : new Rect(node.position, new Vector2(230, 95)))) markedCards.Add((node.id, node.triggerOnly ? -2 : -1));
+                    if (!node.planningAnswer && area.Overlaps(node.triggerOnly ? EventWorldRect(node) : new Rect(node.position, new Vector2(230, 150)))) markedCards.Add((node.id, node.triggerOnly ? -2 : -1));
                     if (!StoryView) for (int a = 0; a < node.choices.Count; a++)
                         if (area.Overlaps(AnswerWorldRect(node, a))) markedCards.Add((node.id, a));
                 }
@@ -318,6 +239,7 @@ public partial class StoryEditorWindow : EditorWindow
             else if (drag >= 0 && drag < project.nodes.Count || !string.IsNullOrEmpty(draggingDecoration))
             {
                 if (project.snapToGrid) { dragRemainder += delta; delta = SnapPoint(dragRemainder); dragRemainder -= delta; }
+                if (delta.sqrMagnitude > 0) missionCardsMoved = true;
                 if (!dragRecorded) { Undo.IncrementCurrentGroup(); dragUndoGroup = Undo.GetCurrentGroup(); Undo.RegisterCompleteObjectUndo(project, "Auswahl verschieben"); dragRecorded = true; }
                 foreach (var card in markedCards)
                 {
@@ -343,10 +265,15 @@ public partial class StoryEditorWindow : EditorWindow
             {
                 var destination = HitPort(indices, e.mousePosition);
                 if (destination.owner < 0) destination = HitCard(indices, e.mousePosition);
-                if (destination.owner >= 0) LinkCards(connectionOwner, connectionAnswer, destination.owner, destination.answer);
+                if (destination.owner >= 0) { LinkCards(connectionOwner, connectionAnswer, destination.owner, destination.answer); indices = Visible().ToList(); }
                 connectionOwner = -1;
             }
-            if (dragRecorded) { SnapLayout(markedCards); Undo.CollapseUndoOperations(dragUndoGroup); }
+            if (dragRecorded)
+            {
+                SnapLayout(markedCards);
+                if (missionCardsMoved && string.IsNullOrEmpty(resizingDecoration)) AssignMovedCards(boardScroll + e.mousePosition / boardZoom);
+                indices = Visible().ToList(); Undo.CollapseUndoOperations(dragUndoGroup);
+            }
             dragRecorded = false; drag = -1; panning = marquee = false; GUIUtility.hotControl = 0; e.Use();
             draggingDecoration = resizingDecoration = null;
         }
@@ -364,8 +291,8 @@ public partial class StoryEditorWindow : EditorWindow
         Handles.BeginGUI();
         if (!StoryView) foreach (int i in indices)
         {
-            var text = project.nodes[i]; var trigger = project.Find(text.eventTriggerId);
-            if (!text.triggerOnly && trigger != null && indices.Contains(project.nodes.IndexOf(trigger))) ConnectCards(EventRect(trigger), NodeRect(text), new Color(.9f, .65f, .25f));
+            var text = project.nodes[i]; var context = project.Find(text.planningContextId);
+            if (context != null && indices.Contains(project.nodes.IndexOf(context))) ConnectCards(NodeRect(context), NodeRect(text), new Color(.6f, .6f, .6f));
         }
         foreach (int i in indices)
             for (int answerIndex = 0; answerIndex < project.nodes[i].choices.Count; answerIndex++)
@@ -376,7 +303,7 @@ public partial class StoryEditorWindow : EditorWindow
                 if (!StoryView)
                 {
                     Rect answer = AnswerRect(project.nodes[i], answerIndex);
-                    ConnectCards(from, answer, new Color(.5f, .8f, .6f));
+                    if (!project.nodes[i].planningAnswer) ConnectCards(from, answer, new Color(.5f, .8f, .6f));
                     from = answer;
                 }
                 if (indices.Contains(target))
@@ -389,7 +316,7 @@ public partial class StoryEditorWindow : EditorWindow
         infoStyle.normal.textColor = new Color(.83f, .85f, .88f);
         foreach (int i in indices)
         {
-            var node = project.nodes[i]; if (node.triggerOnly) continue; Rect box = NodeRect(node);
+            var node = project.nodes[i]; if (node.triggerOnly || node.planningAnswer) continue; Rect box = NodeRect(node);
             EditorGUI.DrawRect(new Rect(box.x + 3 * boardZoom, box.y + 4 * boardZoom, box.width, box.height), new Color(0, 0, 0, .45f));
             bool marked = markedCards.Contains((node.id, -1));
             Color border = marked ? new Color(.3f, .72f, 1) : new Color(.48f, .5f, .53f);
@@ -398,9 +325,16 @@ public partial class StoryEditorWindow : EditorWindow
             EditorGUI.DrawRect(new Rect(box.x + edge, box.y + edge, box.width - edge * 2, box.height - edge * 2), new Color(.25f, .26f, .28f));
             EditorGUI.DrawRect(new Rect(box.x + edge, box.y + edge, box.width - edge * 2, 47 * boardZoom), marked ? new Color(.16f, .28f, .38f) : new Color(.2f, .21f, .23f));
             GUI.Label(new Rect(box.x + 10 * boardZoom, box.y + 6 * boardZoom, 210 * boardZoom, 40 * boardZoom), NodeTitle(node), titleStyle);
-            string info = node.overviewOnly ? node.status + " · Storyschritt\n" + project.nodes.Count(n => !n.overviewOnly && n.storyStepId == node.id) + " Gesprächszeilen"
-                : (project.EventInfo(node).enabled ? "Ereignismeldung · " : "Text · ") + node.channel + "\n" + (node.speaker ? StoryCatalog.Text(node.speaker.nameKey, language) : "Kein Sprecher");
+            var conversation = project.conversations.Find(c => c.id == node.conversationId);
+            string info = (conversation == null ? "Text" : KindLabel(conversation.kind)) + " · " + (conversation?.entryNodeId == node.id ? "Starttext" : "Text")
+                + "\n" + (node.speaker ? StoryPlanningCatalog.Text(node.speaker.nameKey, language) : "Kein Sprecher");
+            if (node.planningNote) info = "Storykarte";
             GUI.Label(new Rect(box.x + 10 * boardZoom, box.y + 54 * boardZoom, 210 * boardZoom, 34 * boardZoom), info, infoStyle);
+            string draftKey = language + "/" + node.textKey;
+            string text = node.planningNote ? node.purpose : textDrafts.TryGetValue(draftKey, out string draft) ? draft : StoryPlanningCatalog.Text(node.textKey, language);
+            GUI.Label(new Rect(box.x + 10 * boardZoom, box.y + 94 * boardZoom, 210 * boardZoom, 48 * boardZoom),
+                new GUIContent(string.IsNullOrEmpty(text) ? "Noch kein Text geschrieben" : text, text),
+                new GUIStyle(infoStyle) { wordWrap = true });
         }
         if (!StoryView) foreach (int i in indices) for (int a = 0; a < project.nodes[i].choices.Count; a++)
         {
@@ -408,7 +342,7 @@ public partial class StoryEditorWindow : EditorWindow
             EditorGUI.DrawRect(box, markedCards.Contains((project.nodes[i].id, a)) ? new Color(.3f, .72f, 1) : new Color(.35f, .58f, .42f));
             EditorGUI.DrawRect(new Rect(box.x + 1, box.y + 1, box.width - 2, box.height - 2), new Color(.15f, .24f, .18f));
             GUI.Label(new Rect(box.x + 8 * boardZoom, box.y + 5 * boardZoom, 220 * boardZoom, 18 * boardZoom), "Antwort " + (a + 1), titleStyle);
-            string text = StoryCatalog.Text(project.nodes[i].choices[a].textKey, language);
+            string text = StoryPlanningCatalog.Text(project.nodes[i].choices[a].textKey, language);
             GUI.Label(new Rect(box.x + 8 * boardZoom, box.y + 25 * boardZoom, 220 * boardZoom, 40 * boardZoom), string.IsNullOrEmpty(text) ? "Antworttext fehlt" : text, titleStyle);
         }
         foreach (int i in indices)
@@ -418,11 +352,14 @@ public partial class StoryEditorWindow : EditorWindow
                 var node = project.nodes[i]; var box = EventRect(node);
                 EditorGUI.DrawRect(box, markedCards.Contains((node.id, -2)) ? new Color(.3f, .72f, 1) : new Color(.72f, .5f, .24f));
                 EditorGUI.DrawRect(new Rect(box.x + 1, box.y + 1, box.width - 2, box.height - 2), new Color(.26f, .2f, .13f));
-                GUI.Label(new Rect(box.x + 8 * boardZoom, box.y + 6 * boardZoom, 220 * boardZoom, 22 * boardZoom), string.IsNullOrEmpty(node.title) ? "Auslöser" : node.title, titleStyle);
-                GUI.Label(new Rect(box.x + 8 * boardZoom, box.y + 30 * boardZoom, 220 * boardZoom, 72 * boardZoom), EventSummary(project.EventInfo(node)) + "\n" + project.TriggerTexts(node.id).Length + " Texte", new GUIStyle(titleStyle) { fontStyle = FontStyle.Normal });
+                var boundText = project.nodes.FirstOrDefault(n => !n.triggerOnly && n.eventTriggerId == node.id);
+                string triggerTitle = node.title == "Auslöser" && boundText != null ? StoryWritingMigration.ConversationTitle(project, boundText) : node.title;
+                GUI.Label(new Rect(box.x + 8 * boardZoom, box.y + 6 * boardZoom, 220 * boardZoom, 22 * boardZoom), triggerTitle, titleStyle);
+                int textCount = project.TriggerTexts(node.id).Length;
+                GUI.Label(new Rect(box.x + 8 * boardZoom, box.y + 30 * boardZoom, 220 * boardZoom, 72 * boardZoom), EventSummary(project.EventInfo(node)) + "\n" + textCount + (textCount == 1 ? " Text" : " Texte"), new GUIStyle(titleStyle) { fontStyle = FontStyle.Normal });
                 DrawPorts(box);
             }
-            if (!project.nodes[i].triggerOnly) DrawPorts(NodeRect(project.nodes[i]));
+            if (!project.nodes[i].triggerOnly && !project.nodes[i].planningAnswer) DrawPorts(NodeRect(project.nodes[i]));
             if (!StoryView) for (int a = 0; a < project.nodes[i].choices.Count; a++) DrawPorts(AnswerRect(project.nodes[i], a));
         }
         if (connectionOwner >= 0)
@@ -446,9 +383,11 @@ public partial class StoryEditorWindow : EditorWindow
             EditorGUI.DrawRect(new Rect(box.x, box.y, 1, box.height), color); EditorGUI.DrawRect(new Rect(box.xMax - 1, box.y, 1, box.height), color);
         }
         GUI.Label(new Rect(8, rect.height - 22, rect.width - 16, 20), $"Zoom: {boardZoom:P0} · {markedCards.Count} markiert · Board: {worldBounds.width:0} × {worldBounds.height:0}", EditorStyles.miniLabel);
+        bool paletteDrop = WritingPaletteDrop(view);
         GUI.EndGroup();
+        if (paletteDrop) GUIUtility.ExitGUI();
     }
-    Rect NodeRect(StoryNode node) => node.triggerOnly ? EventRect(node) : new((node.position - boardScroll) * boardZoom, new Vector2(230, 95) * boardZoom);
+    Rect NodeRect(StoryNode node) => node.triggerOnly ? EventRect(node) : new((node.position - boardScroll) * boardZoom, new Vector2(230, 150) * boardZoom);
     Rect EventWorldRect(StoryNode node) => new(node.triggerOnly ? node.position : node.eventPositioned ? node.eventPosition : node.position + new Vector2(-310, 0), new Vector2(240, 110));
     Rect EventRect(StoryNode node) { var rect = EventWorldRect(node); return new Rect((rect.position - boardScroll) * boardZoom, rect.size * boardZoom); }
     static string EventSummary(StoryEventInfo info)
@@ -473,7 +412,7 @@ public partial class StoryEditorWindow : EditorWindow
     {
         float radius = Mathf.Clamp(7 * boardZoom, 5, 12);
         foreach (int i in indices.AsEnumerable().Reverse())
-            for (int a = project.nodes[i].triggerOnly ? -2 : StoryView ? -1 : project.nodes[i].choices.Count - 1; a >= (project.nodes[i].triggerOnly ? -2 : -1); a--)
+            for (int a = project.nodes[i].triggerOnly ? -2 : StoryView ? -1 : project.nodes[i].choices.Count - 1; a >= (project.nodes[i].triggerOnly ? -2 : project.nodes[i].planningAnswer ? 0 : -1); a--)
             {
                 var ports = CardPorts(a == -2 ? EventRect(project.nodes[i]) : a < 0 ? NodeRect(project.nodes[i]) : AnswerRect(project.nodes[i], a));
                 for (int side = 0; side < 4; side++) if ((mouse - ports[side]).sqrMagnitude <= radius * radius) return (i, a, side);
@@ -486,7 +425,7 @@ public partial class StoryEditorWindow : EditorWindow
         {
             if (!StoryView) for (int a = project.nodes[i].choices.Count - 1; a >= 0; a--) if (AnswerRect(project.nodes[i], a).Contains(mouse)) return (i, a, -1);
             if (!StoryView && project.nodes[i].triggerOnly && EventRect(project.nodes[i]).Contains(mouse)) return (i, -2, -1);
-            if (NodeRect(project.nodes[i]).Contains(mouse)) return (i, -1, -1);
+            if (!project.nodes[i].planningAnswer && NodeRect(project.nodes[i]).Contains(mouse)) return (i, -1, -1);
         }
         return (-1, -1, -1);
     }
@@ -495,13 +434,15 @@ public partial class StoryEditorWindow : EditorWindow
         if (project.nodes[from].triggerOnly) return !project.nodes[to].triggerOnly && !project.nodes[to].overviewOnly && toAnswer == -1;
         if (project.nodes[to].triggerOnly) return false;
         if (fromAnswer == -2 || toAnswer == -2) return from == to && fromAnswer == -2 && toAnswer == -1;
-        if (project.EventInfo(project.nodes[from]).enabled || project.EventInfo(project.nodes[to]).enabled) return false;
+
         if (from == to && fromAnswer == toAnswer) return false;
         if (project.nodes[from].overviewOnly != project.nodes[to].overviewOnly) return false;
         return fromAnswer < 0 || toAnswer < 0;
     }
     void LinkCards(int from, int fromAnswer, int to, int toAnswer)
     {
+        if (project.nodes[from].planningAnswer && fromAnswer >= 0 && toAnswer < 0 && !project.nodes[to].planningAnswer && !project.nodes[to].overviewOnly)
+        { LinkCards(to, -1, from, fromAnswer); return; }
         if (project.nodes[from].triggerOnly)
         {
             if (!CanLink(from, fromAnswer, to, toAnswer)) return;
@@ -515,11 +456,14 @@ public partial class StoryEditorWindow : EditorWindow
             Dirty(); return;
         }
         if (fromAnswer == -2 && from == to && toAnswer == -1) return;
-        if (project.EventInfo(project.nodes[from]).enabled || project.EventInfo(project.nodes[to]).enabled)
-        { ShowNotification(new GUIContent("Ereignisse sind an ihre Spielauslöser gebunden und bilden keine Dialogfolge.")); return; }
         if (!CanLink(from, fromAnswer, to, toAnswer))
         { ShowNotification(new GUIContent("Bitte eine andere, passende Karte wählen; Antworten führen zu Texten.")); return; }
         var source = project.nodes[from]; var target = project.nodes[to];
+        if (source.planningNote && toAnswer < 0)
+        {
+            Edit("Notiz mit Text verbinden"); target.planningContextId = source.id; Dirty(); return;
+        }
+        if (target.planningNote) return;
         if (toAnswer >= 0)
         {
             if (from == to) return;
@@ -527,9 +471,10 @@ public partial class StoryEditorWindow : EditorWindow
             Vector2 world = AnswerWorldRect(target, toAnswer).position;
             Undo.RegisterCompleteObjectUndo(project, "Antwort verbinden");
             var choice = target.choices[toAnswer]; target.choices.RemoveAt(toAnswer); source.choices.Add(choice);
+            if (target.planningAnswer && target.choices.Count == 0) project.nodes.Remove(target);
             choice.positioned = true; choice.position = world - source.position; choice.continueLegacy = false;
             choice.legacyAnswer = Mathf.Clamp(choice.legacyAnswer, 0, Mathf.Max(0, source.legacyAnswerCount - 1));
-            selected = from; selectedAnswer = source.choices.Count - 1;
+            selected = project.nodes.IndexOf(source); selectedAnswer = source.choices.Count - 1;
         }
         else
         {
@@ -539,7 +484,12 @@ public partial class StoryEditorWindow : EditorWindow
             Undo.RegisterCompleteObjectUndo(project, "Folgeschritt verbinden");
             if (fromAnswer >= 0) choice = source.choices[fromAnswer];
             else if (!create) choice = source.choices[0];
-            else { choice = new StoryChoice { textKey = source.overviewOnly ? "" : "game.continue" }; source.choices.Add(choice); }
+            else
+            {
+                string key = source.id + ".answer." + Guid.NewGuid().ToString("N");
+                choice = new StoryChoice { textKey = key }; source.choices.Add(choice);
+                textDrafts["de/" + key] = "Weiter"; textDrafts["en/" + key] = "Continue";
+            }
             if (choice.next != target.id) choice.continueLegacy = false;
             choice.next = target.id;
             selected = from; selectedAnswer = source.overviewOnly ? -1 : source.choices.IndexOf(choice);
@@ -575,36 +525,20 @@ public partial class StoryEditorWindow : EditorWindow
     Rect AnswerRect(StoryNode node, int index) { var world = AnswerWorldRect(node, index); return new Rect((world.position - boardScroll) * boardZoom, world.size * boardZoom); }
     Rect ContentBounds(float padding = 200)
     {
-        var nodes = project.nodes.Where(n => n.overviewOnly == StoryView && n.chapter == Sections.ElementAtOrDefault(chapter)).ToList();
-        Vector2 min = nodes.Count == 0 ? Vector2.zero : nodes.Select(n => n.position).Aggregate(Vector2.Min) - Vector2.one * padding;
-        Vector2 max = nodes.Count == 0 ? new Vector2(600, 400) : nodes.Select(n => n.position + new Vector2(230, 95)).Aggregate(Vector2.Max) + Vector2.one * padding;
-        if (!StoryView) foreach (var node in nodes.Where(n => n.triggerOnly))
-        { var trigger = EventWorldRect(node); min = Vector2.Min(min, trigger.min - Vector2.one * padding); max = Vector2.Max(max, trigger.max + Vector2.one * padding); }
-        if (!StoryView) foreach (var node in nodes) for (int a = 0; a < node.choices.Count; a++)
-        { var answer = AnswerWorldRect(node, a); min = Vector2.Min(min, answer.min - Vector2.one * padding); max = Vector2.Max(max, answer.max + Vector2.one * padding); }
-        foreach (var d in BoardDecorations()) { var bounds = DecorationBounds(d); min = Vector2.Min(min, bounds.min - Vector2.one * padding); max = Vector2.Max(max, bounds.max + Vector2.one * padding); }
+        var nodes = WritingNodes().ToList();
+        var cards = nodes.Where(n => !n.planningAnswer).Select(n => n.triggerOnly ? EventWorldRect(n) : new Rect(n.position, new Vector2(230, 150))).ToList();
+        foreach (var node in nodes)
+            for (int a = 0; a < node.choices.Count; a++) cards.Add(AnswerWorldRect(node, a));
+        cards.AddRange(BoardDecorations().Select(DecorationBounds));
+        if (CurrentMission == null) cards.AddRange(ChapterMissions().Select(MissionWorldFrame));
+        if (cards.Count == 0) return new Rect(-padding, -padding, 600 + padding * 2, 400 + padding * 2);
+        Vector2 min = cards.Select(r => r.min).Aggregate(Vector2.Min) - Vector2.one * padding;
+        Vector2 max = cards.Select(r => r.max).Aggregate(Vector2.Max) + Vector2.one * padding;
         return Rect.MinMaxRect(min.x, min.y, max.x, max.y);
-    }
-    void RenameChapter()
-    {
-        string name = chapterName.Trim(), old = Sections[chapter];
-        if (Sections.Contains(name)) { ShowNotification(new GUIContent("Dieser Kapitelname existiert bereits.")); return; }
-        Edit("Kapitel umbenennen"); Sections[chapter] = name;
-        foreach (var alias in project.chapterAliases.Where(alias => alias.name == old)) alias.name = name;
-        if (!project.chapterAliases.Any(alias => alias.source == old)) project.chapterAliases.Add(new StoryChapterAlias { source = old, name = name });
-        foreach (var node in project.nodes.Where(n => n.overviewOnly == StoryView && n.chapter == old)) node.chapter = name;
-        Dirty(); GUIUtility.keyboardControl = 0;
     }
     void SaveAll()
     {
-        Undo.IncrementCurrentGroup(); int group = Undo.GetCurrentGroup();
-        foreach (var draft in textDrafts.ToArray())
-        {
-            int separator = draft.Key.IndexOf('/'); if (separator < 0) continue;
-            string lang = draft.Key.Substring(0, separator), key = draft.Key.Substring(separator + 1);
-            if (StoryCatalog.Text(key, lang) != draft.Value) StoryCatalog.Write(key, lang, draft.Value);
-        }
-        Undo.CollapseUndoOperations(group); AssetDatabase.SaveAssets();
+        SaveWritingDrafts();
         ShowNotification(new GUIContent("Gespeichert"));
     }
     void UndoOrRedo(bool redo)
@@ -612,165 +546,37 @@ public partial class StoryEditorWindow : EditorWindow
         if (!redo && textDrafts.Any(d =>
         {
             int separator = d.Key.IndexOf('/');
-            return separator >= 0 && StoryCatalog.Text(d.Key.Substring(separator + 1), d.Key.Substring(0, separator)) != d.Value;
+            return separator >= 0 && StoryPlanningCatalog.Text(d.Key.Substring(separator + 1), d.Key.Substring(0, separator)) != d.Value;
         })) SaveAll();
         if (redo) Undo.PerformRedo(); else Undo.PerformUndo();
     }
     string NodeTitle(StoryNode node)
     {
-        string german = StoryCatalog.Text(node.textKey, "de").Split('\n')[0];
-        if (german.Length > 65) german = german.Substring(0, 62) + "…";
-        if (node.title != german || string.IsNullOrEmpty(node.textKey)) return node.title;
-        string localized = StoryCatalog.Text(node.textKey, language).Split('\n')[0];
-        return localized.Length > 65 ? localized.Substring(0, 62) + "…" : localized;
-    }
-    void Details()
-    {
-        var decoration = project.decorations.Find(d => d.id == selectedDecoration);
-        if (decoration != null) { DecorationDetails(decoration); return; }
-        if (selected < 0 || selected >= project.nodes.Count) { GUILayout.Label("Schritt im Board auswählen."); return; }
-        if (markedCards.Count > 1) EditorGUILayout.HelpBox(markedCards.Count + " Karten markiert. Ziehen verschiebt die Auswahl; unten stehen die Eigenschaften der aktiven Karte.", MessageType.None);
-        serialized.Update(); var node = serialized.FindProperty("nodes").GetArrayElementAtIndex(selected);
-        var selectedNode = project.nodes[selected];
-        if (selectedNode.triggerOnly) { TriggerDetails(node, selectedNode); return; }
-        if (project.EventInfo(selectedNode).enabled)
+        string title = node.title;
+        if (!string.IsNullOrEmpty(node.planningTitleKey))
         {
-            GUILayout.Label("Ereignismeldung", EditorStyles.boldLabel);
-            EditorGUILayout.HelpBox(EventSummary(project.EventInfo(selectedNode)) + "\n\n" + project.EventInfo(selectedNode).description, MessageType.Info);
-            var commonTrigger = project.Find(selectedNode.eventTriggerId);
-            if (commonTrigger != null)
+            string draftKey = language + "/" + node.planningTitleKey;
+            string localized = textDrafts.TryGetValue(draftKey, out string draft) ? draft : StoryPlanningCatalog.Text(node.planningTitleKey, language);
+            if (string.IsNullOrWhiteSpace(localized) && language == "en")
             {
-                if (GUILayout.Button("Gemeinsamen Auslöser öffnen")) { OpenNode(commonTrigger); GUIUtility.ExitGUI(); }
+                string germanKey = "de/" + node.planningTitleKey;
+                localized = textDrafts.TryGetValue(germanKey, out string germanDraft) ? germanDraft : StoryPlanningCatalog.Text(node.planningTitleKey, "de");
             }
-            else using (new EditorGUI.DisabledScope(true)) EditorGUILayout.PropertyField(node.FindPropertyRelative("eventInfo"), new GUIContent("Auslöser aus dem Spielsystem"), true);
-            EditorGUILayout.HelpBox("Die Auslöserdaten werden aus dem vorhandenen Storysystem gelesen. Texte und Audio sind hier bearbeitbar; der Auslöser wird nicht durch eine künstliche Dialogverbindung ersetzt.", MessageType.None);
+            if (!string.IsNullOrWhiteSpace(localized)) title = localized;
         }
-        if (!selectedNode.overviewOnly && selectedAnswer >= 0 && selectedAnswer < selectedNode.choices.Count)
-        { AnswerDetails(node, selectedNode); return; }
-        GUILayout.Label("Storyschritt", EditorStyles.boldLabel);
-        foreach (string field in new[] { "id", "title", "chapter", "status", "purpose", "questions", "location", "relatedAsset" })
-            InputField(node.FindPropertyRelative(field));
-        var current = project.nodes[selected];
-        if (current.overviewOnly)
-        {
-            var links = node.FindPropertyRelative("choices");
-            GUILayout.Label("Nächste Storyschritte", EditorStyles.boldLabel);
-            var storySteps = project.nodes.Where(n => n.overviewOnly).ToList();
-            for (int i = 0; i < links.arraySize; i++)
-            {
-                var link = links.GetArrayElementAtIndex(i).FindPropertyRelative("next");
-                int original = storySteps.FindIndex(n => n.id == link.stringValue) + 1;
-                int picked = EditorGUILayout.Popup("Folgeschritt", original, new[] { "Ende" }.Concat(storySteps.Select(n => n.title)).ToArray());
-                if (picked != original) link.stringValue = picked == 0 ? "" : storySteps[picked - 1].id;
-                if (GUILayout.Button("Verbindung entfernen")) { links.DeleteArrayElementAtIndex(i); break; }
-            }
-            if (GUILayout.Button("Verbindung hinzufügen"))
-            { serialized.ApplyModifiedProperties(); Edit("Storyverbindung"); current.choices.Add(new StoryChoice()); Dirty(); serialized.Update(); }
-            serialized.ApplyModifiedProperties();
-            GUILayout.Space(12); GUILayout.Label("Zugehörige Gespräche", EditorStyles.boldLabel);
-            var associated = project.nodes.Where(n => !n.overviewOnly && n.storyStepId == current.id).ToList();
-            foreach (var dialogue in associated)
-                if (GUILayout.Button(NodeTitle(dialogue))) { OpenNode(dialogue); GUIUtility.ExitGUI(); }
-            if (associated.Count == 0) GUILayout.Label("Noch keine Gespräche zugewiesen.");
-            if (GUILayout.Button(markedCards.Count > 1 ? "Auswahl entfernen" : "Storyschritt entfernen")) { RemoveMarked(); GUIUtility.ExitGUI(); }
-            return;
-        }
-        var steps = project.nodes.Where(n => n.overviewOnly).ToList();
-        int stepIndex = steps.FindIndex(n => n.id == current.storyStepId) + 1;
-        int pickedStep = EditorGUILayout.Popup("Storyschritt", stepIndex, new[] { "Nicht zugeordnet" }.Concat(steps.Select(n => n.title)).ToArray());
-        if (pickedStep != stepIndex) node.FindPropertyRelative("storyStepId").stringValue = pickedStep == 0 ? "" : steps[pickedStep - 1].id;
-        if (stepIndex > 0 && GUILayout.Button("Zugehörigen Storyschritt öffnen"))
-        { serialized.ApplyModifiedProperties(); OpenNode(steps[stepIndex - 1]); GUIUtility.ExitGUI(); }
-        foreach (string field in new[] { "channel", "speaker" }) InputField(node.FindPropertyRelative(field));
-        EditorGUILayout.HelpBox("IDs bleiben stabil. Quellenverweise erhalten bestehende Missionsaktionen; neue Zweige können davor eingefügt werden.", MessageType.Info);
-        InputField(node.FindPropertyRelative("textKey"));
-        if (serialized.ApplyModifiedProperties()) Dirty();
-        TextPair(current.textKey);
-        serialized.Update(); node = serialized.FindProperty("nodes").GetArrayElementAtIndex(selected);
-        foreach (string field in new[] { "voiceDE", "voiceEN", "sound", "conditions", "onEnter" }) EditorGUILayout.PropertyField(node.FindPropertyRelative(field), true);
-        if (GUILayout.Button("Audio dieser Zeile hören")) PlayNode(current);
-        if (project.EventInfo(current).enabled)
-        {
-            if (GUILayout.Button("Diese Meldung einzeln ansehen")) { previewMode = 0; StartPreview(current); tab = 3; }
-            if (GUILayout.Button("Auslöser in der Vorschau öffnen"))
-            { previewMode = 1; var signals = EventSignals(); previewSignal = Mathf.Max(0, Array.IndexOf(signals, StoryEventSimulator.Signal(project.EventInfo(current)))); tab = 3; }
-            GUILayout.Label("Keine Antwortzweige: Diese Meldung wird durch ihr Ereignis ausgelöst.", EditorStyles.wordWrappedLabel);
-            return;
-        }
-        var choices = node.FindPropertyRelative("choices");
-        GUILayout.Label("Antworten / Verzweigungen", EditorStyles.boldLabel);
-        for (int i = 0; i < choices.arraySize; i++)
-        {
-            var choice = choices.GetArrayElementAtIndex(i);
-            using (new EditorGUILayout.VerticalScope(EditorStyles.helpBox))
-            {
-                InputField(choice.FindPropertyRelative("textKey"));
-                InputField(choice.FindPropertyRelative("reactionKey"));
-                var ids = new[] { "" }.Concat(project.nodes.Select(n => n.id)).ToArray();
-                var labels = new[] { "Ende" }.Concat(project.nodes.Select(n => NodeTitle(n) + " [" + n.id + "]")).ToArray();
-                var next = choice.FindPropertyRelative("next"); int target = Array.IndexOf(ids, next.stringValue);
-                int picked = EditorGUILayout.Popup("Nächster Schritt", Mathf.Max(0, target), labels);
-                if (picked != Mathf.Max(0, target)) next.stringValue = ids[picked];
-                foreach (string field in new[] { "conditions", "effects", "continueLegacy", "legacyAnswer" }) EditorGUILayout.PropertyField(choice.FindPropertyRelative(field), true);
-                if (GUILayout.Button("Antwort löschen")) { choices.DeleteArrayElementAtIndex(i); break; }
-            }
-        }
-        if (GUILayout.Button("Antwort hinzufügen"))
-        {
-            serialized.ApplyModifiedProperties(); Edit("Antwort");
-            current.choices.Add(new StoryChoice { textKey = current.id + ".answer." + Guid.NewGuid().ToString("N"), legacyAnswer = 0 }); Dirty(); serialized.Update();
-        }
-        if (serialized.ApplyModifiedProperties()) Dirty();
-        foreach (var choice in current.choices)
-        { GUILayout.Label("Antworttext", EditorStyles.miniBoldLabel); TextPair(choice.textKey); if (!string.IsNullOrEmpty(choice.reactionKey)) TextPair(choice.reactionKey); }
-        GUILayout.Label("Bestehende Quelle", EditorStyles.boldLabel);
-        EditorGUILayout.SelectableLabel(current.sourcePath + "\n" + current.sourceProperty, GUILayout.Height(40));
-        if (GUILayout.Button("Quelle auswählen")) Selection.activeObject = AssetDatabase.LoadMainAssetAtPath(current.sourcePath);
-        if (GUILayout.Button("Ab hier durchspielen")) { StartPreview(current); tab = 3; }
-        if (GUILayout.Button(markedCards.Count > 1 ? "Auswahl entfernen" : "Text entfernen")) { RemoveMarked(); GUIUtility.ExitGUI(); }
-    }
-    void OpenNode(StoryNode node)
-    {
-        selectedDecoration = null;
-        selectedAnswer = node.triggerOnly ? -2 : -1;
-        markedCards.Clear(); markedCards.Add((node.id, selectedAnswer));
-        tab = node.overviewOnly ? 0 : 1; previousBoardTab = tab;
-        chapter = Mathf.Max(0, Sections.IndexOf(node.chapter)); chapterNameIndex = -1;
-        selected = project.nodes.IndexOf(node); search = ""; focusBoard = true; Repaint();
-        messageFilter = project.EventInfo(node).enabled ? 2 : 0;
-    }
-    void AnswerDetails(SerializedProperty node, StoryNode owner)
-    {
-        GUILayout.Label("Antwort " + (selectedAnswer + 1), EditorStyles.boldLabel);
-        GUILayout.Label("Auf Text: " + NodeTitle(owner), EditorStyles.wordWrappedLabel);
-        var choice = node.FindPropertyRelative("choices").GetArrayElementAtIndex(selectedAnswer);
-        InputField(choice.FindPropertyRelative("textKey")); InputField(choice.FindPropertyRelative("reactionKey"));
-        var targets = project.nodes.Where(n => !n.overviewOnly).ToList();
-        var next = choice.FindPropertyRelative("next"); int old = targets.FindIndex(n => n.id == next.stringValue) + 1;
-        int picked = EditorGUILayout.Popup("Folgetext", old, new[] { "Gespräch beenden" }.Concat(targets.Select(NodeTitle)).ToArray());
-        if (picked != old)
-        {
-            next.stringValue = picked == 0 ? "" : targets[picked - 1].id;
-            if (picked > 0 && string.IsNullOrEmpty(targets[picked - 1].sourceReference)) choice.FindPropertyRelative("continueLegacy").boolValue = false;
-        }
-        foreach (string field in new[] { "conditions", "effects", "continueLegacy", "legacyAnswer" }) EditorGUILayout.PropertyField(choice.FindPropertyRelative(field), true);
-        serialized.ApplyModifiedProperties();
-        TextPair(owner.choices[selectedAnswer].textKey);
-        if (!string.IsNullOrEmpty(owner.choices[selectedAnswer].reactionKey)) TextPair(owner.choices[selectedAnswer].reactionKey);
-        if (GUILayout.Button("Textkarte auswählen")) { selectedAnswer = -1; markedCards.Clear(); markedCards.Add((owner.id, -1)); }
-        if (GUILayout.Button(markedCards.Count > 1 ? "Auswahl entfernen" : "Antwort entfernen")) { RemoveMarked(); GUIUtility.ExitGUI(); }
+        return (title?.Length ?? 0) > 65 ? title.Substring(0, 62) + "…" : title ?? "";
     }
     void TextPair(string key)
     {
         if (string.IsNullOrEmpty(key)) return;
-        GUILayout.Label(key, EditorStyles.wordWrappedMiniLabel);
+        if (writingAdvanced || tab != 0) GUILayout.Label(key, EditorStyles.wordWrappedMiniLabel);
         bool changed = false;
         using (new EditorGUILayout.HorizontalScope())
         foreach (string lang in new[] { "de", "en" })
         {
             using (new EditorGUILayout.VerticalScope())
             {
-            string text = StoryCatalog.Text(key, lang);
+            string text = StoryPlanningCatalog.Text(key, lang);
             string draftKey = lang + "/" + key;
             if (!textDrafts.ContainsKey(draftKey)) textDrafts[draftKey] = text;
             GUILayout.Label(lang.ToUpperInvariant(), EditorStyles.miniBoldLabel);
@@ -778,28 +584,29 @@ public partial class StoryEditorWindow : EditorWindow
             textDrafts[draftKey] = EditorGUILayout.TextArea(textDrafts[draftKey], textStyle, GUILayout.MinHeight(110));
             changed |= textDrafts[draftKey] != text;
             if (string.IsNullOrEmpty(text)) EditorGUILayout.HelpBox("Übersetzung fehlt.", MessageType.Warning);
-            else if (StoryCatalog.TooLong(text)) EditorGUILayout.HelpBox("Kürzen: möglichst 1–2 kurze Sätze, eine Aussage.", MessageType.Warning);
+            else if (StoryPlanningCatalog.TooLong(text)) EditorGUILayout.HelpBox("Kürzen: möglichst 1–2 kurze Sätze, eine Aussage.", MessageType.Warning);
             }
         }
         if (changed && GUILayout.Button("DE/EN-Text übernehmen"))
         {
             int group = Undo.GetCurrentGroup(); Undo.SetCurrentGroupName("Storytext DE/EN");
-            foreach (string lang in new[] { "de", "en" }) StoryCatalog.Write(key, lang, textDrafts[lang + "/" + key]);
+            foreach (string lang in new[] { "de", "en" }) StoryPlanningCatalog.Write(key, lang, textDrafts[lang + "/" + key]);
             Undo.CollapseUndoOperations(group);
         }
     }
     void Characters()
     {
+        if (character && !AssetDatabase.GetAssetPath(character).StartsWith(StoryPlanningCatalog.CharactersPath + "/", StringComparison.Ordinal)) character = null;
         using (new EditorGUILayout.HorizontalScope())
         {
             using (new EditorGUILayout.VerticalScope(PanelStyle(), GUILayout.Width(260)))
             {
                 GUILayout.Label("Charaktere", EditorStyles.boldLabel); GUILayout.Space(10);
                 characterScroll = EditorGUILayout.BeginScrollView(characterScroll);
-                foreach (string guid in AssetDatabase.FindAssets("t:StoryCharacter"))
+                foreach (string guid in AssetDatabase.FindAssets("t:StoryCharacter", new[] { StoryPlanningCatalog.CharactersPath }))
                 {
                     var item = AssetDatabase.LoadAssetAtPath<StoryCharacter>(AssetDatabase.GUIDToAssetPath(guid));
-                    string name = StoryCatalog.Text(item.nameKey, language);
+                    string name = StoryPlanningCatalog.Text(item.nameKey, language);
                     if (GUILayout.Toggle(character == item, new GUIContent(string.IsNullOrEmpty(name) ? item.id : name, item.id), "Button", GUILayout.Height(30))) character = item;
                     GUILayout.Space(4);
                 }
@@ -811,7 +618,7 @@ public partial class StoryEditorWindow : EditorWindow
                 GUILayout.Space(8);
                 if (GUILayout.Button("Charakter erstellen", GUILayout.Height(30)) && System.Text.RegularExpressions.Regex.IsMatch(newCharacter, @"^[a-zA-Z0-9_.-]+$"))
                 {
-                    string path = "Assets/Resources/Story/Characters/" + newCharacter + ".asset";
+                    string path = StoryPlanningCatalog.CharactersPath + "/" + newCharacter + ".asset";
                     if (AssetDatabase.LoadAssetAtPath<StoryCharacter>(path)) { EditorUtility.DisplayDialog("ID vergeben", "Diese Charakter-ID existiert bereits.", "OK"); return; }
                     character = CreateInstance<StoryCharacter>(); character.id = newCharacter; character.nameKey = "story.character." + newCharacter;
                     AssetDatabase.CreateAsset(character, path); Undo.RegisterCreatedObjectUndo(character, "Charakter erstellen"); newCharacter = "";
@@ -826,7 +633,7 @@ public partial class StoryEditorWindow : EditorWindow
                 foreach (string field in new[] { "id", "nameKey" }) InputField(so.FindProperty(field));
                 GUILayout.Space(8); GUILayout.Label("Darstellung", EditorStyles.boldLabel); GUILayout.Space(8);
                 foreach (string field in new[] { "prefab", "portrait" }) InputField(so.FindProperty(field));
-                GUILayout.Space(12); GUILayout.Label("Name im Spiel", EditorStyles.boldLabel); GUILayout.Space(8);
+                GUILayout.Space(12); GUILayout.Label("Name in der Planung", EditorStyles.boldLabel); GUILayout.Space(8);
                 so.ApplyModifiedProperties(); TextPair(character.nameKey);
 
                 GUILayout.Space(16); GUILayout.Label("Gespräche dieses Charakters", EditorStyles.boldLabel); GUILayout.Space(8);
@@ -835,7 +642,7 @@ public partial class StoryEditorWindow : EditorWindow
                     if (GUILayout.Button(NodeTitle(node), new GUIStyle(GUI.skin.button) { wordWrap = true }, GUILayout.MinHeight(30))) { selected = project.nodes.IndexOf(node); OpenNode(node); }
                     GUILayout.Space(4);
                 }
-                EditorGUILayout.HelpBox("Prefab und Porträt zentral zuweisen. Für importierte Figuren fehlen teilweise noch individuelle Porträts und bestätigte Rollen; die Prüfung zeigt diese an.", MessageType.Info);
+                EditorGUILayout.HelpBox("Eigene Planungscharaktere. Prefab und Porträt sind nur Referenzen zur Ansicht; Änderungen hier verändern weder Spielfiguren noch deren Prefabs.", MessageType.Info);
                 EditorGUILayout.EndScrollView();
             }
             using (new EditorGUILayout.VerticalScope(PanelStyle(), GUILayout.Width(Mathf.Clamp(position.width - 300, 640, 980) * .4f)))
@@ -882,15 +689,15 @@ public partial class StoryEditorWindow : EditorWindow
                     var node = preview.Node;
                     GUILayout.Label(node.channel.ToString(), EditorStyles.miniLabel);
                     if (node.channel != StoryChannel.Radio && node.speaker) Portrait(node.speaker.portrait);
-                    GUILayout.Label(node.speaker ? StoryCatalog.Text(node.speaker.nameKey, language) : "", EditorStyles.boldLabel);
-                    if (!string.IsNullOrEmpty(preview.Reaction)) GUILayout.Label(StoryCatalog.Text(preview.Reaction, language), EditorStyles.wordWrappedLabel);
-                    GUILayout.Label(StoryCatalog.Text(node.textKey, language), EditorStyles.wordWrappedLabel);
+                    GUILayout.Label(node.speaker ? StoryPlanningCatalog.Text(node.speaker.nameKey, language) : "", EditorStyles.boldLabel);
+                    if (!string.IsNullOrEmpty(preview.Reaction)) GUILayout.Label(StoryPlanningCatalog.Text(preview.Reaction, language), EditorStyles.wordWrappedLabel);
+                    GUILayout.Label(StoryPlanningCatalog.Text(node.textKey, language), EditorStyles.wordWrappedLabel);
                     GUILayout.Space(15);
                     var options = preview.Choices;
                     for (int i = 0; i < options.Count; i++)
                     {
                         int index = i;
-                        if (GUILayout.Button(StoryCatalog.Text(options[i].textKey, language), GUILayout.MinHeight(34)))
+                        if (GUILayout.Button(StoryPlanningCatalog.Text(options[i].textKey, language), GUILayout.MinHeight(34)))
                         {
                             var previousNode = preview.Node;
                             if (!preview.Choose(index, false)) trace.Add("Ziel fehlt oder seine Bedingungen sind nicht erfüllt.");
@@ -906,7 +713,7 @@ public partial class StoryEditorWindow : EditorWindow
                 else
                 {
                     GUILayout.Label("Vorschau beendet oder noch nicht gestartet.");
-                    if (!string.IsNullOrEmpty(preview?.Reaction)) GUILayout.Label(StoryCatalog.Text(preview.Reaction, language), EditorStyles.wordWrappedLabel);
+                    if (!string.IsNullOrEmpty(preview?.Reaction)) GUILayout.Label(StoryPlanningCatalog.Text(preview.Reaction, language), EditorStyles.wordWrappedLabel);
                 }
                 using (new EditorGUI.DisabledScope(preview?.Node == null || !(language == "de" ? preview.Node.voiceDE : preview.Node.voiceEN) && !preview.Node.sound))
                     if (GUILayout.Button("Audio stoppen")) StopAudio();
@@ -958,13 +765,20 @@ public partial class StoryEditorWindow : EditorWindow
     }
     public static IEnumerable<string> Issues(StoryProject project)
     {
+        foreach (var conversation in project.conversations)
+        {
+            if (!project.nodes.Any(n => n.overviewOnly && n.id == conversation.missionId)) yield return conversation.id + ": Zugeordnete Mission fehlt.";
+            if (!project.nodes.Any(n => n.id == conversation.entryNodeId && n.conversationId == conversation.id)) yield return conversation.id + ": Starttext fehlt.";
+        }
         foreach (var trigger in project.nodes.Where(n => n.triggerOnly))
             if (project.TriggerTexts(trigger.id).Length == 0) yield return trigger.id + ": Auslöser hat keinen verbundenen Text.";
-        var de = StoryCatalog.Load("de").entries.GroupBy(e => e.key).ToDictionary(g => g.Key, g => g.First().text);
-        var en = StoryCatalog.Load("en").entries.GroupBy(e => e.key).ToDictionary(g => g.Key, g => g.First().text);
+        bool planning = AssetDatabase.GetAssetPath(project) == StoryPlanningCatalog.ProjectPath;
+        var de = (planning ? StoryPlanningCatalog.Load("de") : StoryCatalog.Load("de")).entries.GroupBy(e => e.key).ToDictionary(g => g.Key, g => g.First().text);
+        var en = (planning ? StoryPlanningCatalog.Load("en") : StoryCatalog.Load("en")).entries.GroupBy(e => e.key).ToDictionary(g => g.Key, g => g.First().text);
         foreach (var group in project.nodes.GroupBy(n => n.id).Where(g => string.IsNullOrEmpty(g.Key) || g.Count() > 1)) yield return group.Key + ": ID fehlt oder doppelt.";
         foreach (var node in project.nodes)
         {
+            if (planning && node.planningNote) continue;
             if (node.overviewOnly || node.triggerOnly) continue;
             if (!node.speaker) yield return node.id + ": Sprecher fehlt.";
             else
@@ -975,7 +789,7 @@ public partial class StoryEditorWindow : EditorWindow
             foreach (string key in new[] { node.textKey, node.speaker ? node.speaker.nameKey : "" }.Concat(node.choices.SelectMany(c => new[] { c.textKey, c.reactionKey })).Where(k => !string.IsNullOrEmpty(k)).Distinct())
                 foreach (var pair in new[] { ("DE", de), ("EN", en) })
                     if (!pair.Item2.TryGetValue(key, out var text) || string.IsNullOrEmpty(text)) yield return node.id + ": " + pair.Item1 + " fehlt: " + key;
-                    else if (StoryCatalog.TooLong(text)) yield return node.id + ": " + pair.Item1 + " Text kürzen: " + key;
+                    else if (StoryPlanningCatalog.TooLong(text)) yield return node.id + ": " + pair.Item1 + " Text kürzen: " + key;
             foreach (var choice in node.choices)
             {
                 if (!string.IsNullOrEmpty(choice.next) && project.Find(choice.next) == null) yield return node.id + ": Ziel fehlt: " + choice.next;

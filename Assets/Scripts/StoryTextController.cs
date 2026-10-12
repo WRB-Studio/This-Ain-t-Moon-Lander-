@@ -279,10 +279,7 @@ public class StoryTextController : MonoBehaviour
     void Update()
     {
         if (waitForPointerRelease && Input.touchCount == 0 && !Input.GetMouseButton(0)) waitForPointerRelease = false;
-        if (PauseMenu.IsPaused) return;
-        if (RadioController.Instance && RadioController.Instance.IsOpen) return;
-        if (StationConversation.Instance && StationConversation.Instance.IsShowing) return;
-        if (CargoMission.Instance && CargoMission.Instance.IsShowing) return;
+        if (GameplayInput.IsPausedOrRadioOpen || GameplayInput.IsConversationOpen) return;
         var game = GameController.Instance;
         if (launchBriefing && game && game.Phase == GameController.GamePhase.Countdown) return;
         if (!game || (!game.IsPlaying && game.Phase != GameController.GamePhase.Landed

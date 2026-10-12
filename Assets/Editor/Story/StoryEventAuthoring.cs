@@ -74,7 +74,7 @@ public static class StoryEventAuthoring
     }
     public static void ArrangeTraining()
     {
-        var project = AssetDatabase.LoadAssetAtPath<StoryProject>(StoryImport.ProjectPath);
+        var project = AssetDatabase.LoadAssetAtPath<StoryProject>(StoryEditorData.ProjectPath);
         if (!project) return;
         var nodes = project.nodes.Where(n => !n.overviewOnly && !n.triggerOnly && n.chapter == project.ResolveChapter("Training")).ToList();
         var fixedLevels = nodes.Where(n => n.eventInfo.enabled && n.eventInfo.kind == StoryEventKind.LevelTransmission).Select(n => n.eventInfo.fromLevel).ToArray();

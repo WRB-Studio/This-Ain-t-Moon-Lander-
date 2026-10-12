@@ -25,7 +25,7 @@ public static class StoryTriggerAuthoring
     }
     public static void Upgrade()
     {
-        var project = AssetDatabase.LoadAssetAtPath<StoryProject>(StoryImport.ProjectPath);
+        var project = AssetDatabase.LoadAssetAtPath<StoryProject>(StoryEditorData.ProjectPath);
         if (project) { Sync(project); AssetDatabase.SaveAssets(); }
     }
 }

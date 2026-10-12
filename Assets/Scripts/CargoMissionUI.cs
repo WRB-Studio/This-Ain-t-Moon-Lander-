@@ -23,10 +23,7 @@ public class CargoMissionUI : MonoBehaviour
     {
         var mission = CargoMission.Instance;
         var game = GameController.Instance;
-        bool visible = mission && mission.IsAvailable && game && game.IsPlaying && !PauseMenu.IsPaused
-            && !(RadioController.Instance && RadioController.Instance.IsOpen) && !mission.IsShowing
-            && !(StationConversation.Instance && StationConversation.Instance.IsShowing)
-            && !StoryTextController.Instance.BlocksGameplayInput;
+        bool visible = mission && mission.IsAvailable && game && game.IsPlaying && !GameplayInput.IsInteractionBlocked;
         panel.SetActive(visible);
         if (!visible) return;
         status.SetLocalizedText(mission.Status);

@@ -1,121 +1,54 @@
-# Story-Editor und Charakterverwaltung
+# Manuelles Storyboard
 
-Öffnen: **Tools > Story > Story-Editor**. Das Projekt liegt unter `Assets/Resources/Story/StoryProject.asset`, Charaktere unter `Assets/Resources/Story/Characters`.
+Öffnen: **Tools > Story > Story-Editor**.
 
-Das Tools-Menü wurde bereinigt: einmalige Aufbau- und Export-Einträge sind entfernt. Ihre Generatoren bleiben für interne Wiederherstellung und bestehende Code-Abhängigkeiten erhalten. Die Storyübernahme ist direkt im Story-Editor erreichbar; ein zweiter Menüeintrag ist nicht nötig. Der temporäre UI-Vorschau-Exporter wurde entfernt, seine fertigen Layoutbilder bleiben in `Documentation/StoryEditor`.
+Dieses Board ist ausschließlich Planung und Schreiben. **Story speichern hat keine Wirkung auf das Spiel.** Neue Storykarten, Dialoge, Reihenfolgen, Antworten oder Missionen werden erst nach einem ausdrücklichen Umsetzungsauftrag gezielt in Code und Spielassets übernommen. Es gibt keinen Import, Rückexport oder automatischen Sync.
 
-## Bereiche
+## Daten klar getrennt
 
-- **Storyübersicht:** Nur Handlungsschritte, organisiert in Storykapiteln. Das Kapitel Ablauf zeigt den bisherigen Gesamtverlauf und vereinbarte spätere Ziele. Der Detailbereich enthält Folgeschritte und zugeordnete Gespräche; ein Klick öffnet die betreffende Gesprächszeile.
-- **Gespräche:** Nur Dialoge, Funk und Kommentare, organisiert in Gesprächsgruppen. Jede Zeile kann einem Storyschritt zugeordnet werden; der Detailbereich bietet auch den Rücksprung zur Storyübersicht. Graue Verbindungen gehören zur bestehenden Missionsfortsetzung; neue Verzweigungen werden farbig dargestellt.
-- **Charaktere:** Charaktere zentral erstellen, feste IDs und Namensschlüssel vergeben, Prefab und Porträt-Sprite zuweisen. Rechts ist das tatsächliche Prefab sichtbar. Alle Clips seiner Animator-Controller sind auswählbar, abspielbar und über einen Zeitregler betrachtbar. Dafür wird eine isolierte Vorschauinstanz verwendet, das Original-Prefab bleibt unverändert.
-- **Vorschau:** Direkt einen Starttext wählen und **Gespräch starten** drücken, anschließend Antworten durchspielen, Sprache wechseln und optional Audio hören. Ohne zugewiesene Aufnahmen wird das ausdrücklich angezeigt; Audio stoppen startet kein Gespräch. Simulierte Flags lassen sich setzen und zurücksetzen. Es werden keine echten Spielstände oder Missionsaktionen ausgeführt.
-- **Prüfung:** Fehlende Übersetzungen, Sprecher, Prefabs, Porträts, Ziele, Kapitel, Flag-IDs und ungültige ursprüngliche Antwortindizes sowie zu lange Texte werden angezeigt. Fehlende optionale Sprachaufnahmen verhindern keine Gespräche.
+- **Planungsboard:** `Assets/StoryPlanning/StoryPlan.asset` – Unity ScriptableObject/YAML, im Editor und durch Codex direkt bearbeitbar. Texte und deutsche/englische Entwürfe liegen als `planningTexts` in diesem Asset.
+- **Planungscharaktere:** `Assets/StoryPlanning/Characters/` – unabhängige Kopien. Namen, Porträt-/Prefabzuweisung und neue Figuren im Charaktertab ändern ausschließlich Planungsdaten. Prefabs werden in einer isolierten Vorschauinstanz angezeigt, nicht bearbeitet.
+- **Bestehendes Spiel:** `Assets/Resources/Story/StoryProject.asset`, seine ursprünglichen Charakterassets und `Assets/Resources/Localization/de.json` / `en.json` bleiben die bisherigen Laufzeitquellen. Das Spiel lädt das Planungsboard nicht.
 
-## Daten und Bearbeitung
+Bei der Entkopplung wurden die vorhandenen Storytexte, Antworten, IDs, Missionen, Gesprächszuordnungen und Notizen in den Planungsbestand kopiert. Frühere Auslöser-/Kontextkarten sind jetzt voll bearbeitbare manuelle **Storykarten**. Ihre bisherigen Beschreibungen wurden ohne Verlust als Planungstext übernommen; ursprüngliche Kontextangaben bleiben zusätzlich im gespeicherten Bestand erhalten. Graue Kontextverbindungen ordnen Notizen zu Texten; sie lösen nichts aus. Historische Quellenverweise bleiben schreibgeschützte Herkunftsinformationen. Die Spielauslöser und Ereignisregeln wurden nicht entfernt oder geändert.
 
-Die Übernahme erfasst die Storytexte aus der aktuellen Hauptszene, Registrierung, Rhekk-Mission, Funk und dem Story-Code. Sie ergänzt vorhandene Projekte, ohne bearbeitete Schritte neu zu erzeugen. Die 14 Ablaufknoten sind eine Entwicklungsübersicht, keine automatisch ausgeführten Missionen. Die drei früher separat angelegten Zukunftskonzepte wurden mit den passenden Ablaufknoten zusammengeführt; ihre Notizen bleiben erhalten. Aktuell liegen 111 Story-/Textnodes und 27 gemeinsame Auslöser vor; 58 Texte sind als Ereignismeldungen gekennzeichnet. Status: Idea, Planned, Implemented, Verified; importierte Inhalte sind Implemented, nicht automatisch Verified.
+## Schreiben und organisieren
 
-## Ereignismeldungen und Training
+**Kapitel → Missionen → Gespräche → Texte und Antworten** bleibt die Organisation; sichtbar sind die Tabs **Storyboard** und **Charaktere**.
 
-Im Textboard trennt der Filter **Alle / Dialoge / Ereignisse** die Inhalte. Ereignismeldungen erscheinen als orange **Auslöserkarte → Textkarte**. Sie haben keine künstliche Fortsetzung zu anderen Trainingskommentaren. Auslöserdaten werden aus der Hauptszene und dem vorhandenen `StoryTextController` eingelesen; sie sind als Entwicklungsansicht schreibgeschützt. Texte und Audio bleiben bearbeitbar. **Quellen ergänzen** aktualisiert diese Metadaten, ohne den Laufzeitablauf zu ersetzen.
+- Links genau zwei Button-Ebenen: Kapitel und eingerückte Missionen. Kapitelbutton klappt Missionsbuttons auf/zu; Missionbutton zeigt sofort alle zugehörigen Karten im mittleren Raster. Gesprächsmetadaten bleiben intern erhalten; es gibt keinen zusätzlichen Gesprächsfilter.
+- **Kapitel hinzufügen**, **Mission hinzufügen** stehen über der Hierarchie.
+- Das Missionspanel zeigt nur das feste Kapitel und den **Missionsnamen** als DE/EN-Eingabefeld. Sprache wird ausschließlich oben gewechselt. Inhalt/Ziel, offene Fragen, Entwicklungsstand und weitere technische Details sind dort ausgeblendet; vorhandene Daten bleiben erhalten. Kapitelwechsel/Reihenfolge erfolgen weiterhin per Drag/drop links. **Mission entfernen** steht als hoher roter Button unten; bei zugehörigen Inhalten ist er gesperrt (Hinweis im Tooltip).
+- Kapitel und Missionen am Griff oder Button ziehen. Blaue Linie: davor/dahinter einsortieren. Mission auf Kapitelbutton ziehen: in dieses Kapitel verschieben. Ein Drop klappt nicht versehentlich die Hierarchie um. Undo macht die Verschiebung rückgängig.
+- Storykarte wählen: rechts **Kartentitel → Charakter über das Such-Dropdown wählen → Storytext → Audio → Antwort hinzufügen → Storykarte entfernen**. Das Charakterfeld öffnet eine Dropdownliste mit direkt fokussierter Suche: tippen, Treffer wählen; Pfeiltasten/Enter wählen, Escape schließt. Kein separates Suchfeld im Panel. Charaktere stammen nur aus den Planungscharakteren; „Kein Charakter“ ist möglich.
+- Der mittig platzierte **DE/EN-Toggle oben** schaltet Kartentitel, Text und Audio gemeinsam um. Im rechten Panel gibt es keine separaten Sprachbuttons. Titel und Texte werden je Sprache unabhängig gespeichert; bestehende Titel wurden als deutscher Ausgangstext erhalten, englische Titel können separat ergänzt werden.
+- Über der Textfläche steht **Storytext**. Leere Flächen zeigen einen erklärenden Platzhalter; er ist kein Inhalt und wird nicht gespeichert. Die Textfläche am unteren Griff ziehen (Mindesthöhe vorhanden); längere Texte scrollen innerhalb der Fläche. Beide Sprachentwürfe werden unabhängig gespeichert.
+- **Antwortkarte** steht rechts neben **Storykarte**. Antwortkarten frei ins Grid ziehen oder per Klick erstellen, ohne Auswahl, Dialog oder automatische Zuordnung. Danach einen Verbindungspunkt der Antwortkarte mit einer Storykarte verbinden (oder umgekehrt); rechts **Antwort hinzufügen** verwendet denselben Erstellungsweg. Die Antwort bleibt bis zur manuellen Verbindung selbstständig; beim Verbinden wird sie der Storykarte zugeordnet, maximal sechs verbundene Antworten pro Storykarte. Die Palette benötigt keine ausgewählte oder bereits vorhandene Storykarte. Inhalt und Position freier Antwortkarten sind speicherbar und per Undo bearbeitbar. **Danach** an einer ausgewählten Antwort wählt Folgetext oder Gesprächsende.
+- Bereits gespeicherte Gesprächsart und Kontext bleiben interne Planungsmetadaten; sie führen keine Spielaktionen aus.
+- **Werkzeuge** ist dauerhaft sichtbar, gegliedert in **Storyelemente** und **Raster**. **Storykarte**, **Label** und **Linie** am sichtbaren Griff ins Grid ziehen oder zum Hinzufügen klicken. Ein blauer Zielrahmen und Positionskreuz markieren einen gültigen Drop. Der Drop-Punkt wird mit Pan/Zoom in Weltkoordinaten umgerechnet und bei aktivem Raster eingerastet. Storykarten gehören zur gewählten Mission. Jede Erstellung bleibt per Undo rückgängig machbar und betrifft nur Planung.
+- **Fokussieren** zeigt alle Inhalte des aktuellen Boards. Es ändert nur Zoom und Ansicht, keine Karten-, Antwort-, Notiz-, Label- oder Linienpositionen und keine Verbindungen. Die automatische Anordnung ist entfernt. Es gibt keine Auslöserbearbeitung.
+- Karten ziehen, Strg/Shift für Mehrfachauswahl; leere Fläche ziehen für Auswahlrechteck. Rechts/Mausrad gedrückt ziehen: Board bewegen. Mausrad: Zoom. **Fokussieren** rahmt das aktuelle Board ein.
+- Suche findet Namen, Kontext, Sprecher sowie DE/EN-Texte und Antworten. Texte kurz halten: ein bis zwei kurze Sätze mit einer Aussage.
 
-Auslöser- und Textkarte besitzen unabhängige Layoutpositionen. Jede ist einzeln verschiebbar; bei gemeinsamer Auswahl bewegen sich beide genau einmal. Die Verbindung bleibt erhalten und heftet sich automatisch an die passenden Seiten. Verschieben ist rückgängig machbar und verändert keine Spielauslöser.
+## Speichern und Rückgängig
 
-- Beim Trainingsstart wird die höchste passende Levelgruppe gewählt. Deren Texte sind Alternativen, keine Abfolge.
-- Die festen Übertragungen bei Level **3, 6, 9** erscheinen beim Erreichen des Levels, nicht nach dessen Abschluss. Sie haben Vorrang, erscheinen nur vor der ersten Schwerelosigkeitsentdeckung und werden nach Bestätigung gespeichert.
-- Ein bereits bekannter Mond ersetzt gewöhnliche Startkommentare. Levelübertragungen und Level 10+ haben weiterhin Vorrang.
-- Ab Level 10 gibt es einen Zufallsversuch je neuem Level, mit der eingestellten Wahrscheinlichkeit und ohne direkte Wiederholung des letzten Kommentars.
-- Entdeckungen sind einmalige Meldungen; unbestätigte Anzeigen können nach Unterbrechung wiederkehren. Die Anzeigeform (z. B. Overlay, Zeitlupe, Landeergebnis) bleibt erkennbar.
-- Flugkommentare gehören zu Atmosphärenausflug, Erdrückkehr oder Mondnähe. Im Spiel gelten Startverzögerung, Cooldown, Chance und maximal ein Kommentar je Flugversuch; nach der Level-9-Verabschiedung bleiben diese Routinekommentare aus.
+**Story speichern** übernimmt offene Texte und speichert ausschließlich Planungsboard und ausgewählten Planungscharakter. Auch beim Fokusverlust oder Schließen werden Entwürfe übernommen. Strg+Z / Strg+Y und Unity-Undo bleiben erhalten; die Toolbar-Schaltflächen dafür sind ausgeblendet. Vorschau und Prüfung sind ebenfalls vorerst nicht sichtbar.
 
-Das Trainingsboard ist nach Leveln geordnet: Level 1, Level 2, feste Meldung 3, Level 4, Level 5, feste Meldung 6, Level 7, Level 8, feste Meldung 9, danach Level 10+. Zufallsvarianten desselben Bereichs stehen nebeneinander. Unabhängige Entdeckungs- und Flugmeldungen stehen in einem separaten Bereich darunter; ihre Position bedeutet nicht, dass sie erst nach Level 10 ausgelöst werden. Die angezeigten normalen Levelbereiche schließen die festen Übertragungslevel aus. Diese Anordnung erzeugt keine neuen Dialogverbindungen und ändert keine Spielauslöser.
+Beim Entfernen einer Storykarte bleiben ihre Antwortkarten mit Inhalt und bisheriger Weltposition als freie Karten erhalten. Auch vorherige/nachfolgende Antwortkarten bleiben bestehen; nur Verbindungen zur entfernten Storykarte werden gelöst. Antwortkarten lassen sich separat entfernen. Gespräch entfernen löscht seine Planungsnodes; vorhandene Planungstext-Einträge bleiben erhalten. Kapitel/Missionen erst entfernen, wenn ihre Inhalte verschoben oder entfernt wurden. Keine dieser Aktionen löscht oder verändert Spielinhalte.
 
-In **Vorschau → Ereignis auslösen** Trainingslevel und Ereignis wählen. Die Liste zeigt alle aktuell passenden Textvarianten. **Ereignis auslösen** berücksichtigt Chance, Einmaligkeit und simulierte Flags; ein ausgelöster Entdeckungsmoment setzt seinen simulierten Entdeckungsflag, Weiter bestätigt ihn. Bei fehlenden Voraussetzungen oder verfehlter Zufallschance wird der Grund angezeigt. **Simulation zurücksetzen** setzt auch Zufallsversuche und Wiederholungsmerker zurück. Physische Nähe, Flugphasen und echtes Anzeigetiming werden nicht simuliert. Die Auswahl **Einzeltext / Gespräch** erlaubt weiterhin, einen konkreten Text unabhängig vom Auslöser anzusehen.
+## Zusammenarbeit und Umsetzung
 
-Die **Storyübersicht** bildet die Hauptgeschichte einschließlich geplanter späterer Abschnitte ab. Hier Reihenfolge, Zweck, offene Fragen und Entwicklungsstatus festhalten und die zugehörigen Gespräche öffnen. Storykapitel gliedern Handlungsschritte; sie sind keine Dialogsammlungen. Eine zusätzliche Gruppe Spätere Geschichte ist für dieselben Schritte nicht mehr nötig.
+Der Nutzer schreibt und plant im Board; Codex bearbeitet denselben YAML-Bestand nach Vorgaben. Ein späterer Auftrag wie **„Schau aufs Storyboard und implementiere diese Mission“** ist ein separater Umsetzungsschritt. Erst dabei werden nötige Dialoge, Lokalisierung und Spielabläufe gezielt angepasst. Das Board ist kein ausführbares Missionssystem.
 
-Die Storyübersicht ist inzwischen in **Training** (Landetraining und Aufbruch ins All), **Mond** (Entdeckung/Landung, Aussteigen, verlassenes Schiff) und **Ablauf** (Station, Rhekk und weitere geplante Schritte) gegliedert. Die Verbindungen zwischen den Kapiteln bleiben erhalten, auch wenn das Board nur das gewählte Kapitel zeigt. Gesprächsgruppen bleiben davon getrennt.
+Statisch geprüft werden Daten-/Referenztrennung, Syntax und Diff. Manuell in Unity noch prüfen: Planungstext ändern und speichern, Charaktername ändern, Undo/Redo, Notizen verbinden, Drag/drop und erneutes Öffnen. Die ursprünglichen Laufzeitdateien sollten dabei unverändert bleiben. Keine Tests oder Builds für die Entkopplung gestartet.
 
-Auch die bisherige Gesprächsgruppe Training und Entdeckungen ist getrennt: **Training** enthält Trainingsstimme und Aufbruch, **Mond** Mondentdeckung, EVA, Schiff und Mondkommentare. Die drei Stations-/Kontaktmeldungen stehen unter **Funk**. Quellen ergänzen erhält diese Aufteilung.
+## Kapitelansicht und Missionsrahmen
 
-Im Gesprächsboard gibt es **Textkarten und Antwortkarten**. Jede Antwort bleibt an ihren Text gebunden und besitzt einen separat wählbaren Folgetext. Mehrere Antworten dürfen auf denselben Text zusammenlaufen oder in verschiedene Zweige führen. Eine Antwortkarte auswählen, rechts **Folgetext** ändern und Antworttext beziehungsweise Bedingungen bearbeiten. Beide Kartentypen sind verschiebbar; Kartenpositionen und Verbindungen verwenden weiterhin dieselben Dialogdaten wie das Spiel. Bestehende Layouts wurden einmalig auseinandergezogen, um Platz für die Antwortkarten zu schaffen.
+- Kapitel zeigen Missionsrahmen und reine Kapitelkarten. Story-/Antwortkarten lassen sich direkt dort erstellen.
+- Rahmen tragen ihren Titel links darüber und wachsen mit ihren zugeordneten Karten, Antworten und Layoutobjekten. Vorhandene Kartenpositionen werden nicht automatisch umgeordnet.
+- In einen Rahmen ablegen: Mission zuordnen. Außerhalb ablegen: nur Kapitel zuordnen. In der direkten Missionsansicht behalten verschobene/neue Karten ihre Missionszuordnung.
+- Dropbereiche werden vor dem Verschieben festgehalten. Automatisches Wachsen nimmt keine fremden Karten auf. Bei überlappenden Rahmen zählt der kleinste Treffbereich; die Zielmission wird hervorgehoben. Undo stellt Position und Zuordnung gemeinsam wieder her.
+- **Mission hinzufügen** erzeugt eine Mission ohne Kapitel. Sie steht links unter **Nicht zugeordnete Missionen**. In ein Kapitel ziehen zum Zuordnen; auf die Bereichsüberschrift ziehen zum Lösen. Leere Missionen bekommen beim Zuordnen einen freien Rahmen-Startplatz, ohne bestehende Karten zu verschieben.
+- **Gespräch hinzufügen** und Gesprächsfilter entfallen. Vorhandene Gesprächsmetadaten und Originalzuordnungen bleiben erhalten. Neue Zuordnungen sind eigenständige Planungsfelder; das Spiel nutzt diese nicht.
 
-Verbindungen wählen automatisch das nächstgelegene Paar aus den vier Kartenseiten. Karten untereinander verbinden sich entsprechend oben/unten; seitlich angeordnete Karten seitlich. Die Kurventangenten folgen den gewählten Seiten. Die Charakteranimation wird über den Editor-Update-Takt mit bis zu 60 Neuzeichnungen pro Sekunde aktualisiert; Sampling findet nur beim Rendern statt. Damit hängt sie nicht mehr am langsamen Inspector-Refresh.
-
-Jede Karte hat mittig an allen vier Seiten einen kleinen Verbindungspunkt. Mit links von einem Punkt auf eine passende Zielkarte oder deren Punkt ziehen: Die Vorschauleitung wird bei einem gültigen Ziel grün, beim Loslassen werden die Daten übernommen. Escape oder Loslassen auf leerer Fläche bricht ab. Undo macht die Änderung rückgängig.
-
-- Storyschritt → Storyschritt setzt den Folgeschritt; bei mehreren bestehenden Verbindungen wird ein zusätzlicher Zweig angelegt.
-- Antwort → Text setzt den Folgetext dieser Antwort. Eine geänderte Zielverbindung wird im Graphen verfolgt statt sofort an den bestehenden Controller zurückzugeben (`continueLegacy = false`).
-- Text → Text nutzt die einzige vorhandene Antwort oder ergänzt eine Weiter-Antwort, wenn es keine eindeutige einzelne gibt.
-- Text → Antwort ordnet eine bestehende Antwort diesem Text zu; ihre Position und ihr Folgetext bleiben erhalten. Eine bereits zugeordnete Antwort bleibt unverändert.
-- Antwort → Antwort ist ungültig. Dialogtexte unterstützen maximal sechs Antworten; zusätzliche Zuweisungen werden abgelehnt.
-
-Der angewählte Ausgangspunkt ist der Start der Drag-Vorschau. Nach dem Verbinden richten sich die dauerhaften Anheftungen weiterhin automatisch nach den nächstgelegenen Kartenseiten.
-
-Das Flag-Feld in der Vorschau fügt einen booleschen Testzustand hinzu (z. B. `story.registrationComplete`). Mit dem Kontrollkästchen seinen Wert setzen; Dialogbedingungen lesen diese simulierten Werte. **Simulation zurücksetzen** löscht Flags, Gesprächszustand und Verlauf der Vorschau und stoppt Audio; Spielstände bleiben unverändert.
-
-## Gemeinsame Auslöser und Boardgestaltung
-
-Gleiche eingelesene Auslöser sind zu **25 gemeinsamen Auslöserkarten** zusammengeführt. Beispielsweise hat Level 1 einen Auslöser mit drei verbundenen Textvarianten. Eine Zufallsauswahl wählt daraus einen Text; es entsteht keine Abfolge aus drei Meldungen. Auslöser und Texte bleiben unabhängig verschiebbar.
-
-Vom Verbindungspunkt eines Auslösers auf einen Text ziehen weist den Text diesem Auslöser zu. Ein Text hat genau einen Ereignisauslöser; mehrere Texte können denselben Auslöser teilen. Bei festen Meldungen wird der bisherige Text ersetzt. Im Detailbereich stehen die verbundenen Texte, ein Öffnen-Button und **Lösen**. Manuelle Zuordnungen bleiben bei erneuter Quellenübernahme erhalten. Die Trainingsauswahl und vorhandenen Ereignispools im Spiel lesen diese Verbindungen; eigene Textbedingungen werden berücksichtigt.
-
-**Auslöser hinzufügen** erstellt einen eigenen Trainingsstart-Auslöser für Level 1–9. Levelbereich und Zufallsauswahl sind bearbeitbar. Es gilt die höchste passende Levelgrenze, bei Gleichstand der zuletzt angelegte passende Auslöser; feste Übertragungen in 3/6/9 sowie die Sonderregeln für bekannten Mond und Level 10+ behalten Vorrang. Andere eingelesene Auslöserbedingungen stammen weiterhin aus dem Spielsystem und bleiben schreibgeschützt.
-
-**Titel hinzufügen** legt ein frei platzierbares Entwicklungslabel an. Selektieren und rechts Text, Schriftgröße, Textfläche und Farbe einstellen; der Eckgriff verändert die Textfläche. **Linie hinzufügen** legt eine gerade Orientierungslinie an. Selektiert lassen sich **Vollstrich/Gestrichelt**, Stärke, Farbe und Endpunkte bearbeiten. Ziehgriffe verändern ihre Endpunkte. Labels und Linien sind keine Missionen oder Dialoge; sie werden pro Ansicht und Kapitel/Gruppe gespeichert, unterstützen Mehrfachauswahl und Undo.
-
-Navigation funktioniert mit gedrückter **rechter oder mittlerer Maustaste**. Das Mausrad ohne gedrückte Taste zoomt. Alle Boardelemente lassen sich gemeinsam markieren und verschieben.
-
-Die Gesprächsboards wurden neu angeordnet: gemeinsame Auslöser links, verbundene Textvarianten rechts. Normale Dialoge werden nach ihren Verbindungen mit Antworten zwischen den Textkarten angeordnet. Labels und Orientierungslinien bleiben bei der automatischen Anordnung an ihren bisherigen Positionen. **Gesprächsboard anordnen** wiederholt dies für die aktuelle Gruppe; Undo stellt die alte Anordnung wieder her.
-
-Unter **Raster** lassen sich Anzeige und Einrasten getrennt aktivieren. **Rasterweite** ist von 5 bis 200 Boardeinheiten einstellbar und wird mit dem Projekt gespeichert. Aktivieren des Einrastens richtet vorhandene Elemente aus; auch dies ist rückgängig machbar. Karten, Antwortkarten, Auslöser, Labels sowie Linienendpunkte rasten beim Verschieben ein. Kleine Mausbewegungen werden gesammelt, damit das Ziehen nicht am Raster hängen bleibt. **Auswahl am Raster ausrichten** richtet nur markierte Elemente aus. Bei starkem Herauszoomen zeigt das Board weniger Rasterlinien, während die gewählte Rasterweite fürs Einrasten erhalten bleibt.
-
-**Auswahl entfernen** oder **Entf** (außerhalb eines Texteingabefelds) löscht die ganze markierte Auswahl: Story-/Textkarten, Antworten, Auslöser, Labels und Linien können gemischt ausgewählt sein. Gruppenlöschung bildet einen Undo-Schritt. Referenzen auf entfernte Storyschritte, Folgetexte oder Auslöser werden aufgeräumt; unmarkierte Gespräche bleiben erhalten. Strg+Z stellt auch diese Verbindungen wieder her. Das Löschen entfernt keine Sprachkatalogeinträge, Charakter-Prefabs oder Quelldaten der ursprünglichen Controller; Quellen ergänzen kann fehlende importierte Inhalte erneut übernehmen.
-
-Storykapitel und Gesprächsgruppen sind getrennte Listen im Projekt. Bestehende Inhalte werden nach ihrer bisherigen Funktion getrennt; IDs, Texte, Verbindungen und Positionen bleiben erhalten. Die übernommenen Gesprächszeilen bekommen eine anfängliche Zuordnung zum passenden Ablaufknoten. Diese Zuordnung ist im Editor bearbeitbar und ersetzt keine Gameplay-Trigger.
-
-DE und EN werden nebeneinander bearbeitet. **DE/EN-Text übernehmen** schreibt direkt die vorhandenen Sprachkataloge; Texte werden nicht im Board dupliziert. **Speichern** übernimmt zusätzlich alle offenen Textentwürfe und sichert die Story- und Charakter-Assets. Beim Schließen ohne Speichern bleiben nicht übernommene Entwürfe ungesichert. IDs und Quellenbindungen stabil halten.
-
-**Rückgängig/Wiederholen** sind in der Toolbar verfügbar; alternativ Ctrl+Z sowie Ctrl+Y beziehungsweise Ctrl+Shift+Z. Kartenverschiebungen bilden je Drag einen Undo-Schritt. Offene Textentwürfe werden beim Toolbar-Undo als eigener rücknehmbarer Textschritt behandelt. In einem fokussierten Textfeld bleiben dessen normalen Tastenkürzel aktiv.
-
-**Rechte oder mittlere Maustaste halten und ziehen** navigiert im Board. **Links auf leerer Fläche ziehen** spannt ein Auswahlrechteck auf; überlappende Text- und Antwortkarten werden markiert. Strg/Shift ergänzt die Auswahl, Strg-Klick auf eine markierte Karte entfernt sie. Linker Drag auf einer markierten Karte verschiebt die ganze Auswahl als einen Undo-Schritt. Antworten folgen ihrem Text; gemeinsam markierte Antworten werden dabei nicht doppelt verschoben. Escape bricht das Auswahlrechteck ab. Rechts stehen die Eigenschaften der aktiven Karte, keine automatische Massenbearbeitung.
-
-Das Mausrad zoomt um den Mauszeiger; Drag-Navigation, Auswahlrechteck und Kartenbewegung berücksichtigen die Zoomstufe. **Inhalte fokussieren** setzt die Suche zurück und zentriert alle Nodes des aktuellen Kapitels mit passender Zoomstufe. Es gibt keine feste Canvas-Grenze, auch negative Koordinaten sind möglich. Der Inhaltsbereich wird aus den Karten des aktuellen Kapitels mit Rand berechnet und wächst mit ihnen.
-
-Die Seitenleisten sind über die schmalen Trennlinien zum Board in der Breite verstellbar. Kapitelübersicht, Kapitelname und Storyaktionen sind mit Abstand gruppiert. Beschriftungen für Texteingaben stehen über dem Feld, damit dessen ganze Breite nutzbar ist; DE/EN-Schreibfelder haben zusätzlichen Innenabstand, Zeilenumbruch und mindestens 110 Pixel Höhe. Navigationshilfe ist einklappbar.
-
-Kapitel über das Namensfeld und **Kapitel umbenennen** ändern. Zugehörige Schritte werden mitgeführt; die Quellenübernahme berücksichtigt den neuen Namen auch für später ergänzte Inhalte. **Quellen ergänzen** (vorher Übernahme ergänzen) liest Spielquellen erneut und fügt fehlende Schritte hinzu. Vorhandene Texte und bearbeitete Schritte bleiben erhalten; die UI-Prefabs werden dabei nicht erneut aufgebaut.
-
-**Inhalte: Deutsch/English** wählt ausschließlich die Sprache der Spielinhalte: automatisch aus Spieltexten abgeleitete Kartentitel, Charakternamen, Dialoge, Antworten und die passende Sprachaufnahme in der Vorschau. Die Editoroberfläche bleibt deutsch. Der Schalter verändert keine Spiel-Sprachpräferenz. Eigene Kapitel- und Entwicklungstitel werden nicht automatisch übersetzt; beide Textspalten bleiben sichtbar.
-
-Ein Schritt enthält Zweck, offene Fragen, Ort, Asset-/Quellenverweise, Sprecher, Gesprächsart, Audio und Flags. Persönliche Gespräche und Funk mit Porträt verwenden das zugewiesene Charakterbild; reiner Funk zeigt kein Porträt. Die Gesprächsvorschau ist eine funktionale Editorvorschau, kein pixelgenaues Abbild des Mobile-HUDs.
-
-Für jede Zeile lassen sich `voiceDE`, `voiceEN` und `sound` zuweisen. Wiedergabe erfolgt im Editor ohne Play Mode. Sprache ist optional, Texte bleiben vollständig nutzbar. Dialog- und Funkansicht spielen zugewiesene Clips auch im Spiel ab. Noch keine Sprachaufnahmen oder neu gezeichneten Porträts erzeugt.
-
-## Entscheidungen und bestehende Missionsaktionen
-
-Antworten besitzen Sprachschlüssel, optional einen Reaktionsschlüssel, ein Ziel sowie Bedingungen und Flagänderungen. Bedingungen prüfen boolesche Storyflags; Änderungen setzen sie wahr oder falsch. Damit sind spätere Reaktionen und verfügbare Gesprächsschritte steuerbar. Neue gameplayseitige Aufgaben benötigen weiterhin einen passenden Trigger, der diese Flags prüft; das Board führt keine beliebigen Scripts oder Weltaktionen aus.
-
-Bei übernommenen Gesprächen ist **continueLegacy** aktiviert: Eine Antwort übergibt ihren `legacyAnswer`-Index an den bestehenden Controller. Registrierung, Funkvergabe, Missionsfortschritt und Rhekks Weg bleiben dessen Aufgabe. Das sichtbare Ziel zeigt, wohin dieser Ablauf normalerweise führt; die Editorvorschau folgt dem Ziel ohne echte Missionsaktionen.
-
-Für einen zusätzlichen Dialogzweig die betreffende Antwort auf einen neuen Schritt verweisen lassen und **continueLegacy** dort deaktivieren. Der ursprüngliche Antwortindex wird bei der ersten Auswahl gespeichert. Am Ende des zusätzlichen Zweigs eine Antwort mit **continueLegacy** aktivieren, um den ursprünglichen Missionsschritt fortzusetzen. So können leichte Unterschiede entstehen und wieder zusammenlaufen. Ein direktes Springen zwischen übernommenen Missionsseiten ersetzt nicht deren Gameplay-Aktionen.
-
-Eigene Gespräche können über `StoryDialog.ShowStory(nodeId, completed)` gestartet werden. Der aufrufende Spielcontroller ist für Interaktionsbedingungen, Gameplay-Pause und Wiederaufnahme zuständig. Neue Gesprächsbedingungen werden geprüft; bestehende Missions-Trigger bleiben erhalten. Quellengebundene Varianten werden über die originale Textreferenz gefunden. Ein neuer Schritt ohne explizite Antworten erhält eine Weiter-Option.
-
-Die vorhandenen Dialog- und Funk-Prefabs enthalten sechs bearbeitbare Antwortplätze auf Basis des gemeinsamen Button-Prefabs. Mehr als sechs Antworten erfordern eine bewusste UI-Erweiterung und werden als Hinweis gemeldet. Funkzweige speichern ihre aktuelle Schritt-ID und ursprüngliche Antwort im vorhandenen Nachrichten-Spielstand; persönliche Gespräche nutzen weiterhin die vorhandene Missionsfortsetzung beim Wiederöffnen.
-
-## Prüfung und offene Abnahme
-
-Unity-Kompilierung und Asset-Übernahme im isolierten Editor-Projekt durchgeführt. Alle bisherigen DE/EN-Texte wurden unverändert erhalten; nur Charakter-Namen ergänzt. Keine Tests oder Play-Mode-Läufe gestartet.
-
-Im Editor noch manuell abnehmen: Board-Navigation und Undo/Redo, Textübernahme beider Sprachen, Charakterzuweisung, Vorschau mit Bedingungen/Flags und echten Audioclips. Im Spiel: Registrierung, Rhekk-Rettung, neue Entscheidungszweige, Funk-Speichern/Laden, Porträt- und Audiowiedergabe sowie Mobile-Layout. Bestehende lange Dialoge sind nur markiert, nicht gekürzt.
-# Trainingseinführung und Piloten-Panel
-
-Der Trainingsstart zeigt den Spieltitel, danach die kurze Einführung des Flugtrainers und einen zweiten kurzen Hinweis zur unteren Navigationsleiste. Nach „Weiter“ folgt der Countdown 3–1. Beide Hinweise werden einzeln einmal pro Spielstand bestätigt (`story.ack.TrainingIntroduction`, `story.ack.TrainingNavigation`); spätere Trainingsstarts zeigen ihre jeweilige Trainingsmeldung vor dem Countdown. Ein unterbrochener, unbestätigter Einstieg erscheint erneut. Innerhalb der Erdatmosphäre wird das Landepad angezeigt; außerhalb erscheinen Mond und Erde. Mit Funkgerät verschwindet die untere Leiste zugunsten der auswählbaren Funkziele und Flugmarker.
-
-Die Einführung steht im Gesprächsboard „Training“ mit dem Auslöser „Trainingseinführung“. Text, Sprecher und optionale deutsche/englische Sprachclips sind dort bearbeitbar. Wichtige Übertragungen behalten das bestätigbare Panel. Beiläufige Flugkommentare erscheinen ohne Pause als kurzer Text nebenbei; beim Mondanflug entfallen zufällige Zusatzkommentare. Bestehende persönliche Gespräche und Stationsfunk behalten ihre Darstellung.
-
-Das Layout liegt in `Assets/Prefabs/UI/TrainingBriefing.prefab`, die Zuweisung in `MainScene`. Rollenbezeichnung vorerst „Flugtrainer · Testpilot a. D.“. Native Asset-Erstellung und Kompilierung geprüft; Ablauf, Touch-Bedienung und Darstellung auf Geräten noch nicht im Spiel getestet.
-
-Während des Navigationshinweises ist die untere Leiste sichtbar. Einführung und Navigationshinweis nutzen kurze Überschriften, Aufzählungen und Absätze in beiden Sprachen. Das Mondsymbol liegt als wiederverwendbares Prefab `Assets/Prefabs/UI/MoonNavigationIcon.prefab` vor: schwarze Fläche, weiße Kreis- und Kraterkonturen, als scharfe UI-Geometrie gerendert. Beim ersten Zero-G-Erreichen vergrößert es sich kurz und kehrt zur normalen Größe zurück; Dauer und Faktor sind im `LanderUI`-Inspector einstellbar (`Moon Reveal Duration`, `Moon Reveal Scale`). Die Animation verwendet unskalierte Zeit, damit sie auch während einer Story-Pause sichtbar bleibt; bekannte Monde aus geladenen Spielständen lösen sie nicht erneut aus.
+Manuell prüfen: Drop im/außerhalb eines Rahmens, Karten zwischen Mission und Kapitel verschieben, Rahmenwachstum mit Antworten, Undo, unzugeordnete Mission zuordnen/lösen, speichern und erneut öffnen. Keine Tests oder Builds gestartet.

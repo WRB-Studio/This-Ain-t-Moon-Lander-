@@ -5,6 +5,17 @@ using UnityEngine;
 
 public enum StoryChannel { Personal, Radio, RadioPortrait }
 public enum StoryDevelopmentStatus { Idea, Planned, Implemented, Verified }
+public enum StoryConversationKind { Personal, Radio, EventMessage }
+[Serializable] public class StoryPlanningText
+{
+    public string key;
+    [TextArea] public string de, en;
+}
+[Serializable] public class StoryConversation
+{
+    public string id, missionId, title, location, entryNodeId;
+    public StoryConversationKind kind;
+}
 [Serializable] public class StoryChapterAlias
 {
     public string source, name;
@@ -32,6 +43,13 @@ public enum StoryDevelopmentStatus { Idea, Planned, Implemented, Verified }
     public string id;
     public string chapter;
     public string storyStepId;
+    public string conversationId;
+    public bool planningNote;
+    public bool planningAnswer;
+    public bool planningScopeAssigned;
+    public string planningMissionId, planningChapter;
+    public string planningTitleKey;
+    public string planningContextId;
     public string title;
     public Vector2 position;
     public StoryDevelopmentStatus status;
@@ -65,6 +83,8 @@ public class StoryProject : ScriptableObject
     public List<string> dialogueGroups = new();
     public List<StoryChapterAlias> chapterAliases = new();
     public List<StoryNode> nodes = new();
+    public List<StoryConversation> conversations = new();
+    public List<StoryPlanningText> planningTexts = new();
     public List<StoryBoardDecoration> decorations = new();
     public bool eventTriggersManaged;
     public bool snapToGrid;

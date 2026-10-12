@@ -3491,10 +3491,6 @@ MonoBehaviour:
     visual: {fileID: 687030617859473458}
   voiceOnly: {fileID: 5825357988731284983}
   storyPortrait: {fileID: 2340942798118638980}
-  navigationIcon: {fileID: 0}
-  navigationGraphic: {fileID: 0}
-  navigationDistance: {fileID: 0}
-  orbitRadius: 150
   pickupMessage:
     id: station.pickup
     sender: '[[game.registration]]'

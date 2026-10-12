@@ -101,10 +101,8 @@ public class AstronautMoonController : MonoBehaviour
             ClearZeroGWarning();
             return;
         }
-        if (PauseMenu.IsPaused || RadioController.Instance && RadioController.Instance.IsOpen
-            || StoryTextController.Instance && StoryTextController.Instance.IsShowingDialogue
-            || CargoMission.Instance && CargoMission.Instance.IsShowing
-            || StationConversation.Instance && StationConversation.Instance.IsShowing) return;
+        if (GameplayInput.IsPausedOrRadioOpen || GameplayInput.IsConversationOpen
+            || StoryTextController.Instance && StoryTextController.Instance.IsShowingDialogue) return;
         zeroGElapsed += Time.deltaTime;
         float remaining = Mathf.Max(0, zeroGSurvivalTime - zeroGElapsed);
         LanderUI.Instance.ShowAstronautZeroGWarning(remaining);

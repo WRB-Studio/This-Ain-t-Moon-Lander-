@@ -261,15 +261,9 @@ public static class SpaceExperienceAuthoring
         foreach (var indicator in new[] { ui.indicatorPad, ui.indicatorMoon,
             (RectTransform)new SerializedObject(ui).FindProperty("indicatorEarth").objectReferenceValue })
             if (indicator && !indicator.GetComponent<NavigationHeightIndicator>()) AddHeightArrows(indicator, arrowAsset);
-        foreach (var legacy in Object.FindObjectsByType<StationSignalIndicator>(FindObjectsInactive.Include, FindObjectsSortMode.None))
-            legacy.gameObject.SetActive(false);
         EditorSceneManager.SaveScene(scene);
-        var legacyRoot = PrefabUtility.LoadPrefabContents("Assets/Prefabs/UI/StationSignal.prefab");
-        legacyRoot.SetActive(false);
-        PrefabUtility.SaveAsPrefabAsset(legacyRoot, "Assets/Prefabs/UI/StationSignal.prefab");
-        PrefabUtility.UnloadPrefabContents(legacyRoot);
         AssetDatabase.SaveAssets();
-        Debug.Log("Navigation height arrows authored; legacy station signal disabled.");
+        Debug.Log("Navigation height arrows authored.");
     }
     static void AddHeightArrows(RectTransform root, GameObject arrowAsset)
     {
@@ -525,16 +519,6 @@ public static class SpaceExperienceAuthoring
             PrefabUtility.SaveAsPrefabAsset(moon.Find("DetailedSurface").gameObject, "Assets/Prefabs/World/MoonSurfaceArt.prefab");
         }
         EditorSceneManager.SaveScene(scene);
-        StoryImport.Build();
-        var project = AssetDatabase.LoadAssetAtPath<StoryProject>(StoryImport.ProjectPath);
-        var discovery = project.Find("game.oh.so.that.is.the.moon.minor.naming.issue");
-        if (discovery != null && discovery.title.StartsWith("Da ist")) discovery.title = "Mond entdecken";
-        if (project.Find("moon.flag.discovery") == null)
-            project.nodes.Add(new StoryNode { id = "moon.flag.discovery", title = "Flagge: jemand war schon hier", chapter = project.ResolveChapter("Mond"),
-                storyStepId = "overview.3", textKey = "moon.flag.discovery", sourceReference = "[[moon.flag.discovery]]", sourcePath = "Assets/Scripts/MoonFlagDiscovery.cs",
-                sourceProperty = "text", position = new Vector2(400, 1800), status = StoryDevelopmentStatus.Implemented,
-                purpose = "Einmalige beiläufige Bemerkung beim Vorbeilaufen; kein Dialog, keine Pause. Speichert story.moonFlagSeen." });
-        EditorUtility.SetDirty(project); AssetDatabase.SaveAssets();
         var camera = new GameObject("Static lunar preview").AddComponent<Camera>();
         camera.orthographic = true; camera.clearFlags = CameraClearFlags.SolidColor; camera.backgroundColor = Color.black;
         Directory.CreateDirectory("Documentation/SpaceExperience");
@@ -550,6 +534,6 @@ public static class SpaceExperienceAuthoring
             RenderTexture.active = null; camera.targetTexture = null; target.Release(); Object.DestroyImmediate(target); Object.DestroyImmediate(pixels);
         }
         Object.DestroyImmediate(camera.gameObject);
-        Debug.Log("Story sources supplemented and static lunar previews rendered; no Play Mode executed.");
+        Debug.Log("Static lunar previews rendered; no Play Mode executed.");
     }
 }
